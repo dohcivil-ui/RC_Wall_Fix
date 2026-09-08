@@ -15,7 +15,7 @@ Attribute VB_Name = "modBatch"
 ' - Added Public Sub RunBatchStep3_A3 (Phase A3 only, 540 runs, ~10 min)
 '   * 3 H x 3 fc x 2 algo x 30 trials per cell = 540 runs
 '   * fc list: {240, 280, 320} (mid-high practical range)
-'   * Output: D:\batch_step3_A3_{timestamp}.csv (separate file)
+'   * Output: RESULT_CSV_ROOT\batch_step3_A3_{timestamp}.csv (separate file)
 ' - Added ShowSummaryStep3_A3 with per-cell consistency check
 '   * Deterministic verification: counts unique costs per cell
 '   * BA vs HCA verdict per (H, fc) cell
@@ -643,8 +643,7 @@ End Function
 
 Private Function BatchOutputPath(stem As String) As String
     Dim p As String, n As Long, prefix As String
-    If Dir$(App.Path & "\results", vbDirectory) = "" Then MkDir App.Path & "\results"
-    prefix = App.Path & "\results\" & stem & "-" & Format$(Now, "yyyymmdd-hhnnss")
+    prefix = ResultCsvRoot() & "\" & stem & "-" & Format$(Now, "yyyymmdd-hhnnss")
     p = prefix & ".csv"
     Do While Len(Dir$(p)) > 0
         n = n + 1: p = prefix & "-" & n & ".csv"

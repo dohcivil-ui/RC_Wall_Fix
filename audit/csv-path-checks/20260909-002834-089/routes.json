@@ -1,0 +1,32 @@
+{
+  "active_sources_checked": [
+    "modEnhancedValidation.bas",
+    "modGraphing.bas",
+    "Form1.frm",
+    "frmBestDesign.frm",
+    "modWSD.bas",
+    "modDataStructures.bas",
+    "modShared.bas",
+    "modBatch.bas",
+    "modBA.bas",
+    "modHillClimbing.bas",
+    "modProjectChecks.bas"
+  ],
+  "production_csv_routes": {
+    "evaluations.csv": "RunFolder under ResultCsvRoot",
+    "trial-summary.csv": "first trial RunFolder under ResultCsvRoot",
+    "loopPrice BA/HCA": "UniqueExportPath under RunFolder",
+    "batch_step3/batch_step3_A3": "ResultCsvRoot, timestamp and collision suffix"
+  },
+  "native_test_csv_files": [
+    "result_csv\\BA-25690909-002837-seed20260909\\evaluations.csv",
+    "result_csv\\BA-25690909-002837-seed20260909\\loopPrice-BA-H5-1.csv",
+    "result_csv\\BA-25690909-002837-seed20260909\\loopPrice-BA-H5.csv",
+    "result_csv\\BA-25690909-002837-seed20260909\\trial-summary.csv",
+    "result_csv\\HCA-25690909-002837-seed20260909\\evaluations.csv",
+    "result_csv\\HCA-25690909-002837-seed20260909\\loopPrice-HCA-H5-1.csv",
+    "result_csv\\HCA-25690909-002837-seed20260909\\loopPrice-HCA-H5.csv",
+    "result_csv\\HCA-25690909-002837-seed20260909\\trial-summary.csv"
+  ],
+  "scope": "Native BA/HCA 1 trial x 8 evaluations each; batch path inspected, matrix not run; historical audit CSV fixtures remain unchanged."
+}

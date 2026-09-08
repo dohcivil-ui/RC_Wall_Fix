@@ -1,0 +1,24 @@
+OK: fixed output root independent of App.Path
+OK: root exists or was created
+OK: export before first trial falls back to requested root
+OK: BA completed short trial
+OK: BA uses requested root
+OK: BA evaluations saved
+OK: BA summary saved below requested root
+OK: BA UI displays actual root
+OK: BA loop CSV saved
+OK: BA repeated loop filename is unique
+OK: BA second loop CSV preserves first
+BA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-002837-seed20260909
+BA summary: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-002837-seed20260909\trial-summary.csv
+OK: HCA completed short trial
+OK: HCA uses requested root
+OK: HCA evaluations saved
+OK: HCA summary saved below requested root
+OK: HCA UI displays actual root
+OK: HCA loop CSV saved
+OK: HCA repeated loop filename is unique
+OK: HCA second loop CSV preserves first
+HCA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-002837-seed20260909
+HCA summary: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-002837-seed20260909\trial-summary.csv
+CSV_PATH checks=19; failures=0

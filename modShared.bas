@@ -13,6 +13,7 @@ Attribute VB_Name = "modShared"
 '================================================================================
 Option Explicit
 Public BatchMode As Boolean
+Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\result_csv"
 ' H and H1 are elevations above the underside of the base; H1 is FRONT soil.
 ' Vertical back of stem, front taper, level dry cohesionless soil, no surcharge.
 ' Project load model: active behind the wall and full passive from FRONT H1.
@@ -969,8 +970,7 @@ Public Sub BeginSearch(budget As Long, seed As Long, algorithm As String, Option
     RunRecoveryCount = 0
     RunStatus = "NO_SOLUTION"
     dummy = Rnd(-1): Randomize seed
-    If Dir$(App.Path & "\results", vbDirectory) = "" Then MkDir App.Path & "\results"
-    basePath = App.Path & "\results\" & algorithm & "-" & Format$(Now, "yyyymmdd-hhnnss") & "-seed" & CStr(seed)
+    basePath = ResultCsvRoot() & "\" & algorithm & "-" & Format$(Now, "yyyymmdd-hhnnss") & "-seed" & CStr(seed)
     RunFolder = basePath
     Do While Dir$(RunFolder, vbDirectory) <> ""
         suffix = suffix + 1: RunFolder = basePath & "-" & CStr(suffix)
@@ -1033,11 +1033,19 @@ Public Sub FinishSearch()
     Close #f
 End Sub
 
+Public Function ResultCsvRoot() As String
+    ' Fixed project-copy output root, independent of the EXE working directory.
+    If Dir$(RESULT_CSV_ROOT, vbDirectory) = "" Then MkDir RESULT_CSV_ROOT
+    ResultCsvRoot = RESULT_CSV_ROOT
+End Function
+
 Public Function UniqueExportPath(stem As String) As String
-    Dim n As Long, p As String
-    p = RunFolder & "\" & stem & ".csv"
+    Dim n As Long, p As String, folder As String
+    folder = RunFolder
+    If Len(folder) = 0 Then folder = ResultCsvRoot()
+    p = folder & "\" & stem & ".csv"
     Do While Len(Dir$(p)) > 0
-        n = n + 1: p = RunFolder & "\" & stem & "-" & n & ".csv"
+        n = n + 1: p = folder & "\" & stem & "-" & n & ".csv"
     Loop
     UniqueExportPath = p
 End Function

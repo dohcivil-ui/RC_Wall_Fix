@@ -719,7 +719,7 @@ Private Sub cmdBA_Click()
     Me.MousePointer = vbDefault
 
     
-    lstResults.AddItem "Per-trial reports: " & App.Path & "\results"
+    lstResults.AddItem "CSV and per-trial reports: " & ResultCsvRoot()
     If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
     lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
@@ -992,7 +992,7 @@ Private Sub cmdRun_Click()
 
     
     ' แสดงข้อความสรุปครั้งเดียวตอนจบ
-    lstResults.AddItem "Per-trial reports: " & App.Path & "\results"
+    lstResults.AddItem "CSV and per-trial reports: " & ResultCsvRoot()
     If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
     lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===

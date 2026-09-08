@@ -1,7 +1,7 @@
 [
   {
     "file": "Form1.frm",
-    "sha256": "c7444ae342681f5cf71403da1a01abeae1d52a9e2aa54635f6a2d92a5ec28415"
+    "sha256": "10249de3d480a4ea9d6e9d4667d8ba1cf81f1ff0eb77ffeda2bf08b627bf7d11"
   },
   {
     "file": "frmBestDesign.frm",
@@ -13,7 +13,7 @@
   },
   {
     "file": "modBatch.bas",
-    "sha256": "ffa09f06469f2db896f44669c98de395fbc1ad9f0a9b6a5a677f5d847aa08bef"
+    "sha256": "ab73bb3eef2590f679963c6f92f422639226dcd8eb98b30989f29e494609d728"
   },
   {
     "file": "modEnhancedValidation.bas",
@@ -33,7 +33,7 @@
   },
   {
     "file": "modShared.bas",
-    "sha256": "29e2207246fc3e4eab1af01354c1d680f943b5de6deb1830ecbef7612154d87e"
+    "sha256": "b6f9118aff85a46f5567021ac773c4c78e16f89a0f1c876cb740aaceebfcc609"
   },
   {
     "file": "modWSD.bas",

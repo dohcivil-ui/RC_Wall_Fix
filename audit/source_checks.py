@@ -49,7 +49,8 @@ for handler in ('cmdBA_Click','cmdRun_Click'):
 result.append('BA/HCA popup is called once after the trial loop, with session winner and first-best evaluation')
 # Independently inspect every persisted optimizer trace against its own valid candidates.
 traces=0
-for path in (P/'audit'/'results').glob('*/evaluations.csv'):
+trace_paths = list((P/'audit'/'results').glob('*/evaluations.csv')) + list((P/'result_csv').glob('*/evaluations.csv'))
+for path in trace_paths:
     rows=list(csv.DictReader(path.open()))
     best=999999999.0
     for i,row in enumerate(rows,1):

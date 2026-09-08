@@ -7,6 +7,7 @@
 คอมไพล์และทดสอบด้วย VB6 จริง: regression เดิม 267 ข้อ และ production ใหม่ 47 ข้อ failures=0; เทียบรายการคำนวณอิสระ 300 ค่า รุ่นนี้ยังไม่รัน 30 trials — ผู้ใช้จะรันเอง ผล NO_SOLUTION ทั้ง 30 ครั้งในรายงานเก่าเป็นผลก่อนเปิดตัวตรวจรุ่นนี้
 
 - [รายงานตรวจปิดงาน 9 กันยายน พร้อมหลักฐานล่าสุดและรายการไฟล์](audit/CLOSEOUT_REVIEW_TH.md)
+- [ตำแหน่งส่งออก CSV: result_csv และผลทดสอบเส้นทางไฟล์](audit/CSV_OUTPUT_FOLDER_TH.md)
 - [รายละเอียดเกณฑ์ ผลทดสอบ และวิธีรัน 30 ครั้ง](audit/PROJECT_CHECKS_IMPLEMENTATION_TH.md)
 - [ป๊อปอัปภาพเส้น มิติ เหล็กหลัก และราคาของคำตอบดีที่สุดหลังจบ BA/HCA](audit/BEST_DESIGN_POPUP_TH.md)
 - [หลักฐาน VB6 ของตัวตรวจปัจจุบันและปุ่ม BA](audit/project-checks/20260908-232727-197/project-regression.txt)
