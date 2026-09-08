@@ -1,0 +1,63 @@
+{
+  "sessions": 4,
+  "accept_categories": {
+    "Passed and Better value": 14,
+    "Passed": 19,
+    "Rejected": 97
+  },
+  "loop_rows_per_session": [
+    1,
+    1,
+    2,
+    2
+  ],
+  "outcome": "Reference headers, last-trial accept, zero-based loops, two decimals and independent rejected quantities verified; no 30-trial run.",
+  "files": [
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-BA-H5.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-BA-H5.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-005355-seed20260908\\evaluations.csv",
+      "accept_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session1-accept.csv",
+      "loop_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session1-loop.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-005355-seed20260908\\trial-summary.csv"
+    },
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-HCA-H5.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-HCA-H5.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-005355-seed20260908\\evaluations.csv",
+      "accept_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session2-accept.csv",
+      "loop_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session2-loop.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-005355-seed20260908\\trial-summary.csv"
+    },
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-BA-H5.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-BA-H5.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-005355-seed12346\\evaluations.csv",
+      "accept_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session3-accept.csv",
+      "loop_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session3-loop.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-005355-seed12345\\trial-summary.csv"
+    },
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-HCA-H5.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-HCA-H5.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-005355-seed12346\\evaluations.csv",
+      "accept_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session4-accept.csv",
+      "loop_snapshot": "C:\\reserch 69\\RC_Wall_Fix\\audit\\csv-path-checks\\20260909-005350-420\\session4-loop.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-005355-seed12345\\trial-summary.csv"
+    }
+  ],
+  "reference_headers_matched": [
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\accept-BA-H3-240.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\loopPrice-BA-H3-240.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\accept-BA-H4-280.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\loopPrice-BA-H4-280.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\accept-BA-H5-320.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\loopPrice-BA-H5-320.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\accept-HCA-H3-240.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\loopPrice-HCA-H3-240.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\accept-HCA-H4-280.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\loopPrice-HCA-H4-280.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\accept-HCA-H5-320.csv",
+    "D:\\rc-rt-optimize-v2\\vb6_samples\\loopPrice-HCA-H5-320.csv"
+  ]
+}

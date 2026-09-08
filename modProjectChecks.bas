@@ -242,23 +242,44 @@ Public Function CheckProjectDesign(d As Design, r As ProjectDetail) As Boolean
         If thickness < 2# * cover + WP_DB(r.DB(i)) / 1000# Then LastValidationReason = "MAIN_BAR_COVER": Exit Function
         If Not SpacingOK(r.DB(i), r.SP(i), thickness, r.FsBound(i)) Then LastValidationReason = "MAIN_BAR_SPACING": Exit Function
     Next i
-    ' Only the three main-bar selections are included in the research model.
-    r.Length(0) = hs - cover
-    r.Length(1) = d.LToe - cover
-    r.Length(2) = d.LHeel - cover
-    For i = 0 To 2
-        If r.Length(i) <= 0 Then LastValidationReason = "INVALID_MAIN_LENGTH": Exit Function
-        r.MainWeight = r.MainWeight + ProvidedSteelWeight(r.DB(i), r.SP(i), r.Length(i))
-    Next i
-    ' Geometric quantities per metre; user excludes anchorage, laps and formwork.
-    r.ConcreteVolume = (d.tt + d.tb) * hs / 2# + d.Base * d.TBase
-    If currentMaterial.concretePrice <= 0 Or currentMaterial.SteelPrice <= 0 Then LastValidationReason = "INVALID_PRICE_INPUT": Exit Function
-    r.Cost = r.ConcreteVolume * currentMaterial.concretePrice + r.MainWeight * currentMaterial.SteelPrice
+    If Not ProjectQuantityCost(d, r) Then LastValidationReason = "INVALID_PROJECT_QUANTITIES": Exit Function
     LastValidationReason = "PASS_IMPLEMENTED_PROJECT_CHECKS"
     CheckProjectDesign = True
     Exit Function
 BadData:
     LastValidationReason = "INVALID_PROJECT_DATA: " & Err.Description
+End Function
+
+Public Function ProjectQuantityCost(d As Design, r As ProjectDetail) As Boolean
+    ' Price quantities only. This does not certify stability or member strength.
+    Dim i As Integer, hs As Double
+    On Error GoTo BadQuantity
+    r.Cost = 0: r.MainWeight = 0: r.ConcreteVolume = 0
+    If H <= d.TBase Or d.TBase <= 0 Or cover < 0 Then Exit Function
+    If d.tt <= 0 Or d.tb < d.tt Or d.Base <= 0 Then Exit Function
+    If Abs(d.Base - d.LToe - d.tb - d.LHeel) > 0.000001 Then Exit Function
+    If d.UseDoubleStem Or d.UseDoubleToe Or d.UseDoubleHeel Then Exit Function
+    hs = H - d.TBase
+    r.DB(0) = d.ASst_DB: r.SP(0) = d.ASst_Sp
+    r.DB(1) = d.AStoe_DB: r.SP(1) = d.AStoe_Sp
+    r.DB(2) = d.ASheel_DB: r.SP(2) = d.ASheel_Sp
+    ' Only the three main-bar selections are included in the research model.
+    r.Length(0) = hs - cover
+    r.Length(1) = d.LToe - cover
+    r.Length(2) = d.LHeel - cover
+    For i = 0 To 2
+        If r.Length(i) <= 0 Then Exit Function
+        If r.DB(i) < DB_MIN Or r.DB(i) > DB_MAX Or r.SP(i) < SP_MIN Or r.SP(i) > SP_MAX Then Exit Function
+        r.MainWeight = r.MainWeight + ProvidedSteelWeight(r.DB(i), r.SP(i), r.Length(i))
+    Next i
+    ' Geometric quantities per metre; user excludes anchorage, laps and formwork.
+    r.ConcreteVolume = (d.tt + d.tb) * hs / 2# + d.Base * d.TBase
+    If currentMaterial.concretePrice <= 0 Or currentMaterial.SteelPrice <= 0 Then Exit Function
+    r.Cost = r.ConcreteVolume * currentMaterial.concretePrice + r.MainWeight * currentMaterial.SteelPrice
+    ProjectQuantityCost = True
+    Exit Function
+BadQuantity:
+    ProjectQuantityCost = False
 End Function
 
 Private Function Bars(DB As Integer, SP As Integer) As String

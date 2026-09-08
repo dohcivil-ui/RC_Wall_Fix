@@ -1,3 +1,26 @@
+# รูปแบบ CSV ตามไฟล์ตัวอย่างผู้ใช้
+
+ข้อกำหนดปัจจุบันแทนที่ประวัติด้านล่าง: เก็บไฟล์ที่ `C:\reserch 69\RC_Wall_Fix\result_csv\` และคงชื่อ accept/loopPrice ตาม H/วิธีที่รัน
+
+- `accept` มีเพียง `No.,Rejected,Passed,Passed and Better value` เก็บ trial สุดท้ายในไฟล์หลัก ทุก trial ยังมีสำเนาแยกในโฟลเดอร์ของตนเอง
+- ทั้งสามคอลัมน์ราคาใช้ตัวเลขทศนิยม 2 ตำแหน่ง ไม่มี Trial/Seed/Status เพิ่มในไฟล์หลัก
+- `Rejected` คือราคาปริมาณคอนกรีตและเหล็กหลักของแบบที่ไม่ผ่าน ใช้ `ProjectQuantityCost` เดียวกับส่วนปริมาณของแบบที่ผ่าน เพื่อบันทึกเท่านั้น ไม่เปลี่ยนผลตรวจ ราคาภายในอัลกอริทึม หรือ global best
+- หากข้อมูลปริมาณเองผิด เช่น ความยาวเหล็กติดลบหรือดัชนีเหล็กผิด จะเว้นราคาว่างและดูเหตุผลจาก evaluations.csv ไม่สร้างราคา 0 หรือ sentinel แทนราคา
+- `loopPrice` มีเพียง `No.,Loop,BestPrice` หนึ่งแถวต่อ trial; Loop เริ่ม 0 ตรงกับ accept; ไม่มีคำตอบใช้ Loop=0/BestPrice ว่าง โดยเก็บ NO_SOLUTION ใน run.txt/trial-summary.csv
+- No. ของ accept เริ่ม 0 โดย initial ยังนับรวมในงบ evaluation ตามเดิม งบ 5000 ได้ 5000 แถว (0–4999) หากต้องการช่วง 0–5000 เท่าตัวอย่างให้ใช้งบ 5001 ทั้ง BA/HCA ไม่เพิ่มการประเมินนอกงบ
+- หน้าจอระบุ accept เป็น last trial และ loopPrice เป็น all trials; สำรองไฟล์หลักเก่าใน archive ก่อนเขียนรอบใหม่
+
+หลักฐาน:
+
+- [VB6 CSV 55 checks, failures=0](csv-path-checks/20260909-005350-420/native-csv-paths.txt): ปุ่ม BA/HCA จริง 4 sessions แบบ 1/2 trials รวมกรณีไม่มีคำตอบ
+- [ตรวจเนื้อหาอิสระ](csv-path-checks/20260909-005350-420/primary-csv-verification.json): 130 แถวของ accept; Rejected 97, Passed 19, Better 14 ตรวจ rejected จากมิติและ DB/SP จริง ตรวจคอลัมน์ ทศนิยม ลำดับ trial สุดท้าย และ loop ทุก trial
+- [ก่อน–หลัง seed เดิม](csv-path-checks/20260909-005350-420/trace-preservation.txt): evaluations.csv ของ BA/HCA 64 evaluations เท่ากันทุก byte รวมแบบ ผลตรวจ ราคา และ best
+- [วิศวกรรม VB6 47 checks](project-checks/20260909-005409-065/project-regression.txt) และ regression เดิม 267 checks/GUI ไม่พบข้อผิดพลาด เทียบอิสระ 300 ค่า H3/H4/H5 และกรณีอ้างอิงเดิม
+- รอบ `005236-117` เก็บผลทดสอบแรกที่ harness อ่าน detail ใน expression เดียวกับเรียกฟังก์ชันแล้วล้มเหลว แก้ harness ให้เรียกก่อนอ่านผล รอบ `005319-700` ตรวจผ่าน 63 ข้อ จากนั้นเพิ่มกรณีไม่มีคำตอบในรอบสุดท้ายข้างต้น
+- ไม่รัน 30 trials/research batch และไม่ปรับสูตรหรือราคาเพื่อให้ตรงผลเก่า
+
+## ประวัติก่อนคืนรูปแบบตามไฟล์จริง (ถูกแทนที่ด้วยข้อกำหนดข้างต้น)
+
 # โฟลเดอร์ CSV ของโปรเจกต์
 
 เปลี่ยนเมื่อ 9 กันยายน 2026 ตามคำขอ: CSV ทุกประเภทที่โปรเจกต์หลักส่งออกใช้ราก `C:\reserch 69\RC_Wall_Fix\result_csv\` โปรแกรมสร้างโฟลเดอร์นี้อัตโนมัติเมื่อเริ่มส่งออก ตำแหน่งไม่เปลี่ยนตามที่เก็บ EXE หรือ working directory

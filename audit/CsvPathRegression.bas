@@ -11,8 +11,20 @@ End Sub
 
 Private Sub CheckMethod(method As String)
     Dim i As Long, displayed As Boolean, firstPath As String, backupCount As Long
+    Dim sample As Design, detail As ProjectDetail, reason As String, quantityOK As Boolean
     sessionNumber = sessionNumber + 1
     If method = "BA" Then Form1.cmdBA.Value = True Else Form1.cmdRun.Value = True
+    If RunBest.IsValid Then
+        sample = RunBest
+        reason = LastValidationReason
+        quantityOK = ProjectQuantityCost(sample, detail)
+        Verify method & " quantity price equals accepted price", quantityOK And Abs(detail.Cost - RunBestCost) < 0.000001
+        sample.LToe = cover - 0.01: sample.LHeel = sample.Base - sample.LToe - sample.tb
+        Verify method & " negative main length has no invented price", Not ProjectQuantityCost(sample, detail)
+        sample = RunBest: sample.ASst_DB = 0
+        Verify method & " invalid bar index has no invented price", Not ProjectQuantityCost(sample, detail)
+        Verify method & " quantity logging preserves validation reason", LastValidationReason = reason
+    End If
     Verify method & " completed short trial", EvaluationCount = CLng(Form1.txtMaxIter.Text) And RunTrial = CLng(Form1.txtTrials.Text)
     Verify method & " uses requested root", Left$(RunFolder, Len(RESULT_CSV_ROOT) + 1) = RESULT_CSV_ROOT & "\"
     Verify method & " evaluations saved", Len(Dir$(RunFolder & "\evaluations.csv")) > 0
@@ -60,6 +72,7 @@ Public Sub Main()
     Next i
     CheckMethod "BA"
     CheckMethod "HCA"
+    Form1.txtQa.Text = "0.01"
     Form1.txtMaxIter.Text = "1": Form1.txtTrials.Text = "2": Form1.txtSeed.Text = "12345"
     CheckMethod "BA"
     CheckMethod "HCA"

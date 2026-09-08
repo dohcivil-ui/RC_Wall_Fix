@@ -1,0 +1,92 @@
+OK: fixed output root independent of App.Path
+OK: root exists or was created
+OK: export before first trial falls back to requested root
+FAIL: BA quantity price equals accepted price
+OK: BA negative main length has no invented price
+OK: BA invalid bar index has no invented price
+OK: BA quantity logging preserves validation reason
+OK: BA completed short trial
+OK: BA uses requested root
+OK: BA evaluations saved
+OK: BA summary saved below requested root
+OK: BA UI displays actual root
+OK: BA accept CSV saved automatically
+OK: BA exact accept filename
+OK: BA loop CSV saved automatically
+OK: BA exact loop filename
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-BA-H5.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-BA-H5.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-005241-seed20260908\evaluations.csv
+ACCEPT_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session1-accept.csv
+LOOP_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session1-loop.csv
+OK: BA repeated loop keeps exact filename
+OK: BA repeated loop archives previous file
+BA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-005241-seed20260908
+BA summary: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-005241-seed20260908\trial-summary.csv
+FAIL: HCA quantity price equals accepted price
+OK: HCA negative main length has no invented price
+OK: HCA invalid bar index has no invented price
+OK: HCA quantity logging preserves validation reason
+OK: HCA completed short trial
+OK: HCA uses requested root
+OK: HCA evaluations saved
+OK: HCA summary saved below requested root
+OK: HCA UI displays actual root
+OK: HCA accept CSV saved automatically
+OK: HCA exact accept filename
+OK: HCA loop CSV saved automatically
+OK: HCA exact loop filename
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-HCA-H5.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-HCA-H5.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-005241-seed20260908\evaluations.csv
+ACCEPT_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session2-accept.csv
+LOOP_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session2-loop.csv
+OK: HCA repeated loop keeps exact filename
+OK: HCA repeated loop archives previous file
+HCA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-005241-seed20260908
+HCA summary: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-005241-seed20260908\trial-summary.csv
+FAIL: BA quantity price equals accepted price
+OK: BA negative main length has no invented price
+OK: BA invalid bar index has no invented price
+OK: BA quantity logging preserves validation reason
+OK: BA completed short trial
+OK: BA uses requested root
+OK: BA evaluations saved
+OK: BA summary saved below requested root
+OK: BA UI displays actual root
+OK: BA accept CSV saved automatically
+OK: BA exact accept filename
+OK: BA loop CSV saved automatically
+OK: BA exact loop filename
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-BA-H5.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-BA-H5.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-005241-seed12346\evaluations.csv
+ACCEPT_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session3-accept.csv
+LOOP_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session3-loop.csv
+OK: BA repeated loop keeps exact filename
+OK: BA repeated loop archives previous file
+BA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-005241-seed12346
+BA summary: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-005241-seed12345\trial-summary.csv
+FAIL: HCA quantity price equals accepted price
+OK: HCA negative main length has no invented price
+OK: HCA invalid bar index has no invented price
+OK: HCA quantity logging preserves validation reason
+OK: HCA completed short trial
+OK: HCA uses requested root
+OK: HCA evaluations saved
+OK: HCA summary saved below requested root
+OK: HCA UI displays actual root
+OK: HCA accept CSV saved automatically
+OK: HCA exact accept filename
+OK: HCA loop CSV saved automatically
+OK: HCA exact loop filename
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-HCA-H5.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-HCA-H5.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-005242-seed12346\evaluations.csv
+ACCEPT_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session4-accept.csv
+LOOP_SNAPSHOT=C:\reserch 69\RC_Wall_Fix\audit\csv-path-checks\20260909-005236-117\session4-loop.csv
+OK: HCA repeated loop keeps exact filename
+OK: HCA repeated loop archives previous file
+HCA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-005242-seed12346
+HCA summary: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-005241-seed12345\trial-summary.csv
+CSV_PATH checks=63; failures=4

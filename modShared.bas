@@ -986,6 +986,7 @@ End Sub
 
 Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateCost As Double) As Boolean
     Dim ot As Double, sl As Double, bc As Double, ok As Boolean, improved As Boolean
+    Dim exportPrice As String, quantities As ProjectDetail
     If EvaluationCount >= EvaluationBudget Then Err.Raise 5, , "Evaluation budget exhausted"
     EvaluationCount = EvaluationCount + 1
     candidateCost = NO_SOLUTION_COST
@@ -1000,13 +1001,26 @@ Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateC
             RunStatus = "SOLUTION_FOUND_CONFIGURED_CHECKS"
         End If
     End If
-    If RunAlgorithm = "BA" Then LogIteration_BA EvaluationCount, candidateCost, ok, improved
-    If RunAlgorithm = "HCA" Then LogIteration EvaluationCount, candidateCost, ok, improved
+    ' Keep search cost/validity unchanged; export rejected material quantities separately.
+    If ok Then
+        exportPrice = CsvPrice(candidateCost)
+    ElseIf ProjectChecksEnabled Then
+        If ProjectQuantityCost(d, quantities) Then exportPrice = CsvPrice(quantities.Cost)
+    ElseIf GeometryOK(d) Then
+        exportPrice = CsvPrice(CalculateCostFull(d, d.ASst_DB, d.ASst_Sp, d.AStoe_DB, d.AStoe_Sp, d.ASheel_DB, d.ASheel_Sp))
+    End If
+    ' Reference files number the initial evaluation 0; the budget still counts it.
+    If RunAlgorithm = "BA" Then LogIteration_BA EvaluationCount - 1, exportPrice, ok, improved
+    If RunAlgorithm = "HCA" Then LogIteration EvaluationCount - 1, exportPrice, ok, improved
     EvaluationCSV = EvaluationCSV & EvaluationCount & "," & entry & "," & CStr(ok) & "," & Replace(LastValidationReason, ",", ";") & "," & _
         CsvNumber(candidateCost) & "," & CsvNumber(RunBestCost) & "," & CsvNumber(d.tt) & "," & CsvNumber(d.tb) & "," & _
         CsvNumber(d.TBase) & "," & CsvNumber(d.Base) & "," & CsvNumber(d.LToe) & "," & _
         d.ASst_DB & "," & d.ASst_Sp & "," & d.AStoe_DB & "," & d.AStoe_Sp & "," & d.ASheel_DB & "," & d.ASheel_Sp & vbCrLf
     EvaluateCandidate = ok
+End Function
+
+Public Function CsvPrice(value As Double) As String
+    CsvPrice = Replace$(Format$(value, "0.00"), ",", ".")
 End Function
 
 Public Function CsvNumber(value As Double) As String
