@@ -5,7 +5,7 @@ P = Path(__file__).resolve().parent
 project = (P.parent/'RC_RT_HCA_v2.vbp').read_bytes().decode('latin1')
 project = project.replace('Startup="Form1"','Startup="Sub Main"').replace('Name="Project1"','Name="Trial30Project"')
 project = re.sub(r'(?m)^(Module=[^;]+; )([^\r\n]+)',r'\1..\\\2',project)
-project = project.replace('Form=Form1.frm','Form=..\\Form1.frm')
+project = project.replace('Form=Form1.frm','Form=..\\Form1.frm').replace('Form=frmBestDesign.frm','Form=..\\frmBestDesign.frm')
 project += '\r\nModule=Trial30; Trial30.bas\r\nExeName32="Trial30.exe"\r\n'
 (P/'Trial30.vbp').write_bytes(project.encode('latin1'))
 code = '''Attribute VB_Name = "Trial30"

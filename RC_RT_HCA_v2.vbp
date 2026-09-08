@@ -4,6 +4,7 @@ Module=modEnhancedValidation; modEnhancedValidation.bas
 Module=modGraphing; modGraphing.bas
 Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0; MSCOMCTL.OCX
 Form=Form1.frm
+Form=frmBestDesign.frm
 Module=modWSD; modWSD.bas
 Module=modDataStructures; modDataStructures.bas
 Module=modShared; modShared.bas

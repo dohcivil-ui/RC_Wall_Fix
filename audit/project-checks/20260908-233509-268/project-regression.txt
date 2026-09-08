@@ -1,0 +1,68 @@
+OK: project basis active
+OK: ACI shear units
+H3_reverse_heel accepted=False; reason=REVERSED_BASE_FACE
+OK: H3_reverse_heel expected acceptance
+H3 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H3 expected acceptance
+OK: H3 deterministic recheck
+OK: H3 price from same detail
+OK: H3 anchorage and lap allowances excluded
+OK: H3 concrete plus main steel only
+H4 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H4 expected acceptance
+OK: H4 deterministic recheck
+OK: H4 price from same detail
+OK: H4 anchorage and lap allowances excluded
+OK: H4 concrete plus main steel only
+H5 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H5 expected acceptance
+OK: H5 deterministic recheck
+OK: H5 price from same detail
+OK: H5 anchorage and lap allowances excluded
+OK: H5 concrete plus main steel only
+OK: reference stem height
+OK: reference active moment
+OK: reference full-passive moment
+DB12weak accepted=False; reason=STEM_STRESS_OR_INTERVAL_BOUND
+OK: DB12weak expected acceptance
+secondary_excluded accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: secondary_excluded expected acceptance
+OK: secondary_excluded deterministic recheck
+OK: secondary_excluded price from same detail
+OK: secondary_excluded anchorage and lap allowances excluded
+OK: secondary_excluded concrete plus main steel only
+anchorage_excluded accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: anchorage_excluded expected acceptance
+OK: anchorage_excluded deterministic recheck
+OK: anchorage_excluded price from same detail
+OK: anchorage_excluded anchorage and lap allowances excluded
+OK: anchorage_excluded concrete plus main steel only
+stability accepted=False; reason=INVALID_GEOMETRY_OR_INPUT
+OK: stability expected acceptance
+invalid_top_depth accepted=False; reason=NONPOSITIVE_LOCAL_DEPTH
+OK: invalid_top_depth expected acceptance
+OK: interior fixture base-only passes
+OK: interior fixture full-height fails
+OK: BA64 exact budget
+BA64: SOLUTION_FOUND_CONFIGURED_CHECKS; folder=C:\reserch 69\RC_Wall_Fix\audit\results\BA-25690908-233518-seed20260908
+OK: HCA64 exact budget
+HCA64: SOLUTION_FOUND_CONFIGURED_CHECKS; folder=C:\reserch 69\RC_Wall_Fix\audit\results\HCA-25690908-233518-seed20260908
+OK: Form_Load enables project basis
+OK: actual UI uses project report
+OK: actual UI states excluded scope
+OK: actual UI restores controls
+GUI: Basis: PROJECT_WSD_ACI99_V3_MAIN_ONLY (implemented checks; not full EIT/ACI certification)
+Research scope: main stem/toe/heel steel only; secondary steel excluded; anchorage/laps excluded from checks and steel quantities; no 0.40m allowance; formwork cost excluded.
+NO_SOLUTION / no admissible design returned; no price.
+
+Per-trial reports: C:\reserch 69\RC_Wall_Fix\audit\results
+Trial summary: C:\reserch 69\RC_Wall_Fix\audit\results\BA-25690908-233518-seed12345\trial-summary.csv
+Seed start: 12345; budget includes initial/reset/neighbor.
+
+OK: no solution summary has blank price
+OK: summary contains one trial
+FAIL: actual UI accepted detail
+FAIL: new UI session preserves old summary
+FAIL: accepted summary has actual price
+GUI64: 
+PROJECT checks=47; failures=3

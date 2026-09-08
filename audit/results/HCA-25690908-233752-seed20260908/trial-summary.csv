@@ -1,0 +1,3 @@
+trial,seed,status,evaluations,best_cost,best_evaluation,run_folder
+1,20260908,SOLUTION_FOUND_CONFIGURED_CHECKS,64,14285.9088790000,43,"C:\reserch 69\RC_Wall_Fix\audit\results\HCA-25690908-233752-seed20260908"
+2,20260909,SOLUTION_FOUND_CONFIGURED_CHECKS,64,14285.9088790000,43,"C:\reserch 69\RC_Wall_Fix\audit\results\HCA-25690908-233752-seed20260909"

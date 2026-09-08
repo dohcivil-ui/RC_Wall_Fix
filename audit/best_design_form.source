@@ -1,0 +1,164 @@
+VERSION 5.00
+Begin VB.Form frmBestDesign
+   BorderStyle     =   3
+   Caption         =   "Best retaining wall - dimensions"
+   ClientHeight    =   10500
+   ClientWidth     =   13500
+   MaxButton       =   0
+   MinButton       =   0
+   ShowInTaskbar   =   0
+   StartUpPosition =   1
+   Begin VB.PictureBox picSketch
+      AutoRedraw      =   -1
+      BackColor       =   &H00FFFFFF&
+      BorderStyle     =   0
+      Height          =   9600
+      Left            =   180
+      ScaleMode       =   3
+      TabStop         =   0
+      Top             =   180
+      Width           =   13140
+   End
+   Begin VB.CommandButton cmdClose
+      Cancel          =   -1
+      Caption         =   "Close"
+      Default         =   -1
+      Height          =   420
+      Left            =   11760
+      TabIndex        =   0
+      Top             =   9960
+      Width           =   1560
+   End
+End
+Attribute VB_Name = "frmBestDesign"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+
+' Display only: receives the completed session best, never searches or changes it.
+Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHeight As Double, ByVal algorithm As String, ByVal trial As Long)
+    Load Me
+    Me.Tag = algorithm & "; trial=" & trial
+    picSketch.Cls
+    picSketch.Tag = "NO_SOLUTION"
+    picSketch.Font.Name = "Tahoma"
+    picSketch.ForeColor = RGB(35, 39, 40)
+    picSketch.Font.Size = 15
+    picSketch.Font.Bold = True
+    If trial > 0 Then
+        CenterText picSketch.ScaleWidth / 2, 14, "BEST DESIGN  |  " & algorithm & "  |  Trial " & trial
+    Else
+        CenterText picSketch.ScaleWidth / 2, 14, "RESULT  |  " & algorithm
+    End If
+    picSketch.Font.Size = 10
+    picSketch.Font.Bold = False
+    If d.IsValid And ValidGeometry(d, wallHeight, frontHeight) Then
+        DrawWall d, wallHeight, frontHeight
+        picSketch.Tag = "H=" & wallHeight & "; H1=" & frontHeight & "; tt=" & d.tt & "; tb=" & d.tb & "; TBase=" & d.TBase & "; B=" & d.Base & "; toe=" & d.LToe & "; heel=" & d.LHeel
+    Else
+        CenterText picSketch.ScaleWidth / 2, 150, "NO_SOLUTION - no valid best geometry to display."
+    End If
+    Me.Show vbModeless, Form1
+    Me.ZOrder 0
+End Sub
+
+Private Function ValidGeometry(d As Design, wallHeight As Double, frontHeight As Double) As Boolean
+    If d.tt <= 0 Or d.tb < d.tt Or d.TBase <= 0 Or d.Base <= 0 Or d.LToe <= 0 Or d.LHeel <= 0 Then Exit Function
+    If wallHeight <= d.TBase Or frontHeight < d.TBase Or frontHeight > wallHeight Then Exit Function
+    ValidGeometry = Abs(d.Base - d.LToe - d.tb - d.LHeel) < 0.000001
+End Function
+
+Private Sub DrawWall(d As Design, wallHeight As Double, frontHeight As Double)
+    Dim pixelsPerMetre As Double, x0 As Double, x1 As Double, toe As Double, back As Double, top As Double
+    Dim y0 As Double, yTop As Double, yBase As Double, yFront As Double
+    pixelsPerMetre = (picSketch.ScaleHeight - 235) / wallHeight
+    If pixelsPerMetre * d.Base > picSketch.ScaleWidth - 440 Then pixelsPerMetre = (picSketch.ScaleWidth - 440) / d.Base
+    x0 = (picSketch.ScaleWidth - d.Base * pixelsPerMetre) / 2: x1 = x0 + d.Base * pixelsPerMetre
+    toe = x0 + d.LToe * pixelsPerMetre: back = toe + d.tb * pixelsPerMetre: top = back - d.tt * pixelsPerMetre
+    y0 = picSketch.ScaleHeight - 135: yTop = y0 - wallHeight * pixelsPerMetre
+    yBase = y0 - d.TBase * pixelsPerMetre: yFront = y0 - frontHeight * pixelsPerMetre
+    CenterText picSketch.ScaleWidth / 2, 44, "Dimensions in metres  |  Same scale in both directions"
+    DrawSection x0, x1, toe, back, top, y0, yTop, yBase, yFront
+    DrawHorizontal top, back, yTop, yTop - 22, "tt = " & Format$(d.tt, "0.00#")
+    DrawHorizontal x0, toe, y0, y0 + 28, "LToe = " & Format$(d.LToe, "0.00")
+    DrawHorizontal toe, back, y0, y0 + 60, "tb = " & Format$(d.tb, "0.00")
+    DrawHorizontal back, x1, y0, y0 + 28, "LHeel = " & Format$(d.LHeel, "0.00")
+    DrawHorizontal x0, x1, y0, y0 + 92, "Base = " & Format$(d.Base, "0.00")
+    DrawVertical yTop, y0, x0, x0 - 140, "H = " & Format$(wallHeight, "0.00"), False
+    DrawVertical yFront, y0, x0 - 30, x0 - 48, "H1 = " & Format$(frontHeight, "0.00"), False
+    DrawVertical yBase, y0, x1, x1 + 26, "TBase = " & Format$(d.TBase, "0.00"), True
+    CenterText picSketch.ScaleWidth / 2, picSketch.ScaleHeight - 22, "H and H1 are measured from the base underside."
+End Sub
+
+Private Sub DrawSection(x0 As Double, x1 As Double, toe As Double, back As Double, top As Double, y0 As Double, yTop As Double, yBase As Double, yFront As Double)
+    Dim soil As Long, concrete As Long, edge As Long, y As Long, front As Double
+    soil = RGB(232, 219, 161): concrete = RGB(241, 237, 223): edge = RGB(45, 45, 38)
+    picSketch.DrawWidth = 1
+    picSketch.Line (x0 - 30, yFront)-(back, y0), soil, BF
+    picSketch.Line (back, yTop)-(x1 + 20, y0), soil, BF
+    picSketch.Line (x0, yBase)-(x1, y0), concrete, BF
+    ' Fill the toe-battered stem without external graphics libraries or random numbers.
+    For y = Int(yTop) To Int(yBase)
+        front = top + (toe - top) * (y - yTop) / (yBase - yTop)
+        picSketch.Line (front, y)-(back, y), concrete
+    Next y
+    picSketch.DrawWidth = 2
+    picSketch.Line (x0 - 30, yFront)-(top + (toe - top) * (yFront - yTop) / (yBase - yTop), yFront), edge
+    picSketch.Line (back, yTop)-(x1 + 20, yTop), edge
+    picSketch.Line (x0, y0)-(x0, yBase), edge
+    picSketch.Line -(toe, yBase), edge
+    picSketch.Line -(top, yTop), edge
+    picSketch.Line -(back, yTop), edge
+    picSketch.Line -(back, yBase), edge
+    picSketch.Line -(x1, yBase), edge
+    picSketch.Line -(x1, y0), edge
+    picSketch.Line -(x0, y0), edge
+    picSketch.DrawWidth = 1
+End Sub
+
+Private Sub DrawHorizontal(left As Double, right As Double, face As Double, atY As Double, text As String)
+    Dim tip As Double
+    tip = 5: If (right - left) / 3 < tip Then tip = (right - left) / 3
+    picSketch.Line (left, face)-(left, atY + 5), RGB(110, 110, 100)
+    picSketch.Line (right, face)-(right, atY + 5), RGB(110, 110, 100)
+    picSketch.Line (left, atY)-(right, atY)
+    picSketch.Line (left + tip, atY - 3)-(left, atY)
+    picSketch.Line -(left + tip, atY + 3)
+    picSketch.Line (right - tip, atY - 3)-(right, atY)
+    picSketch.Line -(right - tip, atY + 3)
+    CenterText (left + right) / 2, atY - 19, text
+End Sub
+
+Private Sub DrawVertical(top As Double, bottom As Double, face As Double, atX As Double, text As String, rightSide As Boolean)
+    Dim x As Double, tip As Double
+    tip = 5: If (bottom - top) / 3 < tip Then tip = (bottom - top) / 3
+    picSketch.Line (face, top)-(atX, top), RGB(110, 110, 100)
+    picSketch.Line (face, bottom)-(atX, bottom), RGB(110, 110, 100)
+    picSketch.Line (atX, top)-(atX, bottom)
+    picSketch.Line (atX - 3, top + tip)-(atX, top)
+    picSketch.Line -(atX + 3, top + tip)
+    picSketch.Line (atX - 3, bottom - tip)-(atX, bottom)
+    picSketch.Line -(atX + 3, bottom - tip)
+    x = atX - picSketch.TextWidth(text) - 8: If rightSide Then x = atX + 8
+    picSketch.CurrentX = x: picSketch.CurrentY = (top + bottom - picSketch.TextHeight(text)) / 2
+    picSketch.Print text
+End Sub
+
+Private Sub CenterText(x As Double, y As Double, text As String)
+    picSketch.CurrentX = x - picSketch.TextWidth(text) / 2
+    picSketch.CurrentY = y
+    picSketch.Print text
+End Sub
+
+Private Sub Form_Load()
+    If Width > Screen.Width * 0.95 Then Width = Screen.Width * 0.95
+    If Height > Screen.Height * 0.9 Then Height = Screen.Height * 0.9
+    picSketch.Move 180, 180, ScaleWidth - 360, ScaleHeight - 900
+    cmdClose.Move ScaleWidth - cmdClose.Width - 180, ScaleHeight - 540
+End Sub
+
+Private Sub cmdClose_Click()
+    Unload Me
+End Sub

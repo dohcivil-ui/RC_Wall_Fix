@@ -35,6 +35,8 @@ for p in P.iterdir():
 result.append('Changed VB6 files retain byte-preserving legacy text and CRLF, without UTF-8 BOM')
 assert read(P/'modProjectChecks.bas') == (P/'audit'/'modProjectChecks.source').read_text(encoding='ascii')
 result.append('Production project-check module matches its archived source')
+assert read(P/'frmBestDesign.frm') == (P/'audit'/'best_design_form.source').read_text(encoding='ascii')
+result.append('Best-design popup matches archived source; drawing is separate from calculation modules')
 # Independently inspect every persisted optimizer trace against its own valid candidates.
 traces=0
 for path in (P/'audit'/'results').glob('*/evaluations.csv'):

@@ -22,6 +22,7 @@ $guiProject = $guiProject.Replace('Startup="Form1"', 'Startup="Sub Main"')
 $guiProject = $guiProject.Replace('Name="Project1"', 'Name="GuiTestProject"')
 $guiProject = [regex]::Replace($guiProject, '(?m)^(Module=[^;]+; )([^\r\n]+)', '$1..\$2')
 $guiProject = $guiProject.Replace('Form=Form1.frm', 'Form=..\Form1.frm')
+$guiProject = $guiProject.Replace('Form=frmBestDesign.frm', 'Form=..\frmBestDesign.frm')
 $guiProject += "`r`nModule=GuiRegression; GuiRegression.bas`r`nExeName32=`"GuiRegression.exe`"`r`n"
 [IO.File]::WriteAllText((Join-Path $PSScriptRoot 'GuiRegression.vbp'), $guiProject, $encoding)
 

@@ -732,6 +732,7 @@ For siBA = 1 To maxIter
     baStoredHistory(siBA) = globalBestCostHistory(siBA)
 Next siBA
 baHasRun = (globalBestIteration > 0)
+    Call frmBestDesign.ShowBest(bestDesign, h, H1, "BA", CLng(globalBestTrial))
     
     
     
@@ -999,6 +1000,7 @@ For siHCA = 1 To maxIter
     hcaStoredHistory(siHCA) = globalBestCostHistory(siHCA)
 Next siHCA
 hcaHasRun = (globalBestIteration > 0)
+    Call frmBestDesign.ShowBest(bestDesign, h, H1, "HCA", CLng(globalBestTrial))
     
     
 End Sub
@@ -1359,3 +1361,7 @@ End Sub
 '   Height = 400
 '================================================================================
 
+
+Private Sub Form_Unload(Cancel As Integer)
+    Unload frmBestDesign
+End Sub

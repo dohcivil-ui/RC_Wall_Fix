@@ -1,7 +1,11 @@
 [
   {
     "file": "Form1.frm",
-    "sha256": "8f7db6813219c35ae0261b4498a49708e3d813dd15d58937113f0ec2cd617557"
+    "sha256": "d672bdaca8797fc88af067233dfd5af9f3ff7ab15901d5287261aa5033d75d2d"
+  },
+  {
+    "file": "frmBestDesign.frm",
+    "sha256": "c162d86352f242795a5ac4801cddec918b98da64a2f3bfef26c5c05040668dde"
   },
   {
     "file": "modBA.bas",
@@ -29,6 +33,6 @@
   },
   {
     "file": "RC_RT_HCA_v2.vbp",
-    "sha256": "b1df7164af23966b91603ca39a640e1b19e0936888e33d95367a73d45855e61b"
+    "sha256": "32e8334482ebd02b53140d410c2b36aed0c4ec41e51ad80411ca7a8e4b4d35c1"
   }
 ]

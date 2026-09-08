@@ -2,7 +2,7 @@ from pathlib import Path
 P=Path(__file__).resolve().parent
 def put(name,s): (P/name).write_bytes(s.replace('\n','\r\n').encode('ascii'))
 s=(P.parent/'RC_RT_HCA_v2.vbp').read_bytes().decode('latin1').replace('Startup="Form1"','Startup="Sub Main"')
-s=s.replace('Name="Project1"','Name="ProjectChecksRegression"').replace('Form=Form1.frm','Form=..\\Form1.frm')
+s=s.replace('Name="Project1"','Name="ProjectChecksRegression"').replace('Form=Form1.frm','Form=..\\Form1.frm').replace('Form=frmBestDesign.frm','Form=..\\frmBestDesign.frm')
 import re
 s=re.sub(r'(?m)^(Module=[^;]+; )([^\r\n]+)',r'\1..\\\2',s)
 s+='\r\nModule=ProjectRegression; ProjectRegression.bas\r\nExeName32="ProjectRegression.exe"\r\n'

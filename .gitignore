@@ -7,6 +7,7 @@
 *.lvw
 __pycache__/
 *.pyc
+audit/sketch-checks/**/*.bmp
 
 # Local standards and rendered pages for source inspection; citations only in Git.
 audit/aci-source-cache/
