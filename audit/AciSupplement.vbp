@@ -1,0 +1,9 @@
+Type=Exe
+Module=AciSupplement; AciSupplement.bas
+Module=modDataStructures; ..\modDataStructures.bas
+Module=modWSD; ..\modWSD.bas
+Module=modShared; ..\modShared.bas
+Module=modBA; ..\modBA.bas
+Startup="Sub Main"
+Name="NativeAciSupplement"
+ExeName32="AciSupplement.exe"

@@ -1,0 +1,12 @@
+item,value,unit,scope
+vc_aci99,5.2175525032,kgf/cm2,A.7.4.1 normal-weight shear and flexure only
+vc_textbook,5.1876777078,kgf/cm2,Pongnathee printed349 rounded coefficient
+fs_grade40_50,1406.1391592804,kgf/cm2,A.3.2(a) not an SD40 grade assignment
+fs_grade60_plus,1687.3669911364,kgf/cm2,A.3.2(b) not an SD40 grade assignment
+fy_sd40_psi,56893.3732283961,psi,project material conversion only
+member_0_shear,1.6475253004,kgf/cm2,existing project load case only - not complete ACI load envelope
+member_1_shear,2.8667478228,kgf/cm2,existing project load case only - not complete ACI load envelope
+member_2_shear,2.5689655436,kgf/cm2,existing project load case only - not complete ACI load envelope
+stem_horizontal_min_gross,10.0000000000,cm2/m,14.1.2 and 14.3.3(b) other deformed bars
+production_criteria_ready,0,boolean,must remain 0 - supplementary calculation only
+NATIVE_COMPLETE,1,boolean,no optimizer or acceptance gate changed

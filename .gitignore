@@ -7,3 +7,7 @@
 *.lvw
 __pycache__/
 *.pyc
+
+# Local standards and rendered pages for source inspection; citations only in Git.
+audit/aci-source-cache/
+tmp/pdfs/aci-review/

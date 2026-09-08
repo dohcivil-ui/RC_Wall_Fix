@@ -1,0 +1,16 @@
+[
+  {
+    "name": "aci318-99-archive.pdf",
+    "url": "https://ia800601.us.archive.org/6/items/1.ACI31899/1.%20ACI%20-318-99.pdf",
+    "sha256": "4e2d4cccf8343b0543d26a4c86568a1b91a1cd78381ae21368d5e751ab977c60",
+    "bytes": 3568713,
+    "note": "Local reference cache; full document not republished in Git"
+  },
+  {
+    "name": "aci318-19-berkeley.pdf",
+    "url": "https://www.ocf.berkeley.edu/~chiep/wp-content/uploads/2024/01/CE-123-ACI-318-19.pdf",
+    "sha256": "9cf6a9503428dc053bcf08bbbe6c9cdd0f0186ce75b60e50448778b47a18f4a0",
+    "bytes": 10019408,
+    "note": "Local reference cache; full document not republished in Git"
+  }
+]

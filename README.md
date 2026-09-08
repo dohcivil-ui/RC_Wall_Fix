@@ -7,6 +7,7 @@
 - [กรณีแรงโครงการ: active และ passive เต็มค่า](audit/PROJECT_LOAD_CASE_TH.md)
 - [ประเมินผลกระทบ n และใช้ Es/Ec ตามหลักฐาน](audit/MODULAR_RATIO_DECISION_TH.md)
 - [ผล BA 30 ครั้งและขั้นตอนทดลองซ้ำใน VB6](audit/TRIAL30_RESULT_TH.md)
+- [ข้อ ACI ที่ตรวจพบและผลตรวจเสริมด้วย VB6](audit/ACI_SUPPLEMENT_RESULT_TH.md)
 - เปิดโปรเจกต์หลัก: `RC_RT_HCA_v2.vbp`
 - [รายการแก้ สมมติฐาน สูตร และสิ่งที่ต้องยืนยัน](audit/CALCULATION_AUDIT.md)
 - [ผลตรวจด้วย VB6 จริง: 267 checks, failures=0](audit/native-regression.txt)

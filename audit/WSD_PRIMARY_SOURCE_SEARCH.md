@@ -1,5 +1,7 @@
 # EIT WSD primary-source search
 
+Update: the user subsequently authorized ACI as a supplementary source. Original ACI 318-99 and 318-19 pages have now been inspected; see [ACI clause review](ACI_WSD_SOURCE_REVIEW.md) and [native supplementary results](ACI_SUPPLEMENT_RESULT_TH.md). The EIT-only search outcome below is historical and does not mean that no usable ACI clauses are available.
+
 Search date: 2026-09-08. Scope: public EIT/COE/institutional sources for EIT 011007-19, with emphasis on actual clauses or official errata. No VB6 source or criteria flags were changed by this search.
 
 ## Verified publication identity
