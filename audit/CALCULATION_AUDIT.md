@@ -76,7 +76,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File audit\run_checks.ps1
 
 สคริปต์คอมไพล์โปรเจกต์จริง, native regression และ GUI regression ด้วย `VB6.EXE` ของเครื่องนี้ เก็บ compile log แยกใหม่ทุกครั้ง (VB6 /out เป็น append จึงไม่ใช้ log เก่าตัดสิน) รัน EXE จริงและตรวจข้อความผล ไม่ใช้ Python แทนหลักฐาน VB6
 
-- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **140 checks, failures=0**
+- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **150 checks, failures=0**
 - [ผลฟอร์มจริง](gui-regression.txt): **GUI failures=0**; Load/Show Form1 แล้วเรียก Click ของปุ่ม BA/HCA จริง ทั้งแบบ no-solution 2 trials และเกณฑ์จำลองที่ได้คำตอบ พร้อมรายงาน/กราฟและการคืนสถานะปุ่ม
 - [ผล compile โปรเจกต์](final-compile-RC_RT_HCA_v2.log), [native harness](final-compile-Regression.log), [GUI harness](final-compile-GuiRegression.log); สำเนาหลักฐานแต่ละรอบและ hash EXE อยู่ใต้ `checks`
 - [รายการอิสระ](independent-results.json) ใช้ Simpson integration ของแรง/แขน, polygon centroid และแก้ neutral axis โดยตรงเพื่อสร้าง expected values จากนั้นเทียบกับ VB6. มี H=3,4,5 ทั้งหน้าตัดหนาและบาง, e บวก/ลบ, โมเมนต์และแรงเฉือน toe/heel, concrete-only failure, ข้อมูลผิด, reversal และ passive ทั้ง 0/1
@@ -90,3 +90,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File audit\run_checks.ps1
 ## Per-check report update (2026-09-08)
 
 See [H5 result in Thai](H5_CHECK_RESULT_TH.md) and [actual VB6 tables](h5-vb6-checks.md). The new report continues independent checks after a failure, distinguishes unset criteria, and rejects the weak reference using a necessary elastic yield bound. The prior BA candidate remains INDETERMINATE_WSD. Actual VB6: 140 checks, failures=0; GUI failures=0; independent report comparisons: 44, mismatches=0. No production WSD criteria or BA search behavior changed.
+
+## Feasibility before cost (2026-09-08)
+
+See [selection order and native evidence](FEASIBLE_COST_ORDER.md). Search pricing now occurs only after all three stability checks AND the remaining structural criteria succeed. Rejected candidates retain the no-solution sentinel, never compete on price, and still consume one evaluation. Native regression: 150 checks, failures=0; GUI failures=0. BA and original pricing formulas remain unchanged.

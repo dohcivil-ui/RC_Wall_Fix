@@ -963,7 +963,8 @@ Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateC
     EvaluationCount = EvaluationCount + 1
     candidateCost = NO_SOLUTION_COST
     ok = CheckDesignValid(d, d.ASst_DB, d.ASst_Sp, d.AStoe_DB, d.AStoe_Sp, d.ASheel_DB, d.ASheel_Sp, ot, sl, bc)
-    If GeometryOK(d) Then candidateCost = CalculateCost(d)
+    ' Price only feasible candidates; the sentinel is NOT a rejected design price.
+    If ok Then candidateCost = CalculateCost(d)
     d.TotalCost = candidateCost: d.IsValid = ok
     If ok Then
         If Not RunBest.IsValid Or candidateCost < RunBestCost Then
