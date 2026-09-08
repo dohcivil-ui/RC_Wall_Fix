@@ -15,8 +15,8 @@
     Call Near("case0 toe shear", SectionShear(d, 1, SectionDepth(d.TBase, 104)), 0.000000000000)
     Call Near("case0 heel shear", SectionShear(d, 2, SectionDepth(d.TBase, 104)), 1.854276367691)
     Call SectionStresses(CalculateMomentStem(d), SectionDepth(d.tb, 104), CalculateAsProv(104, 110), currentWSD.n, ca, sa, ja)
-    Call Near("case0 concrete stress", ca, 12.950557826766)
-    Call Near("case0 steel stress", sa, 129.836787948195)
+    Call Near("case0 concrete stress", ca, 13.620796361060)
+    Call Near("case0 steel stress", sa, 128.401337752828)
 
     Call AssertTrue("H3 synthetic fixture valid", Valid(d))
     d.tb = 0.2: d.LHeel = d.Base - d.LToe - d.tb: d.ASst_DB = 100: d.ASst_Sp = 113
@@ -39,8 +39,8 @@
     Call Near("case1 toe shear", SectionShear(d, 1, SectionDepth(d.TBase, 104)), 0.000000000000)
     Call Near("case1 heel shear", SectionShear(d, 2, SectionDepth(d.TBase, 104)), 3.492410926435)
     Call SectionStresses(CalculateMomentStem(d), SectionDepth(d.tb, 104), CalculateAsProv(104, 110), currentWSD.n, ca, sa, ja)
-    Call Near("case1 concrete stress", ca, 18.164072365559)
-    Call Near("case1 steel stress", sa, 224.407767128530)
+    Call Near("case1 concrete stress", ca, 19.189968985241)
+    Call Near("case1 steel stress", sa, 222.115995218514)
 
     Call AssertTrue("H4 synthetic fixture valid", Valid(d))
     d.tb = 0.2: d.LHeel = d.Base - d.LToe - d.tb: d.ASst_DB = 100: d.ASst_Sp = 113
@@ -63,8 +63,8 @@
     Call Near("case2 toe shear", SectionShear(d, 1, SectionDepth(d.TBase, 104)), 0.000000000000)
     Call Near("case2 heel shear", SectionShear(d, 2, SectionDepth(d.TBase, 104)), 4.811893989654)
     Call SectionStresses(CalculateMomentStem(d), SectionDepth(d.tb, 104), CalculateAsProv(104, 110), currentWSD.n, ca, sa, ja)
-    Call Near("case2 concrete stress", ca, 18.785591577232)
-    Call Near("case2 steel stress", sa, 288.204163288811)
+    Call Near("case2 concrete stress", ca, 19.933861661519)
+    Call Near("case2 steel stress", sa, 285.542708306784)
 
     Call AssertTrue("H5 synthetic fixture valid", Valid(d))
     d.tb = 0.2: d.LHeel = d.Base - d.LToe - d.tb: d.ASst_DB = 100: d.ASst_Sp = 113
@@ -87,8 +87,8 @@
     Call Near("case3 toe shear", SectionShear(d, 1, SectionDepth(d.TBase, 104)), 0.000000000000)
     Call Near("case3 heel shear", SectionShear(d, 2, SectionDepth(d.TBase, 104)), 1.350738661027)
     Call SectionStresses(CalculateMomentStem(d), SectionDepth(d.tb, 104), CalculateAsProv(104, 110), currentWSD.n, ca, sa, ja)
-    Call Near("case3 concrete stress", ca, 4.557290431555)
-    Call Near("case3 steel stress", sa, 69.916886582497)
+    Call Near("case3 concrete stress", ca, 4.835855003049)
+    Call Near("case3 steel stress", sa, 69.271230933393)
 
     Call AssertTrue("reversed tension faces rejected", Not Valid(d))
 
@@ -109,5 +109,5 @@
     Call Near("case4 toe shear", SectionShear(d, 1, SectionDepth(d.TBase, 104)), 4.311873673917)
     Call Near("case4 heel shear", SectionShear(d, 2, SectionDepth(d.TBase, 104)), 4.586385558500)
     Call SectionStresses(CalculateMomentStem(d), SectionDepth(d.tb, 104), CalculateAsProv(104, 110), currentWSD.n, ca, sa, ja)
-    Call Near("case4 concrete stress", ca, 24.530877461393)
-    Call Near("case4 steel stress", sa, 376.346998945177)
+    Call Near("case4 concrete stress", ca, 26.030328389751)
+    Call Near("case4 steel stress", sa, 372.871578660184)

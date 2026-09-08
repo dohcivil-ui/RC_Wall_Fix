@@ -8,6 +8,8 @@ python audit\independent_checks.py
 if ($LASTEXITCODE -ne 0) { throw 'Independent checks failed' }
 python audit\build_force_chain_checks.py
 if ($LASTEXITCODE -ne 0) { throw 'Independent force-chain fixtures failed' }
+python audit\build_reference_parameter_checks.py
+if ($LASTEXITCODE -ne 0) { throw 'Reference parameter fixtures failed' }
 python audit\build_harness.py
 if ($LASTEXITCODE -ne 0) { throw 'Harness generation failed' }
 
@@ -39,6 +41,7 @@ foreach ($name in @('Regression', 'GuiRegression')) {
     $process = Start-Process -FilePath $exePath -WorkingDirectory $PSScriptRoot -WindowStyle Hidden -PassThru
     if (-not $process.WaitForExit(30000)) { throw "Test still running: $name (PID $($process.Id))" }
 }
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'wsd-reference-native.csv'), (Join-Path $PSScriptRoot 'wsd-reference-independent.json') -Destination $runEvidence
 $native = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'native-regression.txt')
 $gui = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'gui-regression.txt')
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'native-regression.txt') -Destination $runEvidence
@@ -52,6 +55,6 @@ Write-Output ($gui -split "`r?`n" | Where-Object { $_ -match '^GUI failures=' })
 python audit\verify_check_report.py
 if ($LASTEXITCODE -ne 0) { throw 'Per-check report differs from independent calculations' }
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'h5-vb6-checks.md'), (Join-Path $PSScriptRoot 'report-independent-checks.txt') -Destination $runEvidence
-Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $projectRoot 'modShared.bas'), (Join-Path $PSScriptRoot 'RegressionMain.bas') | Format-List | Out-File (Join-Path $runEvidence 'report-source-hashes.txt')
+Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $projectRoot 'modShared.bas'), (Join-Path $projectRoot 'modWSD.bas'), (Join-Path $PSScriptRoot 'RegressionMain.bas') | Format-List | Out-File (Join-Path $runEvidence 'report-source-hashes.txt')
 python audit\source_checks.py
 if ($LASTEXITCODE -ne 0) { throw 'Source/trace checks failed' }

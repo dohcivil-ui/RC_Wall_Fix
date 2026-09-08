@@ -5,6 +5,7 @@ The synthetic shear/minimum settings used by tests are NOT EIT requirements.
 from pathlib import Path
 import math, json
 P=Path(__file__).resolve().parent
+n = 2040000 / (15100 * math.sqrt(320))  # Reference material model; retain precision.
 def polygon(points):
     cross=[points[i][0]*points[(i+1)%len(points)][1]-points[(i+1)%len(points)][0]*points[i][1] for i in range(len(points))]
     a=sum(cross)/2
@@ -41,7 +42,7 @@ def reference(h,tb,tbase,b,toe,tt=.2,h1=1.2,p=0,db=28,sp=.1):
     vh=abs(integrate(lambda x:2.4*tbase+1.8*hs-q(x),toe+tb+base_depth,b)) if heel>base_depth else 0
     area=math.pi*(db/10)**2/4/sp
     dc=100*depth
-    neutral=(-9*area+math.sqrt((9*area)**2+200*9*area*dc))/100
+    neutral=(-n*area+math.sqrt((n*area)**2+200*n*area*dc))/100
     lever=dc-neutral/3
     fs=abs(active-passive)*1e5/(area*lever)
     fc=abs(active-passive)*1e5/(50*neutral*lever)

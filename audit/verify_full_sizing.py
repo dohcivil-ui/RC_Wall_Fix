@@ -10,6 +10,7 @@ import numpy as np
 from independent_stem_profile import stem_profile
 
 P = Path(__file__).resolve().parent
+n = 2040000 / (15100 * math.sqrt(320))  # Reference material model; retain precision.
 native = list(csv.DictReader((P/'full-sizing-summary.csv').open()))
 inputs = json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 # This independent model verifies the requested H5 material/soil case. Refuse
@@ -46,7 +47,7 @@ def choose_bars(moment, thickness):
         for sp in (.1,.15,.2,.25):
             area = math.pi*(db/10)**2/4/sp
             # Compression/tension equilibrium, rather than the production k/rho form.
-            neutral = (-9*area+np.sqrt((9*area)**2+200*9*area*dc))/100
+            neutral = (-n*area+np.sqrt((n*area)**2+200*n*area*dc))/100
             lever = dc-neutral/3
             fc = np.abs(moment)*1e5/(50*neutral*lever)
             fs = np.abs(moment)*1e5/(area*lever)
@@ -104,7 +105,7 @@ for r in bar_rows:
     db, sp, depth, moment = [float(r[k]) for k in ('DB','spacing','depth','moment')]
     area = math.pi*(db/10)**2/4/sp
     dc = depth*100
-    neutral = (-9*area+math.sqrt((9*area)**2+200*9*area*dc))/100
+    neutral = (-n*area+math.sqrt((n*area)**2+200*n*area*dc))/100
     lever = dc-neutral/3
     fc = abs(moment)*1e5/(50*neutral*lever)
     fs = abs(moment)*1e5/(area*lever)

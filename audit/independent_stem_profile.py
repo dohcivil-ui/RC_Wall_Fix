@@ -2,6 +2,8 @@
 import math
 import numpy as np
 
+n = 2040000 / (15100 * math.sqrt(320))  # H5 material used by this profile suite.
+
 def stem_profile(h, h1, tb, tt, tbase, cover, db, spacing, eta):
     hs, hp = h-tbase, h1-tbase
     assert hs > 0 and 0 <= hp <= hs
@@ -23,7 +25,7 @@ def stem_profile(h, h1, tb, tt, tbase, cover, db, spacing, eta):
     peak_height = max(candidates, key=shear)
     area = math.pi*(db/10)**2/4/spacing
     dc = depth(levels)*100
-    neutral = (-9*area+np.sqrt((9*area)**2+200*9*area*dc))/100
+    neutral = (-n*area+np.sqrt((n*area)**2+200*n*area*dc))/100
     lever = dc-neutral/3
     moment = .1*(hs-levels)**3-eta*.9*np.maximum(hp-levels,0)**3
     fc = np.abs(moment)*1e5/(50*neutral*lever)

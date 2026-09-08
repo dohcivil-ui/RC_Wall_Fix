@@ -17,11 +17,11 @@
   },
   {
     "file": "modShared.bas",
-    "sha256": "741fe688b30c723aeb1480bad902beeb19c94e33ec23cb3f2037390d8f699478"
+    "sha256": "f699ed25b68fdc1d45c763aedcd311e6a97821bd0b6642bc52a57df2eb813b5b"
   },
   {
     "file": "modWSD.bas",
-    "sha256": "50a75dcf35a2848f07f39c4e1c5a68ac855d5fc4c08ccc549274868dba63d679"
+    "sha256": "cdce78691063c6d43717dd4d669440924c9130216e346b3b480ca01450e4b518"
   },
   {
     "file": "RC_RT_HCA_v2.vbp",

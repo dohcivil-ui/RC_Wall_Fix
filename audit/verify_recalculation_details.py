@@ -5,6 +5,7 @@ from independent_checks import reference, integrate
 from independent_stem_profile import stem_profile
 
 P=Path(__file__).resolve().parent
+n = 2040000 / (15100 * math.sqrt(320))  # Reference material model; retain precision.
 inputs=json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 rows=list(csv.DictReader((P/'full-sizing-summary.csv').open()))
 assert len(rows)==2
@@ -26,7 +27,7 @@ for row in rows:
         area=math.pi*(db/10)**2/4/spacing
         depth=thickness-inputs['cover']-db/2000
         dc=depth*100
-        neutral=(-9*area+math.sqrt((9*area)**2+200*9*area*dc))/100
+        neutral=(-n*area+math.sqrt((n*area)**2+200*n*area*dc))/100
         lever=dc-neutral/3
         mc=144*50*neutral*lever/1e5
         ms=1700*area*lever/1e5

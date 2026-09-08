@@ -4,10 +4,11 @@
 
 **ยังไม่รับรองแบบตาม วสท. 2562 และยังไม่ได้รัน batch วิจัย** เกณฑ์ที่ยังไม่มีข้ออ้างอิงครบแสดงสถานะ `WSD_CRITERIA_UNVERIFIED` ค่าที่ทำให้แบบผ่านใน test harness เป็นข้อมูลจำลองสำหรับตรวจซอฟต์แวร์เท่านั้น
 
-- [ผลคำนวณ H5 ล่าสุด: qa ตาม VB6, แรงทั้งกำแพง, เหล็กและราคา](audit/H5_REVIEWED_CALCULATION_TH.md)
+- [ตรวจ ref: n, k, j, R และผลคำนวณใหม่ล่าสุด](audit/WSD_REFERENCE_PARAMETERS_TH.md)
+- [ผลคำนวณ H5 รอบก่อนแก้ n: qa ตาม VB6, แรงทั้งกำแพง, เหล็กและราคา](audit/H5_REVIEWED_CALCULATION_TH.md)
 - เปิดโปรเจกต์หลัก: `RC_RT_HCA_v2.vbp`
 - [รายการแก้ สมมติฐาน สูตร และสิ่งที่ต้องยืนยัน](audit/CALCULATION_AUDIT.md)
-- [ผลตรวจด้วย VB6 จริง: 211 checks, failures=0](audit/native-regression.txt)
+- [ผลตรวจด้วย VB6 จริง: 256 checks, failures=0](audit/native-regression.txt)
 - [ผลทดสอบปุ่ม BA/HCA บนฟอร์มจริง](audit/gui-regression.txt)
 - [หลักฐานคอมไพล์โปรเจกต์หลัก](audit/final-compile-RC_RT_HCA_v2.log)
 - [หลักฐานก่อนแก้และสำเนาซอร์สตั้งต้น](audit/baseline)

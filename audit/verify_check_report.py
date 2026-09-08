@@ -7,6 +7,7 @@ import independent_checks as independent
 from independent_stem_profile import stem_profile
 
 P = Path(__file__).resolve().parent
+n = 2040000 / (15100 * math.sqrt(320))  # Reference material model; retain precision.
 reports = (P / 'h5-vb6-checks.md').read_text().split('## ')[1:]
 assert len(reports) == 3
 cases = [
@@ -43,7 +44,7 @@ for case_index, (text, case) in enumerate(zip(reports, cases)):
         # Solve compression/tension equilibrium in cm units, independently
         # from the production non-dimensional k/rho implementation.
         dc = depth * 100
-        neutral = (-9 * steel + math.sqrt((9 * steel) ** 2 + 200 * 9 * steel * dc)) / 100
+        neutral = (-n * steel + math.sqrt((n * steel) ** 2 + 200 * n * steel * dc)) / 100
         lever = dc - neutral / 3
         steel_stress = abs(moment) * 1e5 / (steel * lever)
         concrete_stress = abs(moment) * 1e5 / (50 * neutral * lever)

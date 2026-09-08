@@ -15,7 +15,7 @@ Public WSDReviewed As Boolean
 
 ' WSD Parameters Structure
 Public Type WSDParams
-    n As Double          ' Modular ratio (Es/Ec); legacy assumed value = 9
+    n As Double          ' Modular ratio Es/Ec; unrounded reference equation
     fs As Double         ' Steel working stress (ksc): 1500 or 1700
     fc As Double         ' Concrete working stress (ksc): 0.45 × f'c
     k As Double          ' Neutral axis factor
@@ -30,8 +30,11 @@ Public Function CalculateWSDParameters(fy As Integer, fc_prime As Integer) As WS
     Dim params As WSDParams
     
     If fc_prime <= 0 Or (fy <> 3000 And fy <> 4000) Then Err.Raise 5, , "Invalid/unsupported material"
-    ' Modular ratio (legacy assumed constant, pending EIT verification)
-    params.n = 9
+    ' User reference: Pongnathee, Ch.10, printed pp.342-343 (PDF pp.10-11).
+    ' Es=2040000, Ec=15100*Sqr(fc_prime), both kgf/cm2.
+    ' Example rounds n at fc_prime=210; no general rounding rule is given.
+    ' Keep precision; this source is not verification of EIT 011007-19.
+    params.n = 2040000# / (15100# * Sqr(CDbl(fc_prime)))
     
     ' Steel working stress (fs)
     ' SD30 (fy=3000): fs = 1500 ksc
@@ -45,6 +48,7 @@ Public Function CalculateWSDParameters(fy As Integer, fc_prime As Integer) As WS
     ' Concrete working stress
     params.fc = 0.45 * fc_prime
     
+    ' Balanced allowable-stress section only; actual bars use SectionStresses.
     ' Neutral axis factor: k = 1 / (1 + (fs / (n × fc)))
     params.k = 1 / (1 + (params.fs / (params.n * params.fc)))
     
@@ -209,10 +213,10 @@ End Function
 
 ' ========================================
 ' Calculate Balanced Steel Ratio (ρ_balanced)
-' Elastic balanced section (not a code maximum): ρ_b = (fc/fs) × k
+' Elastic balanced section (not a code maximum): ρ_b = 0.5 * (fc/fs) × k
 ' ========================================
 Public Function CalculateRhoBalanced(wsd As WSDParams) As Double
-    ' ρ_balanced = (fc/fs) × k
+    ' ρ_balanced = 0.5 * (fc/fs) × k
     If wsd.fs > 0 Then
         CalculateRhoBalanced = 0.5 * (wsd.fc / wsd.fs) * wsd.k
     Else

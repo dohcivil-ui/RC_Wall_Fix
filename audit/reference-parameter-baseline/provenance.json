@@ -1,0 +1,15 @@
+{
+  "commit": "e218433338a19b93c75e6d806340c1b717ab5eb3",
+  "source_pdf": "D:\\รวมงาน ป โท\\69\\บทความวิจัยใหม่ อ้างอิง\\ออกแบบกำแพงกันดิน อ พงฬ์นธี.pdf",
+  "source_sha256": "fcf6760d649499f4163c4df514a5374053d22cc66355842133bc09a1f344a578",
+  "pdf_pages": [
+    10,
+    11
+  ],
+  "printed_pages": [
+    342,
+    343
+  ],
+  "baseline_native_evidence": "audit/checks/20260908-204807-984",
+  "note": "Source PDF is read-only; do not publish its full content."
+}

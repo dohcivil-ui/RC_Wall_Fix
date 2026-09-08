@@ -43,7 +43,7 @@ fc_actual = 2*|M|/(b*k*j*d^2)
 
 ใช้ As ของ DB/spacing จริงในการตรวจ **ทั้ง**คอนกรีตและเหล็ก; ไม่พึ่งการเช็ก As อย่างเดียวหรือ j สมดุลค่าคงที่ รายงานแสดงหน่วยแรงและ d จากเครื่องคำนวณชุดเดียวกับตัวตรวจ
 
-ค่าเดิม `n=9`, `fc_allow=0.45f'c`, `fs_allow=1500/1700` ยังมีไว้เป็น **legacy screening parameters** ไม่อ้างว่าเป็นข้อกำหนดที่ยืนยันแล้วจาก วสท. 2562. แก้คำอธิบาย n เป็น Es/Ec และ ρbalanced จากสมดุลมีตัวคูณ 1/2. เอาการใช้ 0.75ρbalanced เป็นเกณฑ์สูงสุดอัตโนมัติออก เพราะยังไม่มีข้ออ้างอิง WSD ที่ตรวจสอบได้
+ปัจจุบันใช้ `n=2040000/(15100*sqrt(f'c))` ตามเอกสารผู้ใช้หน้า 342–343 (เก็บทศนิยม; ดู [ตรวจพารามิเตอร์](WSD_REFERENCE_PARAMETERS_TH.md)); ส่วน `fc_allow=0.45f'c`, `fs_allow=1500/1700` ยังมีไว้เป็น **legacy screening parameters** ไม่อ้างว่าเป็นข้อกำหนดที่ยืนยันแล้วจาก วสท. 2562. แก้คำอธิบาย n เป็น Es/Ec และ ρbalanced จากสมดุลมีตัวคูณ 1/2. เอาการใช้ 0.75ρbalanced เป็นเกณฑ์สูงสุดอัตโนมัติออก เพราะยังไม่มีข้ออ้างอิง WSD ที่ตรวจสอบได้
 
 หน้ามาตรฐานของ [วสท. รายการหนังสือหน้า 80](https://eit.or.th/showcase/EIT/issue2_68/files/basic-html/page80.html) ยืนยันชื่อมาตรฐาน WSD รหัส **011007-19**, ISBN 978-616-396-023-8 ได้ แต่ไม่ได้ให้เนื้อหาข้อกำหนด จึง **ยังยืนยันไม่ได้**: modular ratio, หน่วยแรงยอมให้แยกวัสดุ/สมาชิก, หน่วยแรงเฉือนและหน้าตัดวิกฤต, เหล็กขั้นต่ำของ stem/ฐานและทิศทาง, เหล็กหดตัว/อุณหภูมิ, ระยะเรียง/ระยะใส, development/anchorage และรายละเอียดต่อเนื่อง
 
@@ -76,7 +76,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File audit\run_checks.ps1
 
 สคริปต์คอมไพล์โปรเจกต์จริง, native regression และ GUI regression ด้วย `VB6.EXE` ของเครื่องนี้ เก็บ compile log แยกใหม่ทุกครั้ง (VB6 /out เป็น append จึงไม่ใช้ log เก่าตัดสิน) รัน EXE จริงและตรวจข้อความผล ไม่ใช้ Python แทนหลักฐาน VB6
 
-- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **211 checks, failures=0**
+- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **256 checks, failures=0**
 - [ผลฟอร์มจริง](gui-regression.txt): **GUI failures=0**; Load/Show Form1 แล้วเรียก Click ของปุ่ม BA/HCA จริง ทั้งแบบ no-solution 2 trials และเกณฑ์จำลองที่ได้คำตอบ พร้อมรายงาน/กราฟและการคืนสถานะปุ่ม
 - [ผล compile โปรเจกต์](final-compile-RC_RT_HCA_v2.log), [native harness](final-compile-Regression.log), [GUI harness](final-compile-GuiRegression.log); สำเนาหลักฐานแต่ละรอบและ hash EXE อยู่ใต้ `checks`
 - [รายการอิสระ](independent-results.json) ใช้ Simpson integration ของแรง/แขน, polygon centroid และแก้ neutral axis โดยตรงเพื่อสร้าง expected values จากนั้นเทียบกับ VB6. มี H=3,4,5 ทั้งหน้าตัดหนาและบาง, e บวก/ลบ, โมเมนต์และแรงเฉือน toe/heel, concrete-only failure, ข้อมูลผิด, reversal และ passive ทั้ง 0/1
@@ -103,3 +103,8 @@ See [new active/passive report](H5_RECALCULATION_TH.md). Native BA retains full 
 ## Latest whole-wall recalculation and stem shear correction
 
 See [latest Thai report](H5_REVIEWED_CALCULATION_TH.md). This run reads qa=30 allowable and the 5000-evaluation budget from Form1 defaults, retaining the requested H=5/fc=320 study. Same-geometry native tests verify active/passive loads, their one-third-height arms, all three stability checks, bearing reactions and toe/heel moments against independent equilibrium. Fixed a real stem shear defect: passive cancellation and taper can make an interior nominal shear stress exceed the face value (1.6475 versus 1.4006 kgf/cm2 for the selected geometry). The validator, screen and report now share the envelope. Native regression: 211 checks, failures=0; GUI failures=0. Both complete 520200-row diagnostic grids and 120 selected-geometry steel alternatives agree independently. The screening minimum remains 8273.14368 baht/m, but production BA reports NO_SOLUTION in both cases because complete WSD criteria remain unverified. No research batch was run. Earlier update paragraphs above describe historical runs.
+
+
+## Reference parameter correction (latest)
+
+The user supplied the Pongnathee Chapter 10 example. Its n=9 is an approximation for f'c=210, not a constant for all strengths. CalculateWSDParameters now uses the unrounded Es/Ec equation; balanced k/j/R are explicitly labelled, while actual-bar checks retain their own neutral axis. See [reference audit and current recalculation](WSD_REFERENCE_PARAMETERS_TH.md). Native regression: 256 checks, failures=0; GUI failures=0. Both full grids were rerun; the selected prices are unchanged but stresses and screened counts changed. This establishes the teaching-reference model, not complete EIT 011007-19 compliance.
