@@ -1,0 +1,10 @@
+Status=NO_SOLUTION
+Algorithm=BA; Trial=30
+Seed=12374; Evaluations=5000; Budget=5000
+BestEvaluation=0; Recoveries=22
+H=5; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4
+phi=30; mu=0.6; qa_allowable=30; clear_cover=0.075
+fc_prime=320; fy=4000; passive_fraction=1
+WSDReviewed=False; source=
+AllowableShear=0; MinStemRatio=0; MinBaseRatio=0
+NO_SOLUTION / no admissible design returned. WSD criteria may still be unverified.

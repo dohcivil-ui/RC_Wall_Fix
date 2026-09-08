@@ -1,0 +1,617 @@
+{
+  "algorithm": "BA",
+  "trials": 30,
+  "total_evaluations": 150000,
+  "accepted_trials": 0,
+  "status": "NO_SOLUTION_ALL_TRIALS",
+  "best_cost": null,
+  "cost_statistics": null,
+  "rejection_counts": {
+    "WSD_CRITERIA_UNVERIFIED": 103373,
+    "INVALID_GEOMETRY_OR_INPUT": 8955,
+    "CONCRETE_OR_STEEL_STRESS": 37672
+  },
+  "runs": [
+    {
+      "trial": 1,
+      "seed": 12345,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-215550-seed12345",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3091,
+        "INVALID_GEOMETRY_OR_INPUT": 113,
+        "CONCRETE_OR_STEEL_STRESS": 1796
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "9352ca5897c69a6f1ff66c7fd86b159eed18f99b34b7e5f65102f9e940ae2915"
+    },
+    {
+      "trial": 2,
+      "seed": 12346,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-215650-seed12346",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 4225,
+        "INVALID_GEOMETRY_OR_INPUT": 511,
+        "CONCRETE_OR_STEEL_STRESS": 264
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "da9f10b4e8cb6bc9a5e9d8a4cc0351a81d1007289071a19f2971a651206e7805"
+    },
+    {
+      "trial": 3,
+      "seed": 12347,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-215743-seed12347",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3095,
+        "CONCRETE_OR_STEEL_STRESS": 1674,
+        "INVALID_GEOMETRY_OR_INPUT": 231
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "78e4ba6d19523198e831d61dac00f90fc18288ed935fff9e3fc0ebc7fbe2f139"
+    },
+    {
+      "trial": 4,
+      "seed": 12348,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-215849-seed12348",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3590,
+        "CONCRETE_OR_STEEL_STRESS": 944,
+        "INVALID_GEOMETRY_OR_INPUT": 466
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "13b89b3abd1155f77dd8886744cf51f2f2ec8d81ecf0dadcd599cf63521832cb"
+    },
+    {
+      "trial": 5,
+      "seed": 12349,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-215950-seed12349",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3470,
+        "INVALID_GEOMETRY_OR_INPUT": 268,
+        "CONCRETE_OR_STEEL_STRESS": 1262
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "f1c8cf4947285f6385e07f27f887c1d07c35eb6b7e8267379b91a8f13fa1bd21"
+    },
+    {
+      "trial": 6,
+      "seed": 12350,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220055-seed12350",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3172,
+        "INVALID_GEOMETRY_OR_INPUT": 347,
+        "CONCRETE_OR_STEEL_STRESS": 1481
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "cf439fba5780f9befa2c9571f6dc20b84b5a8a4fbda6a38b2fc6b9422cd2e169"
+    },
+    {
+      "trial": 7,
+      "seed": 12351,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220202-seed12351",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3466,
+        "CONCRETE_OR_STEEL_STRESS": 1467,
+        "INVALID_GEOMETRY_OR_INPUT": 67
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "21aa2a72ff0b2e8e134bb9a430c4127996284f0eeb07dad920d64d406ca56f53"
+    },
+    {
+      "trial": 8,
+      "seed": 12352,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220307-seed12352",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3465,
+        "CONCRETE_OR_STEEL_STRESS": 1303,
+        "INVALID_GEOMETRY_OR_INPUT": 232
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "194570e83771e2f0f136ed18d7358d8530f2d31656d15a9e0a9da862a6ad15fd"
+    },
+    {
+      "trial": 9,
+      "seed": 12353,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220410-seed12353",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3406,
+        "CONCRETE_OR_STEEL_STRESS": 1434,
+        "INVALID_GEOMETRY_OR_INPUT": 160
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "3d75829c1858067c87da1c2a54ed51b1378adc93754c8c8211d373fa2268ae42"
+    },
+    {
+      "trial": 10,
+      "seed": 12354,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220509-seed12354",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3275,
+        "INVALID_GEOMETRY_OR_INPUT": 198,
+        "CONCRETE_OR_STEEL_STRESS": 1527
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "06ddcf3ad575da6c51f6f4ab29e4cade24f4cbe5d18a1cd17dcd8a06278ecc8b"
+    },
+    {
+      "trial": 11,
+      "seed": 12355,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220606-seed12355",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 2349,
+        "INVALID_GEOMETRY_OR_INPUT": 164,
+        "CONCRETE_OR_STEEL_STRESS": 2487
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "eabe3514ac3935cbb896c021be030db604ca9149bdf5b632ab3a033249245d22"
+    },
+    {
+      "trial": 12,
+      "seed": 12356,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220705-seed12356",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3613,
+        "CONCRETE_OR_STEEL_STRESS": 1086,
+        "INVALID_GEOMETRY_OR_INPUT": 301
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "4223580784bc875804286bb96af1d8b2c249c45e710a04699b843495912c87db"
+    },
+    {
+      "trial": 13,
+      "seed": 12357,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220806-seed12357",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3667,
+        "CONCRETE_OR_STEEL_STRESS": 991,
+        "INVALID_GEOMETRY_OR_INPUT": 342
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "9647378edd51c8864faf707b5448ff7383b73febb88e33188bd49212c6695972"
+    },
+    {
+      "trial": 14,
+      "seed": 12358,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-220911-seed12358",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 4153,
+        "CONCRETE_OR_STEEL_STRESS": 367,
+        "INVALID_GEOMETRY_OR_INPUT": 480
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "fe40bb7f785bbeed4631ac602eb9e93c7cd8fe5bbc91daa3c1fcbae2ca14bff5"
+    },
+    {
+      "trial": 15,
+      "seed": 12359,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221015-seed12359",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3608,
+        "INVALID_GEOMETRY_OR_INPUT": 165,
+        "CONCRETE_OR_STEEL_STRESS": 1227
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "471d0e73232454500993f68257688991cabb0758f9149a277a986391ae0ba0a6"
+    },
+    {
+      "trial": 16,
+      "seed": 12360,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221119-seed12360",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3535,
+        "INVALID_GEOMETRY_OR_INPUT": 321,
+        "CONCRETE_OR_STEEL_STRESS": 1144
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "d5c6e01901eb0b92d6f65614c494eb5f9500e5070bb0aae136738b8db6e14e1f"
+    },
+    {
+      "trial": 17,
+      "seed": 12361,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221217-seed12361",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3462,
+        "CONCRETE_OR_STEEL_STRESS": 1277,
+        "INVALID_GEOMETRY_OR_INPUT": 261
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "99b76ee22ffaa87355241007a76f347a7a1dbff2f3c11bf5748bc4558fd3f7a4"
+    },
+    {
+      "trial": 18,
+      "seed": 12362,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221324-seed12362",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3095,
+        "CONCRETE_OR_STEEL_STRESS": 1528,
+        "INVALID_GEOMETRY_OR_INPUT": 377
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "6a99a50b0ea12a5be57ef0764ecfe0823ac66839bbd5af38b8bcdb98c28bd2bf"
+    },
+    {
+      "trial": 19,
+      "seed": 12363,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221426-seed12363",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3765,
+        "CONCRETE_OR_STEEL_STRESS": 938,
+        "INVALID_GEOMETRY_OR_INPUT": 297
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "76a45c204c0e6798eb45022740112689e7b51ca3d234bb435ddc21f1ca55ae86"
+    },
+    {
+      "trial": 20,
+      "seed": 12364,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221528-seed12364",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3386,
+        "INVALID_GEOMETRY_OR_INPUT": 439,
+        "CONCRETE_OR_STEEL_STRESS": 1175
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "23a093579537ed925fe87953ea7de9ebe8f62293e6570117a0fa7701a2db7883"
+    },
+    {
+      "trial": 21,
+      "seed": 12365,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221627-seed12365",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3836,
+        "CONCRETE_OR_STEEL_STRESS": 640,
+        "INVALID_GEOMETRY_OR_INPUT": 524
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "bdbe1a85392f0c752e2d6b41c92ee1cf3f41cdf7a5ddac64f1d0eac654c4eb6b"
+    },
+    {
+      "trial": 22,
+      "seed": 12366,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221728-seed12366",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3433,
+        "CONCRETE_OR_STEEL_STRESS": 1325,
+        "INVALID_GEOMETRY_OR_INPUT": 242
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "fd28f43962b967d9b7f5fa2987c487de6a8f162ed84fdc8ceee20eeac058477b"
+    },
+    {
+      "trial": 23,
+      "seed": 12367,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221834-seed12367",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 2624,
+        "CONCRETE_OR_STEEL_STRESS": 1737,
+        "INVALID_GEOMETRY_OR_INPUT": 639
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "afc8da5ae9af2062a98d9eb6e1e60154c440bdd5a57379535b854dd19744b4b1"
+    },
+    {
+      "trial": 24,
+      "seed": 12368,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-221936-seed12368",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3105,
+        "CONCRETE_OR_STEEL_STRESS": 1668,
+        "INVALID_GEOMETRY_OR_INPUT": 227
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "9a1ee5bc9622d3f1f694f9d796306554c0211d1e19acefc0cea2ce0359d1cd06"
+    },
+    {
+      "trial": 25,
+      "seed": 12369,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-222033-seed12369",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3992,
+        "INVALID_GEOMETRY_OR_INPUT": 247,
+        "CONCRETE_OR_STEEL_STRESS": 761
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "458143a3081fa7ac0e68e4afdf846bdcd339a1cedcc7e2c7c0b3560eda406999"
+    },
+    {
+      "trial": 26,
+      "seed": 12370,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-222132-seed12370",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3861,
+        "INVALID_GEOMETRY_OR_INPUT": 367,
+        "CONCRETE_OR_STEEL_STRESS": 772
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "5bbb71905f834b8745f4cde731cede2a44c498e8d793c91ecec34649aa882e8f"
+    },
+    {
+      "trial": 27,
+      "seed": 12371,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-222232-seed12371",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3820,
+        "CONCRETE_OR_STEEL_STRESS": 990,
+        "INVALID_GEOMETRY_OR_INPUT": 190
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "3038f2bd62557979861c4b9e2a30d2c3bb064f4d076fe3a695123a4499d41283"
+    },
+    {
+      "trial": 28,
+      "seed": 12372,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-222339-seed12372",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3566,
+        "CONCRETE_OR_STEEL_STRESS": 1171,
+        "INVALID_GEOMETRY_OR_INPUT": 263
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "9e7c2cea7fa75dd146c0d07ad6ac7f3d2029491be75875423894d66d4e187849"
+    },
+    {
+      "trial": 29,
+      "seed": 12373,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-222444-seed12373",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 2983,
+        "INVALID_GEOMETRY_OR_INPUT": 154,
+        "CONCRETE_OR_STEEL_STRESS": 1863
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "b6464205e9ae3063e85515fe41898a0924bbce02964e8d622785e631ad9defb5"
+    },
+    {
+      "trial": 30,
+      "seed": 12374,
+      "evaluations": 5000,
+      "status": "NO_SOLUTION",
+      "valid_candidates": 0,
+      "best_cost_baht_per_m": null,
+      "folder": "results\\BA-25690908-222550-seed12374",
+      "reasons": {
+        "WSD_CRITERIA_UNVERIFIED": 3265,
+        "INVALID_GEOMETRY_OR_INPUT": 362,
+        "CONCRETE_OR_STEEL_STRESS": 1373
+      },
+      "entries": {
+        "initial": 1,
+        "neighbor": 4978,
+        "reset": 21
+      },
+      "evaluations_sha256": "b9aa983d5d2d86dcbcf3985a6c33b2c20bcc14a055f4d2a09e37c818608655cd"
+    }
+  ],
+  "note": "Actual Form1 BA button executed. Missing criteria were not bypassed. No cost distribution or optimum claim can be made."
+}

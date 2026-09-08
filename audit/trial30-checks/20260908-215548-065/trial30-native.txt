@@ -1,0 +1,10 @@
+ACTUAL VB6 Form1 BA button: 30 trials, 5000 evaluations each, seeds 12345..12374.
+H=5; H1=1.2; fc_prime=320; fy=4000; qa_allowable=30; clear_cover=0.075; full passive=1.
+Production criteria unchanged: WSDReviewed=False; source=
+AllowableShear=0; MinStemRatio=0; MinBaseRatio=0
+NativeElapsedSeconds=1861.5610000000
+FinalTrial=30; final seed=12374; n=7.5522825730
+NO_SOLUTION / no admissible design returned. WSD criteria may still be unverified.
+Per-trial reports: C:\reserch 69\RC_Wall_Fix\audit\results
+Seed start: 12345; budget includes initial/reset/neighbor.
+NATIVE_TRIAL30_COMPLETE
