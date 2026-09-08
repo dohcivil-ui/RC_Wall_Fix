@@ -6,3 +6,5 @@ Module=modShared; ..\modShared.bas
 Startup="Sub Main"
 Name="NativeSizing"
 ExeName32="Sizing.exe"
+
+Module=modProjectChecks; ..\modProjectChecks.bas

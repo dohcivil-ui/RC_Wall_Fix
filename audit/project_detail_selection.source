@@ -1,0 +1,51 @@
+Private Function SelectProjectDetail(d As Design, r As ProjectDetail) As Boolean
+    Dim fb As Integer, fs As Integer, hb As Integer, hs As Integer, bb As Integer, bs As Integer
+    Dim frontArea As Double, horArea As Double, frontLd As Double, lap As Double, score As Double, best As Double
+    Dim bar As Double, gap As Double, baseBest As Double, length As Double
+    best = 1E+30: baseBest = 1E+30
+    length = H - d.TBase
+    For fb = DB_MIN To DB_MAX
+    For fs = SP_MIN To SP_MAX
+        frontArea = CalculateAsProv(fb, fs)
+        If frontArea >= MaxV(0.0015 * d.tb * 10000#, r.Steel(0) / 2#) And frontArea <= r.Steel(0) And SpacingOK(fb, fs, d.tt, 0) Then
+            frontLd = ProjectDevelopment(fb, fs, False)
+            If frontLd <= d.TBase - cover Then
+                For hb = DB_MIN To DB_MAX
+                For hs = SP_MIN To SP_MAX
+                    horArea = CalculateAsProv(hb, hs)
+                    bar = WP_DB(hb) / 1000#
+                    gap = d.tt - 2# * cover - (WP_DB(r.DB(0)) + WP_DB(fb)) / 1000# - 2# * bar
+                    If horArea >= 0.00125 * d.tb * 10000# And gap >= CLEAR_GAP And SpacingOK(hb, hs, d.tt, 0) And WP_SP(hs) - 2# * bar >= MaxV(bar, CLEAR_GAP) Then
+                        lap = 1.3 * ProjectDevelopment(hb, hs, True)
+                        If lap < 12# Then
+                            score = ProvidedSteelWeight(fb, fs, length - cover + frontLd) + 2# * ProvidedSteelWeight(hb, hs, length - 2# * cover) * 12# / (12# - lap)
+                            If score < best Then
+                                best = score: r.FrontDB = fb: r.FrontSP = fs: r.FrontLd = frontLd
+                                r.HorizontalDB = hb: r.HorizontalSP = hs: r.HorizontalLap = lap
+                            End If
+                        End If
+                    End If
+                Next hs
+                Next hb
+            End If
+        End If
+    Next fs
+    Next fb
+    If best = 1E+30 Then LastValidationReason = "STEM_DETAIL_OR_ANCHORAGE": Exit Function
+    For bb = DB_MIN To DB_MAX
+    For bs = SP_MIN To SP_MAX
+        bar = WP_DB(bb) / 1000#
+        gap = d.TBase - 2# * cover - (WP_DB(r.DB(1)) + WP_DB(r.DB(2))) / 1000# - 2# * bar
+        If CalculateAsProv(bb, bs) >= 0.002 * d.TBase * 10000# And gap >= CLEAR_GAP And SpacingOK(bb, bs, d.TBase, 0) And WP_SP(bs) - 2# * bar >= MaxV(bar, CLEAR_GAP) Then
+            lap = 1.3 * ProjectDevelopment(bb, bs, True)
+            If lap < 12# Then
+                score = 2# * ProvidedSteelWeight(bb, bs, d.Base - 2# * cover) * 12# / (12# - lap)
+                If score < baseBest Then baseBest = score: r.BaseDB = bb: r.BaseSP = bs: r.BaseLap = lap
+            End If
+        End If
+    Next bs
+    Next bb
+    If baseBest = 1E+30 Then LastValidationReason = "BASE_DISTRIBUTION_LAYOUT": Exit Function
+    r.ExtraWeight = best + baseBest
+    SelectProjectDetail = True
+End Function

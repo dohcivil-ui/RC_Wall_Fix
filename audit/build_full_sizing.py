@@ -27,6 +27,7 @@ put('FullSizing.vbp', '''Type=Exe
 Module=FullSizingMain; FullSizingMain.bas
 Module=modDataStructures; ..\\modDataStructures.bas
 Module=modWSD; ..\\modWSD.bas
+Module=modProjectChecks; ..\\modProjectChecks.bas
 Module=modShared; ..\\modShared.bas
 Module=modBA; ..\\modBA.bas
 Startup="Sub Main"

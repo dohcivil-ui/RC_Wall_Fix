@@ -16,7 +16,7 @@ assert bounds=={'Mintb','Maxtb','MinTBase','MaxTBase','MinBase','MaxBase'}
 result.append('BA still has only tb, TBase, Base bisection bounds')
 for fn in ['CalculateCostFull','CalculateSteelWeight','GetConcretePrice']:
     assert routine(read(P/'modShared.bas'),fn)==routine(read(B/'modShared.bas'),fn)
-result.append('Original concrete pricing and cost/quantity routines unchanged')
+result.append('Original unit-price and bar-mass primitives unchanged; project detail quantities use modProjectChecks')
 vbp=read(P/'RC_RT_HCA_v2.vbp')
 modules=re.findall(r'^Module=[^;]+; (.+)$',vbp,re.M)+re.findall(r'^Form=(.+)$',vbp,re.M)
 for module in modules:
@@ -27,12 +27,14 @@ assert external.read_bytes()==(B/'modShared.ACTIVE-external.bas').read_bytes()
 result.append('External Downloads/modShared.bas remains byte-identical to baseline')
 changed=[]
 for p in P.iterdir():
-    if p.suffix.lower() in ('.bas','.frm','.vbp') and (B/p.name).exists() and p.read_bytes()!=(B/p.name).read_bytes():
+    if p.suffix.lower() in ('.bas','.frm','.vbp') and (not (B/p.name).exists() or p.read_bytes()!=(B/p.name).read_bytes()):
         data=p.read_bytes()
         assert not data.startswith(b'\xef\xbb\xbf')
         assert data.count(b'\r\n')==data.count(b'\n'),p.name
         changed.append(dict(file=p.name,sha256=hashlib.sha256(data).hexdigest()))
 result.append('Changed VB6 files retain byte-preserving legacy text and CRLF, without UTF-8 BOM')
+assert read(P/'modProjectChecks.bas') == (P/'audit'/'modProjectChecks.source').read_text(encoding='ascii')
+result.append('Production project-check module matches its archived source')
 # Independently inspect every persisted optimizer trace against its own valid candidates.
 traces=0
 for path in (P/'audit'/'results').glob('*/evaluations.csv'):

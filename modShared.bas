@@ -598,6 +598,11 @@ End Function
 ' CalculateCost - รับแค่ Design (ดึงค่าเหล็กจาก Design.ASst_DB ฯลฯ)
 '--------------------------------------------------------------------------------
 Public Function CalculateCost(d As Design) As Double
+    Dim detail As ProjectDetail
+    If ProjectChecksEnabled Then
+        If CheckProjectDesign(d, detail) Then CalculateCost = detail.Cost Else CalculateCost = NO_SOLUTION_COST
+        Exit Function
+    End If
     If Not GeometryOK(d) Then CalculateCost = NO_SOLUTION_COST: Exit Function
     CalculateCost = CalculateCostFull(d, d.ASst_DB, d.ASst_Sp, _
                                       d.AStoe_DB, d.AStoe_Sp, _
@@ -676,6 +681,17 @@ Public Function CheckDesignValid(d As Design, _
     Dim ms As Double, mt As Double, mh As Double
     On Error GoTo InvalidData
     FS_OT = 0: FS_SL = 0: FS_BC = 0: d.IsValid = False
+    If ProjectChecksEnabled Then
+        Dim detail As ProjectDetail
+        d.ASst_DB = StemDB: d.ASst_Sp = StemSP
+        d.AStoe_DB = ToeDB: d.AStoe_Sp = ToeSP
+        d.ASheel_DB = HeelDB: d.ASheel_Sp = HeelSP
+        CheckDesignValid = CheckProjectDesign(d, detail)
+        FS_OT = detail.OT: FS_SL = detail.SL: FS_BC = detail.BC
+        d.FS_OT = FS_OT: d.FS_SL = FS_SL: d.FS_BC = FS_BC
+        d.IsValid = CheckDesignValid
+        Exit Function
+    End If
     LastValidationReason = "INVALID_GEOMETRY_OR_INPUT"
     If Not GeometryOK(d) Then Exit Function
     If Not CheckHeelLayout(d) Then Exit Function
@@ -719,6 +735,10 @@ End Function
 
 Public Function FormatResults(d As Design, mat As MaterialProperties, _
                               Optional AlgoName As String = "Hill Climbing", Optional ReportTrial As Long = 0) As String
+    If ProjectChecksEnabled Then
+        FormatResults = ProjectDesignReport(d, mat, AlgoName)
+        Exit Function
+    End If
     Dim result As String
     Dim wsd As WSDParams
     Dim M_stem As Double, M_toe As Double, M_heel As Double
@@ -1003,7 +1023,12 @@ Public Sub FinishSearch()
     Print #f, "phi=" & phi & "; mu=" & mu & "; qa_allowable=" & qa & "; clear_cover=" & cover
     Print #f, "fc_prime=" & currentMaterial.fc & "; fy=" & currentMaterial.fy & "; passive_fraction=" & PassiveFactor
     Print #f, "WSDReviewed=" & WSDReviewed & "; source=" & WSDSource
+    Print #f, "ProjectChecksEnabled=" & ProjectChecksEnabled
+    If ProjectChecksEnabled Then
+        Print #f, "ShearLimit=" & ProjectShearLimit() & "; StemMinimum=ACI99_10.5.1; BaseRatio=0.002"
+    Else
     Print #f, "AllowableShear=" & AllowableShear & "; MinStemRatio=" & MinStemRatio & "; MinBaseRatio=" & MinBaseRatio
+    End If
     Print #f, FormatResults(RunBest, currentMaterial, RunAlgorithm, RunTrial)
     Close #f
 End Sub
@@ -1101,6 +1126,10 @@ InvalidMember:
 End Function
 
 Public Function BuildDesignCheckReport(d As Design, Optional stemOnly As Boolean = False) As String
+    If ProjectChecksEnabled And Not stemOnly Then
+        BuildDesignCheckReport = ProjectDesignReport(d, currentMaterial, "CHECK REPORT")
+        Exit Function
+    End If
     Dim result As String, failed As Boolean, yieldFailed As Boolean, ok As Boolean
     Dim e As Double, qt As Double, qh As Double, ot As Double, sl As Double, bc As Double
     Dim qmax As Double, qmin As Double, status As String
@@ -1208,3 +1237,7 @@ Private Sub ConsiderStemShearPoint(y As Double, lower As Double, upper As Double
     value = Abs(a * y ^ 2 + b * y + c) / (10# * (baseDepth - slope * y))
     If value > peak Then peak = value: criticalHeight = y
 End Sub
+
+Public Function ProvidedSteelWeight(DB As Integer, SP As Integer, length As Double) As Double
+    ProvidedSteelWeight = CalculateSteelWeight(DB, SP, length)
+End Function

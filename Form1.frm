@@ -642,6 +642,7 @@ Private Sub cmdBA_Click()
     globalBestCost = NO_SOLUTION_COST
     globalBestTrial = 0
     globalBestIteration = 0
+    ProjectTrialSummary = ""
     
     Call SeedSearchRandom(CLng(txtSeed.Text))
     
@@ -654,6 +655,7 @@ Private Sub cmdBA_Click()
             RandomSeed:=CLng(txtSeed.Text) + CLng(trial) - 1, TrialNumber:=CLng(trial))
         
         trialCost = modShared.CalculateCost(trialDesign)
+        Call RecordProjectTrial
         Call modBA.LogLoopResult_BA(trialCost)
         
         Debug.Print "Trial " & trial & ": Cost=" & Format(trialCost, "#,##0.00")
@@ -677,8 +679,16 @@ Private Sub cmdBA_Click()
         lstResults.AddItem "============================================"
         lstResults.AddItem "BA triple - Trial " & trial & "/" & numTrials
         lstResults.AddItem "============================================"
-        lstResults.AddItem "Trial Cost: " & Format(trialCost, "#,##0.00") & " Baht/m"
-        lstResults.AddItem "Best So Far: " & Format(globalBestCost, "#,##0.00") & " (Trial " & globalBestTrial & ")"
+        If trialDesign.IsValid Then
+            lstResults.AddItem "Trial Cost: " & Format(trialCost, "#,##0.00") & " Baht/m"
+        Else
+            lstResults.AddItem "Trial: NO_SOLUTION (no admissible price)"
+        End If
+        If globalBestTrial > 0 Then
+            lstResults.AddItem "Best So Far: " & Format(globalBestCost, "#,##0.00") & " (Trial " & globalBestTrial & ")"
+        Else
+            lstResults.AddItem "Best So Far: NO_SOLUTION"
+        End If
         DoEvents
     Next trial
     
@@ -704,6 +714,7 @@ Private Sub cmdBA_Click()
 
     
     lstResults.AddItem "Per-trial reports: " & App.Path & "\results"
+    If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
     lstResults.AddItem "Seed start: " & txtSeed.Text & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     BA_CostHistory = globalBestCostHistory
@@ -742,6 +753,7 @@ Private Sub Form_Load()
 
     ' Initialize arrays
     Call InitializeArrays
+    Call EnableProjectChecks
     
     ' v2.4: ซ่อน ComboBox เกรดเหล็ก
     cboSteelGrade.Clear
@@ -885,6 +897,7 @@ Private Sub cmdRun_Click()
     globalBestCost = NO_SOLUTION_COST
     globalBestTrial = 0
     globalBestIteration = 0
+    ProjectTrialSummary = ""
     
     ' เริ่มต้น Loop Counter (สำหรับ loopPrice-HCA)
     Call InitLoopCounter
@@ -910,6 +923,7 @@ Private Sub cmdRun_Click()
         
         ' คำนวณราคาของ Trial นี้
         currentCost = CalculateCost(bestDesign)
+        Call RecordProjectTrial
         
        ' เปรียบเทียบกับ Global Best
         If bestDesign.IsValid And ((currentCost < globalBestCost) Or _
@@ -967,6 +981,7 @@ Private Sub cmdRun_Click()
     
     ' แสดงข้อความสรุปครั้งเดียวตอนจบ
     lstResults.AddItem "Per-trial reports: " & App.Path & "\results"
+    If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
     lstResults.AddItem "Seed start: " & txtSeed.Text & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     HCA_CostHistory = globalBestCostHistory

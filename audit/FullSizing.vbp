@@ -7,3 +7,5 @@ Module=modBA; ..\modBA.bas
 Startup="Sub Main"
 Name="NativeFullSizing"
 ExeName32="FullSizing.exe"
+
+Module=modProjectChecks; ..\modProjectChecks.bas

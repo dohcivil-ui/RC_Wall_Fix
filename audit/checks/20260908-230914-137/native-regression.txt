@@ -1,0 +1,467 @@
+ACTUAL compiled VB6 regression. Synthetic criteria are TEST FIXTURES, NOT EIT 2562 compliance.
+OK: project initialization includes full passive
+OK: reference Es/Ec fc180 n
+  actual=10.0697100974; expected=10.0697100974
+OK: reference Es/Ec fc180 k
+  actual=0.3522327400; expected=0.3522327400
+OK: reference Es/Ec fc180 j
+  actual=0.8825890867; expected=0.8825890867
+OK: reference Es/Ec fc180 R
+  actual=12.5905092780; expected=12.5905092780
+OK: reference Es/Ec fc180 balanced rho
+  actual=0.0095102840; expected=0.0095102840
+OK: reference Es/Ec fc180 actual balanced ca
+  actual=81.0000000000; expected=81.0000000000
+OK: reference Es/Ec fc180 actual balanced sa
+  actual=1500.0000000000; expected=1500.0000000000
+OK: reference Es/Ec fc180 actual balanced ja
+  actual=0.8825890867; expected=0.8825890867
+OK: reference Es/Ec fc210 n
+  actual=9.3227400070; expected=9.3227400070
+OK: reference Es/Ec fc210 k
+  actual=0.3413402928; expected=0.3413402928
+OK: reference Es/Ec fc210 j
+  actual=0.8862199024; expected=0.8862199024
+OK: reference Es/Ec fc210 R
+  actual=14.2932460052; expected=14.2932460052
+OK: reference Es/Ec fc210 balanced rho
+  actual=0.0094872523; expected=0.0094872523
+OK: reference Es/Ec fc210 actual balanced ca
+  actual=94.5000000000; expected=94.5000000000
+OK: reference Es/Ec fc210 actual balanced sa
+  actual=1700.0000000000; expected=1700.0000000000
+OK: reference Es/Ec fc210 actual balanced ja
+  actual=0.8862199024; expected=0.8862199024
+OK: reference Es/Ec fc240 n
+  actual=8.7206247530; expected=8.7206247531
+OK: reference Es/Ec fc240 k
+  actual=0.3565060485; expected=0.3565060485
+OK: reference Es/Ec fc240 j
+  actual=0.8811646505; expected=0.8811646505
+OK: reference Es/Ec fc240 R
+  actual=16.9635884918; expected=16.9635884918
+OK: reference Es/Ec fc240 balanced rho
+  actual=0.0113243098; expected=0.0113243098
+OK: reference Es/Ec fc240 actual balanced ca
+  actual=108.0000000000; expected=108.0000000000
+OK: reference Es/Ec fc240 actual balanced sa
+  actual=1700.0000000000; expected=1700.0000000000
+OK: reference Es/Ec fc240 actual balanced ja
+  actual=0.8811646505; expected=0.8811646505
+OK: reference Es/Ec fc280 n
+  actual=8.0737296789; expected=8.0737296789
+OK: reference Es/Ec fc280 k
+  actual=0.3743766628; expected=0.3743766628
+OK: reference Es/Ec fc280 j
+  actual=0.8752077791; expected=0.8752077791
+OK: reference Es/Ec fc280 R
+  actual=20.6424141598; expected=20.6424141598
+OK: reference Es/Ec fc280 balanced rho
+  actual=0.0138739587; expected=0.0138739587
+OK: reference Es/Ec fc280 actual balanced ca
+  actual=126.0000000000; expected=126.0000000000
+OK: reference Es/Ec fc280 actual balanced sa
+  actual=1700.0000000000; expected=1700.0000000000
+OK: reference Es/Ec fc280 actual balanced ja
+  actual=0.8752077791; expected=0.8752077791
+OK: reference Es/Ec fc320 n
+  actual=7.5522825730; expected=7.5522825730
+OK: reference Es/Ec fc320 k
+  actual=0.3901408062; expected=0.3901408062
+OK: reference Es/Ec fc320 j
+  actual=0.8699530646; expected=0.8699530646
+OK: reference Es/Ec fc320 R
+  actual=24.4371016764; expected=24.4371016764
+OK: reference Es/Ec fc320 balanced rho
+  actual=0.0165236106; expected=0.0165236106
+OK: reference Es/Ec fc320 actual balanced ca
+  actual=144.0000000000; expected=144.0000000000
+OK: reference Es/Ec fc320 actual balanced sa
+  actual=1700.0000000000; expected=1700.0000000000
+OK: reference Es/Ec fc320 actual balanced ja
+  actual=0.8699530646; expected=0.8699530646
+OK: actual DB16 section ca
+  actual=80.0430248937; expected=80.0430248937
+OK: actual DB16 section sa
+  actual=1674.0415789671; expected=1674.0415789671
+OK: actual DB16 section ja
+  actual=0.9115654290; expected=0.9115654290
+OK: actual bar j differs from balanced j
+OK: zero concrete strength rejected
+OK: n sensitivity example overturning
+OK: n sensitivity example sliding
+OK: n sensitivity example bearing
+OK: n sensitivity stem moment
+  actual=8.3240000000; expected=8.3240000000
+OK: n sensitivity case0 concrete
+  actual=142.1756745555; expected=142.1756745555
+OK: n sensitivity case0 steel
+  actual=1029.8566630159; expected=1029.8566630159
+OK: n sensitivity case0 flexural decision
+OK: n sensitivity case1 concrete
+  actual=148.4529492417; expected=148.4529492417
+OK: n sensitivity case1 steel
+  actual=1017.4522824404; expected=1017.4522824404
+OK: n sensitivity case1 flexural decision
+OK: stem height H-TBase
+  actual=4.7000000000; expected=4.7000000000
+OK: requested active moment
+  actual=10.3823000000; expected=10.3823000000
+OK: requested full passive net moment
+  actual=9.7262000000; expected=9.7262000000
+OK: actual DB12 effective depth
+  actual=0.1190000000; expected=0.1190000000
+OK: requested DB12 rejected in flexure
+OK: concrete-only failure fixture
+OK: concrete compression checked independently
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: requested full design rejected
+  validator=WSD_CRITERIA_UNVERIFIED
+OK: unverified criteria never accepted
+OK: explicit unverified status
+OK: weak audit necessary yield rejection
+OK: weak audit continues to shear and minimum after failure
+OK: unset shear is not a zero limit failure
+OK: stem-only audit does not invent base steel
+OK: full passive weak audit still rejected
+OK: BA diagnostic indeterminate, not certified
+OK: audit checks all three members
+OK: audit shows missing detailing
+OK: audit does not enable criteria
+  validator=WSD_CRITERIA_UNVERIFIED
+OK: audit agrees candidate remains unaccepted
+OK: shared display contains audit
+OK: bad steel input diagnosed without losing heel checks
+OK: partial contact audit rejects base and retains stem
+OK: equal heel/toe roundoff rejected
+OK: distinct heel/toe preserved
+OK: case0 stem moment
+  actual=1.7576000000; expected=1.7576000000
+OK: case0 W1
+  actual=0.4652307692; expected=0.4652307692
+OK: case0 x1
+  actual=0.1618131868; expected=0.1618131868
+OK: case0 W3
+  actual=1.7160000000; expected=1.7160000000
+OK: case0 x3
+  actual=0.5090909091; expected=0.5090909091
+OK: case0 contact
+OK: case0 signed e
+  actual=0.1803396371; expected=0.1803396371
+OK: case0 q toe
+  actual=8.0281158284; expected=8.0281158284
+OK: case0 q heel
+  actual=2.3911149408; expected=2.3911149408
+OK: case0 toe moment
+  actual=0.2405819603; expected=0.2405819603
+OK: case0 heel moment
+  actual=1.8047851719; expected=1.8047851719
+OK: case0 stem shear
+  actual=2.0280000000; expected=2.0280000000
+OK: case0 toe shear
+  actual=0.0000000000; expected=0.0000000000
+OK: case0 heel shear
+  actual=1.8542763677; expected=1.8542763677
+OK: case0 concrete stress
+  actual=13.6207963611; expected=13.6207963611
+OK: case0 steel stress
+  actual=128.4013377528; expected=128.4013377528
+  validator=VERIFIED_CONFIGURED_CHECKS_ONLY
+OK: H3 synthetic fixture valid
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: H3 weak section rejected
+OK: case1 stem moment
+  actual=4.2875000000; expected=4.2875000000
+OK: case1 W1
+  actual=0.5355000000; expected=0.5355000000
+OK: case1 x1
+  actual=0.2127450980; expected=0.2127450980
+OK: case1 W3
+  actual=2.7300000000; expected=2.7300000000
+OK: case1 x3
+  actual=0.6794871795; expected=0.6794871795
+OK: case1 contact
+OK: case1 signed e
+  actual=0.2457954443; expected=0.2457954443
+OK: case1 q toe
+  actual=10.5954720000; expected=10.5954720000
+OK: case1 q heel
+  actual=2.7329280000; expected=2.7329280000
+OK: case1 toe moment
+  actual=0.6172909056; expected=0.6172909056
+OK: case1 heel moment
+  actual=4.1345413956; expected=4.1345413956
+OK: case1 stem shear
+  actual=3.6750000000; expected=3.6750000000
+OK: case1 toe shear
+  actual=0.0000000000; expected=0.0000000000
+OK: case1 heel shear
+  actual=3.4924109264; expected=3.4924109264
+OK: case1 concrete stress
+  actual=19.1899689852; expected=19.1899689852
+OK: case1 steel stress
+  actual=222.1159952185; expected=222.1159952185
+  validator=VERIFIED_CONFIGURED_CHECKS_ONLY
+OK: H4 synthetic fixture valid
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: H4 weak section rejected
+OK: case2 stem moment
+  actual=7.9507000000; expected=7.9507000000
+OK: case2 W1
+  actual=0.4709302326; expected=0.4709302326
+OK: case2 x1
+  actual=0.2618001723; expected=0.2618001723
+OK: case2 W3
+  actual=4.1280000000; expected=4.1280000000
+OK: case2 x3
+  actual=0.8833333333; expected=0.8833333333
+OK: case2 contact
+OK: case2 signed e
+  actual=0.2258356237; expected=0.2258356237
+OK: case2 q toe
+  actual=11.5152722906; expected=11.5152722906
+OK: case2 q heel
+  actual=5.0875449852; expected=5.0875449852
+OK: case2 toe moment
+  actual=1.0786487547; expected=1.0786487547
+OK: case2 heel moment
+  actual=8.2461893823; expected=8.2461893823
+OK: case2 stem shear
+  actual=5.5470000000; expected=5.5470000000
+OK: case2 toe shear
+  actual=0.0000000000; expected=0.0000000000
+OK: case2 heel shear
+  actual=4.8118939897; expected=4.8118939897
+OK: case2 concrete stress
+  actual=19.9338616615; expected=19.9338616615
+OK: case2 steel stress
+  actual=285.5427083068; expected=285.5427083068
+  validator=VERIFIED_CONFIGURED_CHECKS_ONLY
+OK: H5 synthetic fixture valid
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: H5 weak section rejected
+OK: case3 stem moment
+  actual=-1.9288000000; expected=-1.9288000000
+OK: case3 W1
+  actual=0.9304615385; expected=0.9304615385
+OK: case3 x1
+  actual=0.1693528694; expected=0.1693528694
+OK: case3 W3
+  actual=2.4960000000; expected=2.4960000000
+OK: case3 x3
+  actual=0.5833333333; expected=0.5833333333
+OK: case3 contact
+OK: case3 signed e
+  actual=-0.2360823799; expected=-0.2360823799
+OK: case3 q toe
+  actual=3.5914704142; expected=3.5914704142
+OK: case3 q heel
+  actual=7.5297603550; expected=7.5297603550
+OK: case3 toe moment
+  actual=-0.0036578284; expected=-0.0036578284
+OK: case3 heel moment
+  actual=-4.2984944852; expected=-4.2984944852
+OK: case3 stem shear
+  actual=4.8840000000; expected=4.8840000000
+OK: case3 toe shear
+  actual=0.0000000000; expected=0.0000000000
+OK: case3 heel shear
+  actual=1.3507386610; expected=1.3507386610
+OK: case3 concrete stress
+  actual=4.8358550030; expected=4.8358550030
+OK: case3 steel stress
+  actual=69.2712309334; expected=69.2712309334
+  validator=REVERSED_TENSION_FACE_UNSUPPORTED
+OK: reversed tension faces rejected
+OK: case4 stem moment
+  actual=10.3823000000; expected=10.3823000000
+OK: case4 W1
+  actual=1.6820425532; expected=1.6820425532
+OK: case4 x1
+  actual=0.5193843739; expected=0.5193843739
+OK: case4 W3
+  actual=4.5120000000; expected=4.5120000000
+OK: case4 x3
+  actual=1.3833333333; expected=1.3833333333
+OK: case4 contact
+OK: case4 signed e
+  actual=0.0520680874; expected=0.0520680874
+OK: case4 q toe
+  actual=7.9181325713; expected=7.9181325713
+OK: case4 q heel
+  actual=6.7708887053; expected=6.7708887053
+OK: case4 toe moment
+  actual=2.7412644579; expected=2.7412644579
+OK: case4 heel moment
+  actual=6.2774280619; expected=6.2774280619
+OK: case4 stem shear
+  actual=6.6270000000; expected=6.6270000000
+OK: case4 toe shear
+  actual=4.3118736739; expected=4.3118736739
+OK: case4 heel shear
+  actual=4.5863855585; expected=4.5863855585
+OK: case4 concrete stress
+  actual=26.0303283898; expected=26.0303283898
+OK: case4 steel stress
+  actual=372.8715786602; expected=372.8715786602
+  validator=CONCRETE_SHEAR
+OK: shear limit enforced
+OK: shear rejection reason
+  validator=MINIMUM_STEEL
+OK: minimum steel enforced
+OK: minimum steel rejection reason
+  validator=INVALID_GEOMETRY_OR_INPUT
+OK: negative depth invalid, not clamped
+OK: depth helper raises error
+  validator=INVALID_GEOMETRY_OR_INPUT
+OK: inconsistent geometry rejected
+  validator=INVALID_GEOMETRY_OR_INPUT
+OK: front soil below top rejected
+OK: partial contact rejected
+  validator=UNSUPPORTED_DOUBLE_LAYER
+OK: unsupported double layers rejected
+OK: initial updates global best
+OK: reset updates global best
+OK: neighbor updates global best
+OK: all entries counted
+OK: budget cannot be exceeded
+OK: feasible-cost baseline accepted in fixture
+OK: OT rejection fixture is cheaper
+OK: OT rejection fixture violates overturning
+OK: OT failure not priced or selected
+OK: SL/BC rejection fixture is cheaper
+OK: SL rejection fixture violates sliding
+OK: SL failure not priced or selected
+OK: BC rejection fixture violates bearing
+OK: BC failure not priced or selected
+OK: cheaper candidate selected after all checks satisfied
+OK: force-chain eta=0 full contact
+OK: force-chain eta=0 Pa
+  actual=7.5000000000; expected=7.5000000000
+OK: force-chain eta=0 Pp
+  actual=0.0000000000; expected=0.0000000000
+OK: force-chain eta=0 active_arm
+  actual=1.6666666667; expected=1.6666666667
+OK: force-chain eta=0 passive_arm
+  actual=0.4000000000; expected=0.4000000000
+OK: force-chain eta=0 MO
+  actual=12.5000000000; expected=12.5000000000
+OK: force-chain eta=0 MR
+  actual=37.2279980308; expected=37.2279980308
+OK: force-chain eta=0 W
+  actual=19.9137765957; expected=19.9137765957
+OK: force-chain eta=0 xR
+  actual=1.2417533114; expected=1.2417533114
+OK: force-chain eta=0 e
+  actual=0.2582466886; expected=0.2582466886
+OK: force-chain eta=0 qtoe
+  actual=10.0663701071; expected=10.0663701071
+OK: force-chain eta=0 qheel
+  actual=3.2094809567; expected=3.2094809567
+OK: force-chain eta=0 Mstem
+  actual=10.3823000000; expected=10.3823000000
+OK: force-chain eta=0 Mtoe
+  actual=4.1674250560; expected=4.1674250560
+OK: force-chain eta=0 Mheel
+  actual=5.1151701617; expected=5.1151701617
+OK: force-chain eta=0 FSot
+  actual=2.9782398425; expected=2.9782398425
+OK: force-chain eta=0 FSsl
+  actual=1.5931021277; expected=1.5931021277
+OK: force-chain eta=0 FSbc
+  actual=2.9802202463; expected=2.9802202463
+OK: force-chain eta=0 cost
+  actual=9144.0755000000; expected=9144.0755000000
+OK: force-chain eta=0 vertical equilibrium
+  actual=19.9137765957; expected=19.9137765957
+OK: force-chain eta=0 moment equilibrium
+  actual=24.7279980308; expected=24.7279980308
+OK: force-chain eta=1 full contact
+OK: force-chain eta=1 Pa
+  actual=7.5000000000; expected=7.5000000000
+OK: force-chain eta=1 Pp
+  actual=3.8880000000; expected=3.8880000000
+OK: force-chain eta=1 active_arm
+  actual=1.6666666667; expected=1.6666666667
+OK: force-chain eta=1 passive_arm
+  actual=0.4000000000; expected=0.4000000000
+OK: force-chain eta=1 MO
+  actual=10.9448000000; expected=10.9448000000
+OK: force-chain eta=1 MR
+  actual=37.2279980308; expected=37.2279980308
+OK: force-chain eta=1 W
+  actual=19.9137765957; expected=19.9137765957
+OK: force-chain eta=1 xR
+  actual=1.3198499995; expected=1.3198499995
+OK: force-chain eta=1 e
+  actual=0.1801500005; expected=0.1801500005
+OK: force-chain eta=1 qtoe
+  actual=9.0295701071; expected=9.0295701071
+OK: force-chain eta=1 qheel
+  actual=4.2462809567; expected=4.2462809567
+OK: force-chain eta=1 Mstem
+  actual=9.7262000000; expected=9.7262000000
+OK: force-chain eta=1 Mtoe
+  actual=3.6934922560; expected=3.6934922560
+OK: force-chain eta=1 Mheel
+  actual=4.3764357617; expected=4.3764357617
+OK: force-chain eta=1 FSot
+  actual=3.1026558425; expected=3.1026558425
+OK: force-chain eta=1 FSsl
+  actual=2.1115021277; expected=2.1115021277
+OK: force-chain eta=1 FSbc
+  actual=3.3224173071; expected=3.3224173071
+OK: force-chain eta=1 cost
+  actual=9144.0755000000; expected=9144.0755000000
+OK: force-chain eta=1 vertical equilibrium
+  actual=19.9137765957; expected=19.9137765957
+OK: force-chain eta=1 moment equilibrium
+  actual=26.2831980308; expected=26.2831980308
+OK: stem envelope case0 stress
+  actual=1.6475253004; expected=1.6475253004
+OK: stem envelope case0 height
+  actual=0.5710572075; expected=0.5710572072
+OK: stem envelope case0 common checker
+  actual=1.6475253004; expected=1.6475253004
+OK: stem envelope case1 stress
+  actual=4.0953781513; expected=4.0953781513
+OK: stem envelope case1 height
+  actual=0.4250000000; expected=0.4249999923
+OK: stem envelope case1 common checker
+  actual=4.0953781513; expected=4.0953781513
+OK: stem envelope case2 stress
+  actual=1.8281379310; expected=1.8281379310
+OK: stem envelope case2 height
+  actual=0.0000000000; expected=0.0000000000
+OK: stem envelope case2 common checker
+  actual=1.8281379310; expected=1.8281379310
+OK: stem envelope case3 stress
+  actual=1.6155576029; expected=1.6155576029
+OK: stem envelope case3 height
+  actual=0.4229448354; expected=0.4229448147
+OK: stem envelope case3 common checker
+  actual=1.6155576029; expected=1.6155576029
+OK: stem face alone misses shear failure
+OK: shear fixture toe independently below limit
+OK: shear fixture heel independently below limit
+  validator=CONCRETE_SHEAR
+OK: interior stem shear failure rejected
+OK: invalid local stem depth raises
+OK: BA initial returned at budget=1
+OK: HCA initial returned at budget=1
+OK: identical shared initial cost
+  actual=10267.6772400000; expected=10267.6772400000
+OK: BA evaluation budget
+OK: trial paths never overwrite
+OK: BA same seed same best
+  actual=9112.2680200000; expected=9112.2680200000
+OK: BA same seed entire trace
+OK: HCA equal evaluation budget
+OK: HCA same seed entire trace
+OK: infeasible BA reopens original three ranges
+OK: infeasible BA keeps exact budget
+OK: BA no solution explicit
+OK: no solution is not free
+OK: no solution report
+OK: HCA no solution and exact budget
+TOTAL checks=267; failures=0

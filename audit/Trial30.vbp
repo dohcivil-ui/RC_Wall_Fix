@@ -40,3 +40,5 @@ MaxNumberOfThreads=1
 
 Module=Trial30; Trial30.bas
 ExeName32="Trial30.exe"
+
+Module=modProjectChecks; ..\modProjectChecks.bas

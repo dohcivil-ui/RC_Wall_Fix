@@ -1,7 +1,7 @@
 [
   {
     "file": "Form1.frm",
-    "sha256": "866305ed799a34be65d837fc6c24f603b5929d003e1ece378d7a03e7d5de9529"
+    "sha256": "8f7db6813219c35ae0261b4498a49708e3d813dd15d58937113f0ec2cd617557"
   },
   {
     "file": "modBA.bas",
@@ -16,15 +16,19 @@
     "sha256": "e1b1da4b126f2289c9f3c10fd2bd227744bef024210a3816791b70ac4978139d"
   },
   {
+    "file": "modProjectChecks.bas",
+    "sha256": "019a1e93d4a78a2230f9be154ce38522ed4a905c2214583f0ed3a6c9b820215d"
+  },
+  {
     "file": "modShared.bas",
-    "sha256": "40d65c23d00fd65e0c23f16196283dac59a96c10b01059141d402dfb658673ca"
+    "sha256": "29e2207246fc3e4eab1af01354c1d680f943b5de6deb1830ecbef7612154d87e"
   },
   {
     "file": "modWSD.bas",
-    "sha256": "4c83ece16960e205a4b6b1795f9c6ff4a175635bc33038a3251fb528e47faea3"
+    "sha256": "0eb325aa80c44fc4f972aefe5a2ce529cdae7c439af960ba335c7a82b8e2b42f"
   },
   {
     "file": "RC_RT_HCA_v2.vbp",
-    "sha256": "d19f622ecf005a16b8607ad1066f5c9661e28720503954c3f9c80fe9f94cb0a0"
+    "sha256": "b1df7164af23966b91603ca39a640e1b19e0936888e33d95367a73d45855e61b"
   }
 ]

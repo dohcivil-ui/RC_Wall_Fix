@@ -1,0 +1,70 @@
+{
+  "evidence": "project-checks\\20260908-231548-570",
+  "comparisons": 189,
+  "fixtures": [
+    {
+      "case": "H3",
+      "geometry": {
+        "H": 3.0,
+        "tt": 0.25,
+        "tb": 0.3,
+        "TBase": 0.45,
+        "B": 2.0,
+        "toe": 0.6,
+        "heel": 1.0999999999999999
+      },
+      "fs": [
+        4.042962540849672,
+        3.274475,
+        5.817456036099886
+      ],
+      "cost": 7810.61967638012,
+      "main_weight": 80.45504646196063,
+      "extra_weight": 70.38447130387766,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "H4",
+      "geometry": {
+        "H": 4.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.45,
+        "B": 2.5,
+        "toe": 1.0,
+        "heel": 1.1
+      },
+      "fs": [
+        3.0582022318744113,
+        2.2836227772887328,
+        4.424862024435132
+      ],
+      "cost": 10829.26298965606,
+      "main_weight": 102.56832646196065,
+      "extra_weight": 100.1722668570418,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "H5",
+      "geometry": {
+        "H": 5.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.45,
+        "B": 3.0,
+        "toe": 1.0,
+        "heel": 1.6
+      },
+      "fs": [
+        2.7602508435998074,
+        1.9640588901098899,
+        2.981115229432618
+      ],
+      "cost": 13446.169464047729,
+      "main_weight": 126.26112646196064,
+      "extra_weight": 125.54431995669472,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    }
+  ],
+  "scope": "Independent arithmetic verified against actual VB6 outputs; no 30-trial run"
+}

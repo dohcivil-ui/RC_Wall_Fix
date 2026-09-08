@@ -5,6 +5,7 @@ put('Regression.vbp',r'''Type=Exe
 Module=RegressionMain; RegressionMain.bas
 Module=modDataStructures; ..\modDataStructures.bas
 Module=modWSD; ..\modWSD.bas
+Module=modProjectChecks; ..\modProjectChecks.bas
 Module=modShared; ..\modShared.bas
 Module=modBA; ..\modBA.bas
 Module=modHillClimbing; ..\modHillClimbing.bas

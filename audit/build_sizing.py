@@ -13,6 +13,7 @@ put('Sizing.vbp', '''Type=Exe
 Module=SizingMain; SizingMain.bas
 Module=modDataStructures; ..\\modDataStructures.bas
 Module=modWSD; ..\\modWSD.bas
+Module=modProjectChecks; ..\\modProjectChecks.bas
 Module=modShared; ..\\modShared.bas
 Startup="Sub Main"
 Name="NativeSizing"

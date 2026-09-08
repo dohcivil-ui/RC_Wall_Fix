@@ -1,6 +1,6 @@
 # ACI sources for the project WSD review
 
-Reviewed 2026-09-08. Source review only; no production criteria or acceptance flags changed. See [native supplementary calculations](ACI_SUPPLEMENT_RESULT_TH.md).
+Reviewed 2026-09-08. This records the source-review stage, before production changes. The later implemented project basis is documented in [PROJECT_CHECKS_IMPLEMENTATION_TH.md](PROJECT_CHECKS_IMPLEMENTATION_TH.md). See also [native supplementary calculations](ACI_SUPPLEMENT_RESULT_TH.md).
 
 ACI can supplement the project basis, but the edition and the purpose of each adopted provision must be explicit. The existing source comment “ACI 318-19” does not establish that its WSD constants are provisions of that edition.
 

@@ -1,0 +1,48 @@
+OK: project basis active
+OK: ACI shear units
+H3_reverse_heel accepted=False; reason=REVERSED_BASE_FACE
+OK: H3_reverse_heel expected acceptance
+H3 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H3 expected acceptance
+OK: H3 deterministic recheck
+OK: H3 price from same detail
+OK: H3 extra steel included
+H4 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H4 expected acceptance
+OK: H4 deterministic recheck
+OK: H4 price from same detail
+OK: H4 extra steel included
+H5 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H5 expected acceptance
+OK: H5 deterministic recheck
+OK: H5 price from same detail
+OK: H5 extra steel included
+OK: reference stem height
+OK: reference active moment
+OK: reference full-passive moment
+DB12weak accepted=False; reason=STEM_STRESS_OR_INTERVAL_BOUND
+OK: DB12weak expected acceptance
+curtain_clearance accepted=False; reason=STEM_DETAIL_OR_ANCHORAGE
+OK: curtain_clearance expected acceptance
+short_anchorage accepted=False; reason=STEM_STRAIGHT_ANCHORAGE
+OK: short_anchorage expected acceptance
+stability accepted=False; reason=INVALID_GEOMETRY_OR_INPUT
+OK: stability expected acceptance
+invalid_top_depth accepted=False; reason=NONPOSITIVE_LOCAL_DEPTH
+OK: invalid_top_depth expected acceptance
+OK: interior fixture base-only passes
+OK: interior fixture full-height fails
+OK: BA64 exact budget
+BA64: SOLUTION_FOUND_CONFIGURED_CHECKS; folder=C:\reserch 69\RC_Wall_Fix\audit\results\BA-25690908-230924-seed20260908
+OK: HCA64 exact budget
+HCA64: SOLUTION_FOUND_CONFIGURED_CHECKS; folder=C:\reserch 69\RC_Wall_Fix\audit\results\HCA-25690908-230924-seed20260908
+OK: Form_Load enables project basis
+OK: actual UI uses project report
+OK: actual UI restores controls
+GUI: Basis: PROJECT_WSD_ACI99_V1 (implemented checks; not full EIT/ACI certification)
+NO_SOLUTION / no admissible design returned; no price.
+
+Per-trial reports: C:\reserch 69\RC_Wall_Fix\audit\results
+Seed start: 12345; budget includes initial/reset/neighbor.
+
+PROJECT checks=30; failures=0

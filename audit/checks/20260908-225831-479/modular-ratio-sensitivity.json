@@ -1,0 +1,98 @@
+{
+  "decision": "Use Es/Ec: fixed n changes flexural acceptance; this is engineering sensitivity, not statistical significance.",
+  "load_case": "H=5, H1=1.2 from base underside; active and full passive; qa=30 allowable; fc_prime=320; fy=4000",
+  "provenance": {
+    "n9": {
+      "path": "full-sizing-checks\\20260908-212528-480\\full-sizing-flags-1.bin.gz",
+      "sha256": "f5a8bedee21ffaebc6ea7702d91b396ab046fb5889a522746238f59bdc9e067b"
+    },
+    "EsEc": {
+      "path": "full-sizing-checks\\20260908-210452-544\\full-sizing-flags-1.bin.gz",
+      "sha256": "d065886f7da9ca39d7f0dd7a2740bdfbc55319dfb31b173d82ea8700a425f66e"
+    }
+  },
+  "total_rows": 520200,
+  "stable_rows": 309671,
+  "n9_screened": 306427,
+  "exact_screened": 305835,
+  "n9_only_count": 592,
+  "exact_only_count": 0,
+  "n9_only_first_rows": [
+    2541,
+    2542,
+    2543,
+    2544,
+    2545,
+    2546,
+    2547,
+    2548,
+    2549,
+    2551,
+    2552,
+    2553,
+    2554,
+    2555,
+    2556,
+    2557,
+    2558,
+    2559,
+    2560,
+    2561
+  ],
+  "example": {
+    "geometry_row": 2541,
+    "H": 5,
+    "H1": 1.2,
+    "tt": 0.2,
+    "tb": 0.25,
+    "TBase": 0.6,
+    "Base": 2.5,
+    "toe": 0.3,
+    "heel": 1.95,
+    "DB": 28,
+    "spacing": 0.1,
+    "M": 8.324000000000003,
+    "sections": [
+      {
+        "n": 9,
+        "As": 61.57521601035993,
+        "d_cm": 16.099999999999998,
+        "k": 0.554066062120903,
+        "j": 0.8153113126263657,
+        "fc": 142.17567455545588,
+        "fs": 1029.8566630158793
+      },
+      {
+        "n": 7.552282573012533,
+        "As": 61.57521601035993,
+        "d_cm": 16.099999999999998,
+        "k": 0.5242461914975237,
+        "j": 0.8252512695008254,
+        "fc": 148.4529492416811,
+        "fs": 1017.45228244044
+      }
+    ]
+  },
+  "selected_stem": [
+    {
+      "n": 9,
+      "As": 20.106192982974676,
+      "d_cm": 31.7,
+      "k": 0.2855912664549466,
+      "j": 0.9048029111816845,
+      "fc": 74.91275264451902,
+      "fs": 1686.5534043362877
+    },
+    {
+      "n": 7.552282573012533,
+      "As": 20.106192982974676,
+      "d_cm": 31.7,
+      "k": 0.2653037129787796,
+      "j": 0.9115654290070735,
+      "fc": 80.04302489372311,
+      "fs": 1674.0415789671335
+    }
+  ],
+  "selected_fc_increase_percent": 6.848329647621698,
+  "n9_over_exact_percent": 19.169269859694694
+}

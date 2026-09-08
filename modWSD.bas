@@ -1,6 +1,6 @@
 Attribute VB_Name = "modWSD"
 Option Explicit
-' No guessed EIT clauses: these remain unset until reviewed against 011007-19.
+' Legacy test thresholds; production uses the explicit PROJECT_WSD_ACI99_V1 basis.
 Public AllowableShear As Double   ' kgf/cm2, for this material and member
 Public MinStemRatio As Double    ' main vertical steel / gross concrete area
 Public MinBaseRatio As Double    ' main slab steel / gross concrete area
@@ -15,6 +15,8 @@ Public WSDReviewed As Boolean
 
 ' WSD Parameters Structure
 Public Type WSDParams
+    fy As Double
+    fcPrime As Double
     n As Double          ' Modular ratio Es/Ec from the reference material model
     fs As Double         ' Steel working stress (ksc): 1500 or 1700
     fc As Double         ' Concrete working stress (ksc): 0.45 × f'c
@@ -33,6 +35,7 @@ Public Function CalculateWSDParameters(fy As Integer, fc_prime As Integer) As WS
     ' User authorized Es/Ec after checking its effect on design decisions.
     ' Pongnathee Ch.10 pp.342-343: Es=2040000, Ec=15100*Sqr(fc_prime), ksc.
     ' Keep precision: fixed n=9 can understate concrete stress at fc_prime=320.
+    params.fy = fy: params.fcPrime = fc_prime
     params.n = 2040000# / (15100# * Sqr(CDbl(fc_prime)))
     
     ' Steel working stress (fs)
@@ -308,6 +311,10 @@ End Function
 
 
 Public Function WSDCriteriaReady() As Boolean
+    If ProjectChecksEnabled Then
+        WSDCriteriaReady = WSDReviewed And WSDSource = PROJECT_CHECK_BASIS
+        Exit Function
+    End If
     WSDCriteriaReady = WSDReviewed And Len(WSDSource) > 0 And AllowableShear > 0 And MinStemRatio > 0 And MinBaseRatio > 0
 End Function
 

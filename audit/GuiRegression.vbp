@@ -38,5 +38,7 @@ Retained=0
 ThreadPerObject=0
 MaxNumberOfThreads=1
 
+Module=modProjectChecks; ..\modProjectChecks.bas
+
 Module=GuiRegression; GuiRegression.bas
 ExeName32="GuiRegression.exe"

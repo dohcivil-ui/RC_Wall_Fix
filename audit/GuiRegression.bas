@@ -7,6 +7,7 @@ Public Sub Main()
     f = FreeFile
     Open App.Path & "\gui-regression.txt" For Output As #f
     Load Form1
+    ProjectChecksEnabled = False
     Form1.Show
     Print #f, "Project passive after Form_Load=" & PassiveFactor
     If PassiveFactor <> 1# Then failures = failures + 1

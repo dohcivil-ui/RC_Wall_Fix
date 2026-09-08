@@ -7,3 +7,5 @@ Module=modBA; ..\modBA.bas
 Startup="Sub Main"
 Name="NativeAciSupplement"
 ExeName32="AciSupplement.exe"
+
+Module=modProjectChecks; ..\modProjectChecks.bas

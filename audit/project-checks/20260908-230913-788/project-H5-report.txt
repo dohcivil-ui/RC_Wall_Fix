@@ -1,0 +1,27 @@
+Basis: PROJECT_WSD_ACI99_V1 (implemented checks; not full EIT/ACI certification)
+Validation: PASS_IMPLEMENTED_PROJECT_CHECKS
+FIXTURE - not an optimizer minimum; H=5; H1=1.2; full active + passive=1
+tt=0.25; tb=0.4; TBase=0.45; B=3; toe=1; heel=1.6 m
+Stem height H-TBase=4.55 m; n=Es/Ec=7.55228257301253
+Envelope FS: overturning=2.7603; sliding=1.9641; qa/qmax=2.9811
+Tapered stem without stirrups also limited to vc/2=2.6088 kgf/cm2 (ACI99 A.7.5.5.1 conservative beam interpretation).
+16 vertical-dead-load combinations 0.85/1.0; Pa/Pp full in all cases.
+Stem: DB16 @ 0.100 m; As=20.1062; As_min=11.2770 cm2/m; d=0.317 m
+M envelope=9.0400 tf.m/m; fc_bound=84.8537/144; fs_bound=1693.2787/1700 kgf/cm2
+v envelope=1.5920/5.2176 kgf/cm2; straight ld=0.3238; main length=4.7988 m
+Toe: DB16 @ 0.100 m; As=20.1062; As_min=9.0000 cm2/m; d=0.367 m
+M envelope=3.4274 tf.m/m; fc_bound=22.2688/144; fs_bound=506.5669/1700 kgf/cm2
+v envelope=1.7738/5.2176 kgf/cm2; straight ld=0.3238; main length=1.2488 m
+Heel: DB16 @ 0.100 m; As=20.1062; As_min=9.0000 cm2/m; d=0.367 m
+M envelope=5.2064 tf.m/m; fc_bound=33.8276/144; fs_bound=769.5058/1700 kgf/cm2
+v envelope=1.5646/5.2176 kgf/cm2; straight ld=0.4210; main length=1.9460 m
+Stem front vertical: DB16 @ 0.200 m; straight ld=0.323829994803724 m
+Stem horizontal EACH face: DB12 @ 0.200 m; Class B lap=0.41045451841372 m
+Base longitudinal EACH face: DB16 @ 0.200 m; Class B lap=0.547272691218293 m
+Concrete=2.8288 m3/m; main steel=126.2611; extra steel=125.5443 kg/m
+Concrete+provided-steel estimate=13446.17 Baht/m; unit rates=2617 Baht/m3, 24 Baht/kg
+Detail assumptions: clear cover >=75mm; main bars outermost, distribution inside; two curtains/mats; normal weight, uncoated; aggregate<=20mm; stock=12m; no hooks/cutoffs.
+Stem stress uses certified interval bounds over entire taper; shear uses full-height envelope. No compression-steel credit.
+Sources: Pongnathee material WSD; ACI99 A.2.3/A.7,10.3.3/10.5/10.6,14.3.3,7.6/7.12,12.2/12.15. See audit/PROJECT_CHECKS_IMPLEMENTATION_TH.md.
+Not checked/costed: service deflection limit, site settlement/water/seismic, joints/end details, full construction BOQ. No global-optimum guarantee.
+
