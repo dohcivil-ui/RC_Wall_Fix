@@ -33,7 +33,7 @@ Private Sub CheckSession(algorithm As String)
         End If
     Loop
     Close #summary
-    Check algorithm & " displays best trial from whole session", bestTrial > 0 And frmBestDesign.Tag = algorithm & "; trial=" & bestTrial
+    Check algorithm & " displays best trial from whole session", bestTrial > 0 And InStr(frmBestDesign.Tag, algorithm & "; trial=" & bestTrial & ";") = 1
     If bestTrial > 0 Then
         summary = FreeFile: Open bestFolder & "\run.txt" For Input As #summary
         Do Until EOF(summary)
@@ -42,6 +42,15 @@ Private Sub CheckSession(algorithm As String)
         Loop
         Close #summary
         Check algorithm & " picture dimensions equal winning report", Left$(line, 3) = "tt=" And Left$(line, Len(line) - 2) = Mid$(frmBestDesign.picSketch.Tag, InStr(frmBestDesign.picSketch.Tag, "tt="))
+        Check algorithm & " price equals session best", InStr(frmBestDesign.Tag, "; price=" & bestCost & ";") > 0
+        summary = FreeFile: Open bestFolder & "\run.txt" For Input As #summary
+        Do Until EOF(summary)
+            Line Input #summary, line
+            If Left$(line, 5) = "Stem:" Or Left$(line, 4) = "Toe:" Or Left$(line, 5) = "Heel:" Then
+                Check algorithm & " bar label matches winning report", InStr(frmBestDesign.Tag, Split(line, ";")(0)) > 0
+            End If
+        Loop
+        Close #summary
         Print #f, algorithm & " winning trial=" & bestTrial & "; final trial=" & RunTrial & "; best folder=" & bestFolder
     End If
     Snapshot "popup-" & algorithm
@@ -55,6 +64,7 @@ Public Sub Main()
     f = FreeFile: Open folder & "\sketch-regression.txt" For Output As #f
     Load Form1: Form1.Show
     d.tt = 0.25: d.tb = 0.4: d.TBase = 0.45: d.LToe = 1: d.IsValid = True
+    d.ASst_DB = 101: d.ASst_Sp = 110: d.AStoe_DB = 101: d.AStoe_Sp = 110: d.ASheel_DB = 101: d.ASheel_Sp = 110
     For height = 3 To 5
         d.Base = 0.5 * height + 0.5: d.LHeel = d.Base - d.LToe - d.tb
         frmBestDesign.ShowBest d, CDbl(height), 1.2, "H" & height & " FIXTURE", 1

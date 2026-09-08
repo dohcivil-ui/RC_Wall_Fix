@@ -7,4 +7,4 @@ External Downloads/modShared.bas remains byte-identical to baseline
 Changed VB6 files retain byte-preserving legacy text and CRLF, without UTF-8 BOM
 Production project-check module matches its archived source
 Best-design popup matches archived source; drawing is separate from calculation modules
-460 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries
+484 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries
