@@ -1,0 +1,22 @@
+{
+  "source_report": "audit/results/BA-25690909-000943-seed20260908/run.txt",
+  "source_kind": "native VB6 result rendered as vectors; not a new VB6 run",
+  "svg_vectors_only": true,
+  "physical_cm": [
+    7,
+    6
+  ],
+  "png_pixels": [
+    1654,
+    1417
+  ],
+  "png_dpi": [
+    599.9988,
+    599.9988
+  ],
+  "visual_review": "labels, dot symbols and dimensions inspected; no footer",
+  "files": {
+    "best_BA_trial1_7x6cm.svg": "c060ff1e0e6471fd3410718b59d6332afb08c5311801e137e040d424cdedb0d2",
+    "best_BA_trial1_7x6cm_600dpi.png": "bae1a668d2e454bcda76fa6b05a6c9ae21b233854832350d31d0622cdf5811ce"
+  }
+}

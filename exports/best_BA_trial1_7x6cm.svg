@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="7cm" height="6cm" viewBox="0 0 876 750.857" role="img" aria-labelledby="title description">
+  <title id="title">Best observed BA retaining wall, trial 1</title>
+  <desc id="description">Vector rendering from the saved native VB6 result, not a new optimization. Circular reinforcement markers are schematic. Dimensions and spacing are in metres. Price covers concrete and main reinforcement only. No additional search was performed.</desc>
+  <rect width="100%" height="100%" fill="white" />
+  <g transform="translate(0,55.4286)" stroke="#232323" stroke-width="1" fill="none" font-family="Tahoma, Arial, sans-serif">
+    <text x="438.0000" y="34.0000" text-anchor="middle" font-size="20" font-weight="bold" fill="#232728" stroke="none">FINAL RESULT  |  BA  |  Selected trial 1 / 1</text>
+    <text x="438.0000" y="57.3330" text-anchor="middle" font-size="13.333" font-weight="bold" fill="#232728" stroke="none">COST  10,542.98 Baht/m  (concrete + main steel)</text>
+    <text x="438.0000" y="82.3330" text-anchor="middle" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">Best cost first found at evaluation 61  |  Dimensions in metres</text>
+    <line x1="298.5000" y1="417.4000" x2="388.1033" y2="417.4000" stroke-width="2" stroke="#232323" />
+    <line x1="412.4500" y1="140.0000" x2="567.5000" y2="140.0000" stroke-width="2" stroke="#232323" />
+    <polygon points="328.5000,505.0000 328.5000,472.1500 386.9000,472.1500 394.2000,140.0000 412.4500,140.0000 412.4500,472.1500 547.5000,472.1500 547.5000,505.0000" stroke-width="2" />
+    <circle cx="406.0625" cy="145.4750" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="168.5232" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="191.5714" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="214.6196" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="237.6679" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="260.7161" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="283.7643" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="306.8125" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="329.8607" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="352.9089" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="375.9571" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="399.0054" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="422.0536" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="445.1018" r="3" fill="black" stroke="black" />
+    <circle cx="406.0625" cy="468.1500" r="3" fill="black" stroke="black" />
+    <circle cx="333.9750" cy="498.5030" r="3" fill="black" stroke="black" />
+    <circle cx="358.4375" cy="498.5030" r="3" fill="black" stroke="black" />
+    <circle cx="382.9000" cy="498.5030" r="3" fill="black" stroke="black" />
+    <circle cx="416.4500" cy="478.6470" r="3" fill="black" stroke="black" />
+    <circle cx="437.3792" cy="478.6470" r="3" fill="black" stroke="black" />
+    <circle cx="458.3083" cy="478.6470" r="3" fill="black" stroke="black" />
+    <circle cx="479.2375" cy="478.6470" r="3" fill="black" stroke="black" />
+    <circle cx="500.1667" cy="478.6470" r="3" fill="black" stroke="black" />
+    <circle cx="521.0958" cy="478.6470" r="3" fill="black" stroke="black" />
+    <circle cx="542.0250" cy="478.6470" r="3" fill="black" stroke="black" />
+    <text x="612.5000" y="228.3330" text-anchor="start" font-size="13.333" font-weight="bold" fill="#232728" stroke="none">Stem - back face</text>
+    <text x="612.5000" y="246.3330" text-anchor="start" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">DB25 @ 0.20 m</text>
+    <line x1="604.5000" y1="240.0000" x2="406.0625" y2="306.8125" stroke-width="1" stroke="#232323" />
+    <line x1="414.6016" y1="307.1029" x2="406.0625" y2="306.8125" stroke-width="1" stroke="#232323" />
+    <line x1="406.0625" y1="306.8125" x2="412.6870" y2="301.4166" stroke-width="1" stroke="#232323" />
+    <text x="218.5000" y="355.4830" text-anchor="start" font-size="13.333" font-weight="bold" fill="#232728" stroke="none">Toe - bottom</text>
+    <text x="218.5000" y="373.4830" text-anchor="start" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">DB28 @ 0.25 m</text>
+    <line x1="333.5000" y1="367.1500" x2="358.4375" y2="498.5030" stroke-width="1" stroke="#232323" />
+    <line x1="359.8927" y1="490.0838" x2="358.4375" y2="498.5030" stroke-width="1" stroke="#232323" />
+    <line x1="358.4375" y1="498.5030" x2="353.9980" y2="491.2029" stroke-width="1" stroke="#232323" />
+    <text x="612.5000" y="405.4830" text-anchor="start" font-size="13.333" font-weight="bold" fill="#232728" stroke="none">Heel - top</text>
+    <text x="612.5000" y="423.4830" text-anchor="start" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">DB28 @ 0.20 m</text>
+    <line x1="604.5000" y1="417.1500" x2="479.2375" y2="478.6470" stroke-width="1" stroke="#232323" />
+    <line x1="487.7408" y1="477.8144" x2="479.2375" y2="478.6470" stroke-width="1" stroke="#232323" />
+    <line x1="479.2375" y1="478.6470" x2="485.0966" y2="472.4284" stroke-width="1" stroke="#232323" />
+    <line x1="394.2000" y1="140.0000" x2="394.2000" y2="123.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="412.4500" y1="140.0000" x2="412.4500" y2="123.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="394.2000" y1="118.0000" x2="412.4500" y2="118.0000" stroke-width="1" stroke="#232323" />
+    <line x1="399.2000" y1="115.0000" x2="394.2000" y2="118.0000" stroke-width="1" stroke="#232323" />
+    <line x1="394.2000" y1="118.0000" x2="399.2000" y2="121.0000" stroke-width="1" stroke="#232323" />
+    <line x1="407.4500" y1="115.0000" x2="412.4500" y2="118.0000" stroke-width="1" stroke="#232323" />
+    <line x1="412.4500" y1="118.0000" x2="407.4500" y2="121.0000" stroke-width="1" stroke="#232323" />
+    <text x="403.3250" y="112.3330" text-anchor="middle" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">tt = 0.25</text>
+    <line x1="328.5000" y1="505.0000" x2="328.5000" y2="538.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="386.9000" y1="505.0000" x2="386.9000" y2="538.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="328.5000" y1="533.0000" x2="386.9000" y2="533.0000" stroke-width="1" stroke="#232323" />
+    <line x1="333.5000" y1="530.0000" x2="328.5000" y2="533.0000" stroke-width="1" stroke="#232323" />
+    <line x1="328.5000" y1="533.0000" x2="333.5000" y2="536.0000" stroke-width="1" stroke="#232323" />
+    <line x1="381.9000" y1="530.0000" x2="386.9000" y2="533.0000" stroke-width="1" stroke="#232323" />
+    <line x1="386.9000" y1="533.0000" x2="381.9000" y2="536.0000" stroke-width="1" stroke="#232323" />
+    <text x="357.7000" y="527.3330" text-anchor="middle" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">LToe = 0.80</text>
+    <line x1="386.9000" y1="505.0000" x2="386.9000" y2="570.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="412.4500" y1="505.0000" x2="412.4500" y2="570.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="386.9000" y1="565.0000" x2="412.4500" y2="565.0000" stroke-width="1" stroke="#232323" />
+    <line x1="391.9000" y1="562.0000" x2="386.9000" y2="565.0000" stroke-width="1" stroke="#232323" />
+    <line x1="386.9000" y1="565.0000" x2="391.9000" y2="568.0000" stroke-width="1" stroke="#232323" />
+    <line x1="407.4500" y1="562.0000" x2="412.4500" y2="565.0000" stroke-width="1" stroke="#232323" />
+    <line x1="412.4500" y1="565.0000" x2="407.4500" y2="568.0000" stroke-width="1" stroke="#232323" />
+    <text x="399.6750" y="559.3330" text-anchor="middle" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">tb = 0.35</text>
+    <line x1="412.4500" y1="505.0000" x2="412.4500" y2="538.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="547.5000" y1="505.0000" x2="547.5000" y2="538.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="412.4500" y1="533.0000" x2="547.5000" y2="533.0000" stroke-width="1" stroke="#232323" />
+    <line x1="417.4500" y1="530.0000" x2="412.4500" y2="533.0000" stroke-width="1" stroke="#232323" />
+    <line x1="412.4500" y1="533.0000" x2="417.4500" y2="536.0000" stroke-width="1" stroke="#232323" />
+    <line x1="542.5000" y1="530.0000" x2="547.5000" y2="533.0000" stroke-width="1" stroke="#232323" />
+    <line x1="547.5000" y1="533.0000" x2="542.5000" y2="536.0000" stroke-width="1" stroke="#232323" />
+    <text x="479.9750" y="527.3330" text-anchor="middle" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">LHeel = 1.85</text>
+    <line x1="328.5000" y1="505.0000" x2="328.5000" y2="602.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="547.5000" y1="505.0000" x2="547.5000" y2="602.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="328.5000" y1="597.0000" x2="547.5000" y2="597.0000" stroke-width="1" stroke="#232323" />
+    <line x1="333.5000" y1="594.0000" x2="328.5000" y2="597.0000" stroke-width="1" stroke="#232323" />
+    <line x1="328.5000" y1="597.0000" x2="333.5000" y2="600.0000" stroke-width="1" stroke="#232323" />
+    <line x1="542.5000" y1="594.0000" x2="547.5000" y2="597.0000" stroke-width="1" stroke="#232323" />
+    <line x1="547.5000" y1="597.0000" x2="542.5000" y2="600.0000" stroke-width="1" stroke="#232323" />
+    <text x="438.0000" y="591.3330" text-anchor="middle" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">Base = 3.00</text>
+    <line x1="328.5000" y1="140.0000" x2="188.5000" y2="140.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="328.5000" y1="505.0000" x2="188.5000" y2="505.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="188.5000" y1="140.0000" x2="188.5000" y2="505.0000" stroke-width="1" stroke="#232323" />
+    <line x1="185.5000" y1="145.0000" x2="188.5000" y2="140.0000" stroke-width="1" stroke="#232323" />
+    <line x1="188.5000" y1="140.0000" x2="191.5000" y2="145.0000" stroke-width="1" stroke="#232323" />
+    <line x1="185.5000" y1="500.0000" x2="188.5000" y2="505.0000" stroke-width="1" stroke="#232323" />
+    <line x1="188.5000" y1="505.0000" x2="191.5000" y2="500.0000" stroke-width="1" stroke="#232323" />
+    <text x="180.5000" y="327.8330" text-anchor="end" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">H = 5.00</text>
+    <line x1="298.5000" y1="417.4000" x2="280.5000" y2="417.4000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="298.5000" y1="505.0000" x2="280.5000" y2="505.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="280.5000" y1="417.4000" x2="280.5000" y2="505.0000" stroke-width="1" stroke="#232323" />
+    <line x1="277.5000" y1="422.4000" x2="280.5000" y2="417.4000" stroke-width="1" stroke="#232323" />
+    <line x1="280.5000" y1="417.4000" x2="283.5000" y2="422.4000" stroke-width="1" stroke="#232323" />
+    <line x1="277.5000" y1="500.0000" x2="280.5000" y2="505.0000" stroke-width="1" stroke="#232323" />
+    <line x1="280.5000" y1="505.0000" x2="283.5000" y2="500.0000" stroke-width="1" stroke="#232323" />
+    <text x="272.5000" y="466.5330" text-anchor="end" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">H1 = 1.20</text>
+    <line x1="547.5000" y1="472.1500" x2="573.5000" y2="472.1500" stroke-width="1" stroke="#6e6e64" />
+    <line x1="547.5000" y1="505.0000" x2="573.5000" y2="505.0000" stroke-width="1" stroke="#6e6e64" />
+    <line x1="573.5000" y1="472.1500" x2="573.5000" y2="505.0000" stroke-width="1" stroke="#232323" />
+    <line x1="570.5000" y1="477.1500" x2="573.5000" y2="472.1500" stroke-width="1" stroke="#232323" />
+    <line x1="573.5000" y1="472.1500" x2="576.5000" y2="477.1500" stroke-width="1" stroke="#232323" />
+    <line x1="570.5000" y1="500.0000" x2="573.5000" y2="505.0000" stroke-width="1" stroke="#232323" />
+    <line x1="573.5000" y1="505.0000" x2="576.5000" y2="500.0000" stroke-width="1" stroke="#232323" />
+    <text x="581.5000" y="493.9080" text-anchor="start" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">TBase = 0.45</text>
+  </g>
+</svg>
