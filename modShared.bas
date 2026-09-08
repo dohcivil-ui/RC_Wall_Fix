@@ -530,7 +530,7 @@ Public Function SectionShear(d As Design, part As Integer, depth As Double) As D
     Dim l As Double, qcut As Double, wd As Double
     If depth <= 0 Then Err.Raise 5, , "Invalid effective depth"
     If part = 0 Then
-        ' Face shear, conservative relative to a section d from support.
+        ' Face shear only. Passive cancellation can make a higher section govern.
         hs = H - d.TBase: hp = H1 - d.TBase
         SectionShear = Abs(gamma_soil * (CalculateKa() * hs ^ 2 - PassiveFactor * CalculateKp() * hp ^ 2) / 2#)
     Else
@@ -699,9 +699,9 @@ Public Function CheckDesignValid(d As Design, _
     If CalculateAsProv(ToeDB, ToeSP) < MinBaseRatio * 10000# * d.TBase Then Exit Function
     If CalculateAsProv(HeelDB, HeelSP) < MinBaseRatio * 10000# * d.TBase Then Exit Function
     LastValidationReason = "CONCRETE_SHEAR"
-    If SectionShear(d, 0, ds) / (10# * ds) > AllowableShear Then Exit Function
-    If SectionShear(d, 1, dt) / (10# * dt) > AllowableShear Then Exit Function
-    If SectionShear(d, 2, dh) / (10# * dh) > AllowableShear Then Exit Function
+    If MemberShearStress(d, 0, ds) > AllowableShear Then Exit Function
+    If MemberShearStress(d, 1, dt) > AllowableShear Then Exit Function
+    If MemberShearStress(d, 2, dh) > AllowableShear Then Exit Function
     d.FS_OT = FS_OT: d.FS_SL = FS_SL: d.FS_BC = FS_BC
     d.IsValid = True
     LastValidationReason = "VERIFIED_CONFIGURED_CHECKS_ONLY"
@@ -917,7 +917,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     
     Dim checkOK As Boolean
     checkOK = CheckDesignValid(d, d.ASst_DB, d.ASst_Sp, d.AStoe_DB, d.AStoe_Sp, d.ASheel_DB, d.ASheel_Sp, FS_OT, FS_SL, FS_BC)
-    result = result & SectionCheckSummary("Stem", M_stem, d_stem, As_prov_stem, SectionShear(d, 0, d_stem), d.tb, True)
+    result = result & SectionCheckSummary("Stem", M_stem, d_stem, As_prov_stem, SectionShear(d, 0, d_stem), d.tb, True, MemberShearStress(d, 0, d_stem))
     result = result & SectionCheckSummary("Toe", M_toe, d_toe, As_prov_toe, SectionShear(d, 1, d_toe), d.TBase, False)
     result = result & SectionCheckSummary("Heel", M_heel, d_heel, As_prov_heel, SectionShear(d, 2, d_heel), d.TBase, False)
     result = "Design check: " & LastValidationReason & vbCrLf & result
@@ -1020,13 +1020,14 @@ Public Sub SeedSearchRandom(seed As Long)
     dummy = Rnd(-1): Randomize seed
 End Sub
 
-Private Function SectionCheckSummary(label As String, M As Double, depth As Double, steel As Double, shear As Double, thickness As Double, stem As Boolean) As String
+Private Function SectionCheckSummary(label As String, M As Double, depth As Double, steel As Double, shear As Double, thickness As Double, stem As Boolean, Optional nominalStress As Double = -1) As String
     Dim c As Double, s As Double, j As Double, minimum As Double
     Call SectionStresses(M, depth, steel, currentWSD.n, c, s, j)
     If stem Then minimum = MinStemRatio * thickness * 10000# Else minimum = MinBaseRatio * thickness * 10000#
+    If nominalStress < 0 Then nominalStress = shear / (10# * depth)
     SectionCheckSummary = label & ": d=" & Format(depth, "0.0000") & " m; fc_actual=" & Format(c, "0.00") & _
         "/" & currentWSD.fc & "; fs_actual=" & Format(s, "0.00") & "/" & currentWSD.fs & " kgf/cm2" & vbCrLf & _
-        "v=" & Format(shear / (10# * depth), "0.000") & "/" & AllowableShear & " kgf/cm2; As_min=" & minimum & " cm2/m" & vbCrLf
+        "v=" & Format(nominalStress, "0.000") & "/" & AllowableShear & " kgf/cm2; As_min=" & minimum & " cm2/m" & vbCrLf
     If Not WSDCriteriaReady() Then SectionCheckSummary = SectionCheckSummary & "Allowables/minimums UNVERIFIED (zero means unset, never a passing criterion)." & vbCrLf
 End Function
 
@@ -1074,7 +1075,12 @@ Private Function AuditMember(d As Design, part As Integer, label As String, thic
     If WSDCriteriaReady() Then source = "Configured screening only: " & WSDSource
     result = result & AuditCompare(label & " concrete stress", c, currentWSD.fc, False, "kgf/cm2", source, failed)
     result = result & AuditCompare(label & " steel stress", st, currentWSD.fs, False, "kgf/cm2", source, failed)
-    shear = SectionShear(d, part, depth) / (10# * depth)
+    shear = MemberShearStress(d, part, depth)
+    If part = 0 Then
+        Dim shearHeight As Double
+        shear = StemShearStressEnvelope(d, depth, shearHeight)
+        result = result & AuditRow("Stem governing shear height", Format$(shearHeight, "0.0000") & " m", "above base top", "CALCULATED", "Maximum nominal abs(V)/(b*d) along tapered stem; EIT critical-section rule UNVERIFIED")
+    End If
     If AllowableShear > 0 Then
         result = result & AuditCompare(label & " nominal shear V/bd", shear, AllowableShear, False, "kgf/cm2", source & "; shear section/definition require review", failed)
     Else
@@ -1147,3 +1153,56 @@ Public Function CheckHeelLayout(d As Design) As Boolean
     Const dimensionTolerance As Double = 0.000000001
     CheckHeelLayout = (d.LHeel >= 0.3 - dimensionTolerance And d.LHeel - d.LToe > dimensionTolerance)
 End Function
+
+' Nominal shear envelope, distinct from the still-unverified EIT critical section.
+Public Function MemberShearStress(d As Design, part As Integer, depth As Double) As Double
+    Dim criticalHeight As Double
+    If part = 0 Then
+        MemberShearStress = StemShearStressEnvelope(d, depth, criticalHeight)
+    Else
+        MemberShearStress = SectionShear(d, part, depth) / (10# * depth)
+    End If
+End Function
+
+Public Function StemShearStressEnvelope(d As Design, baseDepth As Double, ByRef criticalHeight As Double) As Double
+    Dim hs As Double, hp As Double, slope As Double, peak As Double
+    Dim a As Double, b As Double, c As Double, region As Integer, lower As Double, upper As Double
+    Dim qaRoot As Double, qbRoot As Double, qcRoot As Double, discriminant As Double
+    If Not GeometryOK(d) Then Err.Raise 5, , "Invalid geometry for stem shear envelope"
+    hs = H - d.TBase: hp = H1 - d.TBase: slope = (d.tb - d.tt) / hs
+    If baseDepth <= 0 Or baseDepth - slope * hs <= 0 Then Err.Raise 5, , "Invalid local effective depth"
+    criticalHeight = 0
+    For region = 0 To 1
+        a = gamma_soil * CalculateKa() / 2#
+        b = -gamma_soil * CalculateKa() * hs
+        c = gamma_soil * CalculateKa() * hs ^ 2 / 2#
+        lower = hp: upper = hs
+        If region = 0 Then
+            lower = 0: upper = hp
+            a = a - PassiveFactor * gamma_soil * CalculateKp() / 2#
+            b = b + PassiveFactor * gamma_soil * CalculateKp() * hp
+            c = c - PassiveFactor * gamma_soil * CalculateKp() * hp ^ 2 / 2#
+        End If
+        Call ConsiderStemShearPoint(lower, lower, upper, a, b, c, slope, baseDepth, peak, criticalHeight)
+        Call ConsiderStemShearPoint(upper, lower, upper, a, b, c, slope, baseDepth, peak, criticalHeight)
+        ' d[V/(d0-s*y)]/dy = 0 gives this quadratic. Evaluate both soil regions.
+        qaRoot = -slope * a: qbRoot = 2# * a * baseDepth: qcRoot = b * baseDepth + slope * c
+        If Abs(qaRoot) < 0.00000000000001 Then
+            If Abs(qbRoot) > 0.00000000000001 Then Call ConsiderStemShearPoint(-qcRoot / qbRoot, lower, upper, a, b, c, slope, baseDepth, peak, criticalHeight)
+        Else
+            discriminant = qbRoot ^ 2 - 4# * qaRoot * qcRoot
+            If discriminant >= 0 Then
+                Call ConsiderStemShearPoint((-qbRoot + Sqr(discriminant)) / (2# * qaRoot), lower, upper, a, b, c, slope, baseDepth, peak, criticalHeight)
+                Call ConsiderStemShearPoint((-qbRoot - Sqr(discriminant)) / (2# * qaRoot), lower, upper, a, b, c, slope, baseDepth, peak, criticalHeight)
+            End If
+        End If
+    Next region
+    StemShearStressEnvelope = peak
+End Function
+
+Private Sub ConsiderStemShearPoint(y As Double, lower As Double, upper As Double, a As Double, b As Double, c As Double, slope As Double, baseDepth As Double, ByRef peak As Double, ByRef criticalHeight As Double)
+    Dim value As Double
+    If y < lower Or y > upper Then Exit Sub
+    value = Abs(a * y ^ 2 + b * y + c) / (10# * (baseDepth - slope * y))
+    If value > peak Then peak = value: criticalHeight = y
+End Sub

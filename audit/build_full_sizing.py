@@ -4,8 +4,23 @@ Production BA retains all feasibility gates. The separate finite-grid study
 is explicitly a relaxed diagnostic while EIT criteria remain unverified.
 """
 from pathlib import Path
+import re
+import json
 P = Path(__file__).resolve().parent
+form = (P.parent/'Form1.frm').read_bytes().decode('latin1')
+defaults = {}
+for name, body in re.findall(r'Begin VB.TextBox (\w+)(.*?)\bEnd\b', form, re.S):
+    value = re.search(r'Text\s*=\s*"([^"]*)"', body)
+    if value:
+        defaults[name] = float(value[1])
+inputs = dict(H=5.0, H1=defaults['txtH1'], gamma_soil=defaults['txtGammaSoil'],
+              gamma_concrete=defaults['txtGammaCon'], phi=defaults['txtPhi'], mu=defaults['txtMu'],
+              qa_allowable=defaults['txtQa'], cover=defaults['txtCover']/100,
+              seed=int(defaults['txtSeed']), budget=int(defaults['txtMaxIter']), fc=320, fy=4000)
+(P/'full-sizing-inputs.json').write_text(json.dumps(dict(source='Form1.frm design-time TextBox values; H=5 and fc=320 retained from requested study; one trial per passive case, not the default research trial count', inputs=inputs),indent=2),encoding='ascii')
 def put(name, text):
+    for key,value in inputs.items():
+        text = text.replace('__'+key+'__', str(value))
     (P/name).write_bytes(text.replace('\n', '\r\n').encode('ascii'))
 put('FullSizing.vbp', '''Type=Exe
 Module=FullSizingMain; FullSizingMain.bas
@@ -78,8 +93,8 @@ Public Sub Main()
     Dim ms As Double, mt As Double, mh As Double, estimate As Double, bestEstimate As Double, rejected As Boolean
     On Error GoTo Fatal
     InitializeArrays
-    H = 5: H1 = 1.2: gamma_soil = 1.8: gamma_concrete = 2.4
-    phi = 30: mu = 0.6: qa = 20: cover = 0.075
+    H = __H__: H1 = __H1__: gamma_soil = __gamma_soil__: gamma_concrete = __gamma_concrete__
+    phi = __phi__: mu = __mu__: qa = __qa_allowable__: cover = __cover__
     mat = GetSD40Material(320, GetConcretePrice(320), 24): currentMaterial = mat
     currentWSD = CalculateWSDParameters(mat.fy, mat.fc)
     WSDReviewed = False: WSDSource = "": AllowableShear = 0: MinStemRatio = 0: MinBaseRatio = 0
@@ -88,20 +103,21 @@ Public Sub Main()
     options = FreeFile: Open App.Path & "\\full-sizing-bar-options.csv" For Output As #options
     summary = FreeFile: Open App.Path & "\\full-sizing-summary.csv" For Output As #summary
     Print #report, "# Actual VB6 H5 recalculation: independent stem/toe/heel reinforcement"
+    Print #report, "Other inputs read from Form1.frm defaults; H=5 and fc=320 retained study. See full-sizing-inputs.json. One trial per passive case."
     Print #report, "Main case eta=1: full Rankine passive using H1. Eta=0 is the comparison. Heights alone do not establish field mobilization."
     Print #report, "Production BA requires all criteria. Separate relaxed grid: stability + supported bending + legacy stress only; NOT an accepted EIT design."
     Print #report, "Missing minimum/shear/detailing are NOT silently passed. No synthetic limits. Concrete unit price=" & mat.concretePrice & "; steel=" & mat.SteelPrice
     Print #report, "Cost model includes concrete and listed main bars, with original +0.4 m bar length allowances; not a complete construction BOQ."
     Print #trace, "eta,geometry_row,screening_estimate,tt,tb,TBase,Base,toe,heel,stemDB,stemSP,toeDB,toeSP,heelDB,heelSP"
-    Print #summary, "eta,geometry_rows,stable_rows,screened_rows,steel_checks,best_row,screening_estimate,tt,tb,TBase,Base,toe,heel,stemDB,stemSP,toeDB,toeSP,heelDB,heelSP"
+    Print #summary, "eta,geometry_rows,stable_rows,screened_rows,steel_checks,best_row,screening_estimate,tt,tb,TBase,Base,toe,heel,stemDB,stemSP,toeDB,toeSP,heelDB,heelSP,qa_allowable"
     Print #options, "eta,part,DB,spacing,depth,As,moment,fc,fs,legacy_flexure,selected"
     For eta = 0 To 1
         PassiveFactor = eta
         Print #report, ""
         Print #report, "## Passive fraction=" & eta
-        ba = BisectionOptimization(1000, H, H1, gamma_soil, gamma_concrete, phi, mu, qa, cover, mat, RandomSeed:=12345, TrialNumber:=eta + 1)
+        ba = BisectionOptimization(__budget__, H, H1, gamma_soil, gamma_concrete, phi, mu, qa, cover, mat, RandomSeed:=__seed__, TrialNumber:=eta + 1)
         Print #report, "Actual production BA: " & RunStatus & "; evaluations=" & EvaluationCount & "; best evaluation=" & RunBestEvaluation & "; folder=" & RunFolder
-        If ba.IsValid Or EvaluationCount <> 1000 Or WSDCriteriaReady() Then Err.Raise 5, , "Unexpected full acceptance or BA budget"
+        If ba.IsValid Or EvaluationCount <> __budget__ Or WSDCriteriaReady() Then Err.Raise 5, , "Unexpected full acceptance or BA budget"
         best = emptyDesign: bestEstimate = NO_SOLUTION_COST: rows = 0: stable = 0: screened = 0: steelChecks = 0
         flags = String$(520200, "0")
         For it = TT_MIN To TT_MAX
@@ -145,7 +161,7 @@ NextGeometry:
         If rows <> 520200 Or screened = 0 Then Err.Raise 5, , "Incomplete grid"
         rejected = Not CheckDesignValid(best, best.ASst_DB, best.ASst_Sp, best.AStoe_DB, best.AStoe_Sp, best.ASheel_DB, best.ASheel_Sp, ot, sl, bc)
         If Not rejected Or RunBest.IsValid Then Err.Raise 5, , "Diagnostic candidate promoted to verified design"
-        Print #summary, eta & "," & rows & "," & stable & "," & screened & "," & steelChecks & "," & bestRow & "," & CsvNumber(bestEstimate) & "," & Fields(best)
+        Print #summary, eta & "," & rows & "," & stable & "," & screened & "," & steelChecks & "," & bestRow & "," & CsvNumber(bestEstimate) & "," & Fields(best) & "," & CsvNumber(qa)
         Print #report, "Relaxed grid: rows=" & rows & "; all 3 stability=" & stable & "; screened=" & screened & "; steel checks=" & steelChecks
         Print #report, "Lowest relaxed grid estimate=" & CsvNumber(bestEstimate) & " baht/m; complete validator=" & LastValidationReason
         Print #report, BuildDesignCheckReport(best)

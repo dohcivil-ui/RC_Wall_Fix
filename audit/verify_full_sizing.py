@@ -5,10 +5,17 @@ from pathlib import Path
 import csv
 import math
 import gzip
+import json
 import numpy as np
+from independent_stem_profile import stem_profile
 
 P = Path(__file__).resolve().parent
 native = list(csv.DictReader((P/'full-sizing-summary.csv').open()))
+inputs = json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
+# This independent model verifies the requested H5 material/soil case. Refuse
+# silently comparing another input set to these particular reference equations.
+for key, value in dict(H=5,H1=1.2,gamma_soil=1.8,gamma_concrete=2.4,phi=30,mu=.6,cover=.075,fc=320,fy=4000).items():
+    assert abs(inputs[key]-value) < 1e-9, (key,inputs[key])
 assert len(native) == 2
 tt, tb, z, width, toe = [x.ravel() for x in np.meshgrid(
     np.round(np.linspace(.2, .6, 17), 3), np.round(np.linspace(.2, 1, 17), 2),
@@ -28,6 +35,7 @@ weight = soil_front+2.4*stem_area+soil_heel+base
 mr = soil_front_m+stem_m+soil_heel*(toe+tb+heel/2)+base*width/2
 valid_geometry = (tb>=tt)&(heel>=.3-1e-9)&(heel-toe>1e-9)
 messages = []
+profiles = []
 
 def choose_bars(moment, thickness):
     score = np.full(len(tt), np.inf)
@@ -50,12 +58,13 @@ def choose_bars(moment, thickness):
 
 for eta, row in enumerate(native):
     assert int(row['eta']) == eta
+    assert float(row['qa_allowable']) == inputs['qa_allowable']
     reaction_m = mr-12.5+eta*1.5552
     qt = 4*weight/width-6*reaction_m/width**2
     qh = 6*reaction_m/width**2-2*weight/width
     fsot = (mr+eta*1.5552)/12.5
     fssl = (.6*weight+eta*3.888)/7.5
-    stable = valid_geometry&(fsot>=2)&(fssl>=1.5)&(np.minimum(qt,qh)>=0)&(np.maximum(qt,qh)<=20)
+    stable = valid_geometry&(fsot>=2)&(fssl>=1.5)&(np.minimum(qt,qh)>=0)&(np.maximum(qt,qh)<=inputs['qa_allowable'])
     grad = (qh-qt)/width
     ms = .1*hs**3-eta*.9*hp**3
     mt = (qt-2.4*z-1.8*hp)*toe**2/2+grad*toe**3/6
@@ -83,6 +92,9 @@ for eta, row in enumerate(native):
     for name,(_,bars,spacings) in zip(('stem','toe','heel'),sets):
         assert bars[best] == int(row[name+'DB'])
         assert abs(spacings[best]-float(row[name+'SP'])) < 1e-8
+    profile=stem_profile(5,1.2,tb[best],tt[best],z[best],.075,int(row['stemDB']),float(row['stemSP']),eta)
+    profiles.append(dict(eta=eta,**profile))
+    assert profile['moment_height']==0 and profile['concrete_height']==0 and profile['steel_height']==0
     messages.append(f'eta={eta}: independent full grid 520200 rows agrees on stability count {stable.sum()}, screened count {screened.sum()}, selected geometry row {best+1}, three independent steel layouts and relaxed estimate {cost[best]:.8f}.')
 
 # Independently validate every section alternative in the native output.
@@ -100,8 +112,15 @@ for r in bar_rows:
     assert (r['legacy_flexure']=='True') == (fc<=144 and fs<=1700)
 text = (P/'full-sizing-vb6.md').read_text()
 assert 'FATAL' not in text and 'NATIVE COMPLETE' in text
-assert text.count('Actual production BA: NO_SOLUTION; evaluations=1000; best evaluation=0;') == 2
+assert text.count(f"Actual production BA: NO_SOLUTION; evaluations={inputs['budget']}; best evaluation=0;") == 2
+for eta,profile in enumerate(profiles):
+    section=text.split(f'## Passive fraction={eta}')[1].split('## Passive fraction=')[0]
+    report_rows={parts[1].strip():parts[2].strip() for line in section.splitlines() if line.startswith('| ') for parts in [line.split('|')]}
+    for key,expected in [('Stem nominal shear V/bd',profile['max_v']),('Stem governing shear height',profile['shear_height'])]:
+        assert abs(float(report_rows[key].split()[0])-expected)<.000051
+(P/'full-sizing-stem-profiles.json').write_text(json.dumps(profiles,indent=2),encoding='ascii')
 messages.append('120 native bar alternatives independently checked. Native production BA: no accepted design in either case; WSD remains UNVERIFIED.')
+messages.append('Selected stem profiles independently sampled at 20002 heights: base governs flexural M/fc/fs; interior nominal shear envelope matches native root solving.')
 messages.append('Every native geometry status agrees after dimension-equality tolerance; equal heel/toe is rejected consistently. No selected minimum lies on that boundary.')
 (P/'full-sizing-boundary-cases.csv').write_text('issue,original_example,correction\nheel_equal_to_toe,"B=2.5 tb=0.7 toe=0.9; computed heel-toe approximately 1e-16 m",shared strict-dimension comparison with 1e-9 m tolerance\n', encoding='ascii')
 (P/'full-sizing-independent-checks.txt').write_text('\n'.join(messages)+'\n', encoding='ascii')

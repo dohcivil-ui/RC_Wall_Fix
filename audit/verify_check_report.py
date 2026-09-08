@@ -4,6 +4,7 @@ This verifies numerical agreement only, not EIT requirements or VB6 execution.
 from pathlib import Path
 import math
 import independent_checks as independent
+from independent_stem_profile import stem_profile
 
 P = Path(__file__).resolve().parent
 reports = (P / 'h5-vb6-checks.md').read_text().split('## ')[1:]
@@ -53,7 +54,9 @@ for case_index, (text, case) in enumerate(zip(reports, cases)):
         near(actual(member + ' steel stress'), steel_stress, member + ' fs')
         near(float(rows[member + ' necessary yield bound'][1].split()[1]), steel * 4000 * depth / 1000, member + ' bound')
         if member == 'Stem':
-            force = case['vs']
+            profile = stem_profile(case['h'],case['h1'],case['tb'],case['tt'],case['tbase'],.075,db,spacing,case['p'])
+            force = profile['max_v'] * (10 * depth)
+            near(actual('Stem governing shear height'), profile['shear_height'], 'stem shear height')
         else:
             q = lambda x: case['qt'] + (case['qh'] - case['qt']) * x / case['b']
             if member == 'Toe':

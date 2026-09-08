@@ -47,7 +47,7 @@ fc_actual = 2*|M|/(b*k*j*d^2)
 
 หน้ามาตรฐานของ [วสท. รายการหนังสือหน้า 80](https://eit.or.th/showcase/EIT/issue2_68/files/basic-html/page80.html) ยืนยันชื่อมาตรฐาน WSD รหัส **011007-19**, ISBN 978-616-396-023-8 ได้ แต่ไม่ได้ให้เนื้อหาข้อกำหนด จึง **ยังยืนยันไม่ได้**: modular ratio, หน่วยแรงยอมให้แยกวัสดุ/สมาชิก, หน่วยแรงเฉือนและหน้าตัดวิกฤต, เหล็กขั้นต่ำของ stem/ฐานและทิศทาง, เหล็กหดตัว/อุณหภูมิ, ระยะเรียง/ระยะใส, development/anchorage และรายละเอียดต่อเนื่อง
 
-- มีตัวตรวจแรงเฉือน: stem ใช้แรงที่หน้ารองรับ (conservative face section), toe/heel ใช้แรงนอกระยะ d จากหน้ารองรับ; ค่ารายงานเป็น nominal V/(b*d). **ต้องยืนยันนิยามหน่วยแรง (รวมประเด็น j), หน้าตัดวิกฤต และค่าที่ยอมให้ตามฉบับจริงก่อนเปิดใช้**
+- มีตัวตรวจแรงเฉือน: stem ใช้ค่าสูงสุดของ nominal |V(y)|/[b*d(y)] ตลอดความสูง (แก้ข้อสันนิษฐานเดิมที่ว่าแรงเฉือนโคน conservative เมื่อมี passive), toe/heel ใช้แรงนอกระยะ d จากหน้ารองรับ; ค่ารายงานเป็น nominal V/(b*d). **ต้องยืนยันนิยามหน่วยแรง (รวมประเด็น j), หน้าตัดวิกฤต และค่าที่ยอมให้ตามฉบับจริงก่อนเปิดใช้**
 - มีตัวตรวจ As_min แยก MinStemRatio/MinBaseRatio โดยใช้พื้นที่คอนกรีตรวม. ต้องยืนยันว่าข้อกำหนดแต่ละสมาชิกใช้ฐานใดและต้องมีเหล็กทิศอื่นเท่าใด; ไม่ใส่ 0.0015 เดิมเป็นข้อกำหนดทั่วทุกสมาชิก
 - `AllowableShear`, `MinStemRatio`, `MinBaseRatio`, `WSDSource`, `WSDReviewed` เริ่มเป็นค่าว่าง/0/False. ตัวตรวจให้เหตุผล `WSD_CRITERIA_UNVERIFIED` และไม่รับคำตอบจนข้อมูลเกณฑ์พร้อม ไม่มีปุ่มในโปรแกรมหลักที่อ้างว่ารับรองเกณฑ์เหล่านี้แล้ว
 - harness ตั้ง shear=8 kgf/cm², ratios=0.0015 และ source ที่ระบุ **SYNTHETIC TEST FIXTURE ONLY** เพื่อพิสูจน์ branch ผ่าน/ไม่ผ่านเท่านั้น ค่าเหล่านี้ไม่ถูกบันทึกเป็นค่ามาตรฐานของโปรแกรมหลัก
@@ -76,7 +76,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File audit\run_checks.ps1
 
 สคริปต์คอมไพล์โปรเจกต์จริง, native regression และ GUI regression ด้วย `VB6.EXE` ของเครื่องนี้ เก็บ compile log แยกใหม่ทุกครั้ง (VB6 /out เป็น append จึงไม่ใช้ log เก่าตัดสิน) รัน EXE จริงและตรวจข้อความผล ไม่ใช้ Python แทนหลักฐาน VB6
 
-- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **152 checks, failures=0**
+- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **211 checks, failures=0**
 - [ผลฟอร์มจริง](gui-regression.txt): **GUI failures=0**; Load/Show Form1 แล้วเรียก Click ของปุ่ม BA/HCA จริง ทั้งแบบ no-solution 2 trials และเกณฑ์จำลองที่ได้คำตอบ พร้อมรายงาน/กราฟและการคืนสถานะปุ่ม
 - [ผล compile โปรเจกต์](final-compile-RC_RT_HCA_v2.log), [native harness](final-compile-Regression.log), [GUI harness](final-compile-GuiRegression.log); สำเนาหลักฐานแต่ละรอบและ hash EXE อยู่ใต้ `checks`
 - [รายการอิสระ](independent-results.json) ใช้ Simpson integration ของแรง/แขน, polygon centroid และแก้ neutral axis โดยตรงเพื่อสร้าง expected values จากนั้นเทียบกับ VB6. มี H=3,4,5 ทั้งหน้าตัดหนาและบาง, e บวก/ลบ, โมเมนต์และแรงเฉือน toe/heel, concrete-only failure, ข้อมูลผิด, reversal และ passive ทั้ง 0/1
@@ -98,3 +98,8 @@ See [selection order and native evidence](FEASIBLE_COST_ORDER.md). Search pricin
 ## H5 independent-member recalculation (2026-09-08)
 
 See [new active/passive report](H5_RECALCULATION_TH.md). Native BA retains full validation and reports no solution; a separate explicitly relaxed grid sizes the three members independently. Two complete 520200-row grids agree with independent calculation after fixing binary-roundoff handling of heel=toe through shared CheckHeelLayout. No EIT criteria were invented or enabled. Native regression: 152 checks, failures=0; GUI failures=0.
+
+
+## Latest whole-wall recalculation and stem shear correction
+
+See [latest Thai report](H5_REVIEWED_CALCULATION_TH.md). This run reads qa=30 allowable and the 5000-evaluation budget from Form1 defaults, retaining the requested H=5/fc=320 study. Same-geometry native tests verify active/passive loads, their one-third-height arms, all three stability checks, bearing reactions and toe/heel moments against independent equilibrium. Fixed a real stem shear defect: passive cancellation and taper can make an interior nominal shear stress exceed the face value (1.6475 versus 1.4006 kgf/cm2 for the selected geometry). The validator, screen and report now share the envelope. Native regression: 211 checks, failures=0; GUI failures=0. Both complete 520200-row diagnostic grids and 120 selected-geometry steel alternatives agree independently. The screening minimum remains 8273.14368 baht/m, but production BA reports NO_SOLUTION in both cases because complete WSD criteria remain unverified. No research batch was run. Earlier update paragraphs above describe historical runs.

@@ -1,0 +1,2 @@
+issue,original_example,correction
+heel_equal_to_toe,"B=2.5 tb=0.7 toe=0.9; computed heel-toe approximately 1e-16 m",shared strict-dimension comparison with 1e-9 m tolerance

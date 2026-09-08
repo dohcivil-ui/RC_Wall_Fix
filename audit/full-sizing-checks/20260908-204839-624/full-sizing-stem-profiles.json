@@ -1,0 +1,28 @@
+[
+  {
+    "eta": 0,
+    "face_v": 1.828137931034483,
+    "max_v": 1.828137931034483,
+    "shear_height": 0.0,
+    "max_M": 10.3823,
+    "max_fc": 64.90339180555162,
+    "max_fs": 1601.333435883437,
+    "moment_height": 0.0,
+    "concrete_height": 0.0,
+    "steel_height": 0.0,
+    "stations": 20002
+  },
+  {
+    "eta": 1,
+    "face_v": 1.4006309148264988,
+    "max_v": 1.6475253003500765,
+    "shear_height": 0.5710572071664861,
+    "max_M": 9.7262,
+    "max_fc": 74.91275264451902,
+    "max_fs": 1686.5534043362877,
+    "moment_height": 0.0,
+    "concrete_height": 0.0,
+    "steel_height": 0.0,
+    "stations": 20002
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "source": "Form1.frm design-time TextBox values; H=5 and fc=320 retained from requested study; one trial per passive case, not the default research trial count",
+  "inputs": {
+    "H": 5.0,
+    "H1": 1.2,
+    "gamma_soil": 1.8,
+    "gamma_concrete": 2.4,
+    "phi": 30.0,
+    "mu": 0.6,
+    "qa_allowable": 30.0,
+    "cover": 0.075,
+    "seed": 12345,
+    "budget": 5000,
+    "fc": 320,
+    "fy": 4000
+  }
+}

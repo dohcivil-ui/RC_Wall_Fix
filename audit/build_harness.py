@@ -178,4 +178,5 @@ End Function
 '''
 start = start.replace("    ' Synthetic thresholds exercise branches only; no normative claim.", (P/'report_checks.inc').read_text() + "\n    ' Synthetic thresholds exercise branches only; no normative claim.")
 end = end.replace("    ' One-evaluation regression: initial must be returned even with no neighbors.", (P/'feasible_cost_checks.inc').read_text() + "\n    ' One-evaluation regression: initial must be returned even with no neighbors.")
+end = end.replace("    ' One-evaluation regression: initial must be returned even with no neighbors.", (P/'force_chain_checks.inc').read_text() + "\n    ' One-evaluation regression: initial must be returned even with no neighbors.")
 put('RegressionMain.bas',start+(P/'fixture_checks.inc').read_text()+end)

@@ -1,0 +1,4 @@
+eta=0: independent full grid 520200 rows agrees on stability count 292021, screened count 288781, selected geometry row 9039, three independent steel layouts and relaxed estimate 9144.07550000.
+eta=1: independent full grid 520200 rows agrees on stability count 309671, screened count 306427, selected geometry row 7228, three independent steel layouts and relaxed estimate 8273.14368000.
+120 native bar alternatives independently checked. Native production BA: no accepted design in either case; WSD remains UNVERIFIED.
+Every native geometry status agrees after dimension-equality tolerance; equal heel/toe is rejected consistently. No selected minimum lies on that boundary.

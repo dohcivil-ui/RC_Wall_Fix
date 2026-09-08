@@ -6,6 +6,8 @@ New-Item -ItemType Directory -Path $runEvidence -Force | Out-Null
 Set-Location -LiteralPath $projectRoot
 python audit\independent_checks.py
 if ($LASTEXITCODE -ne 0) { throw 'Independent checks failed' }
+python audit\build_force_chain_checks.py
+if ($LASTEXITCODE -ne 0) { throw 'Independent force-chain fixtures failed' }
 python audit\build_harness.py
 if ($LASTEXITCODE -ne 0) { throw 'Harness generation failed' }
 
@@ -41,6 +43,7 @@ $native = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'native-regress
 $gui = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'gui-regression.txt')
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'native-regression.txt') -Destination $runEvidence
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'gui-regression.txt') -Destination $runEvidence
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'force-chain-native.csv'), (Join-Path $PSScriptRoot 'force-chain-independent.json'), (Join-Path $PSScriptRoot 'stem-shear-native.csv'), (Join-Path $PSScriptRoot 'stem-shear-independent.json') -Destination $runEvidence
 Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $PSScriptRoot 'RC_RT_HCA_v2.exe'), (Join-Path $PSScriptRoot 'Regression.exe'), (Join-Path $PSScriptRoot 'GuiRegression.exe') | Format-List | Out-File (Join-Path $runEvidence 'binary-hashes.txt')
 if ($native -notmatch 'TOTAL checks=\d+; failures=0' -or $native -match 'FATAL|FAIL:') { throw 'Native regression failed; read audit/native-regression.txt' }
 if ($gui -notmatch 'GUI failures=0' -or $gui -match 'FATAL') { throw 'GUI regression failed; read audit/gui-regression.txt' }
