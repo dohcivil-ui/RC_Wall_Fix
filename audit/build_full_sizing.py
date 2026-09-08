@@ -5,6 +5,7 @@ is explicitly a relaxed diagnostic while EIT criteria remain unverified.
 """
 from pathlib import Path
 import re
+import math
 import json
 P = Path(__file__).resolve().parent
 form = (P.parent/'Form1.frm').read_bytes().decode('latin1')
@@ -16,7 +17,7 @@ for name, body in re.findall(r'Begin VB.TextBox (\w+)(.*?)\bEnd\b', form, re.S):
 inputs = dict(H=5.0, H1=defaults['txtH1'], gamma_soil=defaults['txtGammaSoil'],
               gamma_concrete=defaults['txtGammaCon'], phi=defaults['txtPhi'], mu=defaults['txtMu'],
               qa_allowable=defaults['txtQa'], cover=defaults['txtCover']/100,
-              seed=int(defaults['txtSeed']), budget=int(defaults['txtMaxIter']), fc=320, fy=4000, passive_factor=1)
+              seed=int(defaults['txtSeed']), budget=int(defaults['txtMaxIter']), fc=320, fy=4000, passive_factor=1, modular_ratio_model="Es/Ec", n=2040000/(15100*math.sqrt(320)))
 (P/'full-sizing-inputs.json').write_text(json.dumps(dict(source='Form1.frm design-time TextBox values; H=5 and fc=320 retained from requested study; one project trial with active and full passive, not the default research trial count', inputs=inputs),indent=2),encoding='ascii')
 def put(name, text):
     for key,value in inputs.items():

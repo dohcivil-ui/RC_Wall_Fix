@@ -5,7 +5,7 @@ from independent_checks import reference, integrate
 from independent_stem_profile import stem_profile
 
 P=Path(__file__).resolve().parent
-n = 9.0  # User-selected project assumption; not an automatic Es/Ec value.
+n = 2040000 / (15100 * math.sqrt(320))  # Reference Es/Ec, without intermediate rounding.
 inputs=json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 rows=list(csv.DictReader((P/'full-sizing-summary.csv').open()))
 assert len(rows)==1 and int(rows[0]["eta"])==1

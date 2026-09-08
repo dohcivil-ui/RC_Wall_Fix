@@ -2,7 +2,7 @@
 import math
 import numpy as np
 
-n = 9.0  # User-selected project assumption for this profile suite.
+n = 2040000 / (15100 * math.sqrt(320))  # H5 reference material model.
 
 def stem_profile(h, h1, tb, tt, tbase, cover, db, spacing, eta):
     hs, hp = h-tbase, h1-tbase

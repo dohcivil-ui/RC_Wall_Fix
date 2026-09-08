@@ -5,10 +5,10 @@
 **ยังไม่รับรองแบบตาม วสท. 2562 และยังไม่ได้รัน batch วิจัย** เกณฑ์ที่ยังไม่มีข้ออ้างอิงครบแสดงสถานะ `WSD_CRITERIA_UNVERIFIED` ค่าที่ทำให้แบบผ่านใน test harness เป็นข้อมูลจำลองสำหรับตรวจซอฟต์แวร์เท่านั้น
 
 - [กรณีแรงโครงการ: active และ passive เต็มค่า](audit/PROJECT_LOAD_CASE_TH.md)
-- [ยืนยันใช้ n=9: พารามิเตอร์และผลคำนวณล่าสุด](audit/WSD_REFERENCE_PARAMETERS_TH.md)
+- [ประเมินผลกระทบ n และใช้ Es/Ec ตามหลักฐาน](audit/MODULAR_RATIO_DECISION_TH.md)
 - เปิดโปรเจกต์หลัก: `RC_RT_HCA_v2.vbp`
 - [รายการแก้ สมมติฐาน สูตร และสิ่งที่ต้องยืนยัน](audit/CALCULATION_AUDIT.md)
-- [ผลตรวจด้วย VB6 จริง: 257 checks, failures=0](audit/native-regression.txt)
+- [ผลตรวจด้วย VB6 จริง: 267 checks, failures=0](audit/native-regression.txt)
 - [ผลทดสอบปุ่ม BA/HCA บนฟอร์มจริง](audit/gui-regression.txt)
 - [หลักฐานคอมไพล์โปรเจกต์หลัก](audit/final-compile-RC_RT_HCA_v2.log)
 - [หลักฐานก่อนแก้และสำเนาซอร์สตั้งต้น](audit/baseline)

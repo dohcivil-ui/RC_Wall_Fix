@@ -1,4 +1,4 @@
-"""Independent checks of the user-selected n=9 project model in native VB6.
+"""Independent checks of the authorized Es/Ec material model in native VB6.
 Pongnathee Chapter 10, printed pages 342-343, user-supplied PDF pages 10-11.
 No claim that this teaching example establishes EIT 011007-19 compliance.
 """
@@ -15,8 +15,8 @@ vb = ['    Dim refParams As WSDParams, refFile As Integer',
 for fc_prime, fy in [(180,3000),(210,4000),(240,4000),(280,4000),(320,4000)]:
     ec = 15100 * math.sqrt(fc_prime)
     n_reference = 2040000 / ec
-    n = 9.0  # Explicit project assumption selected by the user.
-    ec_model = 2040000 / n  # Equivalent stiffness for checking this assumed n.
+    n = n_reference
+    ec_model = ec
     fc = .45 * fc_prime
     fs = 1500 if fy == 3000 else 1700
     # At balance, a linear strain diagram gives x/d = eps_c/(eps_c+eps_s).
@@ -25,16 +25,16 @@ for fc_prime, fy in [(180,3000),(210,4000),(240,4000),(280,4000),(320,4000)]:
     j = 1-k/3
     R = fc*k*j/2
     rho = fc*k/(2*fs)
-    rows.append(dict(fc_prime=fc_prime,fy=fy,Es=2040000,Ec_reference=ec,n_reference=n_reference,Ec_equivalent_assumed_n=ec_model,n=n,k=k,j=j,R=R,rho_bal=rho))
+    rows.append(dict(fc_prime=fc_prime,fy=fy,Es=2040000,Ec_reference=ec,n_reference=n_reference,Ec_used=ec_model,n=n,k=k,j=j,R=R,rho_bal=rho))
     vb.append(f'    refParams = CalculateWSDParameters({fy}, {fc_prime})')
     for field,value in [('n',n),('k',k),('j',j),('R',R)]:
-        vb.append(f'    Call Near("project n9 fc{fc_prime} {field}", refParams.{field}, {value:.12f})')
-    vb.append(f'    Call Near("project n9 fc{fc_prime} balanced rho", CalculateRhoBalanced(refParams), {rho:.12f})')
+        vb.append(f'    Call Near("reference Es/Ec fc{fc_prime} {field}", refParams.{field}, {value:.12f})')
+    vb.append(f'    Call Near("reference Es/Ec fc{fc_prime} balanced rho", CalculateRhoBalanced(refParams), {rho:.12f})')
     vb.append(f'    Print #refFile, "{fc_prime},{fy}," & CsvNumber(refParams.n) & "," & CsvNumber(refParams.k) & "," & CsvNumber(refParams.j) & "," & CsvNumber(refParams.R) & "," & CsvNumber(CalculateRhoBalanced(refParams))')
     # The actual-bar solver must reproduce both allowable stresses at balance.
     vb.append('    Call SectionStresses(CalculateMomentCapacity(refParams.R, 0.3), 0.3, CalculateRhoBalanced(refParams) * 100# * 30#, refParams.n, ca, sa, ja)')
     for field,value in [('ca',fc),('sa',fs),('ja',j)]:
-        vb.append(f'    Call Near("project n9 fc{fc_prime} actual balanced {field}", {field}, {value:.12f})')
+        vb.append(f'    Call Near("reference Es/Ec fc{fc_prime} actual balanced {field}", {field}, {value:.12f})')
 vb.append('    Close #refFile')
 # A sparse real layout is not balanced: its neutral axis differs substantially.
 n = rows[-1]['n']
@@ -56,6 +56,6 @@ vb.append('    Err.Clear')
 vb.append('    On Error GoTo Fatal')
 (P/'reference_parameter_checks.inc').write_text('\n'.join(vb)+'\n',encoding='ascii')
 (P/'wsd-reference-independent.json').write_text(json.dumps(dict(materials=rows,actual_DB16=actual,
-    pdf_example_note='The PDF example adopts n=9 at fc_prime=210; the user explicitly adopts n=9 for this project as well.',
-    model_note='Use the user-selected n=9 for all project material choices. Es/Ec is recorded for comparison only. EIT edition applicability remains unverified.'),indent=2),encoding='ascii')
+    pdf_example_note='The PDF example rounds n for fc_prime=210; current project uses unrounded Es/Ec after checking decision sensitivity.',
+    model_note='User authorized Es/Ec when fixed n changes acceptance decisions. Use unrounded Es/Ec; complete EIT compliance remains unverified.'),indent=2),encoding='ascii')
 print('Reference parameter fixtures generated: 5 materials and actual-bar/balanced-section distinction.')

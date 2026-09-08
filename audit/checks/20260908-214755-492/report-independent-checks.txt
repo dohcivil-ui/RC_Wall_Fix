@@ -1,0 +1,4 @@
+Case 1: numerical agreement at four-decimal report precision; missing criteria remain UNVERIFIED.
+Case 2: numerical agreement at four-decimal report precision; missing criteria remain UNVERIFIED.
+Case 3: numerical agreement at four-decimal report precision; missing criteria remain UNVERIFIED.
+Independent comparisons: 47; mismatches=0. Actual VB6 execution evidence is separate in native-regression.txt.

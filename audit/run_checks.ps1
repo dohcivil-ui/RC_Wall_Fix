@@ -10,6 +10,8 @@ python audit\build_force_chain_checks.py
 if ($LASTEXITCODE -ne 0) { throw 'Independent force-chain fixtures failed' }
 python audit\build_reference_parameter_checks.py
 if ($LASTEXITCODE -ne 0) { throw 'Reference parameter fixtures failed' }
+python audit\assess_modular_ratio.py
+if ($LASTEXITCODE -ne 0) { throw 'Modular ratio sensitivity fixtures failed' }
 python audit\build_harness.py
 if ($LASTEXITCODE -ne 0) { throw 'Harness generation failed' }
 
@@ -41,6 +43,7 @@ foreach ($name in @('Regression', 'GuiRegression')) {
     $process = Start-Process -FilePath $exePath -WorkingDirectory $PSScriptRoot -WindowStyle Hidden -PassThru
     if (-not $process.WaitForExit(30000)) { throw "Test still running: $name (PID $($process.Id))" }
 }
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'modular-ratio-sensitivity-native.csv'), (Join-Path $PSScriptRoot 'modular-ratio-sensitivity.json') -Destination $runEvidence
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'wsd-reference-native.csv'), (Join-Path $PSScriptRoot 'wsd-reference-independent.json') -Destination $runEvidence
 $native = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'native-regression.txt')
 $gui = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'gui-regression.txt')

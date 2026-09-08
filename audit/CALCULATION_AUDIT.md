@@ -43,7 +43,7 @@ fc_actual = 2*|M|/(b*k*j*d^2)
 
 ใช้ As ของ DB/spacing จริงในการตรวจ **ทั้ง**คอนกรีตและเหล็ก; ไม่พึ่งการเช็ก As อย่างเดียวหรือ j สมดุลค่าคงที่ รายงานแสดงหน่วยแรงและ d จากเครื่องคำนวณชุดเดียวกับตัวตรวจ
 
-ปัจจุบันใช้ **`n=9` ตามสมมติฐานที่ผู้ใช้ตั้งใจเลือกสำหรับโปรเจกต์นี้** ไม่เปลี่ยนเป็น Es/Ec อัตโนมัติ (ดู [ข้อชี้แจงและพารามิเตอร์](WSD_REFERENCE_PARAMETERS_TH.md)); ส่วน `fc_allow=0.45f'c`, `fs_allow=1500/1700` ยังมีไว้เป็น **legacy screening parameters** ไม่อ้างว่าเป็นข้อกำหนดที่ยืนยันแล้วจาก วสท. 2562. แก้คำอธิบาย n เป็น Es/Ec และ ρbalanced จากสมดุลมีตัวคูณ 1/2. เอาการใช้ 0.75ρbalanced เป็นเกณฑ์สูงสุดอัตโนมัติออก เพราะยังไม่มีข้ออ้างอิง WSD ที่ตรวจสอบได้
+ปัจจุบันใช้ **`n=Es/Ec` ตามสมการใน ref** หลังผู้ใช้อนุญาตและผลทดสอบพบผลต่อการตัดสินหน้าตัด (ดู [การประเมินความไว](MODULAR_RATIO_DECISION_TH.md)); ส่วน `fc_allow=0.45f'c`, `fs_allow=1500/1700` ยังมีไว้เป็น **legacy screening parameters** ไม่อ้างว่าเป็นข้อกำหนดที่ยืนยันแล้วจาก วสท. 2562. แก้คำอธิบาย n เป็น Es/Ec และ ρbalanced จากสมดุลมีตัวคูณ 1/2. เอาการใช้ 0.75ρbalanced เป็นเกณฑ์สูงสุดอัตโนมัติออก เพราะยังไม่มีข้ออ้างอิง WSD ที่ตรวจสอบได้
 
 หน้ามาตรฐานของ [วสท. รายการหนังสือหน้า 80](https://eit.or.th/showcase/EIT/issue2_68/files/basic-html/page80.html) ยืนยันชื่อมาตรฐาน WSD รหัส **011007-19**, ISBN 978-616-396-023-8 ได้ แต่ไม่ได้ให้เนื้อหาข้อกำหนด จึง **ยังยืนยันไม่ได้**: modular ratio, หน่วยแรงยอมให้แยกวัสดุ/สมาชิก, หน่วยแรงเฉือนและหน้าตัดวิกฤต, เหล็กขั้นต่ำของ stem/ฐานและทิศทาง, เหล็กหดตัว/อุณหภูมิ, ระยะเรียง/ระยะใส, development/anchorage และรายละเอียดต่อเนื่อง
 
@@ -76,7 +76,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File audit\run_checks.ps1
 
 สคริปต์คอมไพล์โปรเจกต์จริง, native regression และ GUI regression ด้วย `VB6.EXE` ของเครื่องนี้ เก็บ compile log แยกใหม่ทุกครั้ง (VB6 /out เป็น append จึงไม่ใช้ log เก่าตัดสิน) รัน EXE จริงและตรวจข้อความผล ไม่ใช้ Python แทนหลักฐาน VB6
 
-- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **257 checks, failures=0**
+- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **267 checks, failures=0**
 - [ผลฟอร์มจริง](gui-regression.txt): **GUI failures=0**; Load/Show Form1 แล้วเรียก Click ของปุ่ม BA/HCA จริง ทั้งแบบ no-solution 2 trials และเกณฑ์จำลองที่ได้คำตอบ พร้อมรายงาน/กราฟและการคืนสถานะปุ่ม
 - [ผล compile โปรเจกต์](final-compile-RC_RT_HCA_v2.log), [native harness](final-compile-Regression.log), [GUI harness](final-compile-GuiRegression.log); สำเนาหลักฐานแต่ละรอบและ hash EXE อยู่ใต้ `checks`
 - [รายการอิสระ](independent-results.json) ใช้ Simpson integration ของแรง/แขน, polygon centroid และแก้ neutral axis โดยตรงเพื่อสร้าง expected values จากนั้นเทียบกับ VB6. มี H=3,4,5 ทั้งหน้าตัดหนาและบาง, e บวก/ลบ, โมเมนต์และแรงเฉือน toe/heel, concrete-only failure, ข้อมูลผิด, reversal และ passive ทั้ง 0/1
@@ -110,7 +110,7 @@ See [latest Thai report](H5_REVIEWED_CALCULATION_TH.md). This run reads qa=30 al
 The user supplied the Pongnathee Chapter 10 example. Its n=9 is an approximation for f'c=210, not a constant for all strengths. CalculateWSDParameters now uses the unrounded Es/Ec equation; balanced k/j/R are explicitly labelled, while actual-bar checks retain their own neutral axis. See [reference audit and current recalculation](WSD_REFERENCE_PARAMETERS_TH.md). Native regression: 256 checks, failures=0; GUI failures=0. Both full grids were rerun; the selected prices are unchanged but stresses and screened counts changed. This establishes the teaching-reference model, not complete EIT 011007-19 compliance.
 
 
-## User-selected modular ratio restored (current)
+## Prior user-selected modular ratio (superseded by sensitivity decision)
 
 The user clarified that n=9 was an intentional project assumption. The earlier classification of this choice as a software bug was incorrect. Production CalculateWSDParameters now uses PROJECT_MODULAR_RATIO=9, with no automatic replacement by Es/Ec. Balanced k/j/R still respond to the material allowables; actual-bar k/j still come from As and d. See [current parameter report](WSD_REFERENCE_PARAMETERS_TH.md). Earlier Es/Ec calculations are historical comparisons, not the active project configuration.
 
@@ -118,3 +118,8 @@ The user clarified that n=9 was an intentional project assumption. The earlier c
 ## Current project load case: active plus full passive
 
 The user specifies active loading from H and full passive from front H1. InitializeArrays now sets PROJECT_PASSIVE_FACTOR=1 for Form1 and both optimizers. The current sizing study contains one project case; earlier comparison runs are historical. See [project load case](PROJECT_LOAD_CASE_TH.md). Unit-level isolated force checks are not alternative project designs.
+
+
+## Current modular ratio: authorized Es/Ec following decision sensitivity
+
+The user authorized Es/Ec if fixed n=9 materially affects design. A native VB6 example changes concrete stress from 142.1757 to 148.4529 ksc against a 144 ksc limit, with the same loads, As and d. Archived same-load native grids differ by 592 flexurally screened geometries. Production now uses unrounded Es/Ec. See [decision report](MODULAR_RATIO_DECISION_TH.md). Active and full passive remain the single project load case.

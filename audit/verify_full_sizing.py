@@ -10,7 +10,7 @@ import numpy as np
 from independent_stem_profile import stem_profile
 
 P = Path(__file__).resolve().parent
-n = 9.0  # User-selected project assumption; not an automatic Es/Ec value.
+n = 2040000 / (15100 * math.sqrt(320))  # Reference Es/Ec, without intermediate rounding.
 native = list(csv.DictReader((P/'full-sizing-summary.csv').open()))
 inputs = json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 # This independent model verifies the requested H5 material/soil case. Refuse
@@ -18,6 +18,7 @@ inputs = json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 for key, value in dict(H=5,H1=1.2,gamma_soil=1.8,gamma_concrete=2.4,phi=30,mu=.6,cover=.075,fc=320,fy=4000).items():
     assert abs(inputs[key]-value) < 1e-9, (key,inputs[key])
 assert len(native) == 1 and inputs["passive_factor"] == 1
+assert inputs["modular_ratio_model"] == "Es/Ec" and abs(inputs["n"]-n) < 1e-12
 tt, tb, z, width, toe = [x.ravel() for x in np.meshgrid(
     np.round(np.linspace(.2, .6, 17), 3), np.round(np.linspace(.2, 1, 17), 2),
     np.round(np.linspace(.3, 1, 15), 2), np.arange(1.5, 7.01, .5), np.round(np.linspace(.3, 1.2, 10), 1), indexing='ij')]
