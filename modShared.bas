@@ -676,7 +676,7 @@ Public Function CheckDesignValid(d As Design, _
     FS_OT = 0: FS_SL = 0: FS_BC = 0: d.IsValid = False
     LastValidationReason = "INVALID_GEOMETRY_OR_INPUT"
     If Not GeometryOK(d) Then Exit Function
-    If d.LHeel < 0.3 Or d.LHeel <= d.LToe Then Exit Function
+    If Not CheckHeelLayout(d) Then Exit Function
     If d.UseDoubleStem Or d.UseDoubleToe Or d.UseDoubleHeel Then
         LastValidationReason = "UNSUPPORTED_DOUBLE_LAYER": Exit Function
     End If
@@ -1111,7 +1111,7 @@ Public Function BuildDesignCheckReport(d As Design, Optional stemOnly As Boolean
         result = result & AuditRow("Toe / heel / wall stability", "Not evaluated", "Full candidate required", "OUT_OF_SCOPE", "Reference specifies stem steel only")
     Else
         result = result & AuditCompare("Heel length", d.LHeel, 0.3, True, "m", "Existing project geometry rule", failed)
-        If d.LHeel <= d.LToe Then
+        If Not CheckHeelLayout(d) Then
             failed = True
             result = result & AuditRow("Heel/toe", CStr(d.LHeel), "heel > toe", "FAIL_LISTED_LIMIT", "Existing project geometry rule")
         End If
@@ -1139,4 +1139,11 @@ Public Function BuildDesignCheckReport(d As Design, Optional stemOnly As Boolean
     Exit Function
 InvalidAudit:
     BuildDesignCheckReport = "AUDIT RESULT: INVALID_DATA; " & Err.Description & vbCrLf & result
+End Function
+
+' Stable comparison for dimensions represented by binary floating point.
+' The existing project rule is heel >= 0.3 m and strictly greater than toe.
+Public Function CheckHeelLayout(d As Design) As Boolean
+    Const dimensionTolerance As Double = 0.000000001
+    CheckHeelLayout = (d.LHeel >= 0.3 - dimensionTolerance And d.LHeel - d.LToe > dimensionTolerance)
 End Function

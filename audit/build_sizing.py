@@ -57,7 +57,7 @@ Public Sub Main()
                 d.ASst_Sp = sp: d.AStoe_Sp = sp: d.ASheel_Sp = sp
                 ds = SectionDepth(d.tb, db): dt = SectionDepth(d.TBase, db)
                 ms = CalculateMomentStem(d): mt = CalculateMomentToe(d): mh = CalculateMomentHeel(d)
-                ok = GeometryOK(d) And d.LHeel >= 0.3 And d.LHeel > d.LToe
+                ok = GeometryOK(d) And CheckHeelLayout(d)
                 ok = CheckFS_OT(d, ot) And ok
                 ok = CheckFS_SL(d, sl) And ok
                 ok = CheckFS_BC(d, bc, e, qmax, qmin) And ok

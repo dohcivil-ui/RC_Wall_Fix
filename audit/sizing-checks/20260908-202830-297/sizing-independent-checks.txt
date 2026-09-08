@@ -1,0 +1,2 @@
+Independent sizing verification: 960 numeric comparisons and 120 screening classifications agree.
+57 within known checks; 0 accepted as a complete WSD design.

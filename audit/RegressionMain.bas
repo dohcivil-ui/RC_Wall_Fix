@@ -111,6 +111,11 @@ Public Sub Main()
     d = Fixture(0.6, 0.7, 1.5, 0.5)
     textA = BuildDesignCheckReport(d)
     Call AssertTrue("partial contact audit rejects base and retains stem", InStr(textA, "FAIL_MODEL") > 0 And InStr(textA, "Stem steel stress") > 0 And InStr(textA, "Toe bars") = 0)
+    d = Fixture(0.6, 0.7, 3, 1.2)
+    d.LHeel = d.LToe + 0.000000000000001
+    Call AssertTrue("equal heel/toe roundoff rejected", Not CheckHeelLayout(d))
+    d.LHeel = d.LToe + 0.025: d.Base = d.LToe + d.tb + d.LHeel
+    Call AssertTrue("distinct heel/toe preserved", CheckHeelLayout(d))
 
     ' Synthetic thresholds exercise branches only; no normative claim.
     WSDReviewed = True: WSDSource = "SYNTHETIC TEST FIXTURE ONLY - not EIT"

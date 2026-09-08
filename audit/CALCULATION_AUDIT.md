@@ -76,7 +76,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File audit\run_checks.ps1
 
 สคริปต์คอมไพล์โปรเจกต์จริง, native regression และ GUI regression ด้วย `VB6.EXE` ของเครื่องนี้ เก็บ compile log แยกใหม่ทุกครั้ง (VB6 /out เป็น append จึงไม่ใช้ log เก่าตัดสิน) รัน EXE จริงและตรวจข้อความผล ไม่ใช้ Python แทนหลักฐาน VB6
 
-- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **150 checks, failures=0**
+- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **152 checks, failures=0**
 - [ผลฟอร์มจริง](gui-regression.txt): **GUI failures=0**; Load/Show Form1 แล้วเรียก Click ของปุ่ม BA/HCA จริง ทั้งแบบ no-solution 2 trials และเกณฑ์จำลองที่ได้คำตอบ พร้อมรายงาน/กราฟและการคืนสถานะปุ่ม
 - [ผล compile โปรเจกต์](final-compile-RC_RT_HCA_v2.log), [native harness](final-compile-Regression.log), [GUI harness](final-compile-GuiRegression.log); สำเนาหลักฐานแต่ละรอบและ hash EXE อยู่ใต้ `checks`
 - [รายการอิสระ](independent-results.json) ใช้ Simpson integration ของแรง/แขน, polygon centroid และแก้ neutral axis โดยตรงเพื่อสร้าง expected values จากนั้นเทียบกับ VB6. มี H=3,4,5 ทั้งหน้าตัดหนาและบาง, e บวก/ลบ, โมเมนต์และแรงเฉือน toe/heel, concrete-only failure, ข้อมูลผิด, reversal และ passive ทั้ง 0/1
@@ -94,3 +94,7 @@ See [H5 result in Thai](H5_CHECK_RESULT_TH.md) and [actual VB6 tables](h5-vb6-ch
 ## Feasibility before cost (2026-09-08)
 
 See [selection order and native evidence](FEASIBLE_COST_ORDER.md). Search pricing now occurs only after all three stability checks AND the remaining structural criteria succeed. Rejected candidates retain the no-solution sentinel, never compete on price, and still consume one evaluation. Native regression: 150 checks, failures=0; GUI failures=0. BA and original pricing formulas remain unchanged.
+
+## H5 independent-member recalculation (2026-09-08)
+
+See [new active/passive report](H5_RECALCULATION_TH.md). Native BA retains full validation and reports no solution; a separate explicitly relaxed grid sizes the three members independently. Two complete 520200-row grids agree with independent calculation after fixing binary-roundoff handling of heel=toe through shared CheckHeelLayout. No EIT criteria were invented or enabled. Native regression: 152 checks, failures=0; GUI failures=0.

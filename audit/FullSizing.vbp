@@ -1,0 +1,9 @@
+Type=Exe
+Module=FullSizingMain; FullSizingMain.bas
+Module=modDataStructures; ..\modDataStructures.bas
+Module=modWSD; ..\modWSD.bas
+Module=modShared; ..\modShared.bas
+Module=modBA; ..\modBA.bas
+Startup="Sub Main"
+Name="NativeFullSizing"
+ExeName32="FullSizing.exe"
