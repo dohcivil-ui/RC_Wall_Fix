@@ -1,0 +1,14 @@
+method=BA; evaluations=1024; elapsed=1.91727239987813
+slot=0; calls=1202; seconds=0.130580701981671
+slot=1; calls=856; seconds=7.07676964811981E-02
+slot=2; calls=658; seconds=3.05361986393109E-02
+slot=3; calls=1202; seconds=7.848049281165E-04
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\result_csv\BA-25690909-010659-seed12345
+DUPLICATE_VALIDATION_DETECTED
+method=HCA; evaluations=1024; elapsed=0.590793999959715
+slot=0; calls=1261; seconds=3.94201988819987E-02
+slot=1; calls=737; seconds=2.90383971296251E-02
+slot=2; calls=575; seconds=5.34899905323982E-03
+slot=3; calls=1261; seconds=6.89601758494973E-04
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\result_csv\HCA-25690909-010701-seed12345
+DUPLICATE_VALIDATION_DETECTED

@@ -13,7 +13,7 @@ Attribute VB_Name = "modShared"
 '================================================================================
 Option Explicit
 Public BatchMode As Boolean
-Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\result_csv"
+Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\result_csv"
 ' H and H1 are elevations above the underside of the base; H1 is FRONT soil.
 ' Vertical back of stem, front taper, level dry cohesionless soil, no surcharge.
 ' Project load model: active behind the wall and full passive from FRONT H1.
@@ -988,6 +988,8 @@ End Sub
 Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateCost As Double) As Boolean
     Dim ot As Double, sl As Double, bc As Double, ok As Boolean, improved As Boolean
     Dim exportPrice As String, quantities As ProjectDetail
+    Dim perfStart As Double, logStart As Double
+    perfStart = ClockSeconds()
     If EvaluationCount >= EvaluationBudget Then Err.Raise 5, , "Evaluation budget exhausted"
     EvaluationCount = EvaluationCount + 1
     candidateCost = NO_SOLUTION_COST
@@ -1002,6 +1004,7 @@ Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateC
             RunStatus = "SOLUTION_FOUND_CONFIGURED_CHECKS"
         End If
     End If
+    logStart = ClockSeconds()
     ' Keep search cost/validity unchanged; export rejected material quantities separately.
     If ok Then
         exportPrice = CsvPrice(candidateCost)
@@ -1017,6 +1020,8 @@ Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateC
         CsvNumber(candidateCost) & "," & CsvNumber(RunBestCost) & "," & CsvNumber(d.tt) & "," & CsvNumber(d.tb) & "," & _
         CsvNumber(d.TBase) & "," & CsvNumber(d.Base) & "," & CsvNumber(d.LToe) & "," & _
         d.ASst_DB & "," & d.ASst_Sp & "," & d.AStoe_DB & "," & d.AStoe_Sp & "," & d.ASheel_DB & "," & d.ASheel_Sp & vbCrLf
+    ProfileSeconds(5) = ProfileSeconds(5) + ClockSeconds() - logStart
+    ProfileSeconds(4) = ProfileSeconds(4) + ClockSeconds() - perfStart
     EvaluateCandidate = ok
 End Function
 
@@ -1029,6 +1034,8 @@ Public Function CsvNumber(value As Double) As String
 End Function
 
 Public Sub FinishSearch()
+    Dim perfStart As Double
+    perfStart = ClockSeconds()
     Dim f As Integer
     modDataStructures.BestCostIteration = RunBestEvaluation
     If Not RunBest.IsValid Then RunBest.TotalCost = NO_SOLUTION_COST
@@ -1056,6 +1063,7 @@ Public Sub FinishSearch()
     Close #f
     If RunAlgorithm = "BA" Then SaveAcceptCSV_BA H
     If RunAlgorithm = "HCA" Then SaveAcceptCSV H
+    ProfileSeconds(7) = ProfileSeconds(7) + ClockSeconds() - perfStart
 End Sub
 
 Public Function ResultCsvRoot() As String

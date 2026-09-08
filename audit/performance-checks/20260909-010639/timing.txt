@@ -1,0 +1,24 @@
+method=BA; evaluations=1024; elapsed=0.147557299933396
+slot=0; calls=1202; seconds=0.051935902913101
+slot=1; calls=856; seconds=3.62381979357451E-02
+slot=2; calls=658; seconds=1.06899023521692E-02
+slot=3; calls=1202; seconds=5.99797698669136E-04
+slot=4; calls=0; seconds=0.132648603408597
+slot=5; calls=0; seconds=8.02067011827603E-02
+slot=6; calls=0; seconds=4.00800246279687E-03
+slot=7; calls=0; seconds=4.65870008338243E-03
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\result_csv\BA-25690909-010903-seed12345
+DUPLICATE_VALIDATION_DETECTED
+method=HCA; evaluations=1024; elapsed=7.23249998409301E-02
+slot=0; calls=1261; seconds=3.84742980822921E-02
+slot=1; calls=737; seconds=2.86695993272588E-02
+slot=2; calls=575; seconds=5.31769834924489E-03
+slot=3; calls=1261; seconds=5.26901101693511E-04
+slot=4; calls=0; seconds=6.31057001883164E-02
+slot=5; calls=0; seconds=2.42543993517756E-02
+slot=6; calls=0; seconds=1.51850027032197E-03
+slot=7; calls=0; seconds=5.09190000593662E-03
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\result_csv\HCA-25690909-010903-seed12345
+DUPLICATE_VALIDATION_DETECTED

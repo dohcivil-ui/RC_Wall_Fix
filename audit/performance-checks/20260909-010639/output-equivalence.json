@@ -1,0 +1,26 @@
+[
+  {
+    "file": "evaluations.csv",
+    "rows": 1024,
+    "identical_bytes": true,
+    "sha256": "6ffc827eca6626f1c5365c1867e9591d9520139f643b783a7bcfe3e8f619e343"
+  },
+  {
+    "file": "accept-BA-H5.csv",
+    "rows": 1024,
+    "identical_bytes": true,
+    "sha256": "613e2246090f6ceda238180255c939ca5ec17a31fcc6cd86fe4baf0c409e65af"
+  },
+  {
+    "file": "evaluations.csv",
+    "rows": 1024,
+    "identical_bytes": true,
+    "sha256": "4d963826ad3567a2d04e7e0c2c529d44eca174dfaedb0f6d327925f8797be6de"
+  },
+  {
+    "file": "accept-HCA-H5.csv",
+    "rows": 1024,
+    "identical_bytes": true,
+    "sha256": "d45f60a9227e8b8e85c140be32a13e5a77e26c9a2d34f382995cafc71f531651"
+  }
+]

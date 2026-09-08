@@ -1,0 +1,50 @@
+{
+  "before": [
+    {
+      "method": "BA",
+      "budget": 1024,
+      "seconds": 1.67859249992762,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\performance-checks\\20260909-010639\\result_csv\\BA-25690909-010801-seed12345"
+    },
+    {
+      "method": "HCA",
+      "budget": 1024,
+      "seconds": 0.618664700072259,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\performance-checks\\20260909-010639\\result_csv\\HCA-25690909-010802-seed12345"
+    }
+  ],
+  "after": [
+    {
+      "method": "BA",
+      "budget": 1024,
+      "seconds": 0.127752300002612,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\performance-checks\\20260909-010639\\production\\result_csv\\BA-25690909-011032-seed12345"
+    },
+    {
+      "method": "HCA",
+      "budget": 1024,
+      "seconds": 0.0680011999793351,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\performance-checks\\20260909-010639\\production\\result_csv\\HCA-25690909-011032-seed12345"
+    },
+    {
+      "method": "BA",
+      "budget": 5000,
+      "seconds": 0.647393799968995,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\performance-checks\\20260909-010639\\production\\result_csv\\BA-25690909-011032-seed12345-1"
+    },
+    {
+      "method": "HCA",
+      "budget": 5000,
+      "seconds": 0.556095300009474,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\performance-checks\\20260909-010639\\production\\result_csv\\HCA-25690909-011033-seed12345"
+    }
+  ],
+  "same_1024_evaluation_and_accept_bytes": true,
+  "budgets_verified": [
+    1024,
+    1024,
+    5000,
+    5000
+  ],
+  "scope": "Isolated compiled VB6, H5/fc320/seed12345. No 30-trial batch; IDE timing not measured."
+}

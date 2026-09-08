@@ -1,0 +1,44 @@
+method=BA; evaluations=1024; elapsed=0.127752300002612
+slot=0; calls=0; seconds=0
+slot=1; calls=0; seconds=0
+slot=2; calls=0; seconds=0
+slot=3; calls=0; seconds=0
+slot=4; calls=0; seconds=0
+slot=5; calls=0; seconds=0
+slot=6; calls=0; seconds=0
+slot=7; calls=0; seconds=0
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\production\result_csv\BA-25690909-011032-seed12345
+method=HCA; evaluations=1024; elapsed=6.80011999793351E-02
+slot=0; calls=0; seconds=0
+slot=1; calls=0; seconds=0
+slot=2; calls=0; seconds=0
+slot=3; calls=0; seconds=0
+slot=4; calls=0; seconds=0
+slot=5; calls=0; seconds=0
+slot=6; calls=0; seconds=0
+slot=7; calls=0; seconds=0
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\production\result_csv\HCA-25690909-011032-seed12345
+method=BA; evaluations=5000; elapsed=0.647393799968995
+slot=0; calls=0; seconds=0
+slot=1; calls=0; seconds=0
+slot=2; calls=0; seconds=0
+slot=3; calls=0; seconds=0
+slot=4; calls=0; seconds=0
+slot=5; calls=0; seconds=0
+slot=6; calls=0; seconds=0
+slot=7; calls=0; seconds=0
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\production\result_csv\BA-25690909-011032-seed12345-1
+method=HCA; evaluations=5000; elapsed=0.556095300009474
+slot=0; calls=0; seconds=0
+slot=1; calls=0; seconds=0
+slot=2; calls=0; seconds=0
+slot=3; calls=0; seconds=0
+slot=4; calls=0; seconds=0
+slot=5; calls=0; seconds=0
+slot=6; calls=0; seconds=0
+slot=7; calls=0; seconds=0
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\production\result_csv\HCA-25690909-011033-seed12345

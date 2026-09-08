@@ -1,0 +1,24 @@
+method=BA; evaluations=1024; elapsed=1.67859249992762
+slot=0; calls=1202; seconds=5.22080973023549E-02
+slot=1; calls=856; seconds=3.59025032958016E-02
+slot=2; calls=658; seconds=0.010077101062052
+slot=3; calls=1202; seconds=6.91296299919486E-04
+slot=4; calls=0; seconds=1.61438259971328
+slot=5; calls=0; seconds=1.56093969778158
+slot=6; calls=0; seconds=9.64949792250991E-03
+slot=7; calls=0; seconds=4.62352999020368E-02
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\result_csv\BA-25690909-010801-seed12345
+DUPLICATE_VALIDATION_DETECTED
+method=HCA; evaluations=1024; elapsed=0.618664700072259
+slot=0; calls=1261; seconds=4.10849956097081E-02
+slot=1; calls=737; seconds=3.04990033619106E-02
+slot=2; calls=575; seconds=5.35390106961131E-03
+slot=3; calls=1261; seconds=6.49997964501381E-04
+slot=4; calls=0; seconds=0.553682997007854
+slot=5; calls=0; seconds=0.511769199511036
+slot=6; calls=0; seconds=1.33340015308931E-02
+slot=7; calls=0; seconds=4.79292999953032E-02
+slot=8; calls=0; seconds=0
+run=C:\reserch 69\RC_Wall_Fix\audit\performance-checks\20260909-010639\result_csv\HCA-25690909-010802-seed12345
+DUPLICATE_VALIDATION_DETECTED
