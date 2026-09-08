@@ -12,7 +12,8 @@ Attribute VB_Name = "modHillClimbing"
 '================================================================================
 Option Explicit
 
-Public Const HCA_SEARCH_POLICY As String = "HCA_FINAL_MAIN_STEEL_SWEEP_V1"
+Public Const HCA_SEARCH_POLICY As String = "HCA_MAIN_STEEL_REFINEMENT_V1"
+Public Const HCA_STAGNATION_LIMIT As Long = 50
 Public HCARefinementCount As Long
 
 '================================================================================
@@ -301,7 +302,7 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
                        Optional TrialNumber As Long = 1) As Design
 
     Dim current As Design, neighbor As Design
-    Dim refinementVisit As Long, refinementVisits As Long, entry As String
+    Dim stagnant As Long, refinementVisit As Long, refinementVisits As Long, entry As String
     Dim currentCost As Double, neighborCost As Double, currentValid As Boolean, ok As Boolean
     Dim saved(1 To 11) As Integer
     Dim Newtt As Integer, Newtb As Integer, NewTBase As Integer, NewBase As Integer, NewLToe As Integer
@@ -348,11 +349,9 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
     If Not currentValid Then currentCost = NO_SOLUTION_COST
     modDataStructures.CostHistory(EvaluationCount) = RunBestCost
     Do While EvaluationCount < MaxIterations
-        ' Reserve one final 60-candidate steel sweep, counted inside the same budget.
-        ' Short runs keep the original random neighborhood throughout.
-        If MaxIterations > 2 * refinementVisits And MaxIterations - EvaluationCount = refinementVisits Then
+        If refinementVisit = 0 And stagnant >= HCA_STAGNATION_LIMIT Then
             refinementVisit = 1
-            HCARefinementCount = 1
+            HCARefinementCount = HCARefinementCount + 1
         End If
         saved(1) = Currenttt
         saved(2) = Currenttb
@@ -390,7 +389,9 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
         ok = EvaluateCandidate(neighbor, entry, neighborCost)
         If ok And (Not currentValid Or neighborCost < currentCost) Then
             current = neighbor: currentCost = neighborCost: currentValid = True
+            stagnant = 0
         Else
+            stagnant = stagnant + 1
             Currenttt = saved(1)
             Currenttb = saved(2)
             CurrentTBase = saved(3)
@@ -405,7 +406,7 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
         End If
         If refinementVisit > 0 Then
             refinementVisit = refinementVisit + 1
-            If refinementVisit > refinementVisits Then refinementVisit = 0
+            If refinementVisit > refinementVisits Then refinementVisit = 0: stagnant = 0
         End If
         modDataStructures.CostHistory(EvaluationCount) = RunBestCost
         DoEvents

@@ -1,0 +1,2 @@
+StartCost=8573.88408; EndCost=8538.41892; Evaluations=125
+PASS: cheaper admissible main-bar neighbor found inside the 125-evaluation budget

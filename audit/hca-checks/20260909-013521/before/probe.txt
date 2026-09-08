@@ -1,0 +1,35 @@
+INPUT H=5; H1=1.2; soil=1.8; conc=2.4; phi=30; mu=0.6; qa=30; cover=0.075; passive=1; geometry=True; heel=True; fc=320; fy=4000
+USER_HCA valid=True; cost=8573.88408; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+PAIR part=0; db=101; sp=110; cost=8573.88408
+PAIR part=0; db=102; sp=111; cost=8646.93688
+PAIR part=0; db=103; sp=112; cost=8960.83563
+PAIR part=0; db=104; sp=113; cost=8968.3692
+PAIR part=1; db=100; sp=110; cost=8573.88408
+PAIR part=1; db=101; sp=110; cost=8727.29496
+PAIR part=1; db=101; sp=111; cost=8610.41048
+PAIR part=1; db=101; sp=112; cost=8551.96824
+CHEAPER_PAIR
+PAIR part=1; db=102; sp=110; cost=8924.53752
+PAIR part=1; db=102; sp=111; cost=8741.90552
+PAIR part=1; db=102; sp=112; cost=8650.58952
+PAIR part=1; db=102; sp=113; cost=8595.79992
+PAIR part=1; db=103; sp=110; cost=9232.72902
+PAIR part=1; db=103; sp=111; cost=8947.36652
+PAIR part=1; db=103; sp=112; cost=8804.68527
+PAIR part=1; db=103; sp=113; cost=8719.07652
+PAIR part=1; db=104; sp=111; cost=9092.55896
+PAIR part=1; db=104; sp=112; cost=8913.5796
+PAIR part=1; db=104; sp=113; cost=8806.191984
+PAIR part=2; db=101; sp=110; cost=8573.88408
+PAIR part=2; db=102; sp=110; cost=8899.06776
+PAIR part=2; db=102; sp=111; cost=8597.97176
+PAIR part=2; db=103; sp=110; cost=9407.16726
+PAIR part=2; db=103; sp=111; cost=8936.70476
+PAIR part=2; db=103; sp=112; cost=8701.47351
+PAIR part=2; db=103; sp=113; cost=8560.33476
+CHEAPER_PAIR
+PAIR part=2; db=104; sp=111; cost=9176.07608
+PAIR part=2; db=104; sp=112; cost=8881.002
+PAIR part=2; db=104; sp=113; cost=8703.957552
+HCA5000 seed12365 cost=8573.88408; eval=4161; folder=C:\reserch 69\RC_Wall_Fix\audit\hca-checks\20260909-013521\before\result_csv\HCA-25690909-013942-seed12365
+HCA_BA_SEED valid=True; cost=8540.19588

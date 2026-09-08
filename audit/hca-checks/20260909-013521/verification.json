@@ -1,0 +1,62 @@
+{
+  "checked_native_runs": 8,
+  "results": [
+    {
+      "label": "HCA5000 seed12365 cost=8538.41892; eval=4996",
+      "budget": 5000,
+      "seed": 12365,
+      "best_cost": 8538.41892,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\HCA-25690909-014413-seed12365"
+    },
+    {
+      "label": "HCA_LOCAL125 cost=8538.41892; refinements=1",
+      "budget": 125,
+      "seed": 12365,
+      "best_cost": 8538.41892,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\HCA-25690909-014414-seed12365"
+    },
+    {
+      "label": "HCA5000 seed12345 cost=8654.44873",
+      "budget": 5000,
+      "seed": 12345,
+      "best_cost": 8654.44873,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\HCA-25690909-014414-seed12345-1"
+    },
+    {
+      "label": "HCA5000 seed12374 cost=8653.93045",
+      "budget": 5000,
+      "seed": 12374,
+      "best_cost": 8653.93045,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\HCA-25690909-014414-seed12374"
+    },
+    {
+      "label": "HCA_NO_SOLUTION valid=False",
+      "budget": 125,
+      "seed": 12345,
+      "best_cost": null,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\HCA-25690909-014415-seed12345"
+    },
+    {
+      "label": "BA5000 seed12345 cost=8633.38756",
+      "budget": 5000,
+      "seed": 12345,
+      "best_cost": 8633.38756,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\BA-25690909-014415-seed12345"
+    },
+    {
+      "label": "HCA_H3 cost=3263.28408",
+      "budget": 125,
+      "seed": 12345,
+      "best_cost": 3263.28408,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\HCA-25690909-014416-seed12345"
+    },
+    {
+      "label": "HCA_H4 cost=6715.26612",
+      "budget": 125,
+      "seed": 12345,
+      "best_cost": 6715.26612,
+      "run": "C:\\reserch 69\\RC_Wall_Fix\\audit\\hca-checks\\20260909-013521\\final\\result_csv\\HCA-25690909-014416-seed12345-1"
+    }
+  ],
+  "scope": "Three H5 HCA seeds, bounded H3/H4/local/no-solution tests, and BA control. No 30-trial rerun."
+}

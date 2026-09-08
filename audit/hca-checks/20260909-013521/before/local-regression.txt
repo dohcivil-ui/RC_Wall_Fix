@@ -1,0 +1,2 @@
+StartCost=8573.88408; EndCost=8573.88408; Evaluations=125
+FAIL: cheaper admissible main-bar neighbor missed inside the 125-evaluation budget

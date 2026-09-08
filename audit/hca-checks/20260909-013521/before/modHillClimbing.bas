@@ -12,9 +12,6 @@ Attribute VB_Name = "modHillClimbing"
 '================================================================================
 Option Explicit
 
-Public Const HCA_SEARCH_POLICY As String = "HCA_FINAL_MAIN_STEEL_SWEEP_V1"
-Public HCARefinementCount As Long
-
 '================================================================================
 ' SECTION 1: Module-Level Variables (?????? HCA)
 '================================================================================
@@ -254,22 +251,6 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
     
 End Sub
 
-Private Function MainSteelNeighbor(d As Design, visit As Long) As Design
-    ' Visit each existing DB/spacing pair for one member; keep geometry fixed.
-    Dim pairs As Long, pair As Long, DB As Integer, SP As Integer, candidate As Design
-    candidate = d
-    pairs = (DB_MAX - DB_MIN + 1) * (SP_MAX - SP_MIN + 1)
-    pair = (visit - 1) Mod pairs
-    DB = DB_MIN + pair \ (SP_MAX - SP_MIN + 1)
-    SP = SP_MIN + pair Mod (SP_MAX - SP_MIN + 1)
-    Select Case (visit - 1) \ pairs
-        Case 0: candidate.ASst_DB = DB: candidate.ASst_Sp = SP
-        Case 1: candidate.AStoe_DB = DB: candidate.AStoe_Sp = SP
-        Case 2: candidate.ASheel_DB = DB: candidate.ASheel_Sp = SP
-    End Select
-    MainSteelNeighbor = candidate
-End Function
-
 '================================================================================
 ' SECTION 5: Hill Climbing Algorithm (Main Optimization Function)
 ' v5.1: Fixed CSV Export - ????????????? Check Valid
@@ -301,7 +282,6 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
                        Optional TrialNumber As Long = 1) As Design
 
     Dim current As Design, neighbor As Design
-    Dim refinementVisit As Long, refinementVisits As Long, entry As String
     Dim currentCost As Double, neighborCost As Double, currentValid As Boolean, ok As Boolean
     Dim saved(1 To 11) As Integer
     Dim Newtt As Integer, Newtb As Integer, NewTBase As Integer, NewBase As Integer, NewLToe As Integer
@@ -317,8 +297,6 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
     ReDim modDataStructures.CostHistory(1 To MaxIterations)
     Call BeginSearch(MaxIterations, RandomSeed, "HCA", TrialNumber)
     Call InitializeCurrentDesign
-    HCARefinementCount = 0
-    refinementVisits = 3 * (DB_MAX - DB_MIN + 1) * (SP_MAX - SP_MIN + 1)
     If useSharedInit Then
         If sharedtt < TT_MIN Or sharedtt > TT_MAX Then Err.Raise 5, , "Invalid shared tt index"
         Currenttt = sharedtt
@@ -348,12 +326,6 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
     If Not currentValid Then currentCost = NO_SOLUTION_COST
     modDataStructures.CostHistory(EvaluationCount) = RunBestCost
     Do While EvaluationCount < MaxIterations
-        ' Reserve one final 60-candidate steel sweep, counted inside the same budget.
-        ' Short runs keep the original random neighborhood throughout.
-        If MaxIterations > 2 * refinementVisits And MaxIterations - EvaluationCount = refinementVisits Then
-            refinementVisit = 1
-            HCARefinementCount = 1
-        End If
         saved(1) = Currenttt
         saved(2) = Currenttb
         saved(3) = CurrentTBase
@@ -365,29 +337,20 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
         saved(9) = CurrentToeSP
         saved(10) = CurrentHeelDB
         saved(11) = CurrentHeelSP
-        If refinementVisit > 0 Then
-            entry = "steel_refine"
-            neighbor = MainSteelNeighbor(current, refinementVisit)
-            CurrentStemDB = neighbor.ASst_DB: CurrentStemSP = neighbor.ASst_Sp
-            CurrentToeDB = neighbor.AStoe_DB: CurrentToeSP = neighbor.AStoe_Sp
-            CurrentHeelDB = neighbor.ASheel_DB: CurrentHeelSP = neighbor.ASheel_Sp
-        Else
-            entry = "neighbor"
-            Call GenerateNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
-            Currenttt = Newtt
-            Currenttb = Newtb
-            CurrentTBase = NewTBase
-            CurrentBase = NewBase
-            CurrentLToe = NewLToe
-            CurrentStemDB = NewStemDB
-            CurrentStemSP = NewStemSP
-            CurrentToeDB = NewToeDB
-            CurrentToeSP = NewToeSP
-            CurrentHeelDB = NewHeelDB
-            CurrentHeelSP = NewHeelSP
-            neighbor = GetDesignFromCurrent()
-        End If
-        ok = EvaluateCandidate(neighbor, entry, neighborCost)
+        Call GenerateNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
+        Currenttt = Newtt
+        Currenttb = Newtb
+        CurrentTBase = NewTBase
+        CurrentBase = NewBase
+        CurrentLToe = NewLToe
+        CurrentStemDB = NewStemDB
+        CurrentStemSP = NewStemSP
+        CurrentToeDB = NewToeDB
+        CurrentToeSP = NewToeSP
+        CurrentHeelDB = NewHeelDB
+        CurrentHeelSP = NewHeelSP
+        neighbor = GetDesignFromCurrent()
+        ok = EvaluateCandidate(neighbor, "neighbor", neighborCost)
         If ok And (Not currentValid Or neighborCost < currentCost) Then
             current = neighbor: currentCost = neighborCost: currentValid = True
         Else
@@ -402,10 +365,6 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
             CurrentToeSP = saved(9)
             CurrentHeelDB = saved(10)
             CurrentHeelSP = saved(11)
-        End If
-        If refinementVisit > 0 Then
-            refinementVisit = refinementVisit + 1
-            If refinementVisit > refinementVisits Then refinementVisit = 0
         End If
         modDataStructures.CostHistory(EvaluationCount) = RunBestCost
         DoEvents
