@@ -1,0 +1,90 @@
+{
+  "comparisons": 252,
+  "fixtures": [
+    {
+      "case": "H3",
+      "geometry": {
+        "H": 3.0,
+        "tt": 0.25,
+        "tb": 0.3,
+        "TBase": 0.45,
+        "B": 2.0,
+        "toe": 0.6,
+        "heel": 1.0999999999999999
+      },
+      "fs": [
+        4.042962540849672,
+        3.274475,
+        5.817456036099886
+      ],
+      "cost": 7296.123474,
+      "main_weight": 63.57567999999999,
+      "extra_weight": 65.82649599999999,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "H4",
+      "geometry": {
+        "H": 4.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.45,
+        "B": 2.5,
+        "toe": 1.0,
+        "heel": 1.1
+      },
+      "fs": [
+        3.0582022318744113,
+        2.2836227772887328,
+        4.424862024435132
+      ],
+      "cost": 10294.532589999999,
+      "main_weight": 85.68895999999998,
+      "extra_weight": 94.7712,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "H5",
+      "geometry": {
+        "H": 5.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.45,
+        "B": 3.0,
+        "toe": 1.0,
+        "heel": 1.6
+      },
+      "fs": [
+        2.7602508435998074,
+        1.9640588901098899,
+        2.981115229432618
+      ],
+      "cost": 12894.82979,
+      "main_weight": 109.38175999999999,
+      "extra_weight": 119.4512,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "anchorage_excluded",
+      "geometry": {
+        "H": 5.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.3,
+        "B": 3.0,
+        "toe": 1.0,
+        "heel": 1.6
+      },
+      "fs": [
+        2.734173632729742,
+        1.946758085106383,
+        3.0034793910566124
+      ],
+      "cost": 11691.93998,
+      "main_weight": 111.75103999999999,
+      "extra_weight": 110.71448,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    }
+  ],
+  "scope": "Independent arithmetic verified against actual VB6 outputs; no 30-trial run"
+}

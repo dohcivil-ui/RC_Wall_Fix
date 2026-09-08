@@ -1,0 +1,119 @@
+OK: project basis active
+OK: ACI shear units
+H3_reverse_heel accepted=False; reason=REVERSED_BASE_FACE
+OK: H3_reverse_heel expected acceptance
+H3 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H3 expected acceptance
+OK: H3 deterministic recheck
+OK: H3 price from same detail
+OK: H3 anchorage and lap allowances excluded
+OK: H3 extra steel included
+H4 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H4 expected acceptance
+OK: H4 deterministic recheck
+OK: H4 price from same detail
+OK: H4 anchorage and lap allowances excluded
+OK: H4 extra steel included
+H5 accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: H5 expected acceptance
+OK: H5 deterministic recheck
+OK: H5 price from same detail
+OK: H5 anchorage and lap allowances excluded
+OK: H5 extra steel included
+OK: reference stem height
+OK: reference active moment
+OK: reference full-passive moment
+DB12weak accepted=False; reason=STEM_STRESS_OR_INTERVAL_BOUND
+OK: DB12weak expected acceptance
+curtain_clearance accepted=False; reason=STEM_DETAIL_LAYOUT
+OK: curtain_clearance expected acceptance
+anchorage_excluded accepted=True; reason=PASS_IMPLEMENTED_PROJECT_CHECKS
+OK: anchorage_excluded expected acceptance
+OK: anchorage_excluded deterministic recheck
+OK: anchorage_excluded price from same detail
+OK: anchorage_excluded anchorage and lap allowances excluded
+OK: anchorage_excluded extra steel included
+stability accepted=False; reason=INVALID_GEOMETRY_OR_INPUT
+OK: stability expected acceptance
+invalid_top_depth accepted=False; reason=NONPOSITIVE_LOCAL_DEPTH
+OK: invalid_top_depth expected acceptance
+OK: interior fixture base-only passes
+OK: interior fixture full-height fails
+OK: BA64 exact budget
+BA64: SOLUTION_FOUND_CONFIGURED_CHECKS; folder=C:\reserch 69\RC_Wall_Fix\audit\results\BA-25690908-232221-seed20260908
+OK: HCA64 exact budget
+HCA64: SOLUTION_FOUND_CONFIGURED_CHECKS; folder=C:\reserch 69\RC_Wall_Fix\audit\results\HCA-25690908-232221-seed20260908
+OK: Form_Load enables project basis
+OK: actual UI uses project report
+OK: actual UI states excluded scope
+OK: actual UI restores controls
+GUI: Basis: PROJECT_WSD_ACI99_V2_NOANCHORAGE (implemented checks; not full EIT/ACI certification)
+Research scope: anchorage/laps excluded from checks and steel quantities; no 0.40m allowance; formwork cost excluded.
+Validation: PASS_IMPLEMENTED_PROJECT_CHECKS
+Bisection Algorithm v1.0; H=5; H1=1.2; full active + passive=1
+tt=0.55; tb=0.55; TBase=0.75; B=3; toe=0.8; heel=1.65 m
+Stem height H-TBase=4.25 m; n=Es/Ec=7.55228257301253
+Envelope FS: overturning=2.9698; sliding=2.1695; qa/qmax=2.5009
+Tapered stem without stirrups also limited to vc/2=2.6088 kgf/cm2 (ACI99 A.7.5.5.1 conservative beam interpretation).
+16 vertical-dead-load combinations 0.85/1.0; Pa/Pp full in all cases.
+Stem: DB28 @ 0.200 m; As=30.7876; As_min=16.3997 cm2/m; d=0.461 m
+M envelope=7.5946 tf.m/m; fc_bound=28.9775/144; fs_bound=588.2567/1700 kgf/cm2
+v envelope=1.0568/5.2176 kgf/cm2; modeled main length=4.1750 m
+Toe: DB25 @ 0.100 m; As=49.0874; As_min=15.0000 cm2/m; d=0.6625 m
+M envelope=2.7552 tf.m/m; fc_bound=4.8949/144; fs_bound=93.5558/1700 kgf/cm2
+v envelope=0.9926/5.2176 kgf/cm2; modeled main length=0.7250 m
+Heel: DB25 @ 0.250 m; As=19.6350; As_min=15.0000 cm2/m; d=0.6625 m
+M envelope=5.2280 tf.m/m; fc_bound=13.3614/144; fs_bound=429.1360/1700 kgf/cm2
+v envelope=0.7936/5.2176 kgf/cm2; modeled main length=1.5750 m
+Stem front vertical: DB20 @ 0.200 m
+Stem horizontal EACH face: DB12 @ 0.150 m
+Base longitudinal EACH face: DB20 @ 0.200 m
+Concrete=4.5875 m3/m; main steel=153.2304; extra steel=170.4277 kg/m
+Concrete+provided-steel estimate=19773.28 Baht/m; unit rates=2617 Baht/m3, 24 Baht/kg
+Detail assumptions: clear cover >=75mm; main bars outermost, distribution inside; two curtains/mats; normal weight, uncoated; aggregate<=20mm; geometric quantities only.
+Stem stress uses certified interval bounds over entire taper; shear uses full-height envelope. No compression-steel credit.
+Sources: Pongnathee material WSD; ACI99 A.2.3/A.7,10.3.3/10.5/10.6,14.3.3,7.6/7.12. See audit/PROJECT_CHECKS_IMPLEMENTATION_TH.md.
+Not checked/costed: service deflection limit, site settlement/water/seismic, joints/end details, full construction BOQ. No global-optimum guarantee.
+
+Per-trial reports: C:\reserch 69\RC_Wall_Fix\audit\results
+Trial summary: C:\reserch 69\RC_Wall_Fix\audit\results\BA-25690908-232221-seed12345\trial-summary.csv
+Seed start: 12345; budget includes initial/reset/neighbor.
+
+FAIL: no solution summary has blank price
+OK: summary contains one trial
+OK: actual UI accepted detail
+OK: new UI session preserves old summary
+OK: accepted summary has actual price
+GUI64: Basis: PROJECT_WSD_ACI99_V2_NOANCHORAGE (implemented checks; not full EIT/ACI certification)
+Research scope: anchorage/laps excluded from checks and steel quantities; no 0.40m allowance; formwork cost excluded.
+Validation: PASS_IMPLEMENTED_PROJECT_CHECKS
+Bisection Algorithm v1.0; H=5; H1=1.2; full active + passive=1
+tt=0.25; tb=0.35; TBase=0.45; B=3; toe=0.8; heel=1.85 m
+Stem height H-TBase=4.55 m; n=Es/Ec=7.55228257301253
+Envelope FS: overturning=2.8452; sliding=2.0660; qa/qmax=2.7075
+Tapered stem without stirrups also limited to vc/2=2.6088 kgf/cm2 (ACI99 A.7.5.5.1 conservative beam interpretation).
+16 vertical-dead-load combinations 0.85/1.0; Pa/Pp full in all cases.
+Stem: DB25 @ 0.200 m; As=24.5437; As_min=9.3382 cm2/m; d=0.2625 m
+M envelope=9.0400 tf.m/m; fc_bound=126.0827/144; fs_bound=1675.9557/1700 kgf/cm2
+v envelope=1.9075/5.2176 kgf/cm2; modeled main length=4.4750 m
+Toe: DB28 @ 0.250 m; As=24.6301; As_min=9.0000 cm2/m; d=0.361 m
+M envelope=2.5554 tf.m/m; fc_bound=15.7717/144; fs_bound=316.2349/1700 kgf/cm2
+v envelope=1.7054/5.2176 kgf/cm2; modeled main length=0.7250 m
+Heel: DB28 @ 0.200 m; As=30.7876; As_min=9.0000 cm2/m; d=0.361 m
+M envelope=6.4750 tf.m/m; fc_bound=36.7781/144; fs_bound=647.3736/1700 kgf/cm2
+v envelope=1.5831/5.2176 kgf/cm2; modeled main length=1.7750 m
+Stem front vertical: DB20 @ 0.250 m
+Stem horizontal EACH face: DB12 @ 0.250 m
+Base longitudinal EACH face: DB16 @ 0.200 m
+Concrete=2.7150 m3/m; main steel=143.2426; extra steel=120.4680 kg/m
+Concrete+provided-steel estimate=13434.21 Baht/m; unit rates=2617 Baht/m3, 24 Baht/kg
+Detail assumptions: clear cover >=75mm; main bars outermost, distribution inside; two curtains/mats; normal weight, uncoated; aggregate<=20mm; geometric quantities only.
+Stem stress uses certified interval bounds over entire taper; shear uses full-height envelope. No compression-steel credit.
+Sources: Pongnathee material WSD; ACI99 A.2.3/A.7,10.3.3/10.5/10.6,14.3.3,7.6/7.12. See audit/PROJECT_CHECKS_IMPLEMENTATION_TH.md.
+Not checked/costed: service deflection limit, site settlement/water/seismic, joints/end details, full construction BOQ. No global-optimum guarantee.
+
+Per-trial reports: C:\reserch 69\RC_Wall_Fix\audit\results
+Trial summary: C:\reserch 69\RC_Wall_Fix\audit\results\BA-25690908-232221-seed20260908-1\trial-summary.csv
+Seed start: 20260908; budget includes initial/reset/neighbor.
+
+PROJECT checks=43; failures=1

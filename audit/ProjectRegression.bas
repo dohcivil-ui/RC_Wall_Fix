@@ -22,6 +22,7 @@ Private Sub SaveCase(label As String, d As Design, expected As Boolean)
     If ok Then
         Call Verify(label & " deterministic recheck", CheckProjectDesign(d, r))
         Call Verify(label & " price from same detail", Abs(CalculateCost(d) - r.Cost) < 0.000001)
+        Call Verify(label & " anchorage and lap allowances excluded", r.Ld(0) = 0 And r.Ld(1) = 0 And r.Ld(2) = 0 And r.FrontLd = 0 And r.HorizontalLap = 0 And r.BaseLap = 0)
         Call Verify(label & " extra steel included", r.ExtraWeight > 0 And r.Cost > r.ConcreteVolume * currentMaterial.concretePrice + r.MainWeight * currentMaterial.SteelPrice)
         f = FreeFile: Open App.Path & "\project-" & label & "-report.txt" For Output As #f
         Print #f, ProjectDesignReport(d, currentMaterial, "FIXTURE - not an optimizer minimum")
@@ -63,7 +64,7 @@ Public Sub Main()
     Call Verify("reference full-passive moment", Abs(CalculateMomentStem(weak) - 9.7262) < 0.000001)
     SaveCase "DB12weak", weak, False
     weak = d: weak.tt = 0.2: SaveCase "curtain_clearance", weak, False
-    weak = d: weak.TBase = 0.3: SaveCase "short_anchorage", weak, False
+    weak = d: weak.TBase = 0.3: SaveCase "anchorage_excluded", weak, True
     weak = d: weak.Base = 1.5: weak.LHeel = weak.Base - weak.LToe - weak.tb: SaveCase "stability", weak, False
     weak = d: weak.tt = 0.075: SaveCase "invalid_top_depth", weak, False
     weak = Fixture(3, 0.1, 0.2, 0.3, 3, 0.6): H1 = 1.5
@@ -83,12 +84,15 @@ Public Sub Main()
     Call Verify("Form_Load enables project basis", ProjectChecksEnabled And WSDCriteriaReady())
     Form1.txtMaxIter.Text = "4": Form1.txtTrials.Text = "1": Form1.txtSeed.Text = "12345"
     Form1.txtH.Text = "5": Form1.txtH1.Text = "1.2"
+    ' Intentionally inadequate bearing input: NO_SOLUTION independent of anchorage scope.
+    Form1.txtQa.Text = "0.01"
     For i = 0 To Form1.cboConcreteStrength.ListCount - 1
         If Form1.cboConcreteStrength.List(i) = "320" Then Form1.cboConcreteStrength.ListIndex = i
     Next i
     Form1.cmdBA.Value = True
     For i = 0 To Form1.lstResults.ListCount - 1: text = text & Form1.lstResults.List(i) & vbCrLf: Next i
     Call Verify("actual UI uses project report", InStr(text, PROJECT_CHECK_BASIS) > 0)
+    Call Verify("actual UI states excluded scope", InStr(text, "anchorage/laps excluded") > 0 And InStr(text, "formwork cost excluded") > 0)
     Call Verify("actual UI restores controls", Form1.cmdBA.Enabled And Form1.cmdRun.Enabled)
     Print #output, "GUI: " & text
     noSolutionSummary = ProjectTrialSummary
@@ -97,7 +101,7 @@ Public Sub Main()
     Call Verify("no solution summary has blank price", InStr(summaryRow, ",NO_SOLUTION,4,,0,") > 0)
     Call Verify("summary contains one trial", EOF(summaryFile))
     Close #summaryFile
-    Form1.txtMaxIter.Text = "64": Form1.txtSeed.Text = "20260908"
+    Form1.txtMaxIter.Text = "64": Form1.txtSeed.Text = "20260908": Form1.txtQa.Text = "30"
     Form1.cmdBA.Value = True
     text = ""
     For i = 0 To Form1.lstResults.ListCount - 1: text = text & Form1.lstResults.List(i) & vbCrLf: Next i

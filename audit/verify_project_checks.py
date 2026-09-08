@@ -21,17 +21,11 @@ def peak(f, length):
         if f(left)<f(right):lo=left
         else:hi=right
     return max(f(0),f(length),f((lo+hi)/2))
-def ld(db,sp,top):
-    # Inches/psi calculation throughout, convert the resulting length once.
-    diameter=db/25.4
-    c=min(75/25.4+diameter/2,sp/0.0254/2)
-    value=3/40*(4000/psi)/math.sqrt(320/psi)*(1.3 if top else 1)*(.8 if db<=19 else 1)/min(c/diameter,2.5)*diameter
-    return max(12,value)*.0254
 def mass(db,sp,length):return .00617*db**2/sp*length
 summaries=[]
 fixtures=list(csv.DictReader((E/'project-fixtures.csv').open()))
 for row in fixtures:
-    if row['case'] not in ('H3','H4','H5'):continue
+    if row['case'] not in ('H3','H4','H5','anchorage_excluded'):continue
     assert row['valid']=='True'
     h,tt,tb,tbase,B,toe=[float(row[key]) for key in ('H','tt','tb','TBase','B','toe')]
     heel=B-toe-tb;hs=h-tbase;hp=1.2-tbase
@@ -70,7 +64,7 @@ for row in fixtures:
         near(member['depth'],depth);near(member['As'],area)
         minimum=max(3*math.sqrt(320/psi),200)/(4000/psi)*10000*depth if i==0 else .002*10000*tbase
         near(member['minimum'],minimum);assert area>=minimum
-        development=ld(db,sp,i==2 and depth>12*.0254)
+        development=0 # User excludes development length from the model
         near(member['ld'],development)
         length=(hs if i==0 else toe if i==1 else heel)-.075+development
         near(member['length'],length);main_weight+=mass(db,sp,length)
@@ -84,7 +78,7 @@ for row in fixtures:
             near(member['M'],mom[i-1]);near(member['v'],shear[i-1])
         assert float(member['fc_bound'])<=144 and float(member['fs_bound'])<=1700
     front_db,front_sp,front_ld=extra['front'];hor_db,hor_sp,hor_lap=extra['horizontal'];base_db,base_sp,base_lap=extra['base']
-    near(front_ld,ld(front_db,front_sp,False));near(hor_lap,1.3*ld(hor_db,hor_sp,True));near(base_lap,1.3*ld(base_db,base_sp,True))
+    near(front_ld,0);near(hor_lap,0);near(base_lap,0)
     extra_weight=mass(front_db,front_sp,hs-.075+front_ld)+2*mass(hor_db,hor_sp,hs-.15)*12/(12-hor_lap)+2*mass(base_db,base_sp,B-.15)*12/(12-base_lap)
     concrete=(tt+tb)/2*hs+B*tbase
     near(totals[3],concrete);near(totals[4],main_weight);near(totals[5],extra_weight)
@@ -92,12 +86,12 @@ for row in fixtures:
     summaries.append(dict(case=row['case'],geometry=dict(H=h,tt=tt,tb=tb,TBase=tbase,B=B,toe=toe,heel=heel),
                           fs=[min(ot),min(sl),min(bc)],cost=cost,main_weight=main_weight,extra_weight=extra_weight,
                           note='Fixed verification fixture; not an optimized or fully code-certified design'))
-assert len(summaries)==3
+assert len(summaries)==4
 reason={row['case']:row['reason'] for row in fixtures}
 assert reason['H3_reverse_heel']=='REVERSED_BASE_FACE'
 assert reason['DB12weak']=='STEM_STRESS_OR_INTERVAL_BOUND'
-assert reason['short_anchorage']=='STEM_STRAIGHT_ANCHORAGE'
+assert reason['anchorage_excluded']=='PASS_IMPLEMENTED_PROJECT_CHECKS'
 report=dict(comparisons=comparisons,fixtures=summaries,scope='Independent arithmetic verified against actual VB6 outputs; no 30-trial run')
 (E/'independent-project.json').write_text(json.dumps(report,indent=2),encoding='ascii')
 (P/'project-checks-latest.json').write_text(json.dumps(dict(evidence=str(E.relative_to(P)),**report),indent=2),encoding='ascii')
-print(f'Independent project checks: {comparisons} numerical comparisons; H3/H4/H5 verified; no 30-trial run.')
+print(f'Independent project checks: {comparisons} numerical comparisons; H3/H4/H5 and anchorage-excluded case verified; no 30-trial run.')

@@ -1,6 +1,6 @@
 {
-  "evidence": "project-checks\\20260908-231548-570",
-  "comparisons": 189,
+  "evidence": "project-checks\\20260908-232302-374",
+  "comparisons": 252,
   "fixtures": [
     {
       "case": "H3",
@@ -18,9 +18,9 @@
         3.274475,
         5.817456036099886
       ],
-      "cost": 7810.61967638012,
-      "main_weight": 80.45504646196063,
-      "extra_weight": 70.38447130387766,
+      "cost": 7296.123474,
+      "main_weight": 63.57567999999999,
+      "extra_weight": 65.82649599999999,
       "note": "Fixed verification fixture; not an optimized or fully code-certified design"
     },
     {
@@ -39,9 +39,9 @@
         2.2836227772887328,
         4.424862024435132
       ],
-      "cost": 10829.26298965606,
-      "main_weight": 102.56832646196065,
-      "extra_weight": 100.1722668570418,
+      "cost": 10294.532589999999,
+      "main_weight": 85.68895999999998,
+      "extra_weight": 94.7712,
       "note": "Fixed verification fixture; not an optimized or fully code-certified design"
     },
     {
@@ -60,9 +60,30 @@
         1.9640588901098899,
         2.981115229432618
       ],
-      "cost": 13446.169464047729,
-      "main_weight": 126.26112646196064,
-      "extra_weight": 125.54431995669472,
+      "cost": 12894.82979,
+      "main_weight": 109.38175999999999,
+      "extra_weight": 119.4512,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "anchorage_excluded",
+      "geometry": {
+        "H": 5.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.3,
+        "B": 3.0,
+        "toe": 1.0,
+        "heel": 1.6
+      },
+      "fs": [
+        2.734173632729742,
+        1.946758085106383,
+        3.0034793910566124
+      ],
+      "cost": 11691.93998,
+      "main_weight": 111.75103999999999,
+      "extra_weight": 110.71448,
       "note": "Fixed verification fixture; not an optimized or fully code-certified design"
     }
   ],
