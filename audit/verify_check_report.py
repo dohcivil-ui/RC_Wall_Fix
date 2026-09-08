@@ -7,7 +7,7 @@ import independent_checks as independent
 from independent_stem_profile import stem_profile
 
 P = Path(__file__).resolve().parent
-n = 2040000 / (15100 * math.sqrt(320))  # Reference material model; retain precision.
+n = 9.0  # User-selected project assumption; not an automatic Es/Ec value.
 reports = (P / 'h5-vb6-checks.md').read_text().split('## ')[1:]
 assert len(reports) == 3
 cases = [

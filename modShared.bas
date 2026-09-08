@@ -777,7 +777,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     result = "=== MATERIAL PROPERTIES ===" & vbCrLf
     result = result & "Steel: " & mat.SteelGrade & " (fy=" & mat.fy & ", fs=" & wsd.fs & " ksc)" & vbCrLf
     result = result & "Concrete: f'c = " & mat.fc & " ksc (fc=" & Format(wsd.fc, "0.0") & " ksc)" & vbCrLf
-    result = result & "Reference WSD model (EIT unverified): n=" & wsd.n & ", k_bal=" & Format(wsd.k, "0.000") & ", j_bal=" & Format(wsd.j, "0.000") & ", R_bal=" & Format(wsd.R, "0.00") & " ksc" & vbCrLf
+    result = result & "Project WSD model (user-selected n; EIT unverified): n=" & wsd.n & ", k_bal=" & Format(wsd.k, "0.000") & ", j_bal=" & Format(wsd.j, "0.000") & ", R_bal=" & Format(wsd.R, "0.00") & " ksc" & vbCrLf
     result = result & "Prices: Concrete=" & Format(mat.concretePrice, "#,##0") & " Baht/m3, Steel=" & mat.steelPrice & " Baht/kg" & vbCrLf
     result = result & "-------------------------------" & vbCrLf
     
@@ -1071,7 +1071,7 @@ Private Function AuditMember(d As Design, part As Integer, label As String, thic
     bound = steel * currentMaterial.fy * depth / 1000#
     result = result & AuditCompare(label & " necessary yield bound", Abs(moment), bound, False, "tf.m/m", "M<=As*fy*d; no modular ratio or code allowable used", yieldFailed)
     If Not SectionStresses(moment, depth, steel, currentWSD.n, c, st, jActual) Then Err.Raise 5, , "Invalid section"
-    source = "Reference-model n=" & currentWSD.n & "; EIT clause UNVERIFIED"
+    source = "User-selected project n=" & currentWSD.n & "; EIT clause UNVERIFIED"
     If WSDCriteriaReady() Then source = "Configured screening only: " & WSDSource
     result = result & AuditCompare(label & " concrete stress", c, currentWSD.fc, False, "kgf/cm2", source, failed)
     result = result & AuditCompare(label & " steel stress", st, currentWSD.fs, False, "kgf/cm2", source, failed)

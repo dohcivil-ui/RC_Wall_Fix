@@ -6,6 +6,7 @@ Public MinStemRatio As Double    ' main vertical steel / gross concrete area
 Public MinBaseRatio As Double    ' main slab steel / gross concrete area
 Public WSDSource As String       ' edition, clause/page and applicability
 Public WSDReviewed As Boolean
+Public Const PROJECT_MODULAR_RATIO As Double = 9#  ' User-selected design assumption
 
 ' ========================================
 ' Working Stress Design (WSD) Module
@@ -15,7 +16,7 @@ Public WSDReviewed As Boolean
 
 ' WSD Parameters Structure
 Public Type WSDParams
-    n As Double          ' Modular ratio Es/Ec; unrounded reference equation
+    n As Double          ' Modular ratio adopted for this project: n=9
     fs As Double         ' Steel working stress (ksc): 1500 or 1700
     fc As Double         ' Concrete working stress (ksc): 0.45 × f'c
     k As Double          ' Neutral axis factor
@@ -30,11 +31,10 @@ Public Function CalculateWSDParameters(fy As Integer, fc_prime As Integer) As WS
     Dim params As WSDParams
     
     If fc_prime <= 0 Or (fy <> 3000 And fy <> 4000) Then Err.Raise 5, , "Invalid/unsupported material"
-    ' User reference: Pongnathee, Ch.10, printed pp.342-343 (PDF pp.10-11).
-    ' Es=2040000, Ec=15100*Sqr(fc_prime), both kgf/cm2.
-    ' Example rounds n at fc_prime=210; no general rounding rule is given.
-    ' Keep precision; this source is not verification of EIT 011007-19.
-    params.n = 2040000# / (15100# * Sqr(CDbl(fc_prime)))
+    ' User explicitly selected n=9 as the project design assumption.
+    ' Do not replace this choice with an automatic Es/Ec calculation.
+    ' Balanced k/j/R still depend on material allowables; actual bars use As/d.
+    params.n = PROJECT_MODULAR_RATIO
     
     ' Steel working stress (fs)
     ' SD30 (fy=3000): fs = 1500 ksc

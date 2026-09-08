@@ -5,7 +5,7 @@ The synthetic shear/minimum settings used by tests are NOT EIT requirements.
 from pathlib import Path
 import math, json
 P=Path(__file__).resolve().parent
-n = 2040000 / (15100 * math.sqrt(320))  # Reference material model; retain precision.
+n = 9.0  # User-selected project assumption; not an automatic Es/Ec value.
 def polygon(points):
     cross=[points[i][0]*points[(i+1)%len(points)][1]-points[(i+1)%len(points)][0]*points[i][1] for i in range(len(points))]
     a=sum(cross)/2

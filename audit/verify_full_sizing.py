@@ -10,7 +10,7 @@ import numpy as np
 from independent_stem_profile import stem_profile
 
 P = Path(__file__).resolve().parent
-n = 2040000 / (15100 * math.sqrt(320))  # Reference material model; retain precision.
+n = 9.0  # User-selected project assumption; not an automatic Es/Ec value.
 native = list(csv.DictReader((P/'full-sizing-summary.csv').open()))
 inputs = json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 # This independent model verifies the requested H5 material/soil case. Refuse

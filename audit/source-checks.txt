@@ -5,4 +5,4 @@ Original concrete pricing and cost/quantity routines unchanged
 All .vbp source modules resolve within this copy
 External Downloads/modShared.bas remains byte-identical to baseline
 Changed VB6 files retain byte-preserving legacy text and CRLF, without UTF-8 BOM
-176 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries
+194 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries
