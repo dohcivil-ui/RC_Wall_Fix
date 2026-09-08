@@ -10,11 +10,13 @@ End Sub
 
 Private Sub Snapshot(name As String)
     SavePicture frmBestDesign.picSketch.Image, folder & "\" & name & ".bmp"
+    SaveWindowImage frmBestDesign.hWnd, folder & "\" & name & "-window.bmp"
     Print #f, name & " | " & frmBestDesign.Tag & " | " & frmBestDesign.picSketch.Tag
 End Sub
 
 Private Sub CheckSession(algorithm As String)
     Dim summary As Integer, line As String, row() As String, bestCost As Double
+    Dim barParts() As String, barLabel As String
     Dim bestTrial As Long, bestEval As Long, bestFolder As String, cost As Double, ev As Long
     If algorithm = "BA" Then Form1.cmdBA.Value = True Else Form1.cmdRun.Value = True
     Check algorithm & " completed both trials", RunTrial = 2 And EvaluationCount = 64
@@ -49,7 +51,9 @@ Private Sub CheckSession(algorithm As String)
         Do Until EOF(summary)
             Line Input #summary, line
             If Left$(line, 5) = "Stem:" Or Left$(line, 4) = "Toe:" Or Left$(line, 5) = "Heel:" Then
-                Check algorithm & " bar label matches winning report", InStr(frmBestDesign.Tag, Split(line, ";")(0)) > 0
+                barParts = Split(Split(line, ";")(0), " @ ")
+                barLabel = barParts(0) & " @ " & Format$(CDbl(Replace$(barParts(1), " m", "")), "0.00") & " m"
+                Check algorithm & " bar label matches winning report to 2 decimals", InStr(frmBestDesign.Tag, barLabel) > 0
             End If
         Loop
         Close #summary
@@ -85,11 +89,20 @@ Public Sub Main()
     bad = d: bad.TBase = 5
     frmBestDesign.ShowBest bad, 5, 1.2, "INVALID", 0
     Check "invalid geometry is not drawn", frmBestDesign.picSketch.Tag = "NO_SOLUTION"
+    Check "OK button is visible and supports Enter/Esc", frmBestDesign.cmdClose.Visible And frmBestDesign.cmdClose.Caption = "OK" And frmBestDesign.cmdClose.Default And frmBestDesign.cmdClose.Cancel
+    Check "title bar has system Close", (GetWindowLong(frmBestDesign.hWnd, -16) And &H80000) <> 0
     frmBestDesign.cmdClose.Value = True
     For Each window In Forms
         If window.Name = "frmBestDesign" Then stillOpen = True
     Next window
-    Check "Close button unloads popup", Not stillOpen
+    Check "OK button unloads popup", Not stillOpen
+    frmBestDesign.ShowBest d, 5, 1.2, "CLOSE CHECK", 1
+    Call SendMessage(frmBestDesign.hWnd, &H112, &HF060&, 0)
+    stillOpen = False
+    For Each window In Forms
+        If window.Name = "frmBestDesign" Then stillOpen = True
+    Next window
+    Check "system Close command unloads popup", Not stillOpen
     Form1.txtH.Text = "5": Form1.txtH1.Text = "1.2": Form1.txtQa.Text = "30"
     Form1.txtMaxIter.Text = "64": Form1.txtTrials.Text = "2": Form1.txtSeed.Text = "20260908"
     For i = 0 To Form1.cboConcreteStrength.ListCount - 1

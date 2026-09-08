@@ -42,4 +42,5 @@ MaxNumberOfThreads=1
 Module=modProjectChecks; ..\modProjectChecks.bas
 
 Module=SketchRegression; SketchRegression.bas
+Module=WindowCapture; WindowCapture.bas
 ExeName32="SketchRegression.exe"
