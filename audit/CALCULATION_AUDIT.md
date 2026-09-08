@@ -21,7 +21,7 @@
 2. hs=H−TBase และ hp=H1−TBase สำหรับการตรวจ stem เท่านั้น; Ka=(1−sinφ)/(1+sinφ), Kp=1/Ka
 3. Mstem=γ(Ka·hs³−ηKp·hp³)/6. CalculateMomentStem รับ Design ของคำตอบแต่ละตัวแล้ว ไม่ใช้ H1³ แทน hs³ และไม่เปลี่ยน H เหมารวมในแรงเสถียรภาพ
 4. เสถียรภาพทั้งกำแพงยังใช้ Pa=γKaH²/2, Pp=ηγKpH1²/2 และแขน H/3, H1/3. FSot=(ΣWx+PpH1/3)/(PaH/3), FSsl=(μΣW+Pp)/Pa. เก็บเกณฑ์โครงการเดิม FSot≥2 และ FSsl≥1.5 โดยยังต้องยืนยันความเหมาะสมสำหรับงานนี้
-5. η=PassiveFactor เริ่มต้นเป็น 0. กรณี η=1 สมมติว่าดินด้านหน้าคงอยู่และเคลื่อนตัวพอระดม passive เต็มค่า ไม่เปิดใช้เต็มค่าอัตโนมัติ กรณี hp<0 ถูกปฏิเสธว่าอยู่นอกโมเดลที่รองรับ ไม่บังคับ hp เป็นบวก ความจำเป็นต้องระดมการเคลื่อนตัวและความเสี่ยงการเอาดินหน้าออกมีอธิบายใน [FHWA GEC 6, Shallow Foundations](https://www.fhwa.dot.gov/engineering/geotech/pubs/010943.pdf) ซึ่งใช้ประกอบสมมติฐานเท่านั้น ไม่ใช่เกณฑ์ WSD ไทย
+5. η=PassiveFactor ใช้ **1 ตามเงื่อนไขโครงการที่ผู้ใช้กำหนด** รวม active ด้าน H และ passive เต็มค่าด้าน H1; InitializeArrays ตั้งค่านี้เมื่อโหลดฟอร์มและเริ่ม BA/HCA ดู [กรณีแรงปัจจุบัน](PROJECT_LOAD_CASE_TH.md) กรณี hp<0 ถูกปฏิเสธว่าอยู่นอกโมเดล ไม่บังคับความลึกให้เป็นบวก
 6. cover คือระยะใสถึงผิว **เหล็กรับแรงดึงหลัก** ที่เลือก; หนึ่งชั้น d=t−cover−db/2. ถ้ามีเหล็กขวางอยู่ใกล้ผิวกว่าต้องทบทวนระยะถึงเหล็กหลัก ยังไม่รองรับการจัดสองชั้นและไม่เพิ่มเหล็กสองชั้นอัตโนมัติ ค่า d≤0 และ index ผิดถูกปฏิเสธ/แจ้ง error
 7. น้ำหนักดินสามเหลี่ยมบนผิวลาดหน้ารวม centroid จริงกับส่วนสี่เหลี่ยม แทนใช้ x=LToe/2 สำหรับน้ำหนักทั้งหมด ตรวจ centroid stem และดินอิสระด้วย polygon area/centroid
 8. กำหนด x จากปลาย toe ไป heel และ e=B/2−(ΣWx−Mnet)/ΣW. e บวกไปทาง toe, qtoe=W/B(1+6e/B), qheel=W/B(1−6e/B). ไม่ใช้ Abs(e) ก่อนกำหนดทิศแรงดัน
@@ -76,7 +76,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File audit\run_checks.ps1
 
 สคริปต์คอมไพล์โปรเจกต์จริง, native regression และ GUI regression ด้วย `VB6.EXE` ของเครื่องนี้ เก็บ compile log แยกใหม่ทุกครั้ง (VB6 /out เป็น append จึงไม่ใช้ log เก่าตัดสิน) รัน EXE จริงและตรวจข้อความผล ไม่ใช้ Python แทนหลักฐาน VB6
 
-- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **256 checks, failures=0**
+- [ผลสูตร/อัลกอริทึม VB6](native-regression.txt): **257 checks, failures=0**
 - [ผลฟอร์มจริง](gui-regression.txt): **GUI failures=0**; Load/Show Form1 แล้วเรียก Click ของปุ่ม BA/HCA จริง ทั้งแบบ no-solution 2 trials และเกณฑ์จำลองที่ได้คำตอบ พร้อมรายงาน/กราฟและการคืนสถานะปุ่ม
 - [ผล compile โปรเจกต์](final-compile-RC_RT_HCA_v2.log), [native harness](final-compile-Regression.log), [GUI harness](final-compile-GuiRegression.log); สำเนาหลักฐานแต่ละรอบและ hash EXE อยู่ใต้ `checks`
 - [รายการอิสระ](independent-results.json) ใช้ Simpson integration ของแรง/แขน, polygon centroid และแก้ neutral axis โดยตรงเพื่อสร้าง expected values จากนั้นเทียบกับ VB6. มี H=3,4,5 ทั้งหน้าตัดหนาและบาง, e บวก/ลบ, โมเมนต์และแรงเฉือน toe/heel, concrete-only failure, ข้อมูลผิด, reversal และ passive ทั้ง 0/1
@@ -113,3 +113,8 @@ The user supplied the Pongnathee Chapter 10 example. Its n=9 is an approximation
 ## User-selected modular ratio restored (current)
 
 The user clarified that n=9 was an intentional project assumption. The earlier classification of this choice as a software bug was incorrect. Production CalculateWSDParameters now uses PROJECT_MODULAR_RATIO=9, with no automatic replacement by Es/Ec. Balanced k/j/R still respond to the material allowables; actual-bar k/j still come from As and d. See [current parameter report](WSD_REFERENCE_PARAMETERS_TH.md). Earlier Es/Ec calculations are historical comparisons, not the active project configuration.
+
+
+## Current project load case: active plus full passive
+
+The user specifies active loading from H and full passive from front H1. InitializeArrays now sets PROJECT_PASSIVE_FACTOR=1 for Form1 and both optimizers. The current sizing study contains one project case; earlier comparison runs are historical. See [project load case](PROJECT_LOAD_CASE_TH.md). Unit-level isolated force checks are not alternative project designs.

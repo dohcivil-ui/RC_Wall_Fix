@@ -8,7 +8,7 @@ P=Path(__file__).resolve().parent
 n = 9.0  # User-selected project assumption; not an automatic Es/Ec value.
 inputs=json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 rows=list(csv.DictReader((P/'full-sizing-summary.csv').open()))
-assert len(rows)==2
+assert len(rows)==1 and int(rows[0]["eta"])==1
 details=[]
 native_text=(P/'full-sizing-vb6.md').read_text()
 for row in rows:
@@ -61,7 +61,7 @@ for row in rows:
                         steel_kg=steel_weight,concrete_cost=concrete_cost,steel_cost=steel_cost,screening_estimate=estimate,
                         status='INDETERMINATE_WSD; not a complete construction price'))
 (P/'recalculation-details.json').write_text(json.dumps(dict(inputs=inputs,cases=details),indent=2),encoding='ascii')
-print('Independent reconciliation: 24 printed member values and both quantity/cost totals agree; legacy flexural capacities checked; WSD remains UNVERIFIED.')
+print('Independent reconciliation: 12 printed member values and the project quantity/cost total agree; legacy flexural capacities checked; WSD remains UNVERIFIED.')
 for d in details:
     print('eta=',d['eta'],'cost=',round(d['screening_estimate'],5),'FS=',d['FSot'],d['FSsl'],d['FSbc'])
     for m in d['members']: print(m['member'],m['DB'],m['spacing'],'M=',round(m['M'],6),'legacy capacity=',round(m['legacy_Mallow'],6))

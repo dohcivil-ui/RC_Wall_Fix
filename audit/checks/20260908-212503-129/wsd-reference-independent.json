@@ -1,0 +1,79 @@
+{
+  "materials": [
+    {
+      "fc_prime": 180,
+      "fy": 3000,
+      "Es": 2040000,
+      "Ec_reference": 202587.75876148095,
+      "n_reference": 10.069710097350047,
+      "Ec_equivalent_assumed_n": 226666.66666666666,
+      "n": 9.0,
+      "k": 0.3270524899057874,
+      "j": 0.8909825033647375,
+      "R": 11.801620870611124,
+      "rho_bal": 0.00883041722745626
+    },
+    {
+      "fc_prime": 210,
+      "fy": 4000,
+      "Es": 2040000,
+      "Ec_reference": 218819.7888674605,
+      "n_reference": 9.322740007009289,
+      "Ec_equivalent_assumed_n": 226666.66666666666,
+      "n": 9.0,
+      "k": 0.33346402666143893,
+      "j": 0.888845324446187,
+      "R": 14.004802710786132,
+      "rho_bal": 0.009268338388089993
+    },
+    {
+      "fc_prime": 240,
+      "fy": 4000,
+      "Es": 2040000,
+      "Ec_reference": 233928.194110928,
+      "n_reference": 8.720624753049812,
+      "Ec_equivalent_assumed_n": 226666.66666666666,
+      "n": 9.0,
+      "k": 0.36377245508982037,
+      "j": 0.8787425149700598,
+      "R": 17.261765391372943,
+      "rho_bal": 0.011555125044029588
+    },
+    {
+      "fc_prime": 280,
+      "fy": 4000,
+      "Es": 2040000,
+      "Ec_reference": 252671.32801329083,
+      "n_reference": 8.07372967894756,
+      "Ec_equivalent_assumed_n": 226666.66666666666,
+      "n": 9.0,
+      "k": 0.4001411432604093,
+      "j": 0.8666196189131969,
+      "R": 21.84652040028109,
+      "rho_bal": 0.014828760014944578
+    },
+    {
+      "fc_prime": 320,
+      "fy": 4000,
+      "Es": 2040000,
+      "Ec_reference": 270117.01168197463,
+      "n_reference": 7.552282573012533,
+      "Ec_equivalent_assumed_n": 226666.66666666666,
+      "n": 9.0,
+      "k": 0.4325767690253672,
+      "j": 0.855807743658211,
+      "R": 26.654583503416216,
+      "rho_bal": 0.01832089845283908
+    }
+  ],
+  "actual_DB16": {
+    "As": 20.106192982974676,
+    "d_cm": 31.7,
+    "k": 0.2855912664549466,
+    "j": 0.9048029111816845,
+    "fc": 74.91275264451902,
+    "fs": 1686.5534043362877
+  },
+  "pdf_example_note": "The PDF example adopts n=9 at fc_prime=210; the user explicitly adopts n=9 for this project as well.",
+  "model_note": "Use the user-selected n=9 for all project material choices. Es/Ec is recorded for comparison only. EIT edition applicability remains unverified."
+}

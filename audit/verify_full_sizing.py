@@ -17,7 +17,7 @@ inputs = json.loads((P/'full-sizing-inputs.json').read_text())['inputs']
 # silently comparing another input set to these particular reference equations.
 for key, value in dict(H=5,H1=1.2,gamma_soil=1.8,gamma_concrete=2.4,phi=30,mu=.6,cover=.075,fc=320,fy=4000).items():
     assert abs(inputs[key]-value) < 1e-9, (key,inputs[key])
-assert len(native) == 2
+assert len(native) == 1 and inputs["passive_factor"] == 1
 tt, tb, z, width, toe = [x.ravel() for x in np.meshgrid(
     np.round(np.linspace(.2, .6, 17), 3), np.round(np.linspace(.2, 1, 17), 2),
     np.round(np.linspace(.3, 1, 15), 2), np.arange(1.5, 7.01, .5), np.round(np.linspace(.3, 1.2, 10), 1), indexing='ij')]
@@ -57,8 +57,9 @@ def choose_bars(moment, thickness):
             spacings[mask] = sp
     return score, bars, spacings
 
-for eta, row in enumerate(native):
-    assert int(row['eta']) == eta
+for row in native:
+    eta = int(row['eta'])
+    assert eta == 1
     assert float(row['qa_allowable']) == inputs['qa_allowable']
     reaction_m = mr-12.5+eta*1.5552
     qt = 4*weight/width-6*reaction_m/width**2
@@ -100,7 +101,7 @@ for eta, row in enumerate(native):
 
 # Independently validate every section alternative in the native output.
 bar_rows = list(csv.DictReader((P/'full-sizing-bar-options.csv').open()))
-assert len(bar_rows) == 120
+assert len(bar_rows) == 60
 for r in bar_rows:
     db, sp, depth, moment = [float(r[k]) for k in ('DB','spacing','depth','moment')]
     area = math.pi*(db/10)**2/4/sp
@@ -113,19 +114,20 @@ for r in bar_rows:
     assert (r['legacy_flexure']=='True') == (fc<=144 and fs<=1700)
 text = (P/'full-sizing-vb6.md').read_text()
 assert 'FATAL' not in text and 'NATIVE COMPLETE' in text
-assert text.count(f"Actual production BA: NO_SOLUTION; evaluations={inputs['budget']}; best evaluation=0;") == 2
-for eta,profile in enumerate(profiles):
+assert text.count(f"Actual production BA: NO_SOLUTION; evaluations={inputs['budget']}; best evaluation=0;") == 1
+for profile in profiles:
+    eta = profile["eta"]
     section=text.split(f'## Passive fraction={eta}')[1].split('## Passive fraction=')[0]
     report_rows={parts[1].strip():parts[2].strip() for line in section.splitlines() if line.startswith('| ') for parts in [line.split('|')]}
     for key,expected in [('Stem nominal shear V/bd',profile['max_v']),('Stem governing shear height',profile['shear_height'])]:
         assert abs(float(report_rows[key].split()[0])-expected)<.000051
 (P/'full-sizing-stem-profiles.json').write_text(json.dumps(profiles,indent=2),encoding='ascii')
-messages.append('120 native bar alternatives independently checked. Native production BA: no accepted design in either case; WSD remains UNVERIFIED.')
+messages.append('60 native bar alternatives independently checked. Native production BA: no accepted design in the project case; WSD remains UNVERIFIED.')
 messages.append('Selected stem profiles independently sampled at 20002 heights: base governs flexural M/fc/fs; interior nominal shear envelope matches native root solving.')
 messages.append('Every native geometry status agrees after dimension-equality tolerance; equal heel/toe is rejected consistently. No selected minimum lies on that boundary.')
 (P/'full-sizing-boundary-cases.csv').write_text('issue,original_example,correction\nheel_equal_to_toe,"B=2.5 tb=0.7 toe=0.9; computed heel-toe approximately 1e-16 m",shared strict-dimension comparison with 1e-9 m tolerance\n', encoding='ascii')
 (P/'full-sizing-independent-checks.txt').write_text('\n'.join(messages)+'\n', encoding='ascii')
-for eta in (0,1):
+for eta in (1,):
     raw_path = P/f'full-sizing-flags-{eta}.bin'
     if raw_path.exists():
         assert gzip.decompress((P/f'full-sizing-flags-{eta}.bin.gz').read_bytes()) == raw_path.read_bytes()

@@ -59,6 +59,7 @@ Public Sub Main()
     Open App.Path & "\\native-regression.txt" For Output As #output
     Print #output, "ACTUAL compiled VB6 regression. Synthetic criteria are TEST FIXTURES, NOT EIT 2562 compliance."
     InitializeArrays
+    Call AssertTrue("project initialization includes full passive", PassiveFactor = 1#)
     gamma_soil = 1.8: gamma_concrete = 2.4: phi = 30: mu = 0.6: qa = 20: cover = 0.075
     mat = GetSD40Material(320, 2601, 24): currentMaterial = mat
     currentWSD = CalculateWSDParameters(4000, 320)

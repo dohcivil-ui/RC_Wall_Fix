@@ -19,5 +19,5 @@ if ($LASTEXITCODE -ne 0) { throw 'Independent verification found a discrepancy; 
 python audit\verify_recalculation_details.py
 if ($LASTEXITCODE -ne 0) { throw 'Member force/cost reconciliation failed' }
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'recalculation-details.json') -Destination $evidence
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'full-sizing-independent-checks.txt'), (Join-Path $PSScriptRoot 'full-sizing-boundary-cases.csv'), (Join-Path $PSScriptRoot 'full-sizing-flags-0.bin.gz'), (Join-Path $PSScriptRoot 'full-sizing-flags-1.bin.gz'), (Join-Path $PSScriptRoot 'full-sizing-stem-profiles.json') -Destination $evidence
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'full-sizing-independent-checks.txt'), (Join-Path $PSScriptRoot 'full-sizing-boundary-cases.csv'), (Join-Path $PSScriptRoot 'full-sizing-flags-1.bin.gz'), (Join-Path $PSScriptRoot 'full-sizing-stem-profiles.json') -Destination $evidence
 Write-Output "Actual VB6 evidence: $evidence"

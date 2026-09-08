@@ -8,6 +8,8 @@ Public Sub Main()
     Open App.Path & "\gui-regression.txt" For Output As #f
     Load Form1
     Form1.Show
+    Print #f, "Project passive after Form_Load=" & PassiveFactor
+    If PassiveFactor <> 1# Then failures = failures + 1
     DoEvents
     Print #f, "Actual compiled VB6 Form1 loaded and shown."
     Form1.txtH.Text = "5": Form1.txtH1.Text = "1.2"
@@ -24,12 +26,16 @@ Public Sub Main()
     ' trial aggregation, reporting, no-solution graph handling, and control state.
     Form1.cmdBA.Value = True
     s = ResultText()
+    Print #f, "Project passive after search=" & PassiveFactor
+    If PassiveFactor <> 1# Then failures = failures + 1
     Print #f, "BA actual button: evaluations(last trial)=" & EvaluationCount & "; trial=" & RunTrial
     Print #f, s
     If InStr(s, "NO_SOLUTION") = 0 Or EvaluationCount <> 4 Or RunTrial <> 2 Then failures = failures + 1
     If Not Form1.cmdBA.Enabled Or Not Form1.cmdRun.Enabled Then failures = failures + 1
     Form1.cmdRun.Value = True
     s = ResultText()
+    Print #f, "Project passive after search=" & PassiveFactor
+    If PassiveFactor <> 1# Then failures = failures + 1
     Print #f, "HCA actual button: evaluations(last trial)=" & EvaluationCount & "; trial=" & RunTrial
     Print #f, s
     If InStr(s, "NO_SOLUTION") = 0 Or EvaluationCount <> 4 Or RunTrial <> 2 Then failures = failures + 1
@@ -39,12 +45,16 @@ Public Sub Main()
     Form1.txtMaxIter.Text = "24": Form1.txtTrials.Text = "1"
     Form1.cmdBA.Value = True
     s = ResultText()
+    Print #f, "Project passive after search=" & PassiveFactor
+    If PassiveFactor <> 1# Then failures = failures + 1
     Print #f, "BA actual button with SYNTHETIC criteria: " & RunStatus
     Print #f, s
     If InStr(s, "VERIFIED_CONFIGURED_CHECKS_ONLY") = 0 Then failures = failures + 1
     If InStr(s, "fc_actual=") = 0 Or InStr(s, "Stem height H-TBase") = 0 Then failures = failures + 1
     Form1.cmdRun.Value = True
     s = ResultText()
+    Print #f, "Project passive after search=" & PassiveFactor
+    If PassiveFactor <> 1# Then failures = failures + 1
     Print #f, "HCA actual button with SYNTHETIC criteria: " & RunStatus
     Print #f, s
     If InStr(s, "VERIFIED_CONFIGURED_CHECKS_ONLY") = 0 Then failures = failures + 1

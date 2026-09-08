@@ -69,19 +69,19 @@ Public Sub Main()
     options = FreeFile: Open App.Path & "\full-sizing-bar-options.csv" For Output As #options
     summary = FreeFile: Open App.Path & "\full-sizing-summary.csv" For Output As #summary
     Print #report, "# Actual VB6 H5 recalculation: independent stem/toe/heel reinforcement"
-    Print #report, "Other inputs read from Form1.frm defaults; H=5 and fc=320 retained study. See full-sizing-inputs.json. One trial per passive case."
-    Print #report, "Main case eta=1: full Rankine passive using H1. Eta=0 is the comparison. Heights alone do not establish field mobilization."
+    Print #report, "Other inputs read from Form1.frm defaults; H=5 and fc=320 retained study. See full-sizing-inputs.json. One project trial with active and full passive."
+    Print #report, "Project load case: active from H and full Rankine passive from front H1, as specified by the user."
     Print #report, "Production BA requires all criteria. Separate relaxed grid: stability + supported bending + legacy stress only; NOT an accepted EIT design."
     Print #report, "Missing minimum/shear/detailing are NOT silently passed. No synthetic limits. Concrete unit price=" & mat.concretePrice & "; steel=" & mat.SteelPrice
     Print #report, "Cost model includes concrete and listed main bars, with original +0.4 m bar length allowances; not a complete construction BOQ."
     Print #trace, "eta,geometry_row,screening_estimate,tt,tb,TBase,Base,toe,heel,stemDB,stemSP,toeDB,toeSP,heelDB,heelSP"
     Print #summary, "eta,geometry_rows,stable_rows,screened_rows,steel_checks,best_row,screening_estimate,tt,tb,TBase,Base,toe,heel,stemDB,stemSP,toeDB,toeSP,heelDB,heelSP,qa_allowable"
     Print #options, "eta,part,DB,spacing,depth,As,moment,fc,fs,legacy_flexure,selected"
-    For eta = 0 To 1
+    For eta = 1 To 1
         PassiveFactor = eta
         Print #report, ""
         Print #report, "## Passive fraction=" & eta
-        ba = BisectionOptimization(5000, H, H1, gamma_soil, gamma_concrete, phi, mu, qa, cover, mat, RandomSeed:=12345, TrialNumber:=eta + 1)
+        ba = BisectionOptimization(5000, H, H1, gamma_soil, gamma_concrete, phi, mu, qa, cover, mat, RandomSeed:=12345, TrialNumber:=1)
         Print #report, "Actual production BA: " & RunStatus & "; evaluations=" & EvaluationCount & "; best evaluation=" & RunBestEvaluation & "; folder=" & RunFolder
         If ba.IsValid Or EvaluationCount <> 5000 Or WSDCriteriaReady() Then Err.Raise 5, , "Unexpected full acceptance or BA budget"
         best = emptyDesign: bestEstimate = NO_SOLUTION_COST: rows = 0: stable = 0: screened = 0: steelChecks = 0
@@ -133,7 +133,7 @@ NextGeometry:
         Print #report, BuildDesignCheckReport(best)
         Call WriteBarOptions(best, eta, options)
     Next eta
-    Print #report, "NATIVE COMPLETE: two grids completed; production accepted designs=0; WSDReviewed=False"
+    Print #report, "NATIVE COMPLETE: one project grid completed; production accepted designs=0; WSDReviewed=False"
     Close #summary: Close #options: Close #trace: Close #report
     Exit Sub
 Fatal:

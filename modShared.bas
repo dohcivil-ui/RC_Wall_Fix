@@ -15,8 +15,9 @@ Option Explicit
 Public BatchMode As Boolean
 ' H and H1 are elevations above the underside of the base; H1 is FRONT soil.
 ' Vertical back of stem, front taper, level dry cohesionless soil, no surcharge.
-' PassiveFactor defaults to zero. Full passive requires permanent front soil
-' and sufficient movement; it is not automatically available in service.
+' Project load model: active behind the wall and full passive from FRONT H1.
+' The user specifies both soil actions; InitializeArrays sets this project choice.
+Public Const PROJECT_PASSIVE_FACTOR As Double = 1#
 Public PassiveFactor As Double
 Public LastValidationReason As String
 Public Const NO_SOLUTION_COST As Double = 999999999
@@ -81,7 +82,7 @@ Public Const SP_MIN As Integer = 110:   Public Const SP_MAX As Integer = 113
 ' SECTION 3: Module-Level Variables (ค่าจาก TextBox)
 '================================================================================
 Public H As Double              ' Wall height (m)
-Public H1 As Double             ' Backfill height (m)
+Public H1 As Double             ' Front soil elevation from base underside (m)
 Public gamma_soil As Double     ' Soil unit weight (ton/m3)
 Public gamma_concrete As Double ' Concrete unit weight (ton/m3)
 Public phi As Double            ' Friction angle (degrees)
@@ -115,6 +116,7 @@ Public CheckStop As Long
 ' SECTION 5: Initialize Arrays
 '================================================================================
 Public Sub InitializeArrays()
+    PassiveFactor = PROJECT_PASSIVE_FACTOR
     
     ' === tt (Index 1-17): 0.200-0.600 m, step=0.025 ===
     WP_tt(1) = 0.2:    WP_tt(2) = 0.225:  WP_tt(3) = 0.25
