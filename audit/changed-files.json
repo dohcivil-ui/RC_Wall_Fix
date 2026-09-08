@@ -1,0 +1,30 @@
+[
+  {
+    "file": "Form1.frm",
+    "sha256": "866305ed799a34be65d837fc6c24f603b5929d003e1ece378d7a03e7d5de9529"
+  },
+  {
+    "file": "modBA.bas",
+    "sha256": "f8d08edc0d1369d40fea493d9addbb516a7ef56d56ab81170def4a75772a90bf"
+  },
+  {
+    "file": "modBatch.bas",
+    "sha256": "ae7d1087d2dde34a0a9a938e2429573645a5c2d17555d9d9eab83dec072441fc"
+  },
+  {
+    "file": "modHillClimbing.bas",
+    "sha256": "e1b1da4b126f2289c9f3c10fd2bd227744bef024210a3816791b70ac4978139d"
+  },
+  {
+    "file": "modShared.bas",
+    "sha256": "b9bc7c172d2e4c6746744610d528c9f701b06f4d8856b0eaf29d76bed812f699"
+  },
+  {
+    "file": "modWSD.bas",
+    "sha256": "50a75dcf35a2848f07f39c4e1c5a68ac855d5fc4c08ccc549274868dba63d679"
+  },
+  {
+    "file": "RC_RT_HCA_v2.vbp",
+    "sha256": "d19f622ecf005a16b8607ad1066f5c9661e28720503954c3f9c80fe9f94cb0a0"
+  }
+]

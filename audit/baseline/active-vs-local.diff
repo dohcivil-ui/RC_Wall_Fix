@@ -1,0 +1,25 @@
+--- local
+
++++ active-external
+
+@@ -13,6 +13,9 @@
+
+ '================================================================================
+ Option Explicit
+ 
++' v2.8: Batch experiment flag - suppresses per-iteration CSV writes when True
++Public BatchMode As Boolean
++
+ '================================================================================
+ ' SECTION 1: Constants
+ '================================================================================
+@@ -184,7 +187,7 @@
+
+ End Function
+ 
+ '--------------------------------------------------------------------------------
+-' Get Concrete Price by f'c (Maha Sarakham Province)Sep 68
++' Get Concrete Price by f'c (Maha Sarakham Province)
+ '--------------------------------------------------------------------------------
+ '¾ÄÈ¨Ô¡ÒÂ¹ 2568
+ Public Function GetConcretePrice(fc As Integer) As Double

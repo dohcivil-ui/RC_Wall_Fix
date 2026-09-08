@@ -1,0 +1,52 @@
+from pathlib import Path
+import re,hashlib,json,csv
+P=Path(__file__).resolve().parent.parent
+B=P/'audit'/'baseline'
+def read(p): return p.read_bytes().decode('latin1').replace('\r\n','\n')
+def routine(s,name):
+    m=re.search(rf'(?:Public |Private )?(?:Function|Sub) {name}\([\s\S]*?\nEnd (?:Function|Sub)',s)
+    assert m,name
+    return m.group()
+result=[]
+for name,neighbor in [('modBA.bas','GenerateNeighbor_BA'),('modHillClimbing.bas','GenerateNeighbor')]:
+    assert routine(read(P/name),neighbor)==routine(read(B/name),neighbor), 'Neighbor search changed'
+    result.append(f'{name}: original neighbor routine unchanged byte-for-byte after CRLF normalization')
+bounds=set(re.findall(r'Private (Min\w+|Max\w+) As Integer',read(P/'modBA.bas')))
+assert bounds=={'Mintb','Maxtb','MinTBase','MaxTBase','MinBase','MaxBase'}
+result.append('BA still has only tb, TBase, Base bisection bounds')
+for fn in ['CalculateCostFull','CalculateSteelWeight','GetConcretePrice']:
+    assert routine(read(P/'modShared.bas'),fn)==routine(read(B/'modShared.bas'),fn)
+result.append('Original concrete pricing and cost/quantity routines unchanged')
+vbp=read(P/'RC_RT_HCA_v2.vbp')
+modules=re.findall(r'^Module=[^;]+; (.+)$',vbp,re.M)+re.findall(r'^Form=(.+)$',vbp,re.M)
+for module in modules:
+    assert ':' not in module and (P/module).is_file(),module
+result.append('All .vbp source modules resolve within this copy')
+external=Path(r'C:\Users\moosu\Downloads\modShared.bas')
+assert external.read_bytes()==(B/'modShared.ACTIVE-external.bas').read_bytes()
+result.append('External Downloads/modShared.bas remains byte-identical to baseline')
+changed=[]
+for p in P.iterdir():
+    if p.suffix.lower() in ('.bas','.frm','.vbp') and (B/p.name).exists() and p.read_bytes()!=(B/p.name).read_bytes():
+        data=p.read_bytes()
+        assert not data.startswith(b'\xef\xbb\xbf')
+        assert data.count(b'\r\n')==data.count(b'\n'),p.name
+        changed.append(dict(file=p.name,sha256=hashlib.sha256(data).hexdigest()))
+result.append('Changed VB6 files retain byte-preserving legacy text and CRLF, without UTF-8 BOM')
+# Independently inspect every persisted optimizer trace against its own valid candidates.
+traces=0
+for path in (P/'audit'/'results').glob('*/evaluations.csv'):
+    rows=list(csv.DictReader(path.open()))
+    best=999999999.0
+    for i,row in enumerate(rows,1):
+        assert int(row['evaluation'])==i,path
+        if row['valid']=='True': best=min(best,float(row['cost']))
+        assert abs(best-float(row['best_cost']))<1e-7,path
+    run=(path.parent/'run.txt').read_text()
+    m=re.search(r'Evaluations=(\d+); Budget=(\d+)',run)
+    assert m and len(rows)==int(m[1])==int(m[2]),path
+    traces+=1
+result.append(f'{traces} persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries')
+(P/'audit'/'source-checks.txt').write_text('\n'.join(result),encoding='utf-8')
+(P/'audit'/'changed-files.json').write_text(json.dumps(changed,indent=2))
+print('\n'.join(result))

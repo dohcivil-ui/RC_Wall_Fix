@@ -1,0 +1,5 @@
+
+   Id MainWindowTitle Responding
+   -- --------------- ----------
+39704 RC_RT_HCA_v2          True
+

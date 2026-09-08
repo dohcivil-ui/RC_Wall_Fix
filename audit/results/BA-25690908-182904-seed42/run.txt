@@ -1,0 +1,82 @@
+Status=SOLUTION_FOUND_CONFIGURED_CHECKS
+Algorithm=BA; Trial=1
+Seed=42; Evaluations=1; Budget=1
+BestEvaluation=1; Recoveries=0
+H=3; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4
+phi=30; mu=0.6; qa_allowable=20; clear_cover=0.075
+fc_prime=320; fy=4000; passive_fraction=0
+WSDReviewed=True; source=SYNTHETIC TEST FIXTURE ONLY - not EIT
+AllowableShear=8; MinStemRatio=0.0015; MinBaseRatio=0.0015
+Design check: VERIFIED_CONFIGURED_CHECKS_ONLY
+=== MATERIAL PROPERTIES ===
+Steel: SD40 (fy=4000, fs=1700 ksc)
+Concrete: f'c = 320 ksc (fc=144.0 ksc)
+Legacy WSD parameters (unverified unless sourced): n=9, k=0.433, j=0.856, R=26.65 ksc
+Prices: Concrete=2,601 Baht/m3, Steel=24 Baht/kg
+-------------------------------
+=== OPTIMIZATION RESULTS ===
+Algorithm: BA
+Best Found at Trial: 1
+Best Found at Iteration: 1
+-------------------------------
+=== TOTAL COST ===
+Total: 10,267.68 Baht/m
+-------------------------------
+=== DIMENSIONS ===
+Stem_top (tt): 0.200 m
+Stem_bottom (tb): 0.350 m
+Base_width (B): 2.000 m
+Base_thickness: 0.400 m
+Toe: 0.300 m
+Heel: 1.350 m
+-------------------------------
+=== EARTH PRESSURES ===
+Ka = 0.333, Kp = 3.000
+Pa = 2.700 ton, Pp = 0.000 ton
+-------------------------------
+=== WEIGHTS ===
+W1 (Soil on Toe): 0.465 ton
+W2 (Soil on Heel): 6.318 ton
+W3 (Stem): 1.716 ton
+W4 (Base): 1.920 ton
+W_total: 10.419 ton
+-------------------------------
+=== STEEL REINFORCEMENT ===
+
+--- Stem ---
+Moment: 1.76 ton-m
+Steel: DB28 @ 0.10m
+As_req: 5.25, As_prov: 61.58 cm2/m
+
+--- Toe ---
+Moment: 0.24 ton-m
+Steel: DB28 @ 0.10m
+As_req: 6.00, As_prov: 61.58 cm2/m
+
+--- Heel ---
+Moment: 1.80 ton-m
+Steel: DB28 @ 0.10m
+As_req: 6.00, As_prov: 61.58 cm2/m
+-------------------------------
+=== SAFETY FACTORS ===
+FS_Overturning: 4.16 >= 2.0 PASS
+FS_Sliding: 2.32 >= 1.5 PASS
+FS_Bearing: 2.49 >= 1.0 PASS
+-------------------------------
+=== BEARING CAPACITY ===
+Eccentricity (e): 0.180 m
+q_max: 8.03 ton/m2 (allowable: 20.00)
+q_min: 2.39 ton/m2
+-------------------------------
+Stem: d=0.2610 m; fc_actual=12.95/144; fs_actual=129.84/1700 kgf/cm2
+v=0.777/8 kgf/cm2; As_min=5.25 cm2/m
+Toe: d=0.3110 m; fc_actual=1.31/144; fs_actual=14.75/1700 kgf/cm2
+v=0.000/8 kgf/cm2; As_min=6 cm2/m
+Heel: d=0.3110 m; fc_actual=9.85/144; fs_actual=110.65/1700 kgf/cm2
+v=0.596/8 kgf/cm2; As_min=6 cm2/m
+Stem height H-TBase=2.600 m
+Clear cover to bar surface=0.075 m; d=t-cover-db/2
+Passive fraction=0; signed e positive toward TOE; full contact required
+qa is ALLOWABLE; shear and minimum steel require sourced WSD criteria.
+Heuristic best found only; no guarantee of global optimum.
+

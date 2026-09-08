@@ -1,0 +1,166 @@
+ACTUAL compiled VB6 regression. Synthetic criteria are TEST FIXTURES, NOT EIT 2562 compliance.
+OK: stem height H-TBase
+  actual=4.7000000000; expected=4.7000000000
+OK: requested active moment
+  actual=10.3823000000; expected=10.3823000000
+OK: requested full passive net moment
+  actual=9.7262000000; expected=9.7262000000
+OK: actual DB12 effective depth
+  actual=0.1190000000; expected=0.1190000000
+OK: requested DB12 rejected in flexure
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: requested full design rejected
+  validator=WSD_CRITERIA_UNVERIFIED
+OK: unverified criteria never accepted
+OK: explicit unverified status
+OK: case0 stem moment
+  actual=1.7576000000; expected=1.7576000000
+OK: case0 W1
+  actual=0.4652307692; expected=0.4652307692
+OK: case0 x1
+  actual=0.1618131868; expected=0.1618131868
+OK: case0 W3
+  actual=1.7160000000; expected=1.7160000000
+OK: case0 x3
+  actual=0.5090909091; expected=0.5090909091
+OK: case0 contact
+OK: case0 signed e
+  actual=0.1803396371; expected=0.1803396371
+OK: case0 q toe
+  actual=8.0281158284; expected=8.0281158284
+OK: case0 q heel
+  actual=2.3911149408; expected=2.3911149408
+OK: case0 toe moment
+  actual=0.2405819603; expected=0.2405819603
+OK: case0 heel moment
+  actual=1.8047851719; expected=1.8047851719
+OK: case0 concrete stress
+  actual=12.9505578268; expected=12.9505578268
+OK: case0 steel stress
+  actual=129.8367879482; expected=129.8367879482
+  validator=VERIFIED_CONFIGURED_CHECKS_ONLY
+OK: H3 synthetic fixture valid
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: H3 weak section rejected
+OK: case1 stem moment
+  actual=4.2875000000; expected=4.2875000000
+OK: case1 W1
+  actual=0.5355000000; expected=0.5355000000
+OK: case1 x1
+  actual=0.2127450980; expected=0.2127450980
+OK: case1 W3
+  actual=2.7300000000; expected=2.7300000000
+OK: case1 x3
+  actual=0.6794871795; expected=0.6794871795
+OK: case1 contact
+OK: case1 signed e
+  actual=0.2457954443; expected=0.2457954443
+OK: case1 q toe
+  actual=10.5954720000; expected=10.5954720000
+OK: case1 q heel
+  actual=2.7329280000; expected=2.7329280000
+OK: case1 toe moment
+  actual=0.6172909056; expected=0.6172909056
+OK: case1 heel moment
+  actual=4.1345413956; expected=4.1345413956
+OK: case1 concrete stress
+  actual=18.1640723656; expected=18.1640723656
+OK: case1 steel stress
+  actual=224.4077671285; expected=224.4077671285
+  validator=VERIFIED_CONFIGURED_CHECKS_ONLY
+OK: H4 synthetic fixture valid
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: H4 weak section rejected
+OK: case2 stem moment
+  actual=7.9507000000; expected=7.9507000000
+OK: case2 W1
+  actual=0.4709302326; expected=0.4709302326
+OK: case2 x1
+  actual=0.2618001723; expected=0.2618001723
+OK: case2 W3
+  actual=4.1280000000; expected=4.1280000000
+OK: case2 x3
+  actual=0.8833333333; expected=0.8833333333
+OK: case2 contact
+OK: case2 signed e
+  actual=0.2258356237; expected=0.2258356237
+OK: case2 q toe
+  actual=11.5152722906; expected=11.5152722906
+OK: case2 q heel
+  actual=5.0875449852; expected=5.0875449852
+OK: case2 toe moment
+  actual=1.0786487547; expected=1.0786487547
+OK: case2 heel moment
+  actual=8.2461893823; expected=8.2461893823
+OK: case2 concrete stress
+  actual=18.7855915772; expected=18.7855915772
+OK: case2 steel stress
+  actual=288.2041632888; expected=288.2041632888
+  validator=VERIFIED_CONFIGURED_CHECKS_ONLY
+OK: H5 synthetic fixture valid
+  validator=CONCRETE_OR_STEEL_STRESS
+OK: H5 weak section rejected
+OK: case3 stem moment
+  actual=-1.9288000000; expected=-1.9288000000
+OK: case3 W1
+  actual=0.9304615385; expected=0.9304615385
+OK: case3 x1
+  actual=0.1693528694; expected=0.1693528694
+OK: case3 W3
+  actual=2.4960000000; expected=2.4960000000
+OK: case3 x3
+  actual=0.5833333333; expected=0.5833333333
+OK: case3 contact
+OK: case3 signed e
+  actual=-0.2360823799; expected=-0.2360823799
+OK: case3 q toe
+  actual=3.5914704142; expected=3.5914704142
+OK: case3 q heel
+  actual=7.5297603550; expected=7.5297603550
+OK: case3 toe moment
+  actual=-0.0036578284; expected=-0.0036578284
+OK: case3 heel moment
+  actual=-4.2984944852; expected=-4.2984944852
+FAIL: case3 concrete stress
+  actual=4.5572904316; expected=-4.5572904316
+FAIL: case3 steel stress
+  actual=69.9168865825; expected=-69.9168865825
+  validator=CONCRETE_SHEAR
+OK: shear limit enforced
+OK: shear rejection reason
+  validator=MINIMUM_STEEL
+OK: minimum steel enforced
+OK: minimum steel rejection reason
+  validator=INVALID_GEOMETRY_OR_INPUT
+OK: negative depth invalid, not clamped
+OK: depth helper raises error
+  validator=INVALID_GEOMETRY_OR_INPUT
+OK: inconsistent geometry rejected
+  validator=INVALID_GEOMETRY_OR_INPUT
+OK: front soil below top rejected
+OK: partial contact rejected
+  validator=UNSUPPORTED_DOUBLE_LAYER
+OK: unsupported double layers rejected
+OK: initial updates global best
+OK: reset updates global best
+OK: neighbor updates global best
+OK: all entries counted
+OK: budget cannot be exceeded
+OK: BA initial returned at budget=1
+OK: HCA initial returned at budget=1
+OK: identical shared initial cost
+  actual=10267.6772400000; expected=10267.6772400000
+OK: BA evaluation budget
+OK: trial paths never overwrite
+OK: BA same seed same best
+  actual=10571.2180620000; expected=10571.2180620000
+OK: BA same seed entire trace
+OK: HCA equal evaluation budget
+OK: HCA same seed entire trace
+OK: infeasible BA reopens original three ranges
+OK: infeasible BA keeps exact budget
+OK: BA no solution explicit
+OK: no solution is not free
+OK: no solution report
+OK: HCA no solution and exact budget
+TOTAL checks=96; failures=2

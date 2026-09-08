@@ -1,0 +1,8 @@
+Type=Exe
+Module=BaselineTest; BaselineTest.bas
+Module=modDataStructures; modDataStructures.bas
+Module=modWSD; modWSD.bas
+Module=modShared; modShared.ACTIVE-external.bas
+Startup="Sub Main"
+Name="BaselineHarness"
+ExeName32="BaselineTest.exe"

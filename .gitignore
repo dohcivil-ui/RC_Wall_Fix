@@ -1,0 +1,9 @@
+# Compiled outputs and local VB6 editor state; audit text evidence stays tracked.
+*.exe
+*.obj
+*.tmp
+*.vbw
+*.csi
+*.lvw
+__pycache__/
+*.pyc

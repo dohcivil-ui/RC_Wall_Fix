@@ -1,0 +1,5 @@
+# Preserve the original VB6 legacy encoding and exact line endings.
+* -text
+*.frx binary
+*.jpg binary
+*.png binary
