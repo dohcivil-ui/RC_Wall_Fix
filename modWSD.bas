@@ -1,6 +1,6 @@
 Attribute VB_Name = "modWSD"
 Option Explicit
-' Legacy test thresholds; production uses the explicit PROJECT_WSD_ACI99_V2_NOANCHORAGE basis.
+' Legacy test thresholds; production uses the explicit PROJECT_WSD_ACI99_V3_MAIN_ONLY basis.
 Public AllowableShear As Double   ' kgf/cm2, for this material and member
 Public MinStemRatio As Double    ' main vertical steel / gross concrete area
 Public MinBaseRatio As Double    ' main slab steel / gross concrete area

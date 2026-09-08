@@ -25,7 +25,7 @@ def mass(db,sp,length):return .00617*db**2/sp*length
 summaries=[]
 fixtures=list(csv.DictReader((E/'project-fixtures.csv').open()))
 for row in fixtures:
-    if row['case'] not in ('H3','H4','H5','anchorage_excluded'):continue
+    if row['case'] not in ('H3','H4','H5','anchorage_excluded','secondary_excluded'):continue
     assert row['valid']=='True'
     h,tt,tb,tbase,B,toe=[float(row[key]) for key in ('H','tt','tb','TBase','B','toe')]
     heel=B-toe-tb;hs=h-tbase;hp=1.2-tbase
@@ -77,21 +77,21 @@ for row in fixtures:
         else:
             near(member['M'],mom[i-1]);near(member['v'],shear[i-1])
         assert float(member['fc_bound'])<=144 and float(member['fs_bound'])<=1700
-    front_db,front_sp,front_ld=extra['front'];hor_db,hor_sp,hor_lap=extra['horizontal'];base_db,base_sp,base_lap=extra['base']
-    near(front_ld,0);near(hor_lap,0);near(base_lap,0)
-    extra_weight=mass(front_db,front_sp,hs-.075+front_ld)+2*mass(hor_db,hor_sp,hs-.15)*12/(12-hor_lap)+2*mass(base_db,base_sp,B-.15)*12/(12-base_lap)
+    assert set(extra)=={'totals'} # no secondary steel in current detail export
+    extra_weight=0
     concrete=(tt+tb)/2*hs+B*tbase
     near(totals[3],concrete);near(totals[4],main_weight);near(totals[5],extra_weight)
     cost=concrete*2617+(main_weight+extra_weight)*24;near(totals[6],cost,1e-6)
     summaries.append(dict(case=row['case'],geometry=dict(H=h,tt=tt,tb=tb,TBase=tbase,B=B,toe=toe,heel=heel),
                           fs=[min(ot),min(sl),min(bc)],cost=cost,main_weight=main_weight,extra_weight=extra_weight,
                           note='Fixed verification fixture; not an optimized or fully code-certified design'))
-assert len(summaries)==4
+assert len(summaries)==5
 reason={row['case']:row['reason'] for row in fixtures}
 assert reason['H3_reverse_heel']=='REVERSED_BASE_FACE'
 assert reason['DB12weak']=='STEM_STRESS_OR_INTERVAL_BOUND'
 assert reason['anchorage_excluded']=='PASS_IMPLEMENTED_PROJECT_CHECKS'
+assert reason['secondary_excluded']=='PASS_IMPLEMENTED_PROJECT_CHECKS'
 report=dict(comparisons=comparisons,fixtures=summaries,scope='Independent arithmetic verified against actual VB6 outputs; no 30-trial run')
 (E/'independent-project.json').write_text(json.dumps(report,indent=2),encoding='ascii')
 (P/'project-checks-latest.json').write_text(json.dumps(dict(evidence=str(E.relative_to(P)),**report),indent=2),encoding='ascii')
-print(f'Independent project checks: {comparisons} numerical comparisons; H3/H4/H5 and anchorage-excluded case verified; no 30-trial run.')
+print(f'Independent project checks: {comparisons} numerical comparisons; H3/H4/H5 and excluded-detail cases verified; no 30-trial run.')

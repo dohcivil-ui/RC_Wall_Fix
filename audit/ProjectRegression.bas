@@ -22,8 +22,8 @@ Private Sub SaveCase(label As String, d As Design, expected As Boolean)
     If ok Then
         Call Verify(label & " deterministic recheck", CheckProjectDesign(d, r))
         Call Verify(label & " price from same detail", Abs(CalculateCost(d) - r.Cost) < 0.000001)
-        Call Verify(label & " anchorage and lap allowances excluded", r.Ld(0) = 0 And r.Ld(1) = 0 And r.Ld(2) = 0 And r.FrontLd = 0 And r.HorizontalLap = 0 And r.BaseLap = 0)
-        Call Verify(label & " extra steel included", r.ExtraWeight > 0 And r.Cost > r.ConcreteVolume * currentMaterial.concretePrice + r.MainWeight * currentMaterial.SteelPrice)
+        Call Verify(label & " anchorage and lap allowances excluded", r.Ld(0) = 0 And r.Ld(1) = 0 And r.Ld(2) = 0)
+        Call Verify(label & " concrete plus main steel only", Abs(r.Cost - (r.ConcreteVolume * currentMaterial.concretePrice + r.MainWeight * currentMaterial.SteelPrice)) < 0.000001)
         f = FreeFile: Open App.Path & "\project-" & label & "-report.txt" For Output As #f
         Print #f, ProjectDesignReport(d, currentMaterial, "FIXTURE - not an optimizer minimum")
         Close #f
@@ -32,10 +32,7 @@ Private Sub SaveCase(label As String, d As Design, expected As Boolean)
         For i = 0 To 2
             Print #f, i & "," & WP_DB(r.DB(i)) & "," & CsvNumber(WP_SP(r.SP(i))) & "," & CsvNumber(r.Depth(i)) & "," & CsvNumber(r.Steel(i)) & "," & CsvNumber(r.Minimum(i)) & "," & CsvNumber(r.Moment(i)) & "," & CsvNumber(r.Shear(i)) & "," & CsvNumber(r.FcBound(i)) & "," & CsvNumber(r.FsBound(i)) & "," & CsvNumber(r.Ld(i)) & "," & CsvNumber(r.Length(i))
         Next i
-        Print #f, "front," & WP_DB(r.FrontDB) & "," & CsvNumber(WP_SP(r.FrontSP)) & "," & CsvNumber(r.FrontLd)
-        Print #f, "horizontal," & WP_DB(r.HorizontalDB) & "," & CsvNumber(WP_SP(r.HorizontalSP)) & "," & CsvNumber(r.HorizontalLap)
-        Print #f, "base," & WP_DB(r.BaseDB) & "," & CsvNumber(WP_SP(r.BaseSP)) & "," & CsvNumber(r.BaseLap)
-        Print #f, "totals," & CsvNumber(r.OT) & "," & CsvNumber(r.SL) & "," & CsvNumber(r.BC) & "," & CsvNumber(r.ConcreteVolume) & "," & CsvNumber(r.MainWeight) & "," & CsvNumber(r.ExtraWeight) & "," & CsvNumber(r.Cost)
+        Print #f, "totals," & CsvNumber(r.OT) & "," & CsvNumber(r.SL) & "," & CsvNumber(r.BC) & "," & CsvNumber(r.ConcreteVolume) & "," & CsvNumber(r.MainWeight) & "," & CsvNumber(0) & "," & CsvNumber(r.Cost)
         Close #f
     End If
 End Sub
@@ -63,7 +60,7 @@ Public Sub Main()
     Call Verify("reference active moment", Abs(gamma_soil * CalculateKa() * (H - weak.TBase) ^ 3 / 6# - 10.3823) < 0.000001)
     Call Verify("reference full-passive moment", Abs(CalculateMomentStem(weak) - 9.7262) < 0.000001)
     SaveCase "DB12weak", weak, False
-    weak = d: weak.tt = 0.2: SaveCase "curtain_clearance", weak, False
+    weak = d: weak.tt = 0.2: SaveCase "secondary_excluded", weak, True
     weak = d: weak.TBase = 0.3: SaveCase "anchorage_excluded", weak, True
     weak = d: weak.Base = 1.5: weak.LHeel = weak.Base - weak.LToe - weak.tb: SaveCase "stability", weak, False
     weak = d: weak.tt = 0.075: SaveCase "invalid_top_depth", weak, False
@@ -105,7 +102,7 @@ Public Sub Main()
     Form1.cmdBA.Value = True
     text = ""
     For i = 0 To Form1.lstResults.ListCount - 1: text = text & Form1.lstResults.List(i) & vbCrLf: Next i
-    Call Verify("actual UI accepted detail", InStr(text, "PASS_IMPLEMENTED_PROJECT_CHECKS") > 0 And InStr(text, "Stem horizontal EACH face") > 0)
+    Call Verify("actual UI accepted detail", InStr(text, "PASS_IMPLEMENTED_PROJECT_CHECKS") > 0 And InStr(text, "secondary steel excluded") > 0 And InStr(text, "Stem horizontal EACH face:") = 0 And InStr(text, "Stem front vertical:") = 0 And InStr(text, "Base longitudinal EACH face:") = 0)
     Call Verify("new UI session preserves old summary", ProjectTrialSummary <> noSolutionSummary And Len(Dir$(noSolutionSummary)) > 0)
     summaryFile = FreeFile: Open ProjectTrialSummary For Input As #summaryFile
     Line Input #summaryFile, summaryHeader: Line Input #summaryFile, summaryRow

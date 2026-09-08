@@ -3,8 +3,8 @@ Option Explicit
 ' Bounded project basis, NOT a declaration of full EIT or ACI code compliance.
 ' WSD material stresses: supplied Pongnathee reference; ACI 318-99 supplements.
 ' User research scope: no anchorage/lap checks or allowances; no formwork price.
-' Geometric member lengths only; no compression-steel credit.
-Public Const PROJECT_CHECK_BASIS As String = "PROJECT_WSD_ACI99_V2_NOANCHORAGE"
+' Main stem/toe/heel reinforcement only; geometric lengths; no other steel.
+Public Const PROJECT_CHECK_BASIS As String = "PROJECT_WSD_ACI99_V3_MAIN_ONLY"
 Public ProjectChecksEnabled As Boolean
 Public ProjectTrialSummary As String
 Private Const PSI_KSC As Double = 0.0703069579640175
@@ -26,18 +26,8 @@ Public Type ProjectDetail
     Length(0 To 2) As Double
     DB(0 To 2) As Integer
     SP(0 To 2) As Integer
-    FrontDB As Integer
-    FrontSP As Integer
-    HorizontalDB As Integer
-    HorizontalSP As Integer
-    BaseDB As Integer
-    BaseSP As Integer
-    FrontLd As Double
-    HorizontalLap As Double
-    BaseLap As Double
     ShearLimit As Double
     MainWeight As Double
-    ExtraWeight As Double
     ConcreteVolume As Double
     Cost As Double
 End Type
@@ -87,49 +77,6 @@ Private Function SpacingOK(DB As Integer, SP As Integer, thickness As Double, st
         maxSpacing = MinV(maxSpacing, MinV(540# / fksi - 2.5 * cover / IN_M, 432# / fksi) * IN_M)
     End If
     SpacingOK = spacing <= maxSpacing
-End Function
-
-Private Function SelectProjectDetail(d As Design, r As ProjectDetail) As Boolean
-    Dim fb As Integer, fs As Integer, hb As Integer, hs As Integer, bb As Integer, bs As Integer
-    Dim frontArea As Double, horArea As Double, score As Double, best As Double
-    Dim bar As Double, gap As Double, baseBest As Double, length As Double
-    best = 1E+30: baseBest = 1E+30
-    length = H - d.TBase
-    For fb = DB_MIN To DB_MAX
-    For fs = SP_MIN To SP_MAX
-        frontArea = CalculateAsProv(fb, fs)
-        If frontArea >= MaxV(0.0015 * d.tb * 10000#, r.Steel(0) / 2#) And frontArea <= r.Steel(0) And SpacingOK(fb, fs, d.tt, 0) Then
-            For hb = DB_MIN To DB_MAX
-            For hs = SP_MIN To SP_MAX
-                horArea = CalculateAsProv(hb, hs)
-                bar = WP_DB(hb) / 1000#
-                gap = d.tt - 2# * cover - (WP_DB(r.DB(0)) + WP_DB(fb)) / 1000# - 2# * bar
-                If horArea >= 0.00125 * d.tb * 10000# And gap >= CLEAR_GAP And SpacingOK(hb, hs, d.tt, 0) Then
-                    score = ProvidedSteelWeight(fb, fs, length - cover) + 2# * ProvidedSteelWeight(hb, hs, length - 2# * cover)
-                    If score < best Then
-                        best = score: r.FrontDB = fb: r.FrontSP = fs
-                        r.HorizontalDB = hb: r.HorizontalSP = hs
-                    End If
-                End If
-            Next hs
-            Next hb
-        End If
-    Next fs
-    Next fb
-    If best = 1E+30 Then LastValidationReason = "STEM_DETAIL_LAYOUT": Exit Function
-    For bb = DB_MIN To DB_MAX
-    For bs = SP_MIN To SP_MAX
-        bar = WP_DB(bb) / 1000#
-        gap = d.TBase - 2# * cover - (WP_DB(r.DB(1)) + WP_DB(r.DB(2))) / 1000# - 2# * bar
-        If CalculateAsProv(bb, bs) >= 0.002 * d.TBase * 10000# And gap >= CLEAR_GAP And SpacingOK(bb, bs, d.TBase, 0) Then
-            score = 2# * ProvidedSteelWeight(bb, bs, d.Base - 2# * cover)
-            If score < baseBest Then baseBest = score: r.BaseDB = bb: r.BaseSP = bs
-        End If
-    Next bs
-    Next bb
-    If baseBest = 1E+30 Then LastValidationReason = "BASE_DISTRIBUTION_LAYOUT": Exit Function
-    r.ExtraWeight = best + baseBest
-    SelectProjectDetail = True
 End Function
 
 Public Function ProjectStemMoment(d As Design, y As Double) As Double
@@ -253,8 +200,7 @@ End Function
 
 Public Function CheckProjectDesign(d As Design, r As ProjectDetail) As Boolean
     Dim blank As ProjectDetail, i As Integer, thickness As Double, j As Double, hs As Double, hp As Double
-    Dim topDepth As Double, beta As Double, rhoMax As Double, y As Double, maxSpacingStress As Double
-    Dim frontArea As Double, frontBar As Double, horBar As Double, baseBar As Double, gap As Double
+    Dim topDepth As Double, beta As Double, rhoMax As Double, y As Double
     On Error GoTo BadData
     r = blank
     LastValidationReason = "PROJECT_CRITERIA_DISABLED"
@@ -266,7 +212,6 @@ Public Function CheckProjectDesign(d As Design, r As ProjectDetail) As Boolean
     If PassiveFactor <> PROJECT_PASSIVE_FACTOR Then Exit Function
     If d.UseDoubleStem Or d.UseDoubleToe Or d.UseDoubleHeel Then LastValidationReason = "UNSUPPORTED_MAIN_DOUBLE_LAYER": Exit Function
     hs = H - d.TBase: hp = H1 - d.TBase
-    If hs <= 2# * cover Or d.Base <= 2# * cover Then Exit Function
     r.DB(0) = d.ASst_DB: r.SP(0) = d.ASst_Sp
     r.DB(1) = d.AStoe_DB: r.SP(1) = d.AStoe_Sp
     r.DB(2) = d.ASheel_DB: r.SP(2) = d.ASheel_Sp
@@ -294,11 +239,10 @@ Public Function CheckProjectDesign(d As Design, r As ProjectDetail) As Boolean
         If r.Shear(i) > r.ShearLimit Then LastValidationReason = "MEMBER_SHEAR": Exit Function
         ' Conservative beam trigger for tapered stem; no transverse shear reinforcement designed.
         If i = 0 And d.tb <> d.tt And r.Shear(i) > r.ShearLimit / 2# Then LastValidationReason = "STEM_SHEAR_REINFORCEMENT_REQUIRED": Exit Function
+        If thickness < 2# * cover + WP_DB(r.DB(i)) / 1000# Then LastValidationReason = "MAIN_BAR_COVER": Exit Function
         If Not SpacingOK(r.DB(i), r.SP(i), thickness, r.FsBound(i)) Then LastValidationReason = "MAIN_BAR_SPACING": Exit Function
     Next i
-    ' Derive the least-weight feasible detail within the existing discrete bar catalog.
-    ' Both faces are provided; front bars are not credited as compression reinforcement.
-    If Not SelectProjectDetail(d, r) Then Exit Function
+    ' Only the three main-bar selections are included in the research model.
     r.Length(0) = hs - cover
     r.Length(1) = d.LToe - cover
     r.Length(2) = d.LHeel - cover
@@ -309,7 +253,7 @@ Public Function CheckProjectDesign(d As Design, r As ProjectDetail) As Boolean
     ' Geometric quantities per metre; user excludes anchorage, laps and formwork.
     r.ConcreteVolume = (d.tt + d.tb) * hs / 2# + d.Base * d.TBase
     If currentMaterial.concretePrice <= 0 Or currentMaterial.SteelPrice <= 0 Then LastValidationReason = "INVALID_PRICE_INPUT": Exit Function
-    r.Cost = r.ConcreteVolume * currentMaterial.concretePrice + (r.MainWeight + r.ExtraWeight) * currentMaterial.SteelPrice
+    r.Cost = r.ConcreteVolume * currentMaterial.concretePrice + r.MainWeight * currentMaterial.SteelPrice
     LastValidationReason = "PASS_IMPLEMENTED_PROJECT_CHECKS"
     CheckProjectDesign = True
     Exit Function
@@ -325,7 +269,7 @@ Public Function ProjectDesignReport(d As Design, mat As MaterialProperties, algo
     Dim r As ProjectDetail, s As String, i As Integer, label As String, ok As Boolean
     currentMaterial = mat: currentWSD = CalculateWSDParameters(mat.fy, mat.fc)
     s = "Basis: " & PROJECT_CHECK_BASIS & " (implemented checks; not full EIT/ACI certification)" & vbCrLf
-    s = s & "Research scope: anchorage/laps excluded from checks and steel quantities; no 0.40m allowance; formwork cost excluded." & vbCrLf
+    s = s & "Research scope: main stem/toe/heel steel only; secondary steel excluded; anchorage/laps excluded from checks and steel quantities; no 0.40m allowance; formwork cost excluded." & vbCrLf
     If Not d.IsValid Then
         ProjectDesignReport = s & "NO_SOLUTION / no admissible design returned; no price." & vbCrLf
         Exit Function
@@ -346,14 +290,11 @@ Public Function ProjectDesignReport(d As Design, mat As MaterialProperties, algo
         s = s & "M envelope=" & Format$(r.Moment(i), "0.0000") & " tf.m/m; fc_bound=" & Format$(r.FcBound(i), "0.0000") & "/" & currentWSD.fc & "; fs_bound=" & Format$(r.FsBound(i), "0.0000") & "/" & currentWSD.fs & " kgf/cm2" & vbCrLf
         s = s & "v envelope=" & Format$(r.Shear(i), "0.0000") & "/" & Format$(r.ShearLimit, "0.0000") & " kgf/cm2; modeled main length=" & Format$(r.Length(i), "0.0000") & " m" & vbCrLf
     Next i
-    s = s & "Stem front vertical: " & Bars(r.FrontDB, r.FrontSP) & vbCrLf
-    s = s & "Stem horizontal EACH face: " & Bars(r.HorizontalDB, r.HorizontalSP) & vbCrLf
-    s = s & "Base longitudinal EACH face: " & Bars(r.BaseDB, r.BaseSP) & vbCrLf
-    s = s & "Concrete=" & Format$(r.ConcreteVolume, "0.0000") & " m3/m; main steel=" & Format$(r.MainWeight, "0.0000") & "; extra steel=" & Format$(r.ExtraWeight, "0.0000") & " kg/m" & vbCrLf
-    s = s & "Concrete+provided-steel estimate=" & Format$(r.Cost, "0.00") & " Baht/m; unit rates=" & mat.concretePrice & " Baht/m3, " & mat.SteelPrice & " Baht/kg" & vbCrLf
-    s = s & "Detail assumptions: clear cover >=75mm; main bars outermost, distribution inside; two curtains/mats; normal weight, uncoated; aggregate<=20mm; geometric quantities only." & vbCrLf
+    s = s & "Concrete=" & Format$(r.ConcreteVolume, "0.0000") & " m3/m; main steel=" & Format$(r.MainWeight, "0.0000") & " kg/m" & vbCrLf
+    s = s & "Concrete+main-steel estimate=" & Format$(r.Cost, "0.00") & " Baht/m; unit rates=" & mat.concretePrice & " Baht/m3, " & mat.SteelPrice & " Baht/kg" & vbCrLf
+    s = s & "Detail assumptions: clear cover >=75mm; single main layer per member; normal weight, uncoated; aggregate<=20mm; geometric quantities only." & vbCrLf
     s = s & "Stem stress uses certified interval bounds over entire taper; shear uses full-height envelope. No compression-steel credit." & vbCrLf
-    s = s & "Sources: Pongnathee material WSD; ACI99 A.2.3/A.7,10.3.3/10.5/10.6,14.3.3,7.6/7.12. See audit/PROJECT_CHECKS_IMPLEMENTATION_TH.md." & vbCrLf
+    s = s & "Sources: Pongnathee material WSD; ACI99 A.2.3/A.7,10.3.3/10.5/10.6,7.6/7.12. See audit/PROJECT_CHECKS_IMPLEMENTATION_TH.md." & vbCrLf
     s = s & "Not checked/costed: service deflection limit, site settlement/water/seismic, joints/end details, full construction BOQ. No global-optimum guarantee." & vbCrLf
     ProjectDesignReport = s
 End Function

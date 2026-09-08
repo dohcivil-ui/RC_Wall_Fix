@@ -14,7 +14,7 @@ $projectLog = Get-Content -Raw -LiteralPath (Join-Path $projectEvidence 'compile
 if ($projectLog -notmatch 'succeeded' -or $projectLog -match 'failed|Compile Error') { throw 'Project compile failed' }
 $projectTest = Start-Process -FilePath (Join-Path $PSScriptRoot 'ProjectRegression.exe') -WorkingDirectory $PSScriptRoot -WindowStyle Hidden -PassThru
 if (-not $projectTest.WaitForExit(30000)) { throw 'Project test timeout' }
-Get-ChildItem -LiteralPath $PSScriptRoot -File | Where-Object { $_.Name -match '^project-(regression\.txt|fixtures\.csv|(H[345]|anchorage_excluded)-(detail\.csv|report\.txt))$' } | Copy-Item -Destination $projectEvidence
+Get-ChildItem -LiteralPath $PSScriptRoot -File | Where-Object { $_.Name -match '^project-(regression\.txt|fixtures\.csv|(H[345]|anchorage_excluded|secondary_excluded)-(detail\.csv|report\.txt))$' } | Copy-Item -Destination $projectEvidence
 $projectNative = Get-Content -Raw -LiteralPath (Join-Path $projectEvidence 'project-regression.txt')
 Write-Output $projectNative
 if ($projectNative -match 'FATAL|FAIL:' -or $projectNative -notmatch 'PROJECT checks=\d+; failures=0') { throw 'Project native verification failed' }

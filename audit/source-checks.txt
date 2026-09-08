@@ -6,4 +6,4 @@ All .vbp source modules resolve within this copy
 External Downloads/modShared.bas remains byte-identical to baseline
 Changed VB6 files retain byte-preserving legacy text and CRLF, without UTF-8 BOM
 Production project-check module matches its archived source
-389 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries
+409 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries
