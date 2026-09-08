@@ -696,6 +696,7 @@ Private Sub cmdBA_Click()
         End If
         DoEvents
     Next trial
+    Call SaveLoopPriceCSV_BA(h)
     
     modDataStructures.BestTrial = globalBestTrial
     modDataStructures.BestCostIteration = globalBestIteration
@@ -720,6 +721,8 @@ Private Sub cmdBA_Click()
 
     
     lstResults.AddItem "CSV and per-trial reports: " & ResultCsvRoot()
+    lstResults.AddItem "accept CSV (last trial): " & LastAcceptCSVPath
+    lstResults.AddItem "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
     lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
@@ -953,6 +956,7 @@ Private Sub cmdRun_Click()
         ' อัพเดท UI
         DoEvents
     Next trial
+    Call SaveLoopPriceCSV(h)
     
     ' บันทึก loopPrice-HCA (หลังจบทุก Trial)
 
@@ -993,6 +997,8 @@ Private Sub cmdRun_Click()
     
     ' แสดงข้อความสรุปครั้งเดียวตอนจบ
     lstResults.AddItem "CSV and per-trial reports: " & ResultCsvRoot()
+    lstResults.AddItem "accept CSV (last trial): " & LastAcceptCSVPath
+    lstResults.AddItem "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
     lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===

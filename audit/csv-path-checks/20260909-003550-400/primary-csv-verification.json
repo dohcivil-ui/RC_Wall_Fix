@@ -1,0 +1,41 @@
+{
+  "sessions": 4,
+  "accept_categories": {
+    "Passed and Better value": 16,
+    "Passed": 19,
+    "Rejected": 95
+  },
+  "loop_rows_per_session": [
+    1,
+    1,
+    2,
+    2
+  ],
+  "outcome": "All export rows match actual native evaluation/trial logs; no 30-trial run.",
+  "files": [
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-BA-H5-trial1-seed20260908-1.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-BA-H5-4.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-003555-seed20260908\\evaluations.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-003555-seed20260908\\trial-summary.csv"
+    },
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-HCA-H5-trial1-seed20260908-1.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-HCA-H5-4.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-003555-seed20260908\\evaluations.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-003555-seed20260908\\trial-summary.csv"
+    },
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-BA-H5-trial2-seed12346.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-BA-H5-6.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-003555-seed12346\\evaluations.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-003555-seed12345\\trial-summary.csv"
+    },
+    {
+      "accept": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\accept-HCA-H5-trial2-seed12346.csv",
+      "loop": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\loopPrice-HCA-H5-6.csv",
+      "evaluations": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-003555-seed12346\\evaluations.csv",
+      "summary": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-003555-seed12345\\trial-summary.csv"
+    }
+  ]
+}

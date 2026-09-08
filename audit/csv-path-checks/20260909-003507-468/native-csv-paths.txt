@@ -1,0 +1,68 @@
+OK: fixed output root independent of App.Path
+OK: root exists or was created
+OK: export before first trial falls back to requested root
+OK: BA completed short trial
+OK: BA uses requested root
+OK: BA evaluations saved
+OK: BA summary saved below requested root
+OK: BA UI displays actual root
+OK: BA accept CSV saved automatically
+OK: BA accept is directly in root
+OK: BA loop CSV saved automatically
+OK: BA loop is directly in root
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-BA-H5-trial1-seed20260908.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-BA-H5.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-003513-seed20260908\evaluations.csv
+OK: BA repeated loop filename is unique
+OK: BA repeated loop CSV preserves first
+BA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-003513-seed20260908
+BA summary: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-003513-seed20260908\trial-summary.csv
+OK: HCA completed short trial
+OK: HCA uses requested root
+OK: HCA evaluations saved
+OK: HCA summary saved below requested root
+OK: HCA UI displays actual root
+OK: HCA accept CSV saved automatically
+OK: HCA accept is directly in root
+OK: HCA loop CSV saved automatically
+OK: HCA loop is directly in root
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-HCA-H5-trial1-seed20260908.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-HCA-H5.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-003513-seed20260908\evaluations.csv
+OK: HCA repeated loop filename is unique
+OK: HCA repeated loop CSV preserves first
+HCA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-003513-seed20260908
+HCA summary: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-003513-seed20260908\trial-summary.csv
+OK: BA completed short trial
+OK: BA uses requested root
+OK: BA evaluations saved
+OK: BA summary saved below requested root
+OK: BA UI displays actual root
+OK: BA accept CSV saved automatically
+OK: BA accept is directly in root
+OK: BA loop CSV saved automatically
+OK: BA loop is directly in root
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-BA-H5-trial1-seed12345.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-BA-H5-2.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-003513-seed12345\evaluations.csv
+OK: BA repeated loop filename is unique
+OK: BA repeated loop CSV preserves first
+BA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-003513-seed12345
+BA summary: C:\reserch 69\RC_Wall_Fix\result_csv\BA-25690909-003513-seed12345\trial-summary.csv
+OK: HCA completed short trial
+OK: HCA uses requested root
+OK: HCA evaluations saved
+OK: HCA summary saved below requested root
+OK: HCA UI displays actual root
+OK: HCA accept CSV saved automatically
+OK: HCA accept is directly in root
+OK: HCA loop CSV saved automatically
+OK: HCA loop is directly in root
+ACCEPT=C:\reserch 69\RC_Wall_Fix\result_csv\accept-HCA-H5-trial1-seed12345.csv
+LOOP=C:\reserch 69\RC_Wall_Fix\result_csv\loopPrice-HCA-H5-2.csv
+EVALUATIONS=C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-003513-seed12345\evaluations.csv
+OK: HCA repeated loop filename is unique
+OK: HCA repeated loop CSV preserves first
+HCA run folder: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-003513-seed12345
+HCA summary: C:\reserch 69\RC_Wall_Fix\result_csv\HCA-25690909-003513-seed12345\trial-summary.csv
+CSV_PATH checks=47; failures=0

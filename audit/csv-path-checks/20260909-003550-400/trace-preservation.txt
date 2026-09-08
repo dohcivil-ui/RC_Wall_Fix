@@ -1,0 +1,2 @@
+BA: same-seed 64-evaluation trace identical to pre-export-change native evidence
+HCA: same-seed 64-evaluation trace identical to pre-export-change native evidence

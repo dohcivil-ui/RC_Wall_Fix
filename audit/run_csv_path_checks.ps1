@@ -23,5 +23,7 @@ if (-not $test.WaitForExit(30000)) { throw 'CSV path test timeout' }
 $result = Get-Content -Raw -LiteralPath (Join-Path $evidence 'native-csv-paths.txt')
 Write-Output $result
 if ($result -notmatch 'CSV_PATH checks=\d+; failures=0' -or $result -match 'FAIL:|FATAL') { throw 'CSV path verification failed' }
-Get-FileHash -Algorithm SHA256 -LiteralPath 'Form1.frm','modShared.bas','modBatch.bas','audit\RC_RT_HCA_v2.exe','audit\CsvPathRegression.exe' | Format-List | Out-File (Join-Path $evidence 'hashes.txt') -Encoding utf8
+python audit\verify_primary_csv.py $evidence
+if ($LASTEXITCODE -ne 0) { throw 'Primary CSV contents differ from native logs' }
+Get-FileHash -Algorithm SHA256 -LiteralPath 'Form1.frm','modShared.bas','modBatch.bas','modBA.bas','modHillClimbing.bas','audit\RC_RT_HCA_v2.exe','audit\CsvPathRegression.exe' | Format-List | Out-File (Join-Path $evidence 'hashes.txt') -Encoding utf8
 Write-Output "Evidence: $evidence"

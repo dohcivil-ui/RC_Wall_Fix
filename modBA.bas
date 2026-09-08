@@ -541,7 +541,8 @@ Public Sub InitCSVExport_BA()
 End Sub
 
 Public Sub InitLoopCounter_BA()
-    csvLoopData = "No.,Loop,BestPrice" & vbCrLf
+    csvLoopData = "No.,Loop,BestPrice,Status" & vbCrLf
+    LastLoopCSVPath = ""
     loopCount = 0
 End Sub
 
@@ -554,14 +555,14 @@ End Sub
 Public Sub LogIteration_BA(iteration As Long, cost As Double, IsValid As Boolean, isBetter As Boolean)
     If Not IsValid Then
         ' Rejected - ??????? column 2
-        csvAcceptData = csvAcceptData & iteration & "," & Format(cost, "0.00") & ",," & vbCrLf
+        csvAcceptData = csvAcceptData & iteration & ",INVALID,," & vbCrLf
     ElseIf isBetter Then
         ' Passed and Better value - ??????? column 4
-        csvAcceptData = csvAcceptData & iteration & ",,," & Format(cost, "0.00") & vbCrLf
+        csvAcceptData = csvAcceptData & iteration & ",,," & CsvNumber(cost) & vbCrLf
         bestIterationInRun = iteration
     Else
         ' Passed - ??????? column 3
-        csvAcceptData = csvAcceptData & iteration & ",," & Format(cost, "0.00") & "," & vbCrLf
+        csvAcceptData = csvAcceptData & iteration & ",," & CsvNumber(cost) & "," & vbCrLf
     End If
 End Sub
 
@@ -570,29 +571,18 @@ End Sub
 ' ??????: No., Loop (iteration ????? best), BestPrice
 '--------------------------------------------------------------------------------
 Public Sub LogLoopResult_BA(bestPrice As Double)
+    Dim price As String
     loopCount = loopCount + 1
-    csvLoopData = csvLoopData & loopCount & "," & bestIterationInRun & "," & Format(bestPrice, "0.00") & vbCrLf
+    If RunBest.IsValid Then price = CsvNumber(bestPrice)
+    csvLoopData = csvLoopData & loopCount & "," & RunBestEvaluation & "," & price & "," & RunStatus & vbCrLf
 End Sub
 
 Public Sub SaveAcceptCSV_BA(wallHeight As Double)
-    ' Per-trial evaluations.csv is saved by FinishSearch.
+    LastAcceptCSVPath = WriteExportCSV("accept-BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-trial" & RunTrial & "-seed" & RunSeed, csvAcceptData)
 End Sub
 
 Public Sub SaveLoopPriceCSV_BA(wallHeight As Double)
-    Dim filePath As String, fileNum As Integer
-    
-    On Error GoTo ErrorHandler
-    
-    filePath = UniqueExportPath("loopPrice-BA-H" & Format(wallHeight, "0"))
-    fileNum = FreeFile
-    Open filePath For Output As #fileNum
-    Print #fileNum, csvLoopData;
-    Close #fileNum
-    Debug.Print "[CSV] Saved: " & filePath
-    Exit Sub
-    
-ErrorHandler:
-    Debug.Print "[CSV ERROR] Cannot save: " & filePath
+    LastLoopCSVPath = WriteExportCSV("loopPrice-BA-H" & Replace$(CStr(wallHeight), ",", "."), csvLoopData)
 End Sub
 
 '================================================================================

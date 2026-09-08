@@ -108,6 +108,8 @@ Public RunBestCost As Double
 Public RunBestEvaluation As Long
 Public RunStatus As String
 Public RunFolder As String
+Public LastAcceptCSVPath As String
+Public LastLoopCSVPath As String
 Public RunRecoveryCount As Long
 Private EvaluationCSV As String
 Public LastPrice As Double
@@ -966,6 +968,9 @@ Public Sub BeginSearch(budget As Long, seed As Long, algorithm As String, Option
     If budget < 1 Then Err.Raise 5, , "Evaluation budget must be positive"
     EvaluationCount = 0: EvaluationBudget = budget: RunSeed = seed
     RunTrial = trial: RunAlgorithm = algorithm
+    LastAcceptCSVPath = ""
+    If algorithm = "BA" Then InitCSVExport_BA
+    If algorithm = "HCA" Then InitCSVExport
     RunBest = emptyDesign: RunBestCost = NO_SOLUTION_COST: RunBestEvaluation = 0
     RunRecoveryCount = 0
     RunStatus = "NO_SOLUTION"
@@ -980,7 +985,7 @@ Public Sub BeginSearch(budget As Long, seed As Long, algorithm As String, Option
 End Sub
 
 Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateCost As Double) As Boolean
-    Dim ot As Double, sl As Double, bc As Double, ok As Boolean
+    Dim ot As Double, sl As Double, bc As Double, ok As Boolean, improved As Boolean
     If EvaluationCount >= EvaluationBudget Then Err.Raise 5, , "Evaluation budget exhausted"
     EvaluationCount = EvaluationCount + 1
     candidateCost = NO_SOLUTION_COST
@@ -989,11 +994,14 @@ Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateC
     If ok Then candidateCost = CalculateCost(d)
     d.TotalCost = candidateCost: d.IsValid = ok
     If ok Then
-        If Not RunBest.IsValid Or candidateCost < RunBestCost Then
+        improved = Not RunBest.IsValid Or candidateCost < RunBestCost
+        If improved Then
             RunBest = d: RunBestCost = candidateCost: RunBestEvaluation = EvaluationCount
             RunStatus = "SOLUTION_FOUND_CONFIGURED_CHECKS"
         End If
     End If
+    If RunAlgorithm = "BA" Then LogIteration_BA EvaluationCount, candidateCost, ok, improved
+    If RunAlgorithm = "HCA" Then LogIteration EvaluationCount, candidateCost, ok, improved
     EvaluationCSV = EvaluationCSV & EvaluationCount & "," & entry & "," & CStr(ok) & "," & Replace(LastValidationReason, ",", ";") & "," & _
         CsvNumber(candidateCost) & "," & CsvNumber(RunBestCost) & "," & CsvNumber(d.tt) & "," & CsvNumber(d.tb) & "," & _
         CsvNumber(d.TBase) & "," & CsvNumber(d.Base) & "," & CsvNumber(d.LToe) & "," & _
@@ -1031,6 +1039,8 @@ Public Sub FinishSearch()
     End If
     Print #f, FormatResults(RunBest, currentMaterial, RunAlgorithm, RunTrial)
     Close #f
+    If RunAlgorithm = "BA" Then SaveAcceptCSV_BA H
+    If RunAlgorithm = "HCA" Then SaveAcceptCSV H
 End Sub
 
 Public Function ResultCsvRoot() As String
@@ -1039,15 +1049,25 @@ Public Function ResultCsvRoot() As String
     ResultCsvRoot = RESULT_CSV_ROOT
 End Function
 
-Public Function UniqueExportPath(stem As String) As String
+Public Function UniqueExportPath(stem As String, Optional rootLevel As Boolean = False) As String
     Dim n As Long, p As String, folder As String
     folder = RunFolder
-    If Len(folder) = 0 Then folder = ResultCsvRoot()
+    If rootLevel Or Len(folder) = 0 Then folder = ResultCsvRoot()
     p = folder & "\" & stem & ".csv"
     Do While Len(Dir$(p)) > 0
         n = n + 1: p = folder & "\" & stem & "-" & n & ".csv"
     Loop
     UniqueExportPath = p
+End Function
+
+Public Function WriteExportCSV(stem As String, data As String) As String
+    Dim filePath As String, f As Integer
+    filePath = UniqueExportPath(stem, True)
+    f = FreeFile
+    Open filePath For Output As #f
+    Print #f, data;
+    Close #f
+    WriteExportCSV = filePath
 End Function
 
 Public Sub SeedSearchRandom(seed As Long)
