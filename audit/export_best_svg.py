@@ -41,17 +41,38 @@ def tag(name):
     return '{http://www.w3.org/2000/svg}' + name
 
 W, CH = 876, 640
-VH = max(CH, W * args.height_cm / args.width_cm)
-VW = VH * args.width_cm / args.height_cm
+# Include native-dialog-style chrome in the SVG, without rasterizing the drawing.
+VW = max(W+28, (CH+88)*args.width_cm/args.height_cm)
+VH = VW*args.height_cm/args.width_cm
 svg = ET.Element(tag('svg'), {'width': f'{args.width_cm:g}cm', 'height': f'{args.height_cm:g}cm',
     'viewBox': f'0 0 {VW:g} {VH:g}', 'role': 'img', 'aria-labelledby': 'title description'})
-ET.SubElement(svg, tag('title'), {'id': 'title'}).text = f'Best observed {algorithm} retaining wall, trial {trial}'
+ET.SubElement(svg, tag('title'), {'id': 'title'}).text = f'Best observed {algorithm} retaining wall popup, trial {trial}'
 ET.SubElement(svg, tag('desc'), {'id': 'description'}).text = (
-    'Vector rendering from the saved native VB6 result, not a new optimization. '
-    'Circular reinforcement markers are schematic. Dimensions and spacing are in metres. '
-    'Price covers concrete and main reinforcement only. No additional search was performed.')
-ET.SubElement(svg, tag('rect'), {'width': '100%', 'height': '100%', 'fill': 'white'})
-g = ET.SubElement(svg, tag('g'), {'transform': f'translate({(VW-W)/2:g},{(VH-CH)/2:g})',
+    'Static vector illustration of the VB6 popup, including title bar, OK button and close X. '
+    'The controls in this image are illustrative; the actual VB6 controls remain functional. '
+    'Drawing uses the saved native VB6 result, not a new optimization. '
+    'Circular reinforcement markers are schematic; dimensions and spacing are in metres.')
+def chrome(name, **attrs):
+    return ET.SubElement(svg, tag(name), {k.replace('_','-'):str(v) for k,v in attrs.items()})
+def chrome_text(x, y, label, anchor='start', size=12):
+    t=chrome('text', x=x, y=y, text_anchor=anchor, font_family='Tahoma, Arial, sans-serif', font_size=size, fill='#111')
+    t.text=label
+    return t
+
+defs=ET.SubElement(svg, tag('defs'))
+grad=ET.SubElement(defs, tag('linearGradient'), {'id':'caption','x2':'0','y2':'1'})
+ET.SubElement(grad, tag('stop'), {'offset':'0','stop-color':'#a5bfd7'})
+ET.SubElement(grad, tag('stop'), {'offset':'1','stop-color':'#d5e1ed'})
+chrome('rect', x=1,y=1,width=VW-2,height=VH-2,rx=5,fill='#f0f0f0',stroke='#4c667d',stroke_width=1)
+chrome('rect', x=2,y=2,width=VW-4,height=25,rx=4,fill='url(#caption)')
+chrome_text(10,18,'Best retaining wall - dimensions')
+chrome('rect', x=VW-37,y=5,width=30,height=18,rx=3,fill='#c56851',stroke='#7c3b2d')
+chrome('path', d=f'M {VW-27},9 l 10,10 M {VW-17},9 l -10,10',stroke='white',stroke_width=1.7,fill='none')
+chrome('rect', x=14,y=38,width=VW-28,height=VH-88,fill='white')
+chrome('rect', x=VW-118,y=VH-39,width=104,height=27,fill='#f8f8f8',stroke='#444')
+chrome('rect', x=VW-115,y=VH-36,width=98,height=21,fill='none',stroke='#444',stroke_dasharray='1 1')
+chrome_text(VW-66,VH-21,'OK','middle')
+g = ET.SubElement(svg, tag('g'), {'transform': f'translate({(VW-W)/2:g},{38+(VH-88-CH)/2:g})',
     'stroke': '#232323', 'stroke-width': '1', 'fill': 'none', 'font-family': 'Tahoma, Arial, sans-serif'})
 
 def element(name, **attrs):

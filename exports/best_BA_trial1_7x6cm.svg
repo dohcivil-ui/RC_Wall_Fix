@@ -1,9 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" width="7cm" height="6cm" viewBox="0 0 876 750.857" role="img" aria-labelledby="title description">
-  <title id="title">Best observed BA retaining wall, trial 1</title>
-  <desc id="description">Vector rendering from the saved native VB6 result, not a new optimization. Circular reinforcement markers are schematic. Dimensions and spacing are in metres. Price covers concrete and main reinforcement only. No additional search was performed.</desc>
-  <rect width="100%" height="100%" fill="white" />
-  <g transform="translate(0,55.4286)" stroke="#232323" stroke-width="1" fill="none" font-family="Tahoma, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="7cm" height="6cm" viewBox="0 0 904 774.857" role="img" aria-labelledby="title description">
+  <title id="title">Best observed BA retaining wall popup, trial 1</title>
+  <desc id="description">Static vector illustration of the VB6 popup, including title bar, OK button and close X. The controls in this image are illustrative; the actual VB6 controls remain functional. Drawing uses the saved native VB6 result, not a new optimization. Circular reinforcement markers are schematic; dimensions and spacing are in metres.</desc>
+  <defs>
+    <linearGradient id="caption" x2="0" y2="1">
+      <stop offset="0" stop-color="#a5bfd7" />
+      <stop offset="1" stop-color="#d5e1ed" />
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="902" height="772.8571428571429" rx="5" fill="#f0f0f0" stroke="#4c667d" stroke-width="1" />
+  <rect x="2" y="2" width="900" height="25" rx="4" fill="url(#caption)" />
+  <text x="10" y="18" text-anchor="start" font-family="Tahoma, Arial, sans-serif" font-size="12" fill="#111">Best retaining wall - dimensions</text>
+  <rect x="867" y="5" width="30" height="18" rx="3" fill="#c56851" stroke="#7c3b2d" />
+  <path d="M 877,9 l 10,10 M 887,9 l -10,10" stroke="white" stroke-width="1.7" fill="none" />
+  <rect x="14" y="38" width="876" height="686.8571428571429" fill="white" />
+  <rect x="786" y="735.8571428571429" width="104" height="27" fill="#f8f8f8" stroke="#444" />
+  <rect x="789" y="738.8571428571429" width="98" height="21" fill="none" stroke="#444" stroke-dasharray="1 1" />
+  <text x="838" y="753.8571428571429" text-anchor="middle" font-family="Tahoma, Arial, sans-serif" font-size="12" fill="#111">OK</text>
+  <g transform="translate(14,61.4286)" stroke="#232323" stroke-width="1" fill="none" font-family="Tahoma, Arial, sans-serif">
     <text x="438.0000" y="34.0000" text-anchor="middle" font-size="20" font-weight="bold" fill="#232728" stroke="none">FINAL RESULT  |  BA  |  Selected trial 1 / 1</text>
     <text x="438.0000" y="57.3330" text-anchor="middle" font-size="13.333" font-weight="bold" fill="#232728" stroke="none">COST  10,542.98 Baht/m  (concrete + main steel)</text>
     <text x="438.0000" y="82.3330" text-anchor="middle" font-size="13.333" font-weight="normal" fill="#232728" stroke="none">Best cost first found at evaluation 61  |  Dimensions in metres</text>
