@@ -1060,9 +1060,23 @@ Public Function UniqueExportPath(stem As String, Optional rootLevel As Boolean =
     UniqueExportPath = p
 End Function
 
-Public Function WriteExportCSV(stem As String, data As String) As String
-    Dim filePath As String, f As Integer
-    filePath = UniqueExportPath(stem, True)
+Public Function WriteExportCSV(stem As String, data As String, Optional fixedRootName As Boolean = False) As String
+    Dim filePath As String, f As Integer, backupFolder As String, backupPath As String, prefix As String, n As Long
+    filePath = UniqueExportPath(stem)
+    If fixedRootName Then
+        filePath = ResultCsvRoot() & "\" & stem & ".csv"
+        If Len(Dir$(filePath)) > 0 Then
+            backupFolder = ResultCsvRoot() & "\archive"
+            If Dir$(backupFolder, vbDirectory) = "" Then MkDir backupFolder
+            prefix = backupFolder & "\" & stem & "-" & Format$(Now, "yyyymmdd-hhnnss")
+            backupPath = prefix & ".csv"
+            Do While Len(Dir$(backupPath)) > 0
+                n = n + 1: backupPath = prefix & "-" & n & ".csv"
+            Loop
+            ' Preserve the previous primary file before replacing its contents.
+            FileCopy filePath, backupPath
+        End If
+    End If
     f = FreeFile
     Open filePath For Output As #f
     Print #f, data;

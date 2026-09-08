@@ -10,6 +10,10 @@ records = []
 for line in (evidence/'native-csv-paths.txt').read_text().splitlines():
     if line.startswith('ACCEPT='):
         records.append({'accept': Path(line.split('=', 1)[1])})
+    elif line.startswith('ACCEPT_SNAPSHOT='):
+        records[-1]['accept_snapshot'] = Path(line.split('=', 1)[1])
+    elif line.startswith('LOOP_SNAPSHOT='):
+        records[-1]['loop_snapshot'] = Path(line.split('=', 1)[1])
     elif line.startswith('LOOP='):
         records[-1]['loop'] = Path(line.split('=', 1)[1])
     elif line.startswith('EVALUATIONS='):
@@ -24,10 +28,23 @@ def rows(path):
 categories = Counter()
 trial_counts = []
 for record in records:
-    exported, trace = rows(record['accept']), rows(record['evaluations'])
+    summary = rows(record['summary'])
+    exported = rows(record['accept_snapshot'])
+    trace = []
+    for trial in summary:
+        run_folder = Path(trial['run_folder'])
+        native_rows = rows(run_folder/'evaluations.csv')
+        per_trial = rows(run_folder/record['accept'].name)
+        assert len(per_trial) == len(native_rows) > 0
+        trace.extend((trial, ev) for ev in native_rows)
     assert len(exported) == len(trace) > 0
     best = float('inf')
-    for out, native in zip(exported, trace):
+    previous_trial = None
+    for out, (trial, native) in zip(exported, trace):
+        assert out['Trial'] == trial['trial'] and out['Seed'] == trial['seed']
+        if out['Trial'] != previous_trial:
+            best = float('inf')
+            previous_trial = out['Trial']
         assert int(out['No.']) == int(native['evaluation'])
         if native['valid'] != 'True':
             assert out['Rejected'] == 'INVALID'
@@ -42,7 +59,7 @@ for record in records:
             assert out[other] == ''
             categories[column] += 1
             best = min(best, cost)
-    loop, summary = rows(record['loop']), rows(record['summary'])
+    loop = rows(record['loop_snapshot'])
     assert len(loop) == len(summary) > 0
     trial_counts.append(len(loop))
     for out, native in zip(loop, summary):
@@ -55,6 +72,10 @@ for record in records:
             assert out['BestPrice'] == '' and out['Loop'] == '0'
     root = record['evaluations'].parent.parent
     assert record['accept'].parent == root and record['loop'].parent == root
+    for kind in ('accept', 'loop'):
+        archived = list((root/'archive').glob(record[kind].stem+'-*.csv'))
+        assert any(p.read_bytes() == record[kind+'_snapshot'].read_bytes() for p in archived), kind
+
 
 assert len(records) == 4 and set(trial_counts) == {1, 2}
 assert all(categories[k] > 0 for k in ('Rejected', 'Passed', 'Passed and Better value'))

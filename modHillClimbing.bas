@@ -33,6 +33,8 @@ Private CurrentHeelSP As Integer
 
 ' CSV Export
 Private csvAcceptData As String
+Private csvSessionAcceptData As String
+Private captureCSVSession As Boolean
 Private csvLoopData As String
 Private loopCount As Long
 Private bestIterationInRun As Long
@@ -378,11 +380,13 @@ End Function
 '================================================================================
 
 Public Sub InitCSVExport()
-    csvAcceptData = "No.,Rejected,Passed,Passed and Better value" & vbCrLf
+    csvAcceptData = "No.,Rejected,Passed,Passed and Better value,Trial,Seed" & vbCrLf
     bestIterationInRun = 0
 End Sub
 
 Public Sub InitLoopCounter()
+    captureCSVSession = True
+    csvSessionAcceptData = "No.,Rejected,Passed,Passed and Better value,Trial,Seed" & vbCrLf
     csvLoopData = "No.,Loop,BestPrice,Status" & vbCrLf
     LastLoopCSVPath = ""
     loopCount = 0
@@ -397,14 +401,14 @@ End Sub
 Public Sub LogIteration(iteration As Long, cost As Double, IsValid As Boolean, isBetter As Boolean)
     If Not IsValid Then
         ' Rejected - ??????? column 2
-        csvAcceptData = csvAcceptData & iteration & ",INVALID,," & vbCrLf
+        csvAcceptData = csvAcceptData & iteration & ",INVALID,," & "," & RunTrial & "," & RunSeed & vbCrLf
     ElseIf isBetter Then
         ' Passed and Better value - ??????? column 4
-        csvAcceptData = csvAcceptData & iteration & ",,," & CsvNumber(cost) & vbCrLf
+        csvAcceptData = csvAcceptData & iteration & ",,," & CsvNumber(cost) & "," & RunTrial & "," & RunSeed & vbCrLf
         bestIterationInRun = iteration
     Else
         ' Passed - ??????? column 3
-        csvAcceptData = csvAcceptData & iteration & ",," & CsvNumber(cost) & "," & vbCrLf
+        csvAcceptData = csvAcceptData & iteration & ",," & CsvNumber(cost) & "," & "," & RunTrial & "," & RunSeed & vbCrLf
     End If
 End Sub
 
@@ -420,11 +424,15 @@ Public Sub LogLoopResult(bestPrice As Double)
 End Sub
 
 Public Sub SaveAcceptCSV(wallHeight As Double)
-    LastAcceptCSVPath = WriteExportCSV("accept-HCA-H" & Replace$(CStr(wallHeight), ",", ".") & "-trial" & RunTrial & "-seed" & RunSeed, csvAcceptData)
+    LastAcceptCSVPath = WriteExportCSV("accept-HCA-H" & Replace$(CStr(wallHeight), ",", "."), csvAcceptData)
+    ' Append once per completed trial, preserving all evaluations in the session.
+    If captureCSVSession Then csvSessionAcceptData = csvSessionAcceptData & Mid$(csvAcceptData, InStr(csvAcceptData, vbCrLf) + 2)
 End Sub
 
 Public Sub SaveLoopPriceCSV(wallHeight As Double)
-    LastLoopCSVPath = WriteExportCSV("loopPrice-HCA-H" & Replace$(CStr(wallHeight), ",", "."), csvLoopData)
+    LastAcceptCSVPath = WriteExportCSV("accept-HCA-H" & Replace$(CStr(wallHeight), ",", "."), csvSessionAcceptData, True)
+    LastLoopCSVPath = WriteExportCSV("loopPrice-HCA-H" & Replace$(CStr(wallHeight), ",", "."), csvLoopData, True)
+    captureCSVSession = False
 End Sub
 
 '================================================================================

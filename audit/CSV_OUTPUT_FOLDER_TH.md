@@ -5,8 +5,9 @@
 กำหนดไว้จุดเดียวที่ `modShared.RESULT_CSV_ROOT` และใช้ `ResultCsvRoot()` สำหรับสร้าง/คืนตำแหน่ง `BeginSearch` กับ `modBatch.BatchOutputPath` เปลี่ยนมาใช้ฟังก์ชันเดียวกัน ส่วน Form1 แสดงตำแหน่งนี้ให้ผู้ใช้เห็น
 
 - ไฟล์หลัก `accept-BA-H...csv`, `accept-HCA-H...csv`, `loopPrice-BA-H...csv` และ `loopPrice-HCA-H...csv` บันทึกที่ราก `result_csv` โดยตรงอัตโนมัติเมื่อใช้ปุ่ม BA/HCA
-- `accept` แยกแต่ละ trial โดยใส่ trial/seed ในชื่อไฟล์ เช่น `accept-BA-H5-trial1-seed12345.csv` และเติม suffix เมื่อชื่อซ้ำ มีหนึ่งแถวต่อ evaluation รวม initial/reset/neighbor
-- `loopPrice` รวมทุก trial ของการกดปุ่มหนึ่ง session เช่น `loopPrice-BA-H5.csv` ถ้าชื่อซ้ำจะเป็น `loopPrice-BA-H5-1.csv` เป็นต้น เมื่อตั้ง 30 trials จะมี 30 แถวในไฟล์นี้
+- ชื่อหลักคงที่ตรงตามภาพผู้ใช้: `accept-BA-H3.csv`, `accept-BA-H4.csv`, `accept-BA-H5.csv` และชุด HCA เช่นเดียวกัน สร้างตาม H และวิธีที่กดรัน ไม่มี trial/seed/suffix ต่อท้ายชื่อหลัก รวมทุก trial ของ session โดยมีคอลัมน์ Trial/Seed แยกข้อมูล มีหนึ่งแถวต่อ evaluation รวม initial/reset/neighbor
+- `loopPrice` รวมทุก trial ของการกดปุ่มหนึ่ง session ใช้ชื่อ `loopPrice-BA-H3.csv` ถึง H5 และชุด HCA เช่นเดียวกัน เมื่อตั้ง 30 trials จะมี 30 แถวในไฟล์นี้
+- เมื่อชื่อหลักมีอยู่แล้ว จะสำรองไฟล์เดิมใน `result_csv\archive` พร้อมเวลาและ suffix กันชนก่อนเขียนผลรอบล่าสุดลงชื่อหลักเดิม ผลราย trial และ accept ราย trial ยังเก็บในโฟลเดอร์ย่อยของ trial นั้นด้วย
 - `evaluations.csv` และ `run.txt` อยู่ในโฟลเดอร์ย่อย BA/HCA แยกตามวันที่ เวลา seed และ suffix เมื่อชื่อซ้ำ
 - `trial-summary.csv` อยู่ในโฟลเดอร์ trial แรกของ session ตามเดิม
 - `batch_step3*.csv` อยู่ใต้ราก `result_csv` โดยตรง พร้อมวันที่ เวลา และ suffix เมื่อชื่อซ้ำ
@@ -17,11 +18,13 @@
 
 พบว่า SaveAcceptCSV เดิมเป็น stub และปุ่ม Form1 ไม่ได้เรียก SaveLoopPriceCSV หลังจบ loop จึงแก้ให้ BeginSearch เริ่ม buffer accept, EvaluateCandidate บันทึกการจัดประเภทจากผลตรวจจริง และ FinishSearch บันทึก accept แต่ละ trial ส่วน Form1 บันทึก loopPrice ครั้งเดียวเมื่อจบทุก trial พร้อมแสดงชื่อไฟล์ที่ส่งออก
 
-`accept` คงคอลัมน์ `No.,Rejected,Passed,Passed and Better value`: No. คือ evaluation; Rejected ใส่ `INVALID` เพราะไม่มีราคาของคำตอบที่ไม่ผ่าน; Passed คือราคาของคำตอบที่ผ่านแต่ไม่ลด global best; Passed and Better value คือราคาที่ปรับปรุง global best ของ trial นั้น
+`accept` คงสี่คอลัมน์แรก `No.,Rejected,Passed,Passed and Better value` และเพิ่ม `Trial,Seed`: No. คือ evaluation ภายใน trial; Rejected ใส่ `INVALID` เพราะไม่มีราคาของคำตอบที่ไม่ผ่าน; Passed คือราคาของคำตอบที่ผ่านแต่ไม่ลด global best; Passed and Better value คือราคาที่ปรับปรุง global best ของ trial นั้น
 
 `loopPrice` คงสามคอลัมน์แรก `No.,Loop,BestPrice` และเพิ่ม `Status`: No. คือ trial, Loop คือ evaluation แรกที่พบราคาดีที่สุดของ trial, BestPrice ว่างและ Loop=0 เมื่อ NO_SOLUTION ไม่ใช้ sentinel เป็นราคา ค่าตัวเลข CSV ใช้จุดทศนิยมเพื่อไม่ชนตัวคั่นคอลัมน์
 
-หลักฐานล่าสุด: [VB6 47 checks, failures=0](csv-path-checks/20260909-003550-400/native-csv-paths.txt), [ตรวจเนื้อหา CSV กับ native logs](csv-path-checks/20260909-003550-400/primary-csv-verification.json) ครบทั้ง Rejected 95 แถว, Passed 19 แถว, Better 16 แถวจาก 4 sessions ตรวจ loopPrice แบบ 1 และ 2 trials รวมกรณี NO_SOLUTION; [trace BA/HCA 64 evaluations เท่ากับก่อนแก้ byte-for-byte](csv-path-checks/20260909-003550-400/trace-preservation.txt) ไม่เปลี่ยนคำตอบหรือขั้นตอนค้นหา ไม่ได้รัน 30 trials หรือ batch matrix
+หลักฐานรุ่นชื่อคงที่: [VB6 47 checks, failures=0](csv-path-checks/20260909-004232-564/native-csv-paths.txt) และ [ตรวจเนื้อหา CSV กับ native logs](csv-path-checks/20260909-004232-564/primary-csv-verification.json) ครบทั้ง Rejected 95 แถว, Passed 19 แถว, Better 18 แถวจาก 4 sessions ตรวจ accept ครบทุก evaluation ของทุก trial และ loopPrice แบบ 1/2 trials พร้อม NO_SOLUTION ตรวจไฟล์ archive ว่ามีข้อมูลตรงกับไฟล์เดิม ไม่ได้รัน 30 trials หรือ batch matrix
+
+หลักฐานก่อนปรับชื่อ: [47 checks](csv-path-checks/20260909-003550-400/native-csv-paths.txt) และ [trace BA/HCA 64 evaluations เท่ากับก่อนเพิ่ม export byte-for-byte](csv-path-checks/20260909-003550-400/trace-preservation.txt) เก็บเป็นประวัติ ชื่อแบบมี trial/seed/suffix ใน root จากรอบนั้นเป็นไฟล์เก่าที่ไม่ได้ลบ
 
 ## หลักฐานรอบย้ายโฟลเดอร์ก่อนคืนไฟล์หลัก
 

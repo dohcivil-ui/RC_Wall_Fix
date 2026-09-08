@@ -1,6 +1,7 @@
 Attribute VB_Name = "CsvPathRegression"
 Option Explicit
 Private logFile As Integer, checks As Long, failures As Long
+Private evidence As String, sessionNumber As Long
 
 Private Sub Verify(label As String, condition As Boolean)
     checks = checks + 1
@@ -9,7 +10,8 @@ Private Sub Verify(label As String, condition As Boolean)
 End Sub
 
 Private Sub CheckMethod(method As String)
-    Dim i As Long, displayed As Boolean, stem As String, firstPath As String
+    Dim i As Long, displayed As Boolean, firstPath As String, backupCount As Long
+    sessionNumber = sessionNumber + 1
     If method = "BA" Then Form1.cmdBA.Value = True Else Form1.cmdRun.Value = True
     Verify method & " completed short trial", EvaluationCount = CLng(Form1.txtMaxIter.Text) And RunTrial = CLng(Form1.txtTrials.Text)
     Verify method & " uses requested root", Left$(RunFolder, Len(RESULT_CSV_ROOT) + 1) = RESULT_CSV_ROOT & "\"
@@ -20,22 +22,27 @@ Private Sub CheckMethod(method As String)
     Next i
     Verify method & " UI displays actual root", displayed
     Verify method & " accept CSV saved automatically", Len(LastAcceptCSVPath) > 0 And Len(Dir$(LastAcceptCSVPath)) > 0
-    Verify method & " accept is directly in root", Left$(LastAcceptCSVPath, Len(RESULT_CSV_ROOT & "\accept-" & method & "-H5-")) = RESULT_CSV_ROOT & "\accept-" & method & "-H5-"
+    Verify method & " exact accept filename", LastAcceptCSVPath = RESULT_CSV_ROOT & "\accept-" & method & "-H5.csv"
     Verify method & " loop CSV saved automatically", Len(LastLoopCSVPath) > 0 And Len(Dir$(LastLoopCSVPath)) > 0
-    Verify method & " loop is directly in root", Left$(LastLoopCSVPath, Len(RESULT_CSV_ROOT & "\loopPrice-" & method & "-H5")) = RESULT_CSV_ROOT & "\loopPrice-" & method & "-H5"
+    Verify method & " exact loop filename", LastLoopCSVPath = RESULT_CSV_ROOT & "\loopPrice-" & method & "-H5.csv"
     Print #logFile, "ACCEPT=" & LastAcceptCSVPath
     Print #logFile, "LOOP=" & LastLoopCSVPath
     Print #logFile, "EVALUATIONS=" & RunFolder & "\evaluations.csv"
+    FileCopy LastAcceptCSVPath, evidence & "\session" & sessionNumber & "-accept.csv"
+    FileCopy LastLoopCSVPath, evidence & "\session" & sessionNumber & "-loop.csv"
+    Print #logFile, "ACCEPT_SNAPSHOT=" & evidence & "\session" & sessionNumber & "-accept.csv"
+    Print #logFile, "LOOP_SNAPSHOT=" & evidence & "\session" & sessionNumber & "-loop.csv"
+    backupCount = CountBackups(method)
     firstPath = LastLoopCSVPath
     If method = "BA" Then SaveLoopPriceCSV_BA 5 Else SaveLoopPriceCSV 5
-    Verify method & " repeated loop filename is unique", LastLoopCSVPath <> firstPath
-    Verify method & " repeated loop CSV preserves first", Len(Dir$(firstPath)) > 0 And Len(Dir$(LastLoopCSVPath)) > 0
+    Verify method & " repeated loop keeps exact filename", LastLoopCSVPath = firstPath
+    Verify method & " repeated loop archives previous file", CountBackups(method) = backupCount + 1
     Print #logFile, method & " run folder: " & RunFolder
     Print #logFile, method & " summary: " & ProjectTrialSummary
 End Sub
 
 Public Sub Main()
-    Dim evidence As String, i As Long
+    Dim i As Long
     On Error GoTo Failed
     evidence = Trim$(Replace$(Command$, Chr$(34), ""))
     logFile = FreeFile
@@ -65,3 +72,13 @@ Failed:
     Close #logFile
     Unload Form1
 End Sub
+
+Private Function CountBackups(method As String) As Long
+    Dim name As String
+    If Dir$(RESULT_CSV_ROOT & "\archive", vbDirectory) = "" Then Exit Function
+    name = Dir$(RESULT_CSV_ROOT & "\archive\loopPrice-" & method & "-H5-*.csv")
+    Do While Len(name) > 0
+        CountBackups = CountBackups + 1
+        name = Dir$()
+    Loop
+End Function
