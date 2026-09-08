@@ -176,4 +176,5 @@ Private Function ReadText(path As String) As String
     Close #f
 End Function
 '''
+start = start.replace("    ' Synthetic thresholds exercise branches only; no normative claim.", (P/'report_checks.inc').read_text() + "\n    ' Synthetic thresholds exercise branches only; no normative claim.")
 put('RegressionMain.bas',start+(P/'fixture_checks.inc').read_text()+end)

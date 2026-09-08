@@ -88,7 +88,6 @@ PER-CHECK AUDIT; no EIT compliance claim
 H=5; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4; phi=30; mu=0.6; qa=20
 tt=0.25; tb=0.45; TBase=0.45; Base=3; LToe=0.6; LHeel=1.95
 fc_prime=320; fy=4000; cover=0.075; passive fraction=0
-
 | Check | Actual | Limit / rule | Comparison | Basis / verification |
 | --- | --- | --- | --- | --- |
 | Stem height | 4.5500 m | H-TBase | CALCULATED | H measured from base underside |
@@ -210,7 +209,6 @@ PER-CHECK AUDIT; no EIT compliance claim
 H=5; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4; phi=30; mu=0.6; qa=20
 tt=0.575; tb=0.6; TBase=0.55; Base=3; LToe=0.7; LHeel=1.7
 fc_prime=320; fy=4000; cover=0.075; passive fraction=0
-
 | Check | Actual | Limit / rule | Comparison | Basis / verification |
 | --- | --- | --- | --- | --- |
 | Stem height | 4.4500 m | H-TBase | CALCULATED | H measured from base underside |

@@ -46,5 +46,9 @@ if ($native -notmatch 'TOTAL checks=\d+; failures=0' -or $native -match 'FATAL|F
 if ($gui -notmatch 'GUI failures=0' -or $gui -match 'FATAL') { throw 'GUI regression failed; read audit/gui-regression.txt' }
 Write-Output ($native -split "`r?`n" | Where-Object { $_ -match '^TOTAL' })
 Write-Output ($gui -split "`r?`n" | Where-Object { $_ -match '^GUI failures=' })
+python audit\verify_check_report.py
+if ($LASTEXITCODE -ne 0) { throw 'Per-check report differs from independent calculations' }
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'h5-vb6-checks.md'), (Join-Path $PSScriptRoot 'report-independent-checks.txt') -Destination $runEvidence
+Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $projectRoot 'modShared.bas'), (Join-Path $PSScriptRoot 'RegressionMain.bas') | Format-List | Out-File (Join-Path $runEvidence 'report-source-hashes.txt')
 python audit\source_checks.py
 if ($LASTEXITCODE -ne 0) { throw 'Source/trace checks failed' }

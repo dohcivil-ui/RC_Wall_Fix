@@ -740,7 +740,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     currentWSD = CalculateWSDParameters(mat.fy, mat.fc)
     reportOK = CheckDesignValid(d, d.ASst_DB, d.ASst_Sp, d.AStoe_DB, d.AStoe_Sp, d.ASheel_DB, d.ASheel_Sp, FS_OT, FS_SL, FS_BC)
     If Not BearingEdges(d, e, reportQT, reportQH) Then
-        FormatResults = "Design check: STABILITY_OR_BASE_CONTACT; no supported full-contact pressure diagram."
+        FormatResults = "Design check: STABILITY_OR_BASE_CONTACT; no supported full-contact pressure diagram." & vbCrLf & BuildDesignCheckReport(d)
         Exit Function
     End If
     currentMaterial = mat
@@ -896,15 +896,15 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     ' === SAFETY FACTORS ===
     result = result & "=== SAFETY FACTORS ===" & vbCrLf
     result = result & "FS_Overturning: " & Format(FS_OT, "0.00") & " >= 2.0 "
-    If FS_OT >= 2# Then result = result & "PASS" Else result = result & "FAIL"
+    If FS_OT >= 2# Then result = result & "WITHIN_PROJECT_LIMIT" Else result = result & "FAIL"
     result = result & vbCrLf
     
     result = result & "FS_Sliding: " & Format(FS_SL, "0.00") & " >= 1.5 "
-    If FS_SL >= 1.5 Then result = result & "PASS" Else result = result & "FAIL"
+    If FS_SL >= 1.5 Then result = result & "WITHIN_PROJECT_LIMIT" Else result = result & "FAIL"
     result = result & vbCrLf
     
     result = result & "FS_Bearing: " & Format(FS_BC, "0.00") & " >= 1.0 "
-    If FS_BC >= FS_BC_MIN Then result = result & "PASS" Else result = result & "FAIL"
+    If FS_BC >= FS_BC_MIN Then result = result & "WITHIN_PROJECT_LIMIT" Else result = result & "FAIL"
     result = result & vbCrLf
     result = result & "-------------------------------" & vbCrLf
     
@@ -926,7 +926,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     result = result & "Passive fraction=" & PassiveFactor & "; signed e positive toward TOE; full contact required" & vbCrLf
     result = result & "qa is ALLOWABLE; shear and minimum steel require sourced WSD criteria." & vbCrLf
     result = result & "Heuristic best found only; no guarantee of global optimum." & vbCrLf
-    FormatResults = result
+    FormatResults = result & vbCrLf & BuildDesignCheckReport(d)
     Exit Function
 InvalidReport:
     FormatResults = "INVALID_DATA: " & Err.Description
@@ -1027,4 +1027,115 @@ Private Function SectionCheckSummary(label As String, M As Double, depth As Doub
         "/" & currentWSD.fc & "; fs_actual=" & Format(s, "0.00") & "/" & currentWSD.fs & " kgf/cm2" & vbCrLf & _
         "v=" & Format(shear / (10# * depth), "0.000") & "/" & AllowableShear & " kgf/cm2; As_min=" & minimum & " cm2/m" & vbCrLf
     If Not WSDCriteriaReady() Then SectionCheckSummary = SectionCheckSummary & "Allowables/minimums UNVERIFIED (zero means unset, never a passing criterion)." & vbCrLf
+End Function
+
+
+' Read-only audit: continue independent checks after a failure. All arithmetic
+' uses the same helpers as CheckDesignValid; unset limits are never zero limits.
+Private Function AuditRow(item As String, actual As String, criterion As String, outcome As String, source As String) As String
+    AuditRow = "| " & item & " | " & actual & " | " & criterion & " | " & outcome & " | " & source & " |" & vbCrLf
+End Function
+
+Private Function AuditCompare(item As String, actual As Double, limit As Double, minimum As Boolean, units As String, source As String, ByRef failed As Boolean) As String
+    Dim within As Boolean, relation As String, outcome As String
+    If minimum Then
+        within = actual >= limit: relation = ">= "
+    Else
+        within = actual <= limit: relation = "<= "
+    End If
+    outcome = "WITHIN_LISTED_LIMIT"
+    If Not within Then outcome = "FAIL_LISTED_LIMIT": failed = True
+    AuditCompare = AuditRow(item, Format$(actual, "0.0000") & " " & units, relation & Format$(limit, "0.0000"), outcome, source)
+End Function
+
+Private Function AuditMember(d As Design, part As Integer, label As String, thickness As Double, db As Integer, sp As Integer, ByRef failed As Boolean, ByRef yieldFailed As Boolean) As String
+    Dim depth As Double, steel As Double, moment As Double, shear As Double
+    Dim c As Double, st As Double, jActual As Double, ratio As Double, result As String
+    Dim source As String, bound As Double
+    On Error GoTo InvalidMember
+    depth = SectionDepth(thickness, db): steel = CalculateAsProv(db, sp)
+    If steel <= 0 Or currentMaterial.fy <= 0 Then Err.Raise 5, , "Invalid steel/material"
+    Select Case part
+        Case 0: moment = CalculateMomentStem(d): ratio = MinStemRatio
+        Case 1: moment = CalculateMomentToe(d): ratio = MinBaseRatio
+        Case 2: moment = CalculateMomentHeel(d): ratio = MinBaseRatio
+    End Select
+    result = AuditRow(label & " bars", "DB" & WP_DB(db) & " @ " & Format$(WP_SP(sp), "0.00") & " m", "specified candidate", "INPUT", "Design")
+    result = result & AuditRow(label & " effective depth", Format$(depth, "0.0000") & " m", "t-cover-db/2 > 0", "CALCULATED", "Main bar outermost; single layer assumption")
+    result = result & AuditRow(label & " As", Format$(steel, "0.0000") & " cm2/m", "area per metre", "CALCULATED", "CalculateAsProv")
+    result = result & AuditCompare(label & " signed M", moment, 0, True, "tf.m/m", "Supported tension face; modShared", failed)
+    ' A necessary condition only: M=T*z, T<=As*fy and z<=d for the
+    ' singly reinforced pure-bending model. NOT a WSD allowable capacity.
+    bound = steel * currentMaterial.fy * depth / 1000#
+    result = result & AuditCompare(label & " necessary yield bound", Abs(moment), bound, False, "tf.m/m", "M<=As*fy*d; no modular ratio or code allowable used", yieldFailed)
+    If Not SectionStresses(moment, depth, steel, currentWSD.n, c, st, jActual) Then Err.Raise 5, , "Invalid section"
+    source = "Legacy n=" & currentWSD.n & "; EIT clause UNVERIFIED"
+    If WSDCriteriaReady() Then source = "Configured screening only: " & WSDSource
+    result = result & AuditCompare(label & " concrete stress", c, currentWSD.fc, False, "kgf/cm2", source, failed)
+    result = result & AuditCompare(label & " steel stress", st, currentWSD.fs, False, "kgf/cm2", source, failed)
+    shear = SectionShear(d, part, depth) / (10# * depth)
+    If AllowableShear > 0 Then
+        result = result & AuditCompare(label & " nominal shear V/bd", shear, AllowableShear, False, "kgf/cm2", source & "; shear section/definition require review", failed)
+    Else
+        result = result & AuditRow(label & " nominal shear V/bd", Format$(shear, "0.0000") & " kgf/cm2", "UNSET", "UNVERIFIED", "EIT shear limit/definition/critical section missing")
+    End If
+    If ratio > 0 Then
+        result = result & AuditCompare(label & " minimum steel", steel, ratio * 10000# * thickness, True, "cm2/m", source & "; gross-area ratio", failed)
+    Else
+        result = result & AuditRow(label & " minimum steel", Format$(steel, "0.0000") & " cm2/m", "UNSET", "UNVERIFIED", "EIT applicable minimum ratio missing")
+    End If
+    AuditMember = result
+    Exit Function
+InvalidMember:
+    failed = True
+    AuditMember = result & AuditRow(label, Err.Description, "valid supported section required", "INVALID_DATA", "No depth clamping")
+End Function
+
+Public Function BuildDesignCheckReport(d As Design, Optional stemOnly As Boolean = False) As String
+    Dim result As String, failed As Boolean, yieldFailed As Boolean, ok As Boolean
+    Dim e As Double, qt As Double, qh As Double, ot As Double, sl As Double, bc As Double
+    Dim qmax As Double, qmin As Double, status As String
+    On Error GoTo InvalidAudit
+    result = "PER-CHECK AUDIT; no EIT compliance claim" & vbCrLf
+    result = result & "H=" & H & "; H1=" & H1 & "; gamma_soil=" & gamma_soil & "; gamma_concrete=" & gamma_concrete & "; phi=" & phi & "; mu=" & mu & "; qa=" & qa & vbCrLf
+    result = result & "tt=" & d.tt & "; tb=" & d.tb & "; TBase=" & d.TBase & "; Base=" & d.Base & "; LToe=" & d.LToe & "; LHeel=" & d.LHeel & vbCrLf
+    result = result & "fc_prime=" & currentMaterial.fc & "; fy=" & currentMaterial.fy & "; cover=" & cover & "; passive fraction=" & PassiveFactor & vbCrLf
+    result = result & vbCrLf & "| Check | Actual | Limit / rule | Comparison | Basis / verification |" & vbCrLf
+    result = result & "| --- | --- | --- | --- | --- |" & vbCrLf
+    If Not GeometryOK(d) Then Err.Raise 5, , "INVALID_GEOMETRY_OR_INPUT"
+    If d.UseDoubleStem Or d.UseDoubleToe Or d.UseDoubleHeel Then Err.Raise 5, , "UNSUPPORTED_DOUBLE_LAYER"
+    result = result & AuditRow("Stem height", Format$(H - d.TBase, "0.0000") & " m", "H-TBase", "CALCULATED", "H measured from base underside")
+    result = result & AuditMember(d, 0, "Stem", d.tb, d.ASst_DB, d.ASst_Sp, failed, yieldFailed)
+    If stemOnly Then
+        result = result & AuditRow("Toe / heel / wall stability", "Not evaluated", "Full candidate required", "OUT_OF_SCOPE", "Reference specifies stem steel only")
+    Else
+        result = result & AuditCompare("Heel length", d.LHeel, 0.3, True, "m", "Existing project geometry rule", failed)
+        If d.LHeel <= d.LToe Then
+            failed = True
+            result = result & AuditRow("Heel/toe", CStr(d.LHeel), "heel > toe", "FAIL_LISTED_LIMIT", "Existing project geometry rule")
+        End If
+        ok = CheckFS_OT(d, ot): ok = CheckFS_SL(d, sl)
+        result = result & AuditCompare("Overturning FS", ot, FS_OT_MIN, True, "", "Existing project stability criterion", failed)
+        result = result & AuditCompare("Sliding FS", sl, FS_SL_MIN, True, "", "Existing project stability criterion", failed)
+        If BearingEdges(d, e, qt, qh) Then
+            result = result & AuditCompare("Full contact abs(e)", Abs(e), d.Base / 6#, False, "m", "Linear full-compression model; signed e=" & Format$(e, "0.0000") & " positive to toe", failed)
+            result = result & AuditRow("q_toe / q_heel", Format$(qt, "0.0000") & " / " & Format$(qh, "0.0000") & " tf/m2", "signed pressure diagram", "CALCULATED", "BearingEdges")
+            ok = CheckFS_BC(d, bc, e, qmax, qmin)
+            result = result & AuditCompare("Bearing qa/qmax", bc, FS_BC_MIN, True, "", "qa INPUT interpreted as ALLOWABLE", failed)
+            result = result & AuditMember(d, 1, "Toe", d.TBase, d.AStoe_DB, d.AStoe_Sp, failed, yieldFailed)
+            result = result & AuditMember(d, 2, "Heel", d.TBase, d.ASheel_DB, d.ASheel_Sp, failed, yieldFailed)
+        Else
+            failed = True
+            result = result & AuditRow("Base contact", "Unsupported pressure diagram", "abs(e)<=B/6", "FAIL_MODEL", "Toe/heel forces NOT_EVALUATED; no full-width extrapolation")
+        End If
+    End If
+    result = result & AuditRow("Complete EIT 011007-19 compliance", "Not established", "Verified applicable clauses and complete detailing", "UNVERIFIED", "See audit/WSD_PRIMARY_SOURCE_SEARCH.md")
+    result = result & AuditRow("Cover, bar order, spacing, anchorage, distribution steel", "Not fully checked", "Applicable detailing provisions", "UNVERIFIED", "Current d assumes main bar outermost; no interposed transverse bar")
+    status = "INDETERMINATE_WSD"
+    If failed Then status = "FAIL_LISTED_CHECKS; EIT compliance still UNVERIFIED"
+    If yieldFailed Then status = "FAIL_NECESSARY_YIELD_BOUND; EIT compliance still UNVERIFIED"
+    BuildDesignCheckReport = "AUDIT RESULT: " & status & vbCrLf & result
+    Exit Function
+InvalidAudit:
+    BuildDesignCheckReport = "AUDIT RESULT: INVALID_DATA; " & Err.Description & vbCrLf & result
 End Function
