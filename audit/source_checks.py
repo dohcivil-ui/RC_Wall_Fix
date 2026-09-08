@@ -37,6 +37,13 @@ assert read(P/'modProjectChecks.bas') == (P/'audit'/'modProjectChecks.source').r
 result.append('Production project-check module matches its archived source')
 assert read(P/'frmBestDesign.frm') == (P/'audit'/'best_design_form.source').read_text(encoding='ascii')
 result.append('Best-design popup matches archived source; drawing is separate from calculation modules')
+for handler in ('cmdBA_Click','cmdRun_Click'):
+    body=routine(read(P/'Form1.frm'),handler)
+    assert body.count('frmBestDesign.ShowBest')==1
+    assert body.index('frmBestDesign.ShowBest')>body.index('Next trial')
+    assert 'globalBestCost, cover, CLng(numTrials), globalBestIteration)' in body
+    assert 'BestCostIteration < globalBestIteration' in body
+result.append('BA/HCA popup is called once after the trial loop, with session winner and first-best evaluation')
 # Independently inspect every persisted optimizer trace against its own valid candidates.
 traces=0
 for path in (P/'audit'/'results').glob('*/evaluations.csv'):

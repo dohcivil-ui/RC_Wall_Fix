@@ -1,8 +1,9 @@
+param([switch]$SingleTrial)
 $ErrorActionPreference = 'Stop'
 Set-Location -LiteralPath (Split-Path -Parent $PSScriptRoot)
 $evidence = Join-Path $PSScriptRoot ('sketch-checks\' + [DateTime]::Now.ToString('yyyyMMdd-HHmmss-fff', [Globalization.CultureInfo]::InvariantCulture))
 New-Item -ItemType Directory -Path $evidence -Force | Out-Null
-python audit\build_sketch_regression.py
+if ($SingleTrial) { python audit\build_sketch_regression.py --single-trial } else { python audit\build_sketch_regression.py }
 if ($LASTEXITCODE -ne 0) { throw 'Sketch harness generation failed' }
 $args = '/make "{0}\SketchRegression.vbp" /out "{1}\compile-sketch.log" /outdir "{0}"' -f $PSScriptRoot,$evidence
 $build = Start-Process -FilePath 'C:\Program Files (x86)\Microsoft Visual Studio\VB98\VB6.EXE' -ArgumentList $args -WindowStyle Hidden -PassThru

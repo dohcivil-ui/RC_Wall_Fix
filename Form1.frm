@@ -642,6 +642,7 @@ Private Sub cmdBA_Click()
     globalBestCost = NO_SOLUTION_COST
     globalBestTrial = 0
     globalBestIteration = 0
+    Unload frmBestDesign
     ProjectTrialSummary = ""
     
     Call SeedSearchRandom(CLng(txtSeed.Text))
@@ -732,7 +733,7 @@ For siBA = 1 To maxIter
     baStoredHistory(siBA) = globalBestCostHistory(siBA)
 Next siBA
 baHasRun = (globalBestIteration > 0)
-    Call frmBestDesign.ShowBest(bestDesign, h, H1, "BA", CLng(globalBestTrial), globalBestCost, cover)
+    Call frmBestDesign.ShowBest(bestDesign, h, H1, "BA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     
     
     
@@ -898,6 +899,7 @@ Private Sub cmdRun_Click()
     globalBestCost = NO_SOLUTION_COST
     globalBestTrial = 0
     globalBestIteration = 0
+    Unload frmBestDesign
     ProjectTrialSummary = ""
     
     ' เริ่มต้น Loop Counter (สำหรับ loopPrice-HCA)
@@ -1000,7 +1002,7 @@ For siHCA = 1 To maxIter
     hcaStoredHistory(siHCA) = globalBestCostHistory(siHCA)
 Next siHCA
 hcaHasRun = (globalBestIteration > 0)
-    Call frmBestDesign.ShowBest(bestDesign, h, H1, "HCA", CLng(globalBestTrial), globalBestCost, cover)
+    Call frmBestDesign.ShowBest(bestDesign, h, H1, "HCA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     
     
 End Sub

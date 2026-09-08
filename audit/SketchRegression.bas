@@ -17,7 +17,7 @@ Private Sub CheckSession(algorithm As String)
     Dim summary As Integer, line As String, row() As String, bestCost As Double
     Dim bestTrial As Long, bestEval As Long, bestFolder As String, cost As Double, ev As Long
     If algorithm = "BA" Then Form1.cmdBA.Value = True Else Form1.cmdRun.Value = True
-    Check algorithm & " completed both trials", RunTrial = 2 And EvaluationCount = 64
+    Check algorithm & " completed single trial", RunTrial = 1 And EvaluationCount = 64
     Check algorithm & " popup visible", frmBestDesign.Visible
     bestCost = 1E+30
     summary = FreeFile: Open ProjectTrialSummary For Input As #summary
@@ -34,6 +34,8 @@ Private Sub CheckSession(algorithm As String)
     Loop
     Close #summary
     Check algorithm & " displays best trial from whole session", bestTrial > 0 And InStr(frmBestDesign.Tag, algorithm & "; trial=" & bestTrial & ";") = 1
+    Check algorithm & " labels completed trial count", InStr(frmBestDesign.Tag, "; trials=" & Form1.txtTrials.Text & ";") > 0
+    Check algorithm & " labels first best evaluation", InStr(frmBestDesign.Tag, "; evaluation=" & bestEval & ";") > 0
     If bestTrial > 0 Then
         summary = FreeFile: Open bestFolder & "\run.txt" For Input As #summary
         Do Until EOF(summary)
@@ -89,12 +91,11 @@ Public Sub Main()
     Next window
     Check "Close button unloads popup", Not stillOpen
     Form1.txtH.Text = "5": Form1.txtH1.Text = "1.2": Form1.txtQa.Text = "30"
-    Form1.txtMaxIter.Text = "64": Form1.txtTrials.Text = "2": Form1.txtSeed.Text = "20260908"
+    Form1.txtMaxIter.Text = "64": Form1.txtTrials.Text = "1": Form1.txtSeed.Text = "20260908"
     For i = 0 To Form1.cboConcreteStrength.ListCount - 1
         If Form1.cboConcreteStrength.List(i) = "320" Then Form1.cboConcreteStrength.ListIndex = i
     Next i
     CheckSession "BA"
-    CheckSession "HCA"
     Unload Form1
     stillOpen = False
     For Each window In Forms

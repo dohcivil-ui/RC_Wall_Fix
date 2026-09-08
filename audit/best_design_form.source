@@ -38,9 +38,9 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Display only: receives the completed session best, never searches or changes it.
-Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHeight As Double, ByVal algorithm As String, ByVal trial As Long, Optional ByVal bestCost As Double = 0, Optional ByVal clearCover As Double = 0.075)
+Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHeight As Double, ByVal algorithm As String, ByVal trial As Long, Optional ByVal bestCost As Double = 0, Optional ByVal clearCover As Double = 0.075, Optional ByVal totalTrials As Long = 1, Optional ByVal bestEvaluation As Long = 0)
     Load Me
-    Me.Tag = algorithm & "; trial=" & trial
+    Me.Tag = algorithm & "; trial=" & trial & "; trials=" & totalTrials & "; evaluation=" & bestEvaluation
     picSketch.Cls
     picSketch.Tag = "NO_SOLUTION"
     picSketch.Font.Name = "Tahoma"
@@ -48,9 +48,9 @@ Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHe
     picSketch.Font.Size = 15
     picSketch.Font.Bold = True
     If trial > 0 Then
-        CenterText picSketch.ScaleWidth / 2, 14, "BEST DESIGN  |  " & algorithm & "  |  Trial " & trial
+        CenterText picSketch.ScaleWidth / 2, 14, "FINAL RESULT  |  " & algorithm & "  |  Selected trial " & trial & " / " & totalTrials
     Else
-        CenterText picSketch.ScaleWidth / 2, 14, "RESULT  |  " & algorithm
+        CenterText picSketch.ScaleWidth / 2, 14, "FINAL RESULT  |  " & algorithm & "  |  " & totalTrials & " trials complete"
     End If
     picSketch.Font.Size = 10
     picSketch.Font.Bold = False
@@ -64,6 +64,11 @@ Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHe
             End If
             picSketch.Font.Bold = False
             Me.Tag = Me.Tag & "; price=" & bestCost & "; Stem: " & RebarText(d.ASst_DB, d.ASst_Sp) & "; Toe: " & RebarText(d.AStoe_DB, d.AStoe_Sp) & "; Heel: " & RebarText(d.ASheel_DB, d.ASheel_Sp)
+        End If
+        If bestEvaluation > 0 Then
+            CenterText picSketch.ScaleWidth / 2, 69, "Best cost first found at evaluation " & bestEvaluation & "  |  Dimensions in metres"
+        Else
+            CenterText picSketch.ScaleWidth / 2, 69, "Dimensions in metres  |  Same scale in both directions"
         End If
         DrawWall d, wallHeight, frontHeight, clearCover
         picSketch.Tag = "H=" & wallHeight & "; H1=" & frontHeight & "; tt=" & d.tt & "; tb=" & d.tb & "; TBase=" & d.TBase & "; B=" & d.Base & "; toe=" & d.LToe & "; heel=" & d.LHeel
@@ -89,7 +94,6 @@ Private Sub DrawWall(d As Design, wallHeight As Double, frontHeight As Double, c
     toe = x0 + d.LToe * pixelsPerMetre: back = toe + d.tb * pixelsPerMetre: top = back - d.tt * pixelsPerMetre
     y0 = picSketch.ScaleHeight - 135: yTop = y0 - wallHeight * pixelsPerMetre
     yBase = y0 - d.TBase * pixelsPerMetre: yFront = y0 - frontHeight * pixelsPerMetre
-    CenterText picSketch.ScaleWidth / 2, 69, "Dimensions in metres  |  Same scale in both directions"
     DrawSection x0, x1, toe, back, top, y0, yTop, yBase, yFront
     If ValidBars(d) Then DrawMainBars d, pixelsPerMetre, clearCover, x0, x1, toe, back, y0, yTop, yBase
     DrawHorizontal top, back, yTop, yTop - 22, "tt = " & Format$(d.tt, "0.00#")

@@ -34,6 +34,8 @@ Private Sub CheckSession(algorithm As String)
     Loop
     Close #summary
     Check algorithm & " displays best trial from whole session", bestTrial > 0 And InStr(frmBestDesign.Tag, algorithm & "; trial=" & bestTrial & ";") = 1
+    Check algorithm & " labels completed trial count", InStr(frmBestDesign.Tag, "; trials=" & Form1.txtTrials.Text & ";") > 0
+    Check algorithm & " labels first best evaluation", InStr(frmBestDesign.Tag, "; evaluation=" & bestEval & ";") > 0
     If bestTrial > 0 Then
         summary = FreeFile: Open bestFolder & "\run.txt" For Input As #summary
         Do Until EOF(summary)
