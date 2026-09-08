@@ -43,6 +43,9 @@ for handler in ('cmdBA_Click','cmdRun_Click'):
     assert body.index('frmBestDesign.ShowBest')>body.index('Next trial')
     assert 'globalBestCost, cover, CLng(numTrials), globalBestIteration)' in body
     assert 'BestCostIteration < globalBestIteration' in body
+    assert body.count('txtSeed.Text') == 1
+    assert 'RandomSeed:=firstSeed + CLng(trial) - 1' in body
+    assert 'Call ClearGraph(picGraph)' in body
 result.append('BA/HCA popup is called once after the trial loop, with session winner and first-best evaluation')
 # Independently inspect every persisted optimizer trace against its own valid candidates.
 traces=0

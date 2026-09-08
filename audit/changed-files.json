@@ -1,7 +1,7 @@
 [
   {
     "file": "Form1.frm",
-    "sha256": "18dfc7eb54b7ea65d2eefe8b5f39ff551234a269a271e7a5c07a10ed3865720e"
+    "sha256": "c7444ae342681f5cf71403da1a01abeae1d52a9e2aa54635f6a2d92a5ec28415"
   },
   {
     "file": "frmBestDesign.frm",
@@ -13,7 +13,15 @@
   },
   {
     "file": "modBatch.bas",
-    "sha256": "ae7d1087d2dde34a0a9a938e2429573645a5c2d17555d9d9eab83dec072441fc"
+    "sha256": "ffa09f06469f2db896f44669c98de395fbc1ad9f0a9b6a5a677f5d847aa08bef"
+  },
+  {
+    "file": "modEnhancedValidation.bas",
+    "sha256": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6"
+  },
+  {
+    "file": "modGraphing.bas",
+    "sha256": "4dd8ada14466ffc5aa4ae981a83fcf45b3a6d54df5272071f5bf19ee7be20b92"
   },
   {
     "file": "modHillClimbing.bas",

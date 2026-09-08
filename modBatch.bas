@@ -7,7 +7,7 @@ Attribute VB_Name = "modBatch"
 ' Date: 2569 (2026)
 '
 ' v0.6 changes from v0.5:
-' - Fixed ShowSummaryStep3_A3: report TRUE optimum cost (min across 30 trials),
+' - Fixed ShowSummaryStep3_A3: report lowest observed cost (min across 30 trials),
 '   not first-trial cost. Iter@best and consist now filtered to trials that
 '   achieved min cost. CSV output unchanged.
 '
@@ -90,6 +90,7 @@ Public Sub RunBatchStep3()
     Next hIdx
     
     totalBatchTime = Timer - startBatchTime
+    If totalBatchTime < 0 Then totalBatchTime = totalBatchTime + 86400#
     modShared.BatchMode = False
     
     Call ShowSummaryStep3(filePath, totalBatchTime)
@@ -99,7 +100,7 @@ End Sub
 ' Phase A3: fc-fixed replicate matrix for paper Section 5
 ' 3 H x 3 fc x 2 algo x 30 trials = 540 runs, ~10 min
 ' fc list: {240, 280, 320} (mid-high practical range)
-' Note: BA and HCA are deterministic at fixed fc -> 30 replicates verify consistency
+' Note: reproducibility requires the same inputs AND seed; trials use distinct seeds.
 '================================================================================
 Public Sub RunBatchStep3_A3()
     ' Research batch is blocked until authoritative WSD review is complete.
@@ -136,6 +137,7 @@ Public Sub RunBatchStep3_A3()
     Next hIdx
     
     totalBatchTime = Timer - startBatchTime
+    If totalBatchTime < 0 Then totalBatchTime = totalBatchTime + 86400#
     modShared.BatchMode = False
     
     Call ShowSummaryStep3_A3(filePath, totalBatchTime)
@@ -239,6 +241,7 @@ Private Sub RunSingleTrial(filePath As String, phase As String, algoName As Stri
                                                      allowQa, conCover, mat, RandomSeed:=12345 + CLng(trial) - 1, TrialNumber:=CLng(trial))
     End If
     runtime = Timer - startTime
+    If runtime < 0 Then runtime = runtime + 86400#
     
     iterToBest = modDataStructures.BestCostIteration
     cost = modShared.CalculateCost(d)
@@ -369,7 +372,7 @@ End Sub
 
 '================================================================================
 ' Step 3 A3 summary: per (H, fc) cell determinism check + BA vs HCA verdict
-' For each cell: report unique cost values across 30 trials (should be 1)
+' For each cell: report observed cost consistency across distinct trial seeds.
 ' Then compare BA vs HCA: cost and iter_to_best
 '================================================================================
 Private Sub ShowSummaryStep3_A3(filePath As String, totalBatchTime As Double)

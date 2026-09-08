@@ -1,0 +1,129 @@
+Status=SOLUTION_FOUND_CONFIGURED_CHECKS
+Algorithm=HCA; Trial=1
+Seed=12346; Evaluations=24; Budget=24
+BestEvaluation=14; Recoveries=0
+H=5; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4
+phi=30; mu=0.6; qa_allowable=20; clear_cover=0.075
+fc_prime=320; fy=4000; passive_fraction=1
+WSDReviewed=True; source=SYNTHETIC GUI TEST FIXTURE ONLY - not EIT
+ProjectChecksEnabled=False
+AllowableShear=8; MinStemRatio=0.0015; MinBaseRatio=0.0015
+Design check: VERIFIED_CONFIGURED_CHECKS_ONLY
+=== MATERIAL PROPERTIES ===
+Steel: SD40 (fy=4000, fs=1700 ksc)
+Concrete: f'c = 320 ksc (fc=144.0 ksc)
+Project WSD model (n=Es/Ec; EIT unverified): n=7.55228257301253, k_bal=0.390, j_bal=0.870, R_bal=24.44 ksc
+Prices: Concrete=2,617 Baht/m3, Steel=24 Baht/kg
+-------------------------------
+=== OPTIMIZATION RESULTS ===
+Algorithm: HCA
+Best Found at Trial: 1
+Best Found at Iteration: 14
+-------------------------------
+=== TOTAL COST ===
+Total: 12,881.64 Baht/m
+-------------------------------
+=== DIMENSIONS ===
+Stem_top (tt): 0.600 m
+Stem_bottom (tb): 0.600 m
+Base_width (B): 3.000 m
+Base_thickness: 0.300 m
+Toe: 0.800 m
+Heel: 1.600 m
+-------------------------------
+=== EARTH PRESSURES ===
+Ka = 0.333, Kp = 3.000
+Pa = 7.500 ton, Pp = 3.888 ton
+-------------------------------
+=== WEIGHTS ===
+W1 (Soil on Toe): 1.296 ton
+W2 (Soil on Heel): 13.536 ton
+W3 (Stem): 6.768 ton
+W4 (Base): 2.160 ton
+W_total: 23.760 ton
+-------------------------------
+=== STEEL REINFORCEMENT ===
+
+--- Stem ---
+Moment: 9.73 ton-m
+Steel: DB16 @ 0.10m
+As_req: 11.73, As_prov: 20.11 cm2/m
+
+--- Toe ---
+Moment: 2.77 ton-m
+Steel: DB20 @ 0.25m
+As_req: 8.15, As_prov: 12.57 cm2/m
+
+--- Heel ---
+Moment: 4.69 ton-m
+Steel: DB28 @ 0.25m
+As_req: 14.40, As_prov: 24.63 cm2/m
+-------------------------------
+=== SAFETY FACTORS ===
+FS_Overturning: 3.40 >= 2.0 WITHIN_PROJECT_LIMIT
+FS_Sliding: 2.42 >= 1.5 WITHIN_PROJECT_LIMIT
+FS_Bearing: 1.72 >= 1.0 WITHIN_PROJECT_LIMIT
+-------------------------------
+=== BEARING CAPACITY ===
+Eccentricity (e): 0.236 m
+q_max: 11.65 ton/m2 (allowable: 20.00)
+q_min: 4.19 ton/m2
+-------------------------------
+Stem: d=0.5170 m; fc_actual=36.50/144; fs_actual=1007.82/1700 kgf/cm2
+v=0.943/8 kgf/cm2; As_min=9 cm2/m
+Toe: d=0.2150 m; fc_actual=51.11/144; fs_actual=1120.32/1700 kgf/cm2
+v=2.336/8 kgf/cm2; As_min=4.5 cm2/m
+Heel: d=0.2110 m; fc_actual=69.78/144; fs_actual=1018.95/1700 kgf/cm2
+v=2.150/8 kgf/cm2; As_min=4.5 cm2/m
+Stem height H-TBase=4.700 m
+Clear cover to bar surface=0.075 m; d=t-cover-db/2
+Passive fraction=1; signed e positive toward TOE; full contact required
+qa is ALLOWABLE; shear and minimum steel require sourced WSD criteria.
+Heuristic best found only; no guarantee of global optimum.
+
+AUDIT RESULT: INDETERMINATE_WSD
+PER-CHECK AUDIT; no EIT compliance claim
+H=5; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4; phi=30; mu=0.6; qa=20
+tt=0.6; tb=0.6; TBase=0.3; Base=3; LToe=0.8; LHeel=1.6
+fc_prime=320; fy=4000; cover=0.075; passive fraction=1
+
+| Check | Actual | Limit / rule | Comparison | Basis / verification |
+| --- | --- | --- | --- | --- |
+| Stem height | 4.7000 m | H-TBase | CALCULATED | H measured from base underside |
+| Stem bars | DB16 @ 0.10 m | specified candidate | INPUT | Design |
+| Stem effective depth | 0.5170 m | t-cover-db/2 > 0 | CALCULATED | Main bar outermost; single layer assumption |
+| Stem As | 20.1062 cm2/m | area per metre | CALCULATED | CalculateAsProv |
+| Stem signed M | 9.7262 tf.m/m | >= 0.0000 | WITHIN_LISTED_LIMIT | Supported tension face; modShared |
+| Stem necessary yield bound | 9.7262 tf.m/m | <= 41.5796 | WITHIN_LISTED_LIMIT | M<=As*fy*d; no modular ratio or code allowable used |
+| Stem concrete stress | 36.4989 kgf/cm2 | <= 144.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT |
+| Stem steel stress | 1007.8198 kgf/cm2 | <= 1700.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT |
+| Stem governing shear height | 0.4250 m | above base top | CALCULATED | Maximum nominal abs(V)/(b*d) along tapered stem; EIT critical-section rule UNVERIFIED |
+| Stem nominal shear V/bd | 0.9426 kgf/cm2 | <= 8.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT; shear section/definition require review |
+| Stem minimum steel | 20.1062 cm2/m | >= 9.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT; gross-area ratio |
+| Heel length | 1.6000 m | >= 0.3000 | WITHIN_LISTED_LIMIT | Existing project geometry rule |
+| Overturning FS | 3.4030  | >= 2.0000 | WITHIN_LISTED_LIMIT | Existing project stability criterion |
+| Sliding FS | 2.4192  | >= 1.5000 | WITHIN_LISTED_LIMIT | Existing project stability criterion |
+| Full contact abs(e) | 0.2358 m | <= 0.5000 | WITHIN_LISTED_LIMIT | Linear full-compression model; signed e=0.2358 positive to toe |
+| q_toe / q_heel | 11.6549 / 4.1851 tf/m2 | signed pressure diagram | CALCULATED | BearingEdges |
+| Bearing qa/qmax | 1.7160  | >= 1.0000 | WITHIN_LISTED_LIMIT | qa INPUT interpreted as ALLOWABLE |
+| Toe bars | DB20 @ 0.25 m | specified candidate | INPUT | Design |
+| Toe effective depth | 0.2150 m | t-cover-db/2 > 0 | CALCULATED | Main bar outermost; single layer assumption |
+| Toe As | 12.5664 cm2/m | area per metre | CALCULATED | CalculateAsProv |
+| Toe signed M | 2.7683 tf.m/m | >= 0.0000 | WITHIN_LISTED_LIMIT | Supported tension face; modShared |
+| Toe necessary yield bound | 2.7683 tf.m/m | <= 10.8071 | WITHIN_LISTED_LIMIT | M<=As*fy*d; no modular ratio or code allowable used |
+| Toe concrete stress | 51.1079 kgf/cm2 | <= 144.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT |
+| Toe steel stress | 1120.3174 kgf/cm2 | <= 1700.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT |
+| Toe nominal shear V/bd | 2.3364 kgf/cm2 | <= 8.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT; shear section/definition require review |
+| Toe minimum steel | 12.5664 cm2/m | >= 4.5000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT; gross-area ratio |
+| Heel bars | DB28 @ 0.25 m | specified candidate | INPUT | Design |
+| Heel effective depth | 0.2110 m | t-cover-db/2 > 0 | CALCULATED | Main bar outermost; single layer assumption |
+| Heel As | 24.6301 cm2/m | area per metre | CALCULATED | CalculateAsProv |
+| Heel signed M | 4.6937 tf.m/m | >= 0.0000 | WITHIN_LISTED_LIMIT | Supported tension face; modShared |
+| Heel necessary yield bound | 4.6937 tf.m/m | <= 20.7878 | WITHIN_LISTED_LIMIT | M<=As*fy*d; no modular ratio or code allowable used |
+| Heel concrete stress | 69.7821 kgf/cm2 | <= 144.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT |
+| Heel steel stress | 1018.9513 kgf/cm2 | <= 1700.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT |
+| Heel nominal shear V/bd | 2.1498 kgf/cm2 | <= 8.0000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT; shear section/definition require review |
+| Heel minimum steel | 24.6301 cm2/m | >= 4.5000 | WITHIN_LISTED_LIMIT | Configured screening only: SYNTHETIC GUI TEST FIXTURE ONLY - not EIT; gross-area ratio |
+| Complete EIT 011007-19 compliance | Not established | Verified applicable clauses and complete detailing | UNVERIFIED | See audit/WSD_PRIMARY_SOURCE_SEARCH.md |
+| Cover, bar order, spacing, anchorage, distribution steel | Not fully checked | Applicable detailing provisions | UNVERIFIED | Current d assumes main bar outermost; no interposed transverse bar |
+

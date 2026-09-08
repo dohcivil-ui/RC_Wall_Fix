@@ -1,0 +1,111 @@
+{
+  "comparisons": 300,
+  "fixtures": [
+    {
+      "case": "H3",
+      "geometry": {
+        "H": 3.0,
+        "tt": 0.25,
+        "tb": 0.3,
+        "TBase": 0.45,
+        "B": 2.0,
+        "toe": 0.6,
+        "heel": 1.0999999999999999
+      },
+      "fs": [
+        4.042962540849672,
+        3.274475,
+        5.817456036099886
+      ],
+      "cost": 5716.28757,
+      "main_weight": 63.57567999999999,
+      "extra_weight": 0,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "H4",
+      "geometry": {
+        "H": 4.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.45,
+        "B": 2.5,
+        "toe": 1.0,
+        "heel": 1.1
+      },
+      "fs": [
+        3.0582022318744113,
+        2.2836227772887328,
+        4.424862024435132
+      ],
+      "cost": 8020.02379,
+      "main_weight": 85.68895999999998,
+      "extra_weight": 0,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "H5",
+      "geometry": {
+        "H": 5.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.45,
+        "B": 3.0,
+        "toe": 1.0,
+        "heel": 1.6
+      },
+      "fs": [
+        2.7602508435998074,
+        1.9640588901098899,
+        2.981115229432618
+      ],
+      "cost": 10028.00099,
+      "main_weight": 109.38175999999999,
+      "extra_weight": 0,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "secondary_excluded",
+      "geometry": {
+        "H": 5.0,
+        "tt": 0.2,
+        "tb": 0.4,
+        "TBase": 0.45,
+        "B": 3.0,
+        "toe": 1.0,
+        "heel": 1.6
+      },
+      "fs": [
+        2.739906615239706,
+        1.9458731868131869,
+        3.028400702863907
+      ],
+      "cost": 9730.31724,
+      "main_weight": 109.38175999999999,
+      "extra_weight": 0,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    },
+    {
+      "case": "anchorage_excluded",
+      "geometry": {
+        "H": 5.0,
+        "tt": 0.25,
+        "tb": 0.4,
+        "TBase": 0.3,
+        "B": 3.0,
+        "toe": 1.0,
+        "heel": 1.6
+      },
+      "fs": [
+        2.734173632729742,
+        1.946758085106383,
+        3.0034793910566124
+      ],
+      "cost": 9034.79246,
+      "main_weight": 111.75103999999999,
+      "extra_weight": 0,
+      "note": "Fixed verification fixture; not an optimized or fully code-certified design"
+    }
+  ],
+  "scope": "Independent arithmetic verified against actual VB6 outputs; no 30-trial run"
+}

@@ -162,7 +162,7 @@ Public Sub DrawCostGraph(pic As PictureBox, CostHistory() As Double, BestIterati
     ' X-axis label (Iteration)
     pic.CurrentX = pic.ScaleWidth / 2 - 500
     pic.CurrentY = pic.ScaleHeight - margin + 300
-    pic.Print "Iteration"
+    pic.Print "Evaluation"
     
     ' === Draw Y-axis Scale ===
     pic.FontSize = 16  ' เพิ่มจาก 8 เป็น 16

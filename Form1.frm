@@ -561,12 +561,14 @@ Dim hcaStoredBestCost As Double
 Dim hcaStoredBestIter As Long
 Dim hcaStoredMaxIter As Long
 Dim hcaHasRun As Boolean
+Private hcaComparisonKey As String
 
 Dim baStoredHistory() As Double
 Dim baStoredBestCost As Double
 Dim baStoredBestIter As Long
 Dim baStoredMaxIter As Long
 Dim baHasRun As Boolean
+Private baComparisonKey As String
 
 ' ==========================================
 ' Form Variables
@@ -582,6 +584,7 @@ Private fcArray(1 To 8) As Integer  ' รองรับ 8 ค่า: 180,210,240,280,300,320,350,
 ' Bisection Base + HCA Random (tt, tb, TBase, LToe, Steel)
 ' ================================================================================
 Private Sub cmdBA_Click()
+    Dim firstSeed As Long
     Dim h As Double, H1 As Double, mu As Double
     Dim gamma_soil As Double, phi As Double, qa As Double
     Dim gamma_con As Double, cover As Double
@@ -611,6 +614,7 @@ Private Sub cmdBA_Click()
     cover = CDbl(txtCover.Text) / 100
     maxIter = CLng(txtMaxIter.Text)
     numTrials = CInt(txtTrials.Text)
+    firstSeed = CLng(txtSeed.Text)
     
     If cboConcreteStrength.Text = "Random" Then
         Dim fcOptionsBA(1 To 5) As Integer
@@ -619,7 +623,7 @@ Private Sub cmdBA_Click()
         fcOptionsBA(3) = 240
         fcOptionsBA(4) = 280
         fcOptionsBA(5) = 320
-        Call SeedSearchRandom(CLng(txtSeed.Text))
+        Call SeedSearchRandom(firstSeed)
         fc = fcOptionsBA(Int(Rnd * 5) + 1)
     Else
         fc = CInt(cboConcreteStrength.Text)
@@ -645,7 +649,7 @@ Private Sub cmdBA_Click()
     Unload frmBestDesign
     ProjectTrialSummary = ""
     
-    Call SeedSearchRandom(CLng(txtSeed.Text))
+    Call SeedSearchRandom(firstSeed)
     
     Dim trial As Integer
     For trial = 1 To numTrials
@@ -653,7 +657,7 @@ Private Sub cmdBA_Click()
         
         trialDesign = modBA.BisectionOptimization( _
             maxIter, h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, selectedMaterial, _
-            RandomSeed:=CLng(txtSeed.Text) + CLng(trial) - 1, TrialNumber:=CLng(trial))
+            RandomSeed:=firstSeed + CLng(trial) - 1, TrialNumber:=CLng(trial))
         
         trialCost = modShared.CalculateCost(trialDesign)
         Call RecordProjectTrial
@@ -708,6 +712,7 @@ Private Sub cmdBA_Click()
         lstResults.AddItem lines(j)
     Next j
     
+    Call ClearGraph(picGraph)
     If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration)
     
     cmdBA.Enabled = True: cmdRun.Enabled = True: cmdCommand1.Enabled = True: cmdCompare.Enabled = True
@@ -716,7 +721,7 @@ Private Sub cmdBA_Click()
     
     lstResults.AddItem "Per-trial reports: " & App.Path & "\results"
     If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
-    lstResults.AddItem "Seed start: " & txtSeed.Text & "; budget includes initial/reset/neighbor."
+    lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     BA_CostHistory = globalBestCostHistory
     BA_MaxIter = maxIter
@@ -732,7 +737,8 @@ Dim siBA As Long
 For siBA = 1 To maxIter
     baStoredHistory(siBA) = globalBestCostHistory(siBA)
 Next siBA
-baHasRun = (globalBestIteration > 0)
+baHasRun = True
+baComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials, firstSeed), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "BA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     
     
@@ -803,6 +809,7 @@ End Sub
 ' Run Button Click HCA Event
 ' ========================================
 Private Sub cmdRun_Click()
+    Dim firstSeed As Long
     Dim h As Double
     Dim H1 As Double
     Dim mu As Double
@@ -844,6 +851,7 @@ Private Sub cmdRun_Click()
     cover = CDbl(txtCover.Text) / 100  ' Convert cm to m
     maxIter = CLng(txtMaxIter.Text)
     numTrials = CInt(txtTrials.Text)
+    firstSeed = CLng(txtSeed.Text)
     
     ' ============================================
     ' v2.4: ล็อค SD40 และ Validate f'c
@@ -857,7 +865,7 @@ Private Sub cmdRun_Click()
         fcOptions(3) = 240
         fcOptions(4) = 280
         fcOptions(5) = 320
-        Call SeedSearchRandom(CLng(txtSeed.Text))
+        Call SeedSearchRandom(firstSeed)
         fc = fcOptions(Int(Rnd * 5) + 1)
     Else
         fc = CInt(cboConcreteStrength.Text)
@@ -884,7 +892,7 @@ Private Sub cmdRun_Click()
     'sd40 = 21+3 =24 บาท/กก
     
     ' Initialize random seed
-    Call SeedSearchRandom(CLng(txtSeed.Text))
+    Call SeedSearchRandom(firstSeed)
     
     ' Disable button during calculation
     cmdBA.Enabled = False: cmdRun.Enabled = False: cmdCommand1.Enabled = False: cmdCompare.Enabled = False
@@ -922,7 +930,7 @@ Private Sub cmdRun_Click()
         ' Run Optimization
         bestDesign = HillClimbingOptimization( _
             maxIter, h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, selectedMaterial, _
-            RandomSeed:=CLng(txtSeed.Text) + CLng(trial) - 1, TrialNumber:=CLng(trial))
+            RandomSeed:=firstSeed + CLng(trial) - 1, TrialNumber:=CLng(trial))
         
         ' คำนวณราคาของ Trial นี้
         currentCost = CalculateCost(bestDesign)
@@ -973,6 +981,7 @@ Private Sub cmdRun_Click()
     ' === Draw Graph ===
     'Call DrawCostGraph(picGraph, modDataStructures.CostHistory, modDataStructures.BestCostIteration)
      ' === Draw Graph (ใช้ CostHistory ของ Trial ที่ดีที่สุด) ===
+    Call ClearGraph(picGraph)
     If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration)
     
     ' Re-enable button
@@ -985,7 +994,7 @@ Private Sub cmdRun_Click()
     ' แสดงข้อความสรุปครั้งเดียวตอนจบ
     lstResults.AddItem "Per-trial reports: " & App.Path & "\results"
     If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
-    lstResults.AddItem "Seed start: " & txtSeed.Text & "; budget includes initial/reset/neighbor."
+    lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     HCA_CostHistory = globalBestCostHistory
     HCA_MaxIter = maxIter
@@ -1001,7 +1010,8 @@ Dim siHCA As Long
 For siHCA = 1 To maxIter
     hcaStoredHistory(siHCA) = globalBestCostHistory(siHCA)
 Next siHCA
-hcaHasRun = (globalBestIteration > 0)
+hcaHasRun = True
+hcaComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials, firstSeed), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "HCA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     
     
@@ -1089,52 +1099,53 @@ Private Sub cmdCompare_Click()
         Exit Sub
     End If
     
-    Dim graphMaxIter As Long
-    If hcaStoredMaxIter <= baStoredMaxIter Then
-        graphMaxIter = hcaStoredMaxIter
-    Else
-        graphMaxIter = baStoredMaxIter
-    End If
-    
-    ' Draw graph from stored histories
-    Call DrawDualCostGraph(picGraph, _
-                           hcaStoredHistory, hcaStoredMaxIter, hcaStoredBestIter, _
-                           baStoredHistory, baStoredMaxIter, baStoredBestIter)
-    
-    ' Display compare results
     lstResults.Clear
-    lstResults.AddItem "============================================="
-    lstResults.AddItem "COMPARE: HCA vs BA"
-    lstResults.AddItem "============================================="
-    lstResults.AddItem ""
-    lstResults.AddItem "HCA (Blue Line):"
-    lstResults.AddItem " - Best at Iteration: " & hcaStoredBestIter
-    lstResults.AddItem " - Best Cost: " & Format(hcaStoredBestCost, "#,##0.00") & " Baht/m"
-    lstResults.AddItem ""
-    lstResults.AddItem "BA (Green Line):"
-    lstResults.AddItem " - Best at Iteration: " & baStoredBestIter
-    lstResults.AddItem " - Best Cost: " & Format(baStoredBestCost, "#,##0.00") & " Baht/m"
-    lstResults.AddItem ""
-    lstResults.AddItem "Graph Iteration Limit: " & graphMaxIter
-    lstResults.AddItem "============================================="
-    
-    ' Compare by convergence speed (iteration)
-    If hcaStoredBestIter < baStoredBestIter Then
-        lstResults.AddItem "Result: HCA wins! (faster convergence)"
-        lstResults.AddItem "HCA found best at iter " & hcaStoredBestIter & " vs BA at iter " & baStoredBestIter
-    ElseIf baStoredBestIter < hcaStoredBestIter Then
-        lstResults.AddItem "Result: BA wins! (faster convergence)"
-        lstResults.AddItem "BA found best at iter " & baStoredBestIter & " vs HCA at iter " & hcaStoredBestIter
-    Else
-        lstResults.AddItem "Result: Tie! Both found best at iteration " & hcaStoredBestIter
+    lstResults.AddItem "COMPARE: HCA vs BA (stored sessions)"
+    Call ClearGraph(picGraph)
+    If hcaComparisonKey <> baComparisonKey Then
+        lstResults.AddItem "Inputs/material/seed/trials/budget differ; no ranking."
+        lstResults.AddItem "Run both methods with matching settings before comparing."
+        Exit Sub
     End If
-    
-    lstResults.AddItem "============================================="
+
+    If hcaStoredBestIter > 0 And baStoredBestIter > 0 Then
+        Call DrawDualCostGraph(picGraph, _
+            hcaStoredHistory, hcaStoredMaxIter, hcaStoredBestIter, _
+            baStoredHistory, baStoredMaxIter, baStoredBestIter)
+    End If
+    If hcaStoredBestIter > 0 Then
+        lstResults.AddItem "HCA: " & Format(hcaStoredBestCost, "#,##0.00") & " Baht/m; first best evaluation " & hcaStoredBestIter
+    Else
+        lstResults.AddItem "HCA: NO_SOLUTION"
+    End If
+    If baStoredBestIter > 0 Then
+        lstResults.AddItem "BA: " & Format(baStoredBestCost, "#,##0.00") & " Baht/m; first best evaluation " & baStoredBestIter
+    Else
+        lstResults.AddItem "BA: NO_SOLUTION"
+    End If
+    lstResults.AddItem CompareObservedResults(hcaStoredBestCost, hcaStoredBestIter, baStoredBestCost, baStoredBestIter)
+    lstResults.AddItem "Observed session results only; no global-optimum guarantee."
 End Sub
 
 '================================================================================
 ' [5] DrawDualCostGraph - Copy ทั้ง Sub ไปวางใน Form1
 '================================================================================
+Friend Function CompareObservedResults(hcaCost As Double, hcaEvaluation As Long, baCost As Double, baEvaluation As Long) As String
+    If hcaEvaluation <= 0 Or baEvaluation <= 0 Then
+        CompareObservedResults = "At least one method returned NO_SOLUTION; no two-price comparison."
+    ElseIf hcaCost < baCost Then
+        CompareObservedResults = "Result: HCA has the lower observed cost."
+    ElseIf baCost < hcaCost Then
+        CompareObservedResults = "Result: BA has the lower observed cost."
+    ElseIf hcaEvaluation < baEvaluation Then
+        CompareObservedResults = "Result: equal cost; HCA first reached it in fewer evaluations."
+    ElseIf baEvaluation < hcaEvaluation Then
+        CompareObservedResults = "Result: equal cost; BA first reached it in fewer evaluations."
+    Else
+        CompareObservedResults = "Result: equal cost and first-best evaluation."
+    End If
+End Function
+
 Private Sub DrawDualCostGraph(pic As PictureBox, _
                               HCA_History() As Double, HCA_Iter As Long, HCA_BestIter As Long, _
                               BA_History() As Double, BA_Iter As Long, BA_BestIter As Long)
@@ -1261,7 +1272,7 @@ Private Sub DrawDualCostGraph(pic As PictureBox, _
     pic.Print "(Baht/m)"
     pic.CurrentX = marginLeft + graphWidth / 2 - 300
     pic.CurrentY = marginTop + graphHeight + 300
-    pic.Print "Iteration"
+    pic.Print "Evaluation"
     
     ' === Draw HCA Line (Blue) ===
     pic.ForeColor = vbBlue

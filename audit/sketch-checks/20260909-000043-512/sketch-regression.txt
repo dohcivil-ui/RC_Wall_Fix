@@ -1,0 +1,26 @@
+OK: H3 displays dimensions
+popup-H3 | H3 FIXTURE; trial=1; trials=1; evaluation=0; price=0; Stem: DB16 @ 0.100 m; Toe: DB16 @ 0.100 m; Heel: DB16 @ 0.100 m | H=3; H1=1.2; tt=0.25; tb=0.4; TBase=0.45; B=2; toe=1; heel=0.6
+OK: H4 displays dimensions
+popup-H4 | H4 FIXTURE; trial=1; trials=1; evaluation=0; price=0; Stem: DB16 @ 0.100 m; Toe: DB16 @ 0.100 m; Heel: DB16 @ 0.100 m | H=4; H1=1.2; tt=0.25; tb=0.4; TBase=0.45; B=2.5; toe=1; heel=1.1
+OK: H5 displays dimensions
+popup-H5 | H5 FIXTURE; trial=1; trials=1; evaluation=0; price=0; Stem: DB16 @ 0.100 m; Toe: DB16 @ 0.100 m; Heel: DB16 @ 0.100 m | H=5; H1=1.2; tt=0.25; tb=0.4; TBase=0.45; B=3; toe=1; heel=1.6
+OK: drawing preserves optimizer random sequence
+OK: drawing leaves design unchanged
+OK: no solution replaces old geometry
+popup-no-solution | NO SOLUTION; trial=0; trials=1; evaluation=0 | NO_SOLUTION
+OK: invalid geometry is not drawn
+OK: Close button unloads popup
+OK: BA completed single trial
+OK: BA popup visible
+OK: BA displays best trial from whole session
+OK: BA labels completed trial count
+OK: BA labels first best evaluation
+OK: BA picture dimensions equal winning report
+OK: BA price equals session best
+OK: BA bar label matches winning report
+OK: BA bar label matches winning report
+OK: BA bar label matches winning report
+BA winning trial=1; final trial=1; best folder=C:\reserch 69\RC_Wall_Fix\audit\results\BA-25690909-000045-seed20260908
+popup-BA | BA; trial=1; trials=1; evaluation=61; price=10542.976578; Stem: DB25 @ 0.200 m; Toe: DB28 @ 0.250 m; Heel: DB28 @ 0.200 m | H=5; H1=1.2; tt=0.25; tb=0.35; TBase=0.45; B=3; toe=0.8; heel=1.85
+OK: closing owner also closes popup
+SKETCH checks=19; failures=0

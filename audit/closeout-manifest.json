@@ -1,0 +1,97 @@
+{
+  "review_date": "2026-09-09",
+  "project": "RC_RT_HCA_v2.vbp",
+  "active_source_count": 11,
+  "basis": "PROJECT_WSD_ACI99_V3_MAIN_ONLY",
+  "files": [
+    {
+      "file": "RC_RT_HCA_v2.vbp",
+      "sha256": "32e8334482ebd02b53140d410c2b36aed0c4ec41e51ad80411ca7a8e4b4d35c1",
+      "bytes": 1036
+    },
+    {
+      "file": "modEnhancedValidation.bas",
+      "sha256": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6",
+      "bytes": 2436
+    },
+    {
+      "file": "modGraphing.bas",
+      "sha256": "4dd8ada14466ffc5aa4ae981a83fcf45b3a6d54df5272071f5bf19ee7be20b92",
+      "bytes": 6721
+    },
+    {
+      "file": "modWSD.bas",
+      "sha256": "4d6fe3009b8ecdac6fd8216c5dd83a9b6766fc9e2409de64e3861ba27827185e",
+      "bytes": 13069
+    },
+    {
+      "file": "modDataStructures.bas",
+      "sha256": "bf278662ac062f6ecaaee0b7f0262855963592e04bbdd120bf495c85c2d1268b",
+      "bytes": 3073
+    },
+    {
+      "file": "modShared.bas",
+      "sha256": "29e2207246fc3e4eab1af01354c1d680f943b5de6deb1830ecbef7612154d87e",
+      "bytes": 63622
+    },
+    {
+      "file": "modBatch.bas",
+      "sha256": "ffa09f06469f2db896f44669c98de395fbc1ad9f0a9b6a5a677f5d847aa08bef",
+      "bytes": 26722
+    },
+    {
+      "file": "modBA.bas",
+      "sha256": "f8d08edc0d1369d40fea493d9addbb516a7ef56d56ab81170def4a75772a90bf",
+      "bytes": 24313
+    },
+    {
+      "file": "modHillClimbing.bas",
+      "sha256": "e1b1da4b126f2289c9f3c10fd2bd227744bef024210a3816791b70ac4978139d",
+      "bytes": 17667
+    },
+    {
+      "file": "modProjectChecks.bas",
+      "sha256": "94cd4e934b1d8a2292b63b703841756bd8e45183561796eaafeb13ae992287c5",
+      "bytes": 18540
+    },
+    {
+      "file": "Form1.frm",
+      "sha256": "c7444ae342681f5cf71403da1a01abeae1d52a9e2aa54635f6a2d92a5ec28415",
+      "bytes": 49240
+    },
+    {
+      "file": "frmBestDesign.frm",
+      "sha256": "70dde9cd1fedb922a15849cdbf867b117c7e07077da94efa1b2f90e14b973b74",
+      "bytes": 11448
+    },
+    {
+      "file": "audit/RC_RT_HCA_v2.exe",
+      "sha256": "6f8f8c051b0e296fd152a28043dfb7a2c93e9c6771a860af8e0f72eb46151509",
+      "bytes": 233472
+    },
+    {
+      "file": "audit/GuiRegression.bas",
+      "sha256": "611fcfeac58261234c01d08fca0c2a454576f60c271616927aa7bf4e43a32e8f",
+      "bytes": 4848
+    },
+    {
+      "file": "audit/source_checks.py",
+      "sha256": "82632235ed05a03dc976bc43a7bcb1f1b1685034960f5284f077c327bf664776",
+      "bytes": 4054
+    }
+  ],
+  "evidence": [
+    "audit/closeout-checks/20260909/compile-main.log",
+    "audit/checks/20260909-000004-601/native-regression.txt",
+    "audit/checks/20260909-000004-601/gui-regression.txt",
+    "audit/project-checks/20260909-000004-335/project-regression.txt",
+    "audit/project-checks/20260909-000004-335/independent-project.json",
+    "audit/sketch-checks/20260909-000043-512/sketch-regression.txt"
+  ],
+  "not_run": [
+    "30-trial current-model experiment",
+    "research batch matrix",
+    "actual batch across midnight"
+  ],
+  "qualification": "Evidence applies to the stated checks, not full EIT/ACI certification or global optimality. Native suites precede the final modBatch timer/comment-only edit; the final main compile includes it."
+}

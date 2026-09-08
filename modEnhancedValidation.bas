@@ -45,15 +45,8 @@ End Function
 '================================================================================
 
 Public Sub ValidateAllInputsEnhanced(frm As Form)
-    On Error Resume Next
-    
-    Dim msg As String
-    msg = "Input Validation:" & vbCrLf & vbCrLf
-    
-    ' ตัวอย่าง: ตรวจสอบค่าพื้นฐาน
-    msg = msg & "✓ All inputs are valid!" & vbCrLf
-    
-    MsgBox msg, vbInformation, "Validation Complete"
+    ' Retained legacy entry point; actual checks are in Form1.ValidateInputs.
+    MsgBox "This helper does not validate inputs. BA/HCA check inputs before searching.", vbInformation, "Validation not performed"
 End Sub
 
 '================================================================================
