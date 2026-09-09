@@ -320,7 +320,7 @@ Begin VB.Form Form1
       Begin VB.Label lblFc_Unit 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "ksc."
+         Caption         =   "kg/cm^2"
          Height          =   435
          Left            =   5040
          TabIndex        =   23

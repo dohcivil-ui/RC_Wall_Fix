@@ -790,10 +790,10 @@ Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algo
         Exit Function
     End If
     s = "=== MATERIAL PROPERTIES ===" & vbCrLf
-    s = s & ScreenResultRow("Steel", mat.SteelGrade & " (fy=" & mat.fy & ", fs=" & currentWSD.fs & " ksc)")
-    s = s & ScreenResultRow("Concrete f'c", mat.fc & " ksc (fc=" & Format$(currentWSD.fc, "0.00") & " ksc)")
+    s = s & ScreenResultRow("Steel", mat.SteelGrade & " (fy=" & mat.fy & ", fs=" & currentWSD.fs & " kg/cm^2)")
+    s = s & ScreenResultRow("Concrete f'c", mat.fc & " kg/cm^2 (fc=" & Format$(currentWSD.fc, "0.00") & " kg/cm^2)")
     s = s & ScreenResultRow("WSD n=Es/Ec", Format$(currentWSD.n, "0.00"))
-    s = s & "k_bal=" & Format$(currentWSD.k, "0.000") & ", j_bal=" & Format$(currentWSD.j, "0.000") & ", R_bal=" & Format$(currentWSD.R, "0.00") & " ksc" & vbCrLf
+    s = s & "k_bal=" & Format$(currentWSD.k, "0.000") & ", j_bal=" & Format$(currentWSD.j, "0.000") & ", R_bal=" & Format$(currentWSD.R, "0.00") & " kg/cm^2" & vbCrLf
     s = s & ScreenResultRow("Concrete price", Format$(mat.concretePrice, "#,##0.00") & " Baht/m3")
     s = s & ScreenResultRow("Steel price", Format$(mat.SteelPrice, "0.00") & " Baht/kg")
     s = s & ScreenResultSection("OPTIMIZATION RESULTS")
@@ -854,7 +854,7 @@ Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algo
         s = s & "q_max=" & Format$(qmax, "0.00") & ", q_min=" & Format$(qmin, "0.00") & " ton/m2" & vbCrLf
     End If
     s = s & ScreenResultSection("MEMBER STRESSES")
-    s = s & "Envelope actual / allowable (ksc)" & vbCrLf
+    s = s & "Envelope actual / allowable (kg/cm^2)" & vbCrLf
     For i = 0 To 2
         member = "Stem": If i = 1 Then member = "Toe"
         If i = 2 Then member = "Heel"
@@ -938,9 +938,9 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     
     ' === MATERIAL PROPERTIES ===
     result = "=== MATERIAL PROPERTIES ===" & vbCrLf
-    result = result & "Steel: " & mat.SteelGrade & " (fy=" & mat.fy & ", fs=" & wsd.fs & " ksc)" & vbCrLf
-    result = result & "Concrete: f'c = " & mat.fc & " ksc (fc=" & Format(wsd.fc, "0.0") & " ksc)" & vbCrLf
-    result = result & "Project WSD model (n=Es/Ec; EIT unverified): n=" & wsd.n & ", k_bal=" & Format(wsd.k, "0.000") & ", j_bal=" & Format(wsd.j, "0.000") & ", R_bal=" & Format(wsd.R, "0.00") & " ksc" & vbCrLf
+    result = result & "Steel: " & mat.SteelGrade & " (fy=" & mat.fy & ", fs=" & wsd.fs & " kg/cm^2)" & vbCrLf
+    result = result & "Concrete: f'c = " & mat.fc & " kg/cm^2 (fc=" & Format(wsd.fc, "0.0") & " kg/cm^2)" & vbCrLf
+    result = result & "Project WSD model (n=Es/Ec; EIT unverified): n=" & wsd.n & ", k_bal=" & Format(wsd.k, "0.000") & ", j_bal=" & Format(wsd.j, "0.000") & ", R_bal=" & Format(wsd.R, "0.00") & " kg/cm^2" & vbCrLf
     result = result & "Prices: Concrete=" & Format(mat.concretePrice, "#,##0") & " Baht/m3, Steel=" & mat.steelPrice & " Baht/kg" & vbCrLf
     result = result & "-------------------------------" & vbCrLf
     
@@ -1249,8 +1249,8 @@ Private Function SectionCheckSummary(label As String, M As Double, depth As Doub
     If stem Then minimum = MinStemRatio * thickness * 10000# Else minimum = MinBaseRatio * thickness * 10000#
     If nominalStress < 0 Then nominalStress = shear / (10# * depth)
     SectionCheckSummary = label & ": d=" & Format(depth, "0.0000") & " m; fc_actual=" & Format(c, "0.00") & _
-        "/" & currentWSD.fc & "; fs_actual=" & Format(s, "0.00") & "/" & currentWSD.fs & " ksc" & vbCrLf & _
-        "v=" & Format(nominalStress, "0.000") & "/" & AllowableShear & " ksc; As_min=" & minimum & " cm2/m" & vbCrLf
+        "/" & currentWSD.fc & "; fs_actual=" & Format(s, "0.00") & "/" & currentWSD.fs & " kg/cm^2" & vbCrLf & _
+        "v=" & Format(nominalStress, "0.000") & "/" & AllowableShear & " kg/cm^2; As_min=" & minimum & " cm2/m" & vbCrLf
     If Not WSDCriteriaReady() Then SectionCheckSummary = SectionCheckSummary & "Allowables/minimums UNVERIFIED (zero means unset, never a passing criterion)." & vbCrLf
 End Function
 
@@ -1296,8 +1296,8 @@ Private Function AuditMember(d As Design, part As Integer, label As String, thic
     If Not SectionStresses(moment, depth, steel, currentWSD.n, c, st, jActual) Then Err.Raise 5, , "Invalid section"
     source = "Reference Es/Ec n=" & currentWSD.n & "; EIT clause UNVERIFIED"
     If WSDCriteriaReady() Then source = "Configured screening only: " & WSDSource
-    result = result & AuditCompare(label & " concrete stress", c, currentWSD.fc, False, "ksc", source, failed)
-    result = result & AuditCompare(label & " steel stress", st, currentWSD.fs, False, "ksc", source, failed)
+    result = result & AuditCompare(label & " concrete stress", c, currentWSD.fc, False, "kg/cm^2", source, failed)
+    result = result & AuditCompare(label & " steel stress", st, currentWSD.fs, False, "kg/cm^2", source, failed)
     shear = MemberShearStress(d, part, depth)
     If part = 0 Then
         Dim shearHeight As Double
@@ -1305,9 +1305,9 @@ Private Function AuditMember(d As Design, part As Integer, label As String, thic
         result = result & AuditRow("Stem governing shear height", Format$(shearHeight, "0.0000") & " m", "above base top", "CALCULATED", "Maximum nominal abs(V)/(b*d) along tapered stem; EIT critical-section rule UNVERIFIED")
     End If
     If AllowableShear > 0 Then
-        result = result & AuditCompare(label & " nominal shear V/bd", shear, AllowableShear, False, "ksc", source & "; shear section/definition require review", failed)
+        result = result & AuditCompare(label & " nominal shear V/bd", shear, AllowableShear, False, "kg/cm^2", source & "; shear section/definition require review", failed)
     Else
-        result = result & AuditRow(label & " nominal shear V/bd", Format$(shear, "0.0000") & " ksc", "UNSET", "UNVERIFIED", "EIT shear limit/definition/critical section missing")
+        result = result & AuditRow(label & " nominal shear V/bd", Format$(shear, "0.0000") & " kg/cm^2", "UNSET", "UNVERIFIED", "EIT shear limit/definition/critical section missing")
     End If
     If ratio > 0 Then
         result = result & AuditCompare(label & " minimum steel", steel, ratio * 10000# * thickness, True, "cm2/m", source & "; gross-area ratio", failed)

@@ -302,14 +302,14 @@ Public Function ProjectDesignReport(d As Design, mat As MaterialProperties, algo
     s = s & "tt=" & d.tt & "; tb=" & d.tb & "; TBase=" & d.TBase & "; B=" & d.Base & "; toe=" & d.LToe & "; heel=" & d.LHeel & " m" & vbCrLf
     s = s & "Stem height H-TBase=" & H - d.TBase & " m; n=Es/Ec=" & currentWSD.n & vbCrLf
     s = s & "Envelope FS: overturning=" & Format$(r.OT, "0.0000") & "; sliding=" & Format$(r.SL, "0.0000") & "; qa/qmax=" & Format$(r.BC, "0.0000") & vbCrLf
-    s = s & "Tapered stem without stirrups also limited to vc/2=" & Format$(r.ShearLimit / 2#, "0.0000") & " ksc (ACI99 A.7.5.5.1 conservative beam interpretation)." & vbCrLf
+    s = s & "Tapered stem without stirrups also limited to vc/2=" & Format$(r.ShearLimit / 2#, "0.0000") & " kg/cm^2 (ACI99 A.7.5.5.1 conservative beam interpretation)." & vbCrLf
     s = s & "16 vertical-dead-load combinations 0.85/1.0; Pa/Pp full in all cases." & vbCrLf
     For i = 0 To 2
         label = "Stem": If i = 1 Then label = "Toe"
         If i = 2 Then label = "Heel"
         s = s & label & ": " & Bars(r.DB(i), r.SP(i)) & "; As=" & Format$(r.Steel(i), "0.0000") & "; As_min=" & Format$(r.Minimum(i), "0.0000") & " cm2/m; d=" & r.Depth(i) & " m" & vbCrLf
-        s = s & "M envelope=" & Format$(r.Moment(i), "0.0000") & " ton-m; fc_bound=" & Format$(r.FcBound(i), "0.0000") & "/" & currentWSD.fc & "; fs_bound=" & Format$(r.FsBound(i), "0.0000") & "/" & currentWSD.fs & " ksc" & vbCrLf
-        s = s & "v envelope=" & Format$(r.Shear(i), "0.0000") & "/" & Format$(r.ShearLimit, "0.0000") & " ksc; modeled main length=" & Format$(r.Length(i), "0.0000") & " m" & vbCrLf
+        s = s & "M envelope=" & Format$(r.Moment(i), "0.0000") & " ton-m; fc_bound=" & Format$(r.FcBound(i), "0.0000") & "/" & currentWSD.fc & "; fs_bound=" & Format$(r.FsBound(i), "0.0000") & "/" & currentWSD.fs & " kg/cm^2" & vbCrLf
+        s = s & "v envelope=" & Format$(r.Shear(i), "0.0000") & "/" & Format$(r.ShearLimit, "0.0000") & " kg/cm^2; modeled main length=" & Format$(r.Length(i), "0.0000") & " m" & vbCrLf
     Next i
     s = s & "Concrete=" & Format$(r.ConcreteVolume, "0.0000") & " m3/m; main steel=" & Format$(r.MainWeight, "0.0000") & " kg/m" & vbCrLf
     s = s & "Concrete+main-steel estimate=" & Format$(r.Cost, "0.00") & " Baht/m; unit rates=" & mat.concretePrice & " Baht/m3, " & mat.SteelPrice & " Baht/kg" & vbCrLf

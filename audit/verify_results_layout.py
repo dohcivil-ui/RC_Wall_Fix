@@ -4,7 +4,7 @@ import re,json,subprocess,hashlib
 P=Path(__file__).resolve().parent.parent
 def display_units(data):
     # The later unit-label edit changes display strings only (ton/ton-m/ksc).
-    for old,new in ((b'tf.m/m',b'ton-m'),(b'tf/m2',b'ton/m2'),(b'tf/m',b'ton'),(b'kgf/cm2',b'ksc')):
+    for old,new in ((b'tf.m/m',b'ton-m'),(b'tf/m2',b'ton/m2'),(b'tf/m',b'ton'),(b'kgf/cm2',b'ksc'),(b'kg/cm^2',b'ksc')):
         data=data.replace(old,new)
     return data
 D=P/'audit/results-layout'
@@ -43,6 +43,7 @@ clean=clean.replace(b'AddResultLine ',b'lstResults.AddItem ')
 clean=clean.replace(b'modShared.FormatScreenResults(bestDesign, selectedMaterial, "BA")',b'modShared.FormatResults(bestDesign, selectedMaterial, "Bisection Algorithm v1.0")')
 clean=clean.replace(b'FormatScreenResults(bestDesign, selectedMaterial, "HCA")',b'FormatResults(bestDesign, selectedMaterial)')
 clean=clean.replace(b'    lstResults.TopIndex = 0\r\n',b'')
+clean=clean.replace(b'Caption         =   "kg/cm^2"',b'Caption         =   "ksc."')
 assert clean==original
 for name in ('modBA.bas','modHillClimbing.bas','modProjectChecks.bas','modWSD.bas'):
     assert display_units((P/name).read_bytes())==display_units(subprocess.check_output(['git','show','e4c2e79:'+name],cwd=P))
