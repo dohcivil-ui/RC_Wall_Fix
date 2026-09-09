@@ -104,7 +104,11 @@ Begin VB.Form Form1
       TabIndex        =   36
       Top             =   2520
       Width           =   6135
-      Begin VB.ListBox lstResults 
+      Begin VB.TextBox txtResults 
+         MultiLine       =   -1  'True
+         ScrollBars      =   2  'Vertical
+         Locked          =   -1  'True
+         Enabled         =   -1  'True
          BeginProperty Font 
             Name            =   "CordiaUPC"
             Size            =   14.25
@@ -597,7 +601,7 @@ Private Sub cmdBA_Click()
     Dim globalBestTrial As Integer, globalBestIteration As Long
     Dim globalBestCostHistory() As Double
     
-    lstResults.Clear
+    txtResults.Text = vbNullString
     
     If Not ValidateInputs() Then
         MsgBox "กรุณาตรวจสอบข้อมูล!", vbExclamation, "ข้อผิดพลาด"
@@ -680,7 +684,7 @@ Private Sub cmdBA_Click()
             Next k
         End If
         
-        lstResults.Clear
+        txtResults.Text = vbNullString
         AddResultLine "============================================"
         AddResultLine "BA triple - Trial " & trial & "/" & numTrials
         AddResultLine "============================================"
@@ -707,7 +711,7 @@ Private Sub cmdBA_Click()
     Dim lines() As String
     lines = Split(resultText, vbCrLf)
     
-    lstResults.Clear
+    txtResults.Text = vbNullString
     Dim j As Integer
     For j = 0 To UBound(lines)
         AddResultLine lines(j)
@@ -725,7 +729,7 @@ Private Sub cmdBA_Click()
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
-    lstResults.TopIndex = 0
+    txtResults.SelStart = 0
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     BA_CostHistory = globalBestCostHistory
     BA_MaxIter = maxIter
@@ -757,16 +761,10 @@ End Sub
 ' Form Load Event
 ' ========================================
 Public Sub AddResultLine(ByVal text As String)
-    Const MAX_COLUMNS As Long = 48
-    Dim cut As Long
-    ' A ListBox does not wrap long rows. Preserve every character, including paths.
-    Do While Len(text) > MAX_COLUMNS
-        cut = InStrRev(Left$(text, MAX_COLUMNS), " ")
-        If cut <= 1 Then cut = MAX_COLUMNS
-        lstResults.AddItem Left$(text, cut)
-        text = Mid$(text, cut + 1)
-    Loop
-    lstResults.AddItem text
+    ' Native multiline TextBox wraps visually; preserve the report text.
+    txtResults.SelStart = Len(txtResults.Text)
+    txtResults.SelLength = 0
+    txtResults.SelText = text & vbCrLf
 End Sub
 
 Private Sub Form_Load()
@@ -810,7 +808,7 @@ Private Sub Form_Load()
     'txtTrials.Text = "1"
     
     ' Clear results
-    lstResults.Clear
+    txtResults.Text = vbNullString
     Call ClearGraph(picGraph)
     
     ' Enable Run button
@@ -849,7 +847,7 @@ Private Sub cmdRun_Click()
     Call InitializeArrays
     
     ' Clear results
-    lstResults.Clear
+    txtResults.Text = vbNullString
     
     ' === Input Validation ===
     If Not ValidateInputs() Then
@@ -937,7 +935,7 @@ Private Sub cmdRun_Click()
         Debug.Print "========================================"
         
         ' แสดงสถานะใน ListBox
-        lstResults.Clear
+        txtResults.Text = vbNullString
         AddResultLine "กำลังคำนวณ Trial " & trial & " / " & numTrials & "..."
         If globalBestTrial > 0 Then
             AddResultLine "Global Best: " & Format(globalBestCost, "#,##0.00") & " Baht/m (Trial " & globalBestTrial & ")"
@@ -991,7 +989,7 @@ Private Sub cmdRun_Click()
     Dim i As Integer
     lines = Split(resultText, vbCrLf)
     
-    lstResults.Clear
+    txtResults.Text = vbNullString
     For i = 0 To UBound(lines)
         AddResultLine lines(i)
     Next i
@@ -1015,7 +1013,7 @@ Private Sub cmdRun_Click()
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
-    lstResults.TopIndex = 0
+    txtResults.SelStart = 0
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     HCA_CostHistory = globalBestCostHistory
     HCA_MaxIter = maxIter
@@ -1093,7 +1091,7 @@ End Function
 ' Clear Button Click Event
 ' ========================================
 Private Sub cmdClear_Click()
-    lstResults.Clear
+    txtResults.Text = vbNullString
     Call ClearGraph(picGraph)
 End Sub
 
@@ -1120,7 +1118,7 @@ Private Sub cmdCompare_Click()
         Exit Sub
     End If
     
-    lstResults.Clear
+    txtResults.Text = vbNullString
     AddResultLine "COMPARE: HCA vs BA (stored sessions)"
     Call ClearGraph(picGraph)
     If hcaComparisonKey <> baComparisonKey Then

@@ -18,6 +18,18 @@ start=b.index(b'Private Function ScreenResultRow(');end=b.index(b'Public Functio
 assert b[:start]+b[end:]==(D/'before/modShared.bas').read_bytes()
 assert b[start:end].replace(b'\r\n',b'\n')==(P/'audit/results_screen_sections.source').read_bytes().replace(b'\r\n',b'\n')
 form=(P/'Form1.frm').read_bytes()
+if b'Begin VB.TextBox txtResults' in form:
+    probe=(P/'audit/results-textbox/runtime.txt').read_text()
+    assert 'FAILURES=0' in probe and 'FATAL=' not in probe
+    assert probe.count('TEXT_PRESERVED=True')==2
+    for height in (4,5):
+        assert (P/f'audit/results-textbox/full-report-H{height}.txt').read_bytes()==(D/f'after/full-report-H{height}.txt').read_bytes()
+    form=form.replace(b'Begin VB.TextBox txtResults',b'Begin VB.ListBox lstResults')
+    for prop in (b"         MultiLine       =   -1  'True\r\n",b"         ScrollBars      =   2  'Vertical\r\n",b"         Locked          =   -1  'True\r\n",b"         Enabled         =   -1  'True\r\n"):
+        assert form.count(prop)==1
+        form=form.replace(prop,b'')
+    form=form.replace(b'txtResults.Text = vbNullString',b'lstResults.Clear')
+    form=form.replace(b'txtResults.SelStart = 0',b'lstResults.TopIndex = 0')
 assert form.count(b'lstResults.TopIndex = 0')==2
 original=subprocess.check_output(['git','show','e4c2e79:Form1.frm'],cwd=P)
 # Restore just the UI substitutions to establish that optimizer/event flow is unchanged.
