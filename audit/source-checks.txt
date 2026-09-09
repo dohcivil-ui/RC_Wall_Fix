@@ -1,6 +1,7 @@
-BA original neighbor routine unchanged
+Both optimizers use the common random draw routine; acceptance, initialization and BA contraction flow unchanged
 BA recovery reopens bounds at current; no random calls outside the HCA-equivalent neighbor generator
-HCA matches BA draw order, step sizes and repairs with full bounds; final steel sweep removed
+HCA and BA share member selection and full bar-pair draws, with identical geometry jumps and repairs; no steel sweep
+Shared engineering evaluator, costs and best bookkeeping unchanged; both methods report the same search-policy version
 BA still has only tb, TBase, Base bisection bounds
 Original unit-price and bar-mass primitives unchanged; project detail quantities use modProjectChecks
 All .vbp source modules resolve within this copy
@@ -9,4 +10,4 @@ Changed VB6 files retain byte-preserving legacy text and CRLF, without UTF-8 BOM
 Production project-check module matches its archived source
 Best-design popup matches archived source; drawing is separate from calculation modules
 BA/HCA popup is called once after the trial loop, with session winner and first-best evaluation
-956 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries
+1196 persisted traces: sequential evaluations, exact budgets, prefix-best from all valid entries

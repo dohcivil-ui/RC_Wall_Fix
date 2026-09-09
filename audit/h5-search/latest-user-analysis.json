@@ -1,0 +1,400 @@
+[
+  {
+    "method": "BA",
+    "height": 3,
+    "session": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-095056-seed12345\\trial-summary.csv",
+    "trials": 30,
+    "evaluations": 150000,
+    "valid_fraction": 0.35595333333333334,
+    "reasons": [
+      [
+        "MINIMUM_MAIN_STEEL",
+        70463
+      ],
+      [
+        "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        53393
+      ],
+      [
+        "STEM_STRESS_OR_INTERVAL_BOUND",
+        15695
+      ],
+      [
+        "MAXIMUM_MAIN_STEEL",
+        6645
+      ],
+      [
+        "INVALID_GEOMETRY_OR_INPUT",
+        3804
+      ]
+    ],
+    "mean_tail": 3599.133333333333,
+    "best": {
+      "summary": {
+        "trial": "1",
+        "seed": "12345",
+        "status": "SOLUTION_FOUND_CONFIGURED_CHECKS",
+        "evaluations": "5000",
+        "best_cost": "2942.3419200000",
+        "best_evaluation": "2421",
+        "run_folder": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-095056-seed12345"
+      },
+      "candidate": {
+        "evaluation": "2421",
+        "entry": "neighbor",
+        "valid": "True",
+        "reason": "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        "cost": "2942.3419200000",
+        "best_cost": "2942.3419200000",
+        "tt": "0.2000000000",
+        "tb": "0.2000000000",
+        "TBase": "0.3000000000",
+        "Base": "1.5000000000",
+        "LToe": "0.4000000000",
+        "StemDB": "100",
+        "StemSP": "111",
+        "ToeDB": "100",
+        "ToeSP": "111",
+        "HeelDB": "100",
+        "HeelSP": "111"
+      }
+    }
+  },
+  {
+    "method": "BA",
+    "height": 4,
+    "session": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-095213-seed12345\\trial-summary.csv",
+    "trials": 30,
+    "evaluations": 150000,
+    "valid_fraction": 0.18978,
+    "reasons": [
+      [
+        "MINIMUM_MAIN_STEEL",
+        66725
+      ],
+      [
+        "STEM_STRESS_OR_INTERVAL_BOUND",
+        34152
+      ],
+      [
+        "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        28467
+      ],
+      [
+        "MAXIMUM_MAIN_STEEL",
+        14195
+      ],
+      [
+        "ENVELOPE_BASE_CONTACT",
+        3244
+      ],
+      [
+        "MEMBER_FLEXURE",
+        1706
+      ],
+      [
+        "INVALID_GEOMETRY_OR_INPUT",
+        1511
+      ]
+    ],
+    "mean_tail": 1950.7,
+    "best": {
+      "summary": {
+        "trial": "3",
+        "seed": "12347",
+        "status": "SOLUTION_FOUND_CONFIGURED_CHECKS",
+        "evaluations": "5000",
+        "best_cost": "4985.5646400000",
+        "best_evaluation": "2821",
+        "run_folder": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-095214-seed12347"
+      },
+      "candidate": {
+        "evaluation": "2821",
+        "entry": "neighbor",
+        "valid": "True",
+        "reason": "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        "cost": "4985.5646400000",
+        "best_cost": "4985.5646400000",
+        "tt": "0.2000000000",
+        "tb": "0.3000000000",
+        "TBase": "0.3000000000",
+        "Base": "2.0000000000",
+        "LToe": "0.8000000000",
+        "StemDB": "101",
+        "StemSP": "111",
+        "ToeDB": "100",
+        "ToeSP": "111",
+        "HeelDB": "100",
+        "HeelSP": "111"
+      }
+    }
+  },
+  {
+    "method": "BA",
+    "height": 5,
+    "session": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-095356-seed12345\\trial-summary.csv",
+    "trials": 30,
+    "evaluations": 150000,
+    "valid_fraction": 0.10382666666666666,
+    "reasons": [
+      [
+        "MINIMUM_MAIN_STEEL",
+        44069
+      ],
+      [
+        "STEM_STRESS_OR_INTERVAL_BOUND",
+        32582
+      ],
+      [
+        "ENVELOPE_BASE_CONTACT",
+        27242
+      ],
+      [
+        "MAXIMUM_MAIN_STEEL",
+        18935
+      ],
+      [
+        "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        15574
+      ],
+      [
+        "MEMBER_FLEXURE",
+        11115
+      ],
+      [
+        "INVALID_GEOMETRY_OR_INPUT",
+        483
+      ]
+    ],
+    "mean_tail": 2346.0666666666666,
+    "best": {
+      "summary": {
+        "trial": "11",
+        "seed": "12355",
+        "status": "SOLUTION_FOUND_CONFIGURED_CHECKS",
+        "evaluations": "5000",
+        "best_cost": "8538.4189200000",
+        "best_evaluation": "3664",
+        "run_folder": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\BA-25690909-095403-seed12355"
+      },
+      "candidate": {
+        "evaluation": "3664",
+        "entry": "neighbor",
+        "valid": "True",
+        "reason": "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        "cost": "8538.4189200000",
+        "best_cost": "8538.4189200000",
+        "tt": "0.2000000000",
+        "tb": "0.4000000000",
+        "TBase": "0.3000000000",
+        "Base": "3.0000000000",
+        "LToe": "1.0000000000",
+        "StemDB": "101",
+        "StemSP": "110",
+        "ToeDB": "101",
+        "ToeSP": "112",
+        "HeelDB": "103",
+        "HeelSP": "113"
+      }
+    }
+  },
+  {
+    "method": "HCA",
+    "height": 3,
+    "session": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-095003-seed12345\\trial-summary.csv",
+    "trials": 30,
+    "evaluations": 150000,
+    "valid_fraction": 0.3230266666666667,
+    "reasons": [
+      [
+        "MINIMUM_MAIN_STEEL",
+        75058
+      ],
+      [
+        "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        48454
+      ],
+      [
+        "STEM_STRESS_OR_INTERVAL_BOUND",
+        11746
+      ],
+      [
+        "INVALID_GEOMETRY_OR_INPUT",
+        8498
+      ],
+      [
+        "MAXIMUM_MAIN_STEEL",
+        6244
+      ]
+    ],
+    "mean_tail": 2738.3333333333335,
+    "best": {
+      "summary": {
+        "trial": "1",
+        "seed": "12345",
+        "status": "SOLUTION_FOUND_CONFIGURED_CHECKS",
+        "evaluations": "5000",
+        "best_cost": "2942.3419200000",
+        "best_evaluation": "2406",
+        "run_folder": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-095003-seed12345"
+      },
+      "candidate": {
+        "evaluation": "2406",
+        "entry": "neighbor",
+        "valid": "True",
+        "reason": "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        "cost": "2942.3419200000",
+        "best_cost": "2942.3419200000",
+        "tt": "0.2000000000",
+        "tb": "0.2000000000",
+        "TBase": "0.3000000000",
+        "Base": "1.5000000000",
+        "LToe": "0.5000000000",
+        "StemDB": "100",
+        "StemSP": "111",
+        "ToeDB": "100",
+        "ToeSP": "111",
+        "HeelDB": "100",
+        "HeelSP": "111"
+      }
+    }
+  },
+  {
+    "method": "HCA",
+    "height": 4,
+    "session": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-095144-seed12345\\trial-summary.csv",
+    "trials": 30,
+    "evaluations": 150000,
+    "valid_fraction": 0.18142,
+    "reasons": [
+      [
+        "MINIMUM_MAIN_STEEL",
+        80116
+      ],
+      [
+        "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        27213
+      ],
+      [
+        "STEM_STRESS_OR_INTERVAL_BOUND",
+        22031
+      ],
+      [
+        "INVALID_GEOMETRY_OR_INPUT",
+        9590
+      ],
+      [
+        "MAXIMUM_MAIN_STEEL",
+        8683
+      ],
+      [
+        "MEMBER_FLEXURE",
+        1269
+      ],
+      [
+        "ENVELOPE_BASE_CONTACT",
+        1098
+      ]
+    ],
+    "mean_tail": 1921.3666666666666,
+    "best": {
+      "summary": {
+        "trial": "30",
+        "seed": "12374",
+        "status": "SOLUTION_FOUND_CONFIGURED_CHECKS",
+        "evaluations": "5000",
+        "best_cost": "4985.5646400000",
+        "best_evaluation": "2556",
+        "run_folder": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-095203-seed12374"
+      },
+      "candidate": {
+        "evaluation": "2556",
+        "entry": "neighbor",
+        "valid": "True",
+        "reason": "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        "cost": "4985.5646400000",
+        "best_cost": "4985.5646400000",
+        "tt": "0.2000000000",
+        "tb": "0.3000000000",
+        "TBase": "0.3000000000",
+        "Base": "2.0000000000",
+        "LToe": "0.8000000000",
+        "StemDB": "101",
+        "StemSP": "111",
+        "ToeDB": "100",
+        "ToeSP": "111",
+        "HeelDB": "100",
+        "HeelSP": "111"
+      }
+    }
+  },
+  {
+    "method": "HCA",
+    "height": 5,
+    "session": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-095447-seed12345\\trial-summary.csv",
+    "trials": 30,
+    "evaluations": 150000,
+    "valid_fraction": 0.11990666666666666,
+    "reasons": [
+      [
+        "MINIMUM_MAIN_STEEL",
+        56990
+      ],
+      [
+        "ENVELOPE_BASE_CONTACT",
+        29177
+      ],
+      [
+        "STEM_STRESS_OR_INTERVAL_BOUND",
+        23177
+      ],
+      [
+        "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        17986
+      ],
+      [
+        "MAXIMUM_MAIN_STEEL",
+        12285
+      ],
+      [
+        "MEMBER_FLEXURE",
+        7708
+      ],
+      [
+        "INVALID_GEOMETRY_OR_INPUT",
+        2677
+      ]
+    ],
+    "mean_tail": 1644.3333333333333,
+    "best": {
+      "summary": {
+        "trial": "16",
+        "seed": "12360",
+        "status": "SOLUTION_FOUND_CONFIGURED_CHECKS",
+        "evaluations": "5000",
+        "best_cost": "8646.9368800000",
+        "best_evaluation": "3744",
+        "run_folder": "C:\\reserch 69\\RC_Wall_Fix\\result_csv\\HCA-25690909-095458-seed12360"
+      },
+      "candidate": {
+        "evaluation": "3744",
+        "entry": "neighbor",
+        "valid": "True",
+        "reason": "PASS_IMPLEMENTED_PROJECT_CHECKS",
+        "cost": "8646.9368800000",
+        "best_cost": "8646.9368800000",
+        "tt": "0.2000000000",
+        "tb": "0.4000000000",
+        "TBase": "0.3000000000",
+        "Base": "3.0000000000",
+        "LToe": "1.0000000000",
+        "StemDB": "102",
+        "StemSP": "111",
+        "ToeDB": "100",
+        "ToeSP": "110",
+        "HeelDB": "101",
+        "HeelSP": "110"
+      }
+    }
+  }
+]

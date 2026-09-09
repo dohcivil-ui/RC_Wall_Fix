@@ -9,7 +9,7 @@
   },
   {
     "file": "modBA.bas",
-    "sha256": "1cf1a874b719d4a7300ecbf89c8cfd22daa753aafc17d3a0c9a3c793e2124b0b"
+    "sha256": "9ff1f008865fd9a654468ecef1abd9d4861c05027cf3ebc8b6954f9fde6040f6"
   },
   {
     "file": "modBatch.bas",
@@ -25,7 +25,7 @@
   },
   {
     "file": "modHillClimbing.bas",
-    "sha256": "b4ed31fd8cb242a73be3f072c6acc43ec8bcc17e54c36056bb9562e86ffb510c"
+    "sha256": "3e36fb3e4c3abc321546881b22ec950f6151d0433055166f4b136460ee837335"
   },
   {
     "file": "modProjectChecks.bas",
@@ -33,7 +33,7 @@
   },
   {
     "file": "modShared.bas",
-    "sha256": "da78a729b5ea0a3138c223c9ac2bebe245eb151ef3626cf82f3612fa7776eca7"
+    "sha256": "dd130a05260e89dd9285c0855a073824f21ee9f28de7b66debe1ab7fcbe6a3b5"
   },
   {
     "file": "modWSD.bas",

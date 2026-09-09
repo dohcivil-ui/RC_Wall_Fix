@@ -1,0 +1,24 @@
+H=3; method=HCA; seed=12345; cost=2942.34192; evaluation=329
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100757-seed12345
+H=3; method=BA; seed=12345; cost=2942.34192; evaluation=334
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\BA-25690909-100757-seed12345
+H=4; method=HCA; seed=12345; cost=4985.56464; evaluation=360
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100758-seed12345
+H=4; method=BA; seed=12345; cost=4985.56464; evaluation=1707
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\BA-25690909-100759-seed12345
+H=5; method=HCA; seed=12345; cost=8638.02148; evaluation=1037
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100759-seed12345
+H=5; method=BA; seed=12345; cost=8654.44873; evaluation=4974
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\BA-25690909-100800-seed12345
+H=5; method=HCA; seed=12360; cost=8540.19588; evaluation=2734
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100800-seed12360
+H=5; method=BA; seed=12360; cost=8540.19588; evaluation=2713
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\BA-25690909-100801-seed12360
+H=5; method=HCA; seed=12374; cost=8538.41892; evaluation=4866
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100802-seed12374
+H=5; method=BA; seed=12374; cost=8856.10753; evaluation=1567
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\BA-25690909-100803-seed12374
+H=5; method=HCA; seed=24680; cost=8757.448; evaluation=3399
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100803-seed24680
+H=5; method=BA; seed=24680; cost=8653.93045; evaluation=1734
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\BA-25690909-100804-seed24680

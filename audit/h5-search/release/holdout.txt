@@ -1,0 +1,12 @@
+H=3; method=HCA; seed=24681; cost=2942.34192; evaluation=236
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\release\result_csv\HCA-25690909-101623-seed24681
+H=3; method=BA; seed=24681; cost=2942.34192; evaluation=240
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\release\result_csv\BA-25690909-101624-seed24681
+H=4; method=HCA; seed=24681; cost=4985.56464; evaluation=3046
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\release\result_csv\HCA-25690909-101624-seed24681
+H=4; method=BA; seed=24681; cost=4985.56464; evaluation=3379
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\release\result_csv\BA-25690909-101625-seed24681
+H=5; method=HCA; seed=24681; cost=8540.19588; evaluation=2133
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\release\result_csv\HCA-25690909-101626-seed24681
+H=5; method=BA; seed=24681; cost=8540.19588; evaluation=1804
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\release\result_csv\BA-25690909-101626-seed24681

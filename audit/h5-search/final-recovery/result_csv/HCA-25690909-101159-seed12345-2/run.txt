@@ -1,0 +1,15 @@
+Status=NO_SOLUTION
+Algorithm=HCA; Trial=1
+Seed=12345; Evaluations=125; Budget=125
+BestEvaluation=0; Recoveries=0
+SearchPolicy=MEMBER_RANDOM_V1
+H=5; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4
+phi=30; mu=0.6; qa_allowable=0.01; clear_cover=0.075
+fc_prime=320; fy=4000; passive_fraction=1
+WSDReviewed=True; source=PROJECT_WSD_ACI99_V3_MAIN_ONLY
+ProjectChecksEnabled=True
+ShearLimit=5.21755250320182; StemMinimum=ACI99_10.5.1; BaseRatio=0.002
+Basis: PROJECT_WSD_ACI99_V3_MAIN_ONLY (implemented checks; not full EIT/ACI certification)
+Research scope: main stem/toe/heel steel only; secondary steel excluded; anchorage/laps excluded from checks and steel quantities; no 0.40m allowance; formwork cost excluded.
+NO_SOLUTION / no admissible design returned; no price.
+

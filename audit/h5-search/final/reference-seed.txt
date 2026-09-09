@@ -1,0 +1,4 @@
+H=5; method=HCA; seed=12355; cost=8540.19588; evaluation=2150
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\final\result_csv\HCA-25690909-101411-seed12355
+H=5; method=BA; seed=12355; cost=8837.54965; evaluation=2046
+RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\final\result_csv\BA-25690909-101411-seed12355

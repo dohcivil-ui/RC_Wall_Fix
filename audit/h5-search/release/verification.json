@@ -1,0 +1,179 @@
+{
+  "policy": "MEMBER_WEIGHTED_V1",
+  "generator_comparisons": 5400,
+  "records": [
+    {
+      "height": 3,
+      "method": "HCA",
+      "seed": 12345,
+      "cost": 2942.34192,
+      "evaluation": 299,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101615-seed12345"
+    },
+    {
+      "height": 3,
+      "method": "BA",
+      "seed": 12345,
+      "cost": 2942.34192,
+      "evaluation": 283,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101615-seed12345"
+    },
+    {
+      "height": 4,
+      "method": "HCA",
+      "seed": 12345,
+      "cost": 4985.56464,
+      "evaluation": 279,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101616-seed12345"
+    },
+    {
+      "height": 4,
+      "method": "BA",
+      "seed": 12345,
+      "cost": 5034.13488,
+      "evaluation": 2695,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101616-seed12345"
+    },
+    {
+      "height": 5,
+      "method": "HCA",
+      "seed": 12345,
+      "cost": 8556.48468,
+      "evaluation": 4403,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101617-seed12345"
+    },
+    {
+      "height": 5,
+      "method": "BA",
+      "seed": 12345,
+      "cost": 8538.41892,
+      "evaluation": 4196,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101617-seed12345"
+    },
+    {
+      "height": 5,
+      "method": "HCA",
+      "seed": 12360,
+      "cost": 8540.19588,
+      "evaluation": 3793,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101618-seed12360"
+    },
+    {
+      "height": 5,
+      "method": "BA",
+      "seed": 12360,
+      "cost": 8540.19588,
+      "evaluation": 3930,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101618-seed12360"
+    },
+    {
+      "height": 5,
+      "method": "HCA",
+      "seed": 12374,
+      "cost": 8538.41892,
+      "evaluation": 3162,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101619-seed12374"
+    },
+    {
+      "height": 5,
+      "method": "BA",
+      "seed": 12374,
+      "cost": 8551.96824,
+      "evaluation": 2537,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101620-seed12374"
+    },
+    {
+      "height": 5,
+      "method": "HCA",
+      "seed": 24680,
+      "cost": 8540.19588,
+      "evaluation": 1292,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101620-seed24680"
+    },
+    {
+      "height": 5,
+      "method": "BA",
+      "seed": 24680,
+      "cost": 8538.41892,
+      "evaluation": 3904,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101621-seed24680"
+    },
+    {
+      "height": 3,
+      "method": "HCA",
+      "seed": 24681,
+      "cost": 2942.34192,
+      "evaluation": 236,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101623-seed24681"
+    },
+    {
+      "height": 3,
+      "method": "BA",
+      "seed": 24681,
+      "cost": 2942.34192,
+      "evaluation": 240,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101624-seed24681"
+    },
+    {
+      "height": 4,
+      "method": "HCA",
+      "seed": 24681,
+      "cost": 4985.56464,
+      "evaluation": 3046,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101624-seed24681"
+    },
+    {
+      "height": 4,
+      "method": "BA",
+      "seed": 24681,
+      "cost": 4985.56464,
+      "evaluation": 3379,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101625-seed24681"
+    },
+    {
+      "height": 5,
+      "method": "HCA",
+      "seed": 24681,
+      "cost": 8540.19588,
+      "evaluation": 2133,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101626-seed24681"
+    },
+    {
+      "height": 5,
+      "method": "BA",
+      "seed": 24681,
+      "cost": 8540.19588,
+      "evaluation": 1804,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101626-seed24681"
+    }
+  ],
+  "target_runs": [
+    {
+      "height": 5,
+      "method": "BA",
+      "seed": 12345,
+      "cost": 8538.41892,
+      "evaluation": 4196,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101617-seed12345"
+    },
+    {
+      "height": 5,
+      "method": "HCA",
+      "seed": 12374,
+      "cost": 8538.41892,
+      "evaluation": 3162,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\HCA-25690909-101619-seed12374"
+    },
+    {
+      "height": 5,
+      "method": "BA",
+      "seed": 24680,
+      "cost": 8538.41892,
+      "evaluation": 3904,
+      "path": "C:\\reserch 69\\RC_Wall_Fix\\audit\\h5-search\\release\\result_csv\\BA-25690909-101621-seed24680"
+    }
+  ],
+  "BA_always_faster": false,
+  "global_optimum_certified": false,
+  "development_set_used_for_policy_selection": true
+}

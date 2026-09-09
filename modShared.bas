@@ -13,6 +13,7 @@ Attribute VB_Name = "modShared"
 '================================================================================
 Option Explicit
 Public BatchMode As Boolean
+Public Const NEIGHBOR_SEARCH_POLICY As String = "MEMBER_WEIGHTED_V1"
 Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\result_csv"
 ' H and H1 are elevations above the underside of the base; H1 is FRONT soil.
 ' Vertical back of stem, front taper, level dry cohesionless soil, no surcharge.
@@ -198,6 +199,32 @@ End Sub
 '--------------------------------------------------------------------------------
 ' สุ่มเลขจำนวนเต็มในช่วง Low ถึง High
 '--------------------------------------------------------------------------------
+Public Sub DrawSearchMove(ByRef move() As Integer)
+    ' Both optimizers use these exact twelve draws, in this order.
+    ' Geometry entries are index increments; bar entries are absolute indices.
+    move(2) = Rand(-2, 2)       ' tb
+    move(1) = Rand(-2, 2)       ' tt
+    move(3) = Rand(-5, 5)      ' TBase
+    move(5) = Rand(-2, 2)      ' LToe
+    move(4) = Rand(-1, 1)      ' Base
+    move(6) = Rand(DB_MIN, DB_MAX): move(7) = Rand(SP_MIN, SP_MAX)
+    move(8) = Rand(DB_MIN, DB_MAX): move(9) = Rand(SP_MIN, SP_MAX)
+    move(10) = Rand(DB_MIN, DB_MAX): move(11) = Rand(SP_MIN, SP_MAX)
+    ' Whole design: 7/12; each of the five member moves: 1/12.
+    move(0) = Rand(0, 11)
+    If move(0) > 5 Then move(0) = 0
+End Sub
+
+Public Function SearchMoveIncludes(ByVal moveGroup As Integer, ByVal component As Integer) As Boolean
+    ' Components: 1 stem geometry, 2 base geometry, 3/4/5 stem/toe/heel bars.
+    Select Case moveGroup
+        Case 0: SearchMoveIncludes = True                 ' Whole design
+        Case 1: SearchMoveIncludes = (component = 1 Or component = 3)
+        Case 2: SearchMoveIncludes = (component = 2 Or component = 4 Or component = 5)
+        Case 3 To 5: SearchMoveIncludes = (component = moveGroup)
+    End Select
+End Function
+
 Public Function Rand(ByVal Low As Long, ByVal High As Long) As Long
     Rand = Int((High - Low + 1) * Rnd) + Low
 End Function
@@ -1042,7 +1069,7 @@ Public Sub FinishSearch()
     Print #f, "Algorithm=" & RunAlgorithm & "; Trial=" & RunTrial
     Print #f, "Seed=" & RunSeed & "; Evaluations=" & EvaluationCount & "; Budget=" & EvaluationBudget
     Print #f, "BestEvaluation=" & RunBestEvaluation & "; Recoveries=" & RunRecoveryCount
-    If RunAlgorithm = "HCA" Then Print #f, "SearchPolicy=" & HCA_SEARCH_POLICY
+    Print #f, "SearchPolicy=" & NEIGHBOR_SEARCH_POLICY
     Print #f, "H=" & H & "; H1=" & H1 & "; gamma_soil=" & gamma_soil & "; gamma_concrete=" & gamma_concrete
     Print #f, "phi=" & phi & "; mu=" & mu & "; qa_allowable=" & qa & "; clear_cover=" & cover
     Print #f, "fc_prime=" & currentMaterial.fc & "; fy=" & currentMaterial.fy & "; passive_fraction=" & PassiveFactor

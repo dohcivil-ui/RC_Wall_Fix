@@ -8,8 +8,15 @@ def routine(s,name):
     assert m,name
     return m.group()
 result=[]
-assert routine(read(P/'modBA.bas'),'GenerateNeighbor_BA') == routine(read(B/'modBA.bas'),'GenerateNeighbor_BA')
-result.append('BA original neighbor routine unchanged')
+for name,fn in [('modBA.bas','GenerateNeighbor_BA'),('modHillClimbing.bas','GenerateNeighbor')]:
+    before=read(P/'audit'/'h5-search'/'before'/name)
+    current=read(P/name)
+    before=before.replace('Public Const HCA_SEARCH_POLICY As String = "HCA_BA_NEIGHBOR_V1"\n\n','')
+    assert before.replace(routine(before,fn),'') == current.replace(routine(current,fn),'')
+    executable='\n'.join(line.split("'",1)[0] for line in current.splitlines())
+    assert not re.search(r'\b(?:Rand\s*\(|Rnd\b|Randomize\b)',executable,re.I)
+    assert current.count('Call DrawSearchMove(move)')==1
+result.append('Both optimizers use the common random draw routine; acceptance, initialization and BA contraction flow unchanged')
 ba_outside_neighbor = read(P/'modBA.bas').replace(routine(read(P/'modBA.bas'),'GenerateNeighbor_BA'), '')
 ba_outside_neighbor = '\n'.join(line.split("'",1)[0] for line in ba_outside_neighbor.splitlines())
 assert not re.search(r'\b(?:Rand\s*\(|Rnd\b|Randomize\b)', ba_outside_neighbor, re.I)
@@ -23,7 +30,11 @@ for old,new in [('Mintb','TB_MIN'),('Maxtb','FixedTbMax'),('MinTBase','TBASE_MIN
     ba_neighbor = re.sub(r'\b'+old+r'\b',new,ba_neighbor)
 assert normalized_neighbor(ba_neighbor) == normalized_neighbor(routine(read(P/'modHillClimbing.bas'),'GenerateNeighbor'))
 assert 'MainSteelNeighbor' not in read(P/'modHillClimbing.bas') and 'refinementVisit' not in read(P/'modHillClimbing.bas')
-result.append('HCA matches BA draw order, step sizes and repairs with full bounds; final steel sweep removed')
+result.append('HCA and BA share member selection and full bar-pair draws, with identical geometry jumps and repairs; no steel sweep')
+for fn in ['EvaluateCandidate','CheckDesignValid','CalculateCost']:
+    assert routine(read(P/'modShared.bas'),fn)==routine(read(P/'audit'/'h5-search'/'before'/'modShared.bas'),fn)
+assert 'Print #f, "SearchPolicy=" & NEIGHBOR_SEARCH_POLICY' in read(P/'modShared.bas')
+result.append('Shared engineering evaluator, costs and best bookkeeping unchanged; both methods report the same search-policy version')
 bounds=set(re.findall(r'Private (Min\w+|Max\w+) As Integer',read(P/'modBA.bas')))
 assert bounds=={'Mintb','Maxtb','MinTBase','MaxTBase','MinBase','MaxBase'}
 result.append('BA still has only tb, TBase, Base bisection bounds')

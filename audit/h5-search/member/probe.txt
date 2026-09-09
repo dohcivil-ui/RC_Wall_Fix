@@ -1,0 +1,7 @@
+USER_HCA valid=True; cost=8646.93688
+CHEAPER_PAIR part=0; db=101; sp=110; cost=8573.88408
+CHEAPER_PAIR part=1; db=101; sp=112; cost=8625.02104
+CHEAPER_PAIR part=2; db=103; sp=113; cost=8633.38756
+BA_WINNER_IN_HCA valid=True; cost=8538.41892; RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100722-seed12345
+REPLAY_12360 cost=8540.19588; RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100722-seed12360
+LOCAL_12360 cost=8538.41892; RUN=C:\reserch 69\RC_Wall_Fix\audit\h5-search\member\result_csv\HCA-25690909-100722-seed12360-1
