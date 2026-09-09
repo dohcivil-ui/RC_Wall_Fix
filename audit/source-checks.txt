@@ -1,5 +1,5 @@
-modBA.bas: original neighbor routine unchanged byte-for-byte after CRLF normalization
-modHillClimbing.bas: original neighbor routine unchanged byte-for-byte after CRLF normalization
+BA original neighbor routine unchanged
+HCA matches BA draw order, step sizes and repairs with full bounds; final steel sweep removed
 BA still has only tb, TBase, Base bisection bounds
 Original unit-price and bar-mass primitives unchanged; project detail quantities use modProjectChecks
 All .vbp source modules resolve within this copy

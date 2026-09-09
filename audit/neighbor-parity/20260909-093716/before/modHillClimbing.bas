@@ -12,7 +12,8 @@ Attribute VB_Name = "modHillClimbing"
 '================================================================================
 Option Explicit
 
-Public Const HCA_SEARCH_POLICY As String = "HCA_BA_NEIGHBOR_V1"
+Public Const HCA_SEARCH_POLICY As String = "HCA_FINAL_MAIN_STEEL_SWEEP_V1"
+Public HCARefinementCount As Long
 
 '================================================================================
 ' SECTION 1: Module-Level Variables (?????? HCA)
@@ -30,10 +31,6 @@ Private CurrentToeDB As Integer
 Private CurrentToeSP As Integer
 Private CurrentHeelDB As Integer
 Private CurrentHeelSP As Integer
-
-' Full design-domain bounds. HCA never contracts these ranges.
-Private FixedTbMax As Integer, FixedTBaseMax As Integer
-Private FixedBaseMin As Integer, FixedBaseMax As Integer
 
 ' Cost History ?????? modDataStructures.CostHistory
 
@@ -117,12 +114,6 @@ Next i
     CurrentStemDB = DB_MAX:  CurrentStemSP = SP_MIN
     CurrentToeDB = DB_MAX:   CurrentToeSP = SP_MIN
     CurrentHeelDB = DB_MAX:  CurrentHeelSP = SP_MIN
-
-    FixedTbMax = Currenttb: FixedTBaseMax = CurrentTBase
-    FixedBaseMax = CurrentBase: FixedBaseMin = BASE_MIN
-    For i = BASE_MIN To BASE_MAX
-        If WP_Base(i) >= 0.5 * modShared.H Then FixedBaseMin = i: Exit For
-    Next i
 End Sub
 
 '================================================================================
@@ -155,98 +146,129 @@ End Function
 '================================================================================
 
 Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
-                                ByRef NewTBase As Integer, ByRef NewBase As Integer, _
-                                ByRef NewLToe As Integer, _
-                                ByRef NewStemDB As Integer, ByRef NewStemSP As Integer, _
-                                ByRef NewToeDB As Integer, ByRef NewToeSP As Integer, _
-                                ByRef NewHeelDB As Integer, ByRef NewHeelSP As Integer)
-
-    ' Same draw order, step sizes and repairs as BA, using the full domain.
+                             ByRef NewTBase As Integer, ByRef NewBase As Integer, _
+                             ByRef NewLToe As Integer, _
+                             ByRef NewStemDB As Integer, ByRef NewStemSP As Integer, _
+                             ByRef NewToeDB As Integer, ByRef NewToeSP As Integer, _
+                             ByRef NewHeelDB As Integer, ByRef NewHeelSP As Integer)
+    
     Dim Step As Integer
-    Dim LToe_min_idx As Integer, LToe_max_idx As Integer
-    Dim i As Integer
-
-    LToe_min_idx = LTOE_MIN
-    For i = LTOE_MIN To LTOE_MAX
-        If WP_LToe(i) >= 0.1 * modShared.H Then
-            LToe_min_idx = i
-            Exit For
-        End If
-    Next i
-
-    LToe_max_idx = LTOE_MAX
-    For i = LTOE_MAX To LTOE_MIN Step -1
-        If WP_LToe(i) <= 0.2 * modShared.H Then
-            LToe_max_idx = i
-            Exit For
-        End If
-    Next i
-
-    Step = Rand(-2, 2)
-    Newtb = Currenttb + Step
-    If Newtb < TB_MIN Then Newtb = TB_MIN
-    If Newtb > FixedTbMax Then Newtb = FixedTbMax
-
+    Dim LBase_Max_Ratio As Double, Base_Max_calc As Double
+    Dim LHeel_Max As Double
+    
+    ' === ????????????? (?????? HCA ???) ===
+    
+    ' tt: step = Rand(-2, 2)
     Step = Rand(-2, 2)
     Newtt = Currenttt + Step
     If Newtt < TT_MIN Then Newtt = TT_MIN
     If Newtt > TT_MAX Then Newtt = TT_MAX
-
-    If WP_tt(Newtt) > WP_tb(Newtb) Then
-        For i = TT_MAX To TT_MIN Step -1
-            If WP_tt(i) <= WP_tb(Newtb) Then
-                Newtt = i
-                Exit For
-            End If
-        Next i
+    
+    ' tb: step = Rand(-1, 1)
+    Step = Rand(-2, 2)
+    Newtb = Currenttb + Step
+    If Newtb < TB_MIN Then Newtb = TB_MIN
+    If Newtb > tb_max Then Newtb = tb_max
+    ' Constraint: tb >= tt
+    If WP_tb(Newtb) < WP_tt(Newtt) Then
+        Newtb = TB_MIN
+        Do While Newtb <= tb_max
+            If WP_tb(Newtb) >= WP_tt(Newtt) Then Exit Do
+            Newtb = Newtb + 1
+        Loop
     End If
-
+    ' Constraint: tb <= 0.12H
+    Do While Newtb > TB_MIN And WP_tb(Newtb) > 0.12 * modShared.H
+        Newtb = Newtb - 1
+    Loop
+    
+    ' TBase: step = Rand(-1, 1)
     Step = Rand(-5, 5)
     NewTBase = CurrentTBase + Step
     If NewTBase < TBASE_MIN Then NewTBase = TBASE_MIN
-    If NewTBase > FixedTBaseMax Then NewTBase = FixedTBaseMax
-
+    If NewTBase > TBase_max Then NewTBase = TBase_max
+    ' Constraint: TBase <= 0.15H
+    Do While NewTBase > TBASE_MIN And WP_TBase(NewTBase) > 0.15 * modShared.H
+        NewTBase = NewTBase - 1
+    Loop
+    
+    ' LToe: step = Rand(-2, 2)
     Step = Rand(-2, 2)
     NewLToe = CurrentLToe + Step
-    If NewLToe < LToe_min_idx Then NewLToe = LToe_min_idx
-    If NewLToe > LToe_max_idx Then NewLToe = LToe_max_idx
-
+    If NewLToe < LTOE_MIN Then NewLToe = LTOE_MIN
+    If NewLToe > LTOE_MAX Then NewLToe = LTOE_MAX
+    ' Constraint: 0.1H <= LToe <= 0.2H
+    Do While NewLToe > LTOE_MIN And WP_LToe(NewLToe) > 0.2 * modShared.H
+        NewLToe = NewLToe - 1
+    Loop
+    Do While NewLToe < LTOE_MAX And WP_LToe(NewLToe) < 0.1 * modShared.H
+        NewLToe = NewLToe + 1
+    Loop
+    
+    ' Base: step = Rand(-1, 1)
+    ' Constraint: 0.5H <= Base <= 0.7H
+    Base_Max_calc = 0.7 * modShared.H
     Step = Rand(-1, 1)
     NewBase = CurrentBase + Step
-    If NewBase < FixedBaseMin Then NewBase = FixedBaseMin
-    If NewBase > FixedBaseMax Then NewBase = FixedBaseMax
-
+    If NewBase < BASE_MIN Then NewBase = BASE_MIN
+    If NewBase > BASE_MAX Then NewBase = BASE_MAX
+    ' Constraint: Base >= 0.5H
+    Do While NewBase < BASE_MAX And WP_Base(NewBase) < 0.5 * modShared.H
+        NewBase = NewBase + 1
+    Loop
+    ' Constraint: Base <= Base_Max_calc
+    Do While NewBase > BASE_MIN And WP_Base(NewBase) > Base_Max_calc
+        NewBase = NewBase - 1
+    Loop
+    
+    ' === Steel: step = Rand(-2, 2) ===
     Step = Rand(-2, 2)
     NewStemDB = CurrentStemDB + Step
     If NewStemDB < DB_MIN Then NewStemDB = DB_MIN
     If NewStemDB > DB_MAX Then NewStemDB = DB_MAX
-
+    
     Step = Rand(-2, 2)
     NewStemSP = CurrentStemSP + Step
     If NewStemSP < SP_MIN Then NewStemSP = SP_MIN
     If NewStemSP > SP_MAX Then NewStemSP = SP_MAX
-
+    
     Step = Rand(-2, 2)
     NewToeDB = CurrentToeDB + Step
     If NewToeDB < DB_MIN Then NewToeDB = DB_MIN
     If NewToeDB > DB_MAX Then NewToeDB = DB_MAX
-
+    
     Step = Rand(-2, 2)
     NewToeSP = CurrentToeSP + Step
     If NewToeSP < SP_MIN Then NewToeSP = SP_MIN
     If NewToeSP > SP_MAX Then NewToeSP = SP_MAX
-
+    
     Step = Rand(-2, 2)
     NewHeelDB = CurrentHeelDB + Step
     If NewHeelDB < DB_MIN Then NewHeelDB = DB_MIN
     If NewHeelDB > DB_MAX Then NewHeelDB = DB_MAX
-
+    
     Step = Rand(-2, 2)
     NewHeelSP = CurrentHeelSP + Step
     If NewHeelSP < SP_MIN Then NewHeelSP = SP_MIN
     If NewHeelSP > SP_MAX Then NewHeelSP = SP_MAX
-
+    
 End Sub
+
+Private Function MainSteelNeighbor(d As Design, visit As Long) As Design
+    ' Visit each existing DB/spacing pair for one member; keep geometry fixed.
+    Dim pairs As Long, pair As Long, DB As Integer, SP As Integer, candidate As Design
+    candidate = d
+    pairs = (DB_MAX - DB_MIN + 1) * (SP_MAX - SP_MIN + 1)
+    pair = (visit - 1) Mod pairs
+    DB = DB_MIN + pair \ (SP_MAX - SP_MIN + 1)
+    SP = SP_MIN + pair Mod (SP_MAX - SP_MIN + 1)
+    Select Case (visit - 1) \ pairs
+        Case 0: candidate.ASst_DB = DB: candidate.ASst_Sp = SP
+        Case 1: candidate.AStoe_DB = DB: candidate.AStoe_Sp = SP
+        Case 2: candidate.ASheel_DB = DB: candidate.ASheel_Sp = SP
+    End Select
+    MainSteelNeighbor = candidate
+End Function
 
 '================================================================================
 ' SECTION 5: Hill Climbing Algorithm (Main Optimization Function)
@@ -279,6 +301,7 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
                        Optional TrialNumber As Long = 1) As Design
 
     Dim current As Design, neighbor As Design
+    Dim refinementVisit As Long, refinementVisits As Long, entry As String
     Dim currentCost As Double, neighborCost As Double, currentValid As Boolean, ok As Boolean
     Dim saved(1 To 11) As Integer
     Dim Newtt As Integer, Newtb As Integer, NewTBase As Integer, NewBase As Integer, NewLToe As Integer
@@ -294,6 +317,8 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
     ReDim modDataStructures.CostHistory(1 To MaxIterations)
     Call BeginSearch(MaxIterations, RandomSeed, "HCA", TrialNumber)
     Call InitializeCurrentDesign
+    HCARefinementCount = 0
+    refinementVisits = 3 * (DB_MAX - DB_MIN + 1) * (SP_MAX - SP_MIN + 1)
     If useSharedInit Then
         If sharedtt < TT_MIN Or sharedtt > TT_MAX Then Err.Raise 5, , "Invalid shared tt index"
         Currenttt = sharedtt
@@ -323,6 +348,12 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
     If Not currentValid Then currentCost = NO_SOLUTION_COST
     modDataStructures.CostHistory(EvaluationCount) = RunBestCost
     Do While EvaluationCount < MaxIterations
+        ' Reserve one final 60-candidate steel sweep, counted inside the same budget.
+        ' Short runs keep the original random neighborhood throughout.
+        If MaxIterations > 2 * refinementVisits And MaxIterations - EvaluationCount = refinementVisits Then
+            refinementVisit = 1
+            HCARefinementCount = 1
+        End If
         saved(1) = Currenttt
         saved(2) = Currenttb
         saved(3) = CurrentTBase
@@ -334,20 +365,29 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
         saved(9) = CurrentToeSP
         saved(10) = CurrentHeelDB
         saved(11) = CurrentHeelSP
-        Call GenerateNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
-        Currenttt = Newtt
-        Currenttb = Newtb
-        CurrentTBase = NewTBase
-        CurrentBase = NewBase
-        CurrentLToe = NewLToe
-        CurrentStemDB = NewStemDB
-        CurrentStemSP = NewStemSP
-        CurrentToeDB = NewToeDB
-        CurrentToeSP = NewToeSP
-        CurrentHeelDB = NewHeelDB
-        CurrentHeelSP = NewHeelSP
-        neighbor = GetDesignFromCurrent()
-        ok = EvaluateCandidate(neighbor, "neighbor", neighborCost)
+        If refinementVisit > 0 Then
+            entry = "steel_refine"
+            neighbor = MainSteelNeighbor(current, refinementVisit)
+            CurrentStemDB = neighbor.ASst_DB: CurrentStemSP = neighbor.ASst_Sp
+            CurrentToeDB = neighbor.AStoe_DB: CurrentToeSP = neighbor.AStoe_Sp
+            CurrentHeelDB = neighbor.ASheel_DB: CurrentHeelSP = neighbor.ASheel_Sp
+        Else
+            entry = "neighbor"
+            Call GenerateNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
+            Currenttt = Newtt
+            Currenttb = Newtb
+            CurrentTBase = NewTBase
+            CurrentBase = NewBase
+            CurrentLToe = NewLToe
+            CurrentStemDB = NewStemDB
+            CurrentStemSP = NewStemSP
+            CurrentToeDB = NewToeDB
+            CurrentToeSP = NewToeSP
+            CurrentHeelDB = NewHeelDB
+            CurrentHeelSP = NewHeelSP
+            neighbor = GetDesignFromCurrent()
+        End If
+        ok = EvaluateCandidate(neighbor, entry, neighborCost)
         If ok And (Not currentValid Or neighborCost < currentCost) Then
             current = neighbor: currentCost = neighborCost: currentValid = True
         Else
@@ -362,6 +402,10 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
             CurrentToeSP = saved(9)
             CurrentHeelDB = saved(10)
             CurrentHeelSP = saved(11)
+        End If
+        If refinementVisit > 0 Then
+            refinementVisit = refinementVisit + 1
+            If refinementVisit > refinementVisits Then refinementVisit = 0
         End If
         modDataStructures.CostHistory(EvaluationCount) = RunBestCost
         DoEvents
@@ -428,3 +472,17 @@ End Sub
 '================================================================================
 ' END OF MODULE: modHillClimbing.bas v5.1
 '================================================================================
+
+' Test-only access to the real private generator; not part of the production source.
+Public Sub HCAParity(state() As Integer, sampleSeed As Long, result() As Integer, ByRef nextRandom As Single)
+    Dim dummy As Single
+    Call InitializeCurrentDesign
+    Currenttt = state(1): Currenttb = state(2): CurrentTBase = state(3)
+    CurrentBase = state(4): CurrentLToe = state(5)
+    CurrentStemDB = state(6): CurrentStemSP = state(7)
+    CurrentToeDB = state(8): CurrentToeSP = state(9)
+    CurrentHeelDB = state(10): CurrentHeelSP = state(11)
+    dummy = Rnd(-1): Randomize sampleSeed
+    Call GenerateNeighbor(result(1), result(2), result(3), result(4), result(5), result(6), result(7), result(8), result(9), result(10), result(11))
+    nextRandom = Rnd
+End Sub

@@ -1,0 +1,68 @@
+{
+  "generator_checks": 5400,
+  "failures": 0,
+  "initial_21_evaluations_equal_at_H": [
+    3,
+    4,
+    5
+  ],
+  "runs": [
+    {
+      "method": "BA",
+      "H": 3,
+      "budget": 64,
+      "best": 3061.2008,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\BA-25690909-093858-seed12345"
+    },
+    {
+      "method": "HCA",
+      "H": 3,
+      "budget": 64,
+      "best": 3221.05488,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\HCA-25690909-093858-seed12345"
+    },
+    {
+      "method": "BA",
+      "H": 4,
+      "budget": 64,
+      "best": 5531.444616,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\BA-25690909-093858-seed12345-1"
+    },
+    {
+      "method": "HCA",
+      "H": 4,
+      "budget": 64,
+      "best": 6188.826124,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\HCA-25690909-093858-seed12345-1"
+    },
+    {
+      "method": "BA",
+      "H": 5,
+      "budget": 64,
+      "best": 10226.614,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\BA-25690909-093858-seed12345-2"
+    },
+    {
+      "method": "HCA",
+      "H": 5,
+      "budget": 64,
+      "best": 11588.855308,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\HCA-25690909-093858-seed12345-2"
+    },
+    {
+      "method": "HCA",
+      "H": 5,
+      "budget": 5000,
+      "best": 8773.87525,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\HCA-25690909-093858-seed12365"
+    },
+    {
+      "method": "HCA",
+      "H": 5,
+      "budget": 125,
+      "best": null,
+      "folder": "C:\\reserch 69\\RC_Wall_Fix\\audit\\neighbor-parity\\20260909-093716\\final\\result_csv\\HCA-25690909-093858-seed12345-3"
+    }
+  ],
+  "scope": "Native VB6; one H5 5000-evaluation run, short H3/H4/H5 and no-solution runs; no 30-trial batch."
+}

@@ -13,7 +13,7 @@ Attribute VB_Name = "modShared"
 '================================================================================
 Option Explicit
 Public BatchMode As Boolean
-Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\result_csv"
+Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\before\result_csv"
 ' H and H1 are elevations above the underside of the base; H1 is FRONT soil.
 ' Vertical back of stem, front taper, level dry cohesionless soil, no surcharge.
 ' Project load model: active behind the wall and full passive from FRONT H1.
@@ -1042,7 +1042,7 @@ Public Sub FinishSearch()
     Print #f, "Algorithm=" & RunAlgorithm & "; Trial=" & RunTrial
     Print #f, "Seed=" & RunSeed & "; Evaluations=" & EvaluationCount & "; Budget=" & EvaluationBudget
     Print #f, "BestEvaluation=" & RunBestEvaluation & "; Recoveries=" & RunRecoveryCount
-    If RunAlgorithm = "HCA" Then Print #f, "SearchPolicy=" & HCA_SEARCH_POLICY
+    If RunAlgorithm = "HCA" Then Print #f, "SearchPolicy=" & HCA_SEARCH_POLICY & "; Refinements=" & HCARefinementCount
     Print #f, "H=" & H & "; H1=" & H1 & "; gamma_soil=" & gamma_soil & "; gamma_concrete=" & gamma_concrete
     Print #f, "phi=" & phi & "; mu=" & mu & "; qa_allowable=" & qa & "; clear_cover=" & cover
     Print #f, "fc_prime=" & currentMaterial.fc & "; fy=" & currentMaterial.fy & "; passive_fraction=" & PassiveFactor

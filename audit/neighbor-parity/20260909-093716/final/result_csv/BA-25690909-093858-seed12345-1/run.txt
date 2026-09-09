@@ -1,0 +1,35 @@
+Status=SOLUTION_FOUND_CONFIGURED_CHECKS
+Algorithm=BA; Trial=1
+Seed=12345; Evaluations=64; Budget=64
+BestEvaluation=63; Recoveries=0
+H=4; H1=1.2; gamma_soil=1.8; gamma_concrete=2.4
+phi=30; mu=0.6; qa_allowable=30; clear_cover=0.075
+fc_prime=280; fy=4000; passive_fraction=1
+WSDReviewed=True; source=PROJECT_WSD_ACI99_V3_MAIN_ONLY
+ProjectChecksEnabled=True
+ShearLimit=4.88057346612149; StemMinimum=ACI99_10.5.1; BaseRatio=0.002
+Basis: PROJECT_WSD_ACI99_V3_MAIN_ONLY (implemented checks; not full EIT/ACI certification)
+Research scope: main stem/toe/heel steel only; secondary steel excluded; anchorage/laps excluded from checks and steel quantities; no 0.40m allowance; formwork cost excluded.
+Validation: PASS_IMPLEMENTED_PROJECT_CHECKS
+BA; H=4; H1=1.2; full active + passive=1
+tt=0.2; tb=0.25; TBase=0.3; B=2; toe=0.6; heel=1.15 m
+Stem height H-TBase=3.7 m; n=Es/Ec=8.07372967894756
+Envelope FS: overturning=2.1189; sliding=2.0934; qa/qmax=2.8856
+Tapered stem without stirrups also limited to vc/2=2.4403 kgf/cm2 (ACI99 A.7.5.5.1 conservative beam interpretation).
+16 vertical-dead-load combinations 0.85/1.0; Pa/Pp full in all cases.
+Stem: DB25 @ 0.250 m; As=19.6350; As_min=5.7124 cm2/m; d=0.1625 m
+M envelope=4.4092 tf.m/m; fc_bound=113.7325/126; fs_bound=1631.4745/1700 kgf/cm2
+v envelope=1.7099/4.8806 kgf/cm2; modeled main length=3.6250 m
+Toe: DB12 @ 0.150 m; As=7.5398; As_min=6.0000 cm2/m; d=0.219 m
+M envelope=1.2810 tf.m/m; fc_bound=27.3971/126; fs_bound=834.0383/1700 kgf/cm2
+v envelope=1.8357/4.8806 kgf/cm2; modeled main length=0.5250 m
+Heel: DB28 @ 0.250 m; As=24.6301; As_min=6.0000 cm2/m; d=0.211 m
+M envelope=2.6675 tf.m/m; fc_bound=38.7577/126; fs_bound=581.0834/1700 kgf/cm2
+v envelope=1.7621/4.8806 kgf/cm2; modeled main length=1.0750 m
+Concrete=1.4325 m3/m; main steel=79.8256 kg/m
+Concrete+main-steel estimate=5531.44 Baht/m; unit rates=2524 Baht/m3, 24 Baht/kg
+Detail assumptions: clear cover >=75mm; single main layer per member; normal weight, uncoated; aggregate<=20mm; geometric quantities only.
+Stem stress uses certified interval bounds over entire taper; shear uses full-height envelope. No compression-steel credit.
+Sources: Pongnathee material WSD; ACI99 A.2.3/A.7,10.3.3/10.5/10.6,7.6/7.12. See audit/PROJECT_CHECKS_IMPLEMENTATION_TH.md.
+Not checked/costed: service deflection limit, site settlement/water/seismic, joints/end details, full construction BOQ. No global-optimum guarantee.
+

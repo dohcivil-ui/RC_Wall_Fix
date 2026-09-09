@@ -13,7 +13,7 @@ Attribute VB_Name = "modShared"
 '================================================================================
 Option Explicit
 Public BatchMode As Boolean
-Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\result_csv"
+Public Const RESULT_CSV_ROOT As String = "C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv"
 ' H and H1 are elevations above the underside of the base; H1 is FRONT soil.
 ' Vertical back of stem, front taper, level dry cohesionless soil, no surcharge.
 ' Project load model: active behind the wall and full passive from FRONT H1.

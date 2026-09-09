@@ -1,0 +1,11 @@
+GENERATOR checks=5400; failures=0
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\BA-25690909-093858-seed12345
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\HCA-25690909-093858-seed12345
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\BA-25690909-093858-seed12345-1
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\HCA-25690909-093858-seed12345-1
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\BA-25690909-093858-seed12345-2
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\HCA-25690909-093858-seed12345-2
+HCA5000 cost=8773.87525; bestEval=2441
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\HCA-25690909-093858-seed12365
+NO_SOLUTION valid=False
+RUN=C:\reserch 69\RC_Wall_Fix\audit\neighbor-parity\20260909-093716\final\result_csv\HCA-25690909-093858-seed12345-3

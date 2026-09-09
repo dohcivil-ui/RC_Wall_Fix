@@ -1,0 +1,9 @@
+DIFF H=3; sample=0; variable=2; BA=20; HCA=22
+DIFF H=3; sample=1; variable=1; BA=4; HCA=1
+DIFF H=3; sample=1; variable=2; BA=22; HCA=23
+DIFF H=3; sample=2; variable=1; BA=5; HCA=2
+DIFF H=3; sample=3; variable=1; BA=6; HCA=3
+DIFF H=3; sample=4; variable=1; BA=7; HCA=4
+DIFF H=3; sample=5; variable=1; BA=7; HCA=5
+DIFF H=3; sample=6; variable=1; BA=1; HCA=6
+GENERATOR checks=5400; failures=530

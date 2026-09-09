@@ -160,12 +160,12 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
                                 ByRef NewStemDB As Integer, ByRef NewStemSP As Integer, _
                                 ByRef NewToeDB As Integer, ByRef NewToeSP As Integer, _
                                 ByRef NewHeelDB As Integer, ByRef NewHeelSP As Integer)
-
+    
     ' Same draw order, step sizes and repairs as BA, using the full domain.
     Dim Step As Integer
     Dim LToe_min_idx As Integer, LToe_max_idx As Integer
     Dim i As Integer
-
+    
     LToe_min_idx = LTOE_MIN
     For i = LTOE_MIN To LTOE_MAX
         If WP_LToe(i) >= 0.1 * modShared.H Then
@@ -173,7 +173,7 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
             Exit For
         End If
     Next i
-
+    
     LToe_max_idx = LTOE_MAX
     For i = LTOE_MAX To LTOE_MIN Step -1
         If WP_LToe(i) <= 0.2 * modShared.H Then
@@ -181,17 +181,17 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
             Exit For
         End If
     Next i
-
+    
     Step = Rand(-2, 2)
     Newtb = Currenttb + Step
     If Newtb < TB_MIN Then Newtb = TB_MIN
     If Newtb > FixedTbMax Then Newtb = FixedTbMax
-
+    
     Step = Rand(-2, 2)
     Newtt = Currenttt + Step
     If Newtt < TT_MIN Then Newtt = TT_MIN
     If Newtt > TT_MAX Then Newtt = TT_MAX
-
+    
     If WP_tt(Newtt) > WP_tb(Newtb) Then
         For i = TT_MAX To TT_MIN Step -1
             If WP_tt(i) <= WP_tb(Newtb) Then
@@ -200,17 +200,17 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
             End If
         Next i
     End If
-
+    
     Step = Rand(-5, 5)
     NewTBase = CurrentTBase + Step
     If NewTBase < TBASE_MIN Then NewTBase = TBASE_MIN
     If NewTBase > FixedTBaseMax Then NewTBase = FixedTBaseMax
-
+    
     Step = Rand(-2, 2)
     NewLToe = CurrentLToe + Step
     If NewLToe < LToe_min_idx Then NewLToe = LToe_min_idx
     If NewLToe > LToe_max_idx Then NewLToe = LToe_max_idx
-
+    
     Step = Rand(-1, 1)
     NewBase = CurrentBase + Step
     If NewBase < FixedBaseMin Then NewBase = FixedBaseMin
@@ -220,32 +220,32 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
     NewStemDB = CurrentStemDB + Step
     If NewStemDB < DB_MIN Then NewStemDB = DB_MIN
     If NewStemDB > DB_MAX Then NewStemDB = DB_MAX
-
+    
     Step = Rand(-2, 2)
     NewStemSP = CurrentStemSP + Step
     If NewStemSP < SP_MIN Then NewStemSP = SP_MIN
     If NewStemSP > SP_MAX Then NewStemSP = SP_MAX
-
+    
     Step = Rand(-2, 2)
     NewToeDB = CurrentToeDB + Step
     If NewToeDB < DB_MIN Then NewToeDB = DB_MIN
     If NewToeDB > DB_MAX Then NewToeDB = DB_MAX
-
+    
     Step = Rand(-2, 2)
     NewToeSP = CurrentToeSP + Step
     If NewToeSP < SP_MIN Then NewToeSP = SP_MIN
     If NewToeSP > SP_MAX Then NewToeSP = SP_MAX
-
+    
     Step = Rand(-2, 2)
     NewHeelDB = CurrentHeelDB + Step
     If NewHeelDB < DB_MIN Then NewHeelDB = DB_MIN
     If NewHeelDB > DB_MAX Then NewHeelDB = DB_MAX
-
+    
     Step = Rand(-2, 2)
     NewHeelSP = CurrentHeelSP + Step
     If NewHeelSP < SP_MIN Then NewHeelSP = SP_MIN
     If NewHeelSP > SP_MAX Then NewHeelSP = SP_MAX
-
+    
 End Sub
 
 '================================================================================
@@ -428,3 +428,17 @@ End Sub
 '================================================================================
 ' END OF MODULE: modHillClimbing.bas v5.1
 '================================================================================
+
+' Test-only access to the real private generator; not part of the production source.
+Public Sub HCAParity(state() As Integer, sampleSeed As Long, result() As Integer, ByRef nextRandom As Single)
+    Dim dummy As Single
+    Call InitializeCurrentDesign
+    Currenttt = state(1): Currenttb = state(2): CurrentTBase = state(3)
+    CurrentBase = state(4): CurrentLToe = state(5)
+    CurrentStemDB = state(6): CurrentStemSP = state(7)
+    CurrentToeDB = state(8): CurrentToeSP = state(9)
+    CurrentHeelDB = state(10): CurrentHeelSP = state(11)
+    dummy = Rnd(-1): Randomize sampleSeed
+    Call GenerateNeighbor(result(1), result(2), result(3), result(4), result(5), result(6), result(7), result(8), result(9), result(10), result(11))
+    nextRandom = Rnd
+End Sub

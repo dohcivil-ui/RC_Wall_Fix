@@ -25,7 +25,7 @@
   },
   {
     "file": "modHillClimbing.bas",
-    "sha256": "c59c2297aad4104fdd5fe44acb104637e6d76a6c6355002dd46e0d34522df501"
+    "sha256": "00b556035bcacaa0efa25ed385e6b1ee13818cdf79a240438d0373041499dd7b"
   },
   {
     "file": "modProjectChecks.bas",
@@ -33,7 +33,7 @@
   },
   {
     "file": "modShared.bas",
-    "sha256": "2bcd97f434778778a9850460e922e2a441d8d0e4a70b64bf653b28fd0bf2b9f0"
+    "sha256": "da78a729b5ea0a3138c223c9ac2bebe245eb151ef3626cf82f3612fa7776eca7"
   },
   {
     "file": "modWSD.bas",

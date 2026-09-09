@@ -8,9 +8,17 @@ def routine(s,name):
     assert m,name
     return m.group()
 result=[]
-for name,neighbor in [('modBA.bas','GenerateNeighbor_BA'),('modHillClimbing.bas','GenerateNeighbor')]:
-    assert routine(read(P/name),neighbor)==routine(read(B/name),neighbor), 'Neighbor search changed'
-    result.append(f'{name}: original neighbor routine unchanged byte-for-byte after CRLF normalization')
+assert routine(read(P/'modBA.bas'),'GenerateNeighbor_BA') == routine(read(B/'modBA.bas'),'GenerateNeighbor_BA')
+result.append('BA original neighbor routine unchanged')
+def normalized_neighbor(body):
+    return [re.sub(r'\s+', '', line.split("'",1)[0]).lower() for line in body.splitlines()
+            if line.split("'",1)[0].strip()]
+ba_neighbor = routine(read(P/'modBA.bas'),'GenerateNeighbor_BA').replace('GenerateNeighbor_BA','GenerateNeighbor')
+for old,new in [('Mintb','TB_MIN'),('Maxtb','FixedTbMax'),('MinTBase','TBASE_MIN'),('MaxTBase','FixedTBaseMax'),('MinBase','FixedBaseMin'),('MaxBase','FixedBaseMax')]:
+    ba_neighbor = re.sub(r'\b'+old+r'\b',new,ba_neighbor)
+assert normalized_neighbor(ba_neighbor) == normalized_neighbor(routine(read(P/'modHillClimbing.bas'),'GenerateNeighbor'))
+assert 'MainSteelNeighbor' not in read(P/'modHillClimbing.bas') and 'refinementVisit' not in read(P/'modHillClimbing.bas')
+result.append('HCA matches BA draw order, step sizes and repairs with full bounds; final steel sweep removed')
 bounds=set(re.findall(r'Private (Min\w+|Max\w+) As Integer',read(P/'modBA.bas')))
 assert bounds=={'Mintb','Maxtb','MinTBase','MaxTBase','MinBase','MaxBase'}
 result.append('BA still has only tb, TBase, Base bisection bounds')
