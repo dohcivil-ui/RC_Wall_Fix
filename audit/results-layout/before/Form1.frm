@@ -17,7 +17,7 @@ Begin VB.Form Form1
    LinkTopic       =   "Form1"
    ScaleHeight     =   9705
    ScaleWidth      =   22320
-   ShowInTaskbar   =   0   'False
+   ShowInTaskbar   =   -1  'True
    Begin VB.TextBox txtSeed
       Height          =   375
       Left            =   19800
@@ -635,10 +635,10 @@ Private Sub cmdBA_Click()
     cmdBA.Enabled = False: cmdRun.Enabled = False: cmdCommand1.Enabled = False: cmdCompare.Enabled = False
     Me.MousePointer = vbHourglass
     
-    AddResultLine "============================================"
-    AddResultLine "BA (tb, TBase, Base only)"
-    AddResultLine "============================================"
-    AddResultLine "กำลังคำนวณ " & numTrials & " Trials..."
+    lstResults.AddItem "============================================"
+    lstResults.AddItem "BA (tb, TBase, Base only)"
+    lstResults.AddItem "============================================"
+    lstResults.AddItem "กำลังคำนวณ " & numTrials & " Trials..."
     DoEvents
     
     Call modBA.InitLoopCounter_BA
@@ -681,18 +681,18 @@ Private Sub cmdBA_Click()
         End If
         
         lstResults.Clear
-        AddResultLine "============================================"
-        AddResultLine "BA triple - Trial " & trial & "/" & numTrials
-        AddResultLine "============================================"
+        lstResults.AddItem "============================================"
+        lstResults.AddItem "BA triple - Trial " & trial & "/" & numTrials
+        lstResults.AddItem "============================================"
         If trialDesign.IsValid Then
-            AddResultLine "Trial Cost: " & Format(trialCost, "#,##0.00") & " Baht/m"
+            lstResults.AddItem "Trial Cost: " & Format(trialCost, "#,##0.00") & " Baht/m"
         Else
-            AddResultLine "Trial: NO_SOLUTION (no admissible price)"
+            lstResults.AddItem "Trial: NO_SOLUTION (no admissible price)"
         End If
         If globalBestTrial > 0 Then
-            AddResultLine "Best So Far: " & Format(globalBestCost, "#,##0.00") & " (Trial " & globalBestTrial & ")"
+            lstResults.AddItem "Best So Far: " & Format(globalBestCost, "#,##0.00") & " (Trial " & globalBestTrial & ")"
         Else
-            AddResultLine "Best So Far: NO_SOLUTION"
+            lstResults.AddItem "Best So Far: NO_SOLUTION"
         End If
         DoEvents
     Next trial
@@ -702,7 +702,7 @@ Private Sub cmdBA_Click()
     modDataStructures.BestCostIteration = globalBestIteration
     
     Dim resultText As String
-    resultText = modShared.FormatScreenResults(bestDesign, selectedMaterial, "BA")
+    resultText = modShared.FormatResults(bestDesign, selectedMaterial, "Bisection Algorithm v1.0")
     
     Dim lines() As String
     lines = Split(resultText, vbCrLf)
@@ -710,7 +710,7 @@ Private Sub cmdBA_Click()
     lstResults.Clear
     Dim j As Integer
     For j = 0 To UBound(lines)
-        AddResultLine lines(j)
+        lstResults.AddItem lines(j)
     Next j
     
     Call ClearGraph(picGraph)
@@ -720,12 +720,11 @@ Private Sub cmdBA_Click()
     Me.MousePointer = vbDefault
 
     
-    AddResultLine "CSV and per-trial reports: " & ResultCsvRoot()
-    AddResultLine "accept CSV (last trial): " & LastAcceptCSVPath
-    AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
-    If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
-    AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
-    lstResults.TopIndex = 0
+    lstResults.AddItem "CSV and per-trial reports: " & ResultCsvRoot()
+    lstResults.AddItem "accept CSV (last trial): " & LastAcceptCSVPath
+    lstResults.AddItem "loopPrice CSV (all trials): " & LastLoopCSVPath
+    If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
+    lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     BA_CostHistory = globalBestCostHistory
     BA_MaxIter = maxIter
@@ -756,19 +755,6 @@ End Sub
 ' ========================================
 ' Form Load Event
 ' ========================================
-Public Sub AddResultLine(ByVal text As String)
-    Const MAX_COLUMNS As Long = 48
-    Dim cut As Long
-    ' A ListBox does not wrap long rows. Preserve every character, including paths.
-    Do While Len(text) > MAX_COLUMNS
-        cut = InStrRev(Left$(text, MAX_COLUMNS), " ")
-        If cut <= 1 Then cut = MAX_COLUMNS
-        lstResults.AddItem Left$(text, cut)
-        text = Mid$(text, cut + 1)
-    Loop
-    lstResults.AddItem text
-End Sub
-
 Private Sub Form_Load()
     txtH.ToolTipText = "Retained soil elevation above BASE UNDERSIDE; stem=H-TBase"
     txtH1.ToolTipText = "FRONT soil elevation above BASE UNDERSIDE (not retained height)"
@@ -938,9 +924,9 @@ Private Sub cmdRun_Click()
         
         ' แสดงสถานะใน ListBox
         lstResults.Clear
-        AddResultLine "กำลังคำนวณ Trial " & trial & " / " & numTrials & "..."
+        lstResults.AddItem "กำลังคำนวณ Trial " & trial & " / " & numTrials & "..."
         If globalBestTrial > 0 Then
-            AddResultLine "Global Best: " & Format(globalBestCost, "#,##0.00") & " Baht/m (Trial " & globalBestTrial & ")"
+            lstResults.AddItem "Global Best: " & Format(globalBestCost, "#,##0.00") & " Baht/m (Trial " & globalBestTrial & ")"
         End If
         DoEvents
         
@@ -984,7 +970,7 @@ Private Sub cmdRun_Click()
     ' === Display Results (Trial สุดท้าย) ===
     ' ============================================
     Dim resultText As String
-    resultText = FormatScreenResults(bestDesign, selectedMaterial, "HCA")
+    resultText = FormatResults(bestDesign, selectedMaterial)
     
     ' แสดงผลใน ListBox (แบ่งบรรทัด)
     Dim lines() As String
@@ -993,7 +979,7 @@ Private Sub cmdRun_Click()
     
     lstResults.Clear
     For i = 0 To UBound(lines)
-        AddResultLine lines(i)
+        lstResults.AddItem lines(i)
     Next i
     
     ' === Draw Graph ===
@@ -1010,12 +996,11 @@ Private Sub cmdRun_Click()
 
     
     ' แสดงข้อความสรุปครั้งเดียวตอนจบ
-    AddResultLine "CSV and per-trial reports: " & ResultCsvRoot()
-    AddResultLine "accept CSV (last trial): " & LastAcceptCSVPath
-    AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
-    If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
-    AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
-    lstResults.TopIndex = 0
+    lstResults.AddItem "CSV and per-trial reports: " & ResultCsvRoot()
+    lstResults.AddItem "accept CSV (last trial): " & LastAcceptCSVPath
+    lstResults.AddItem "loopPrice CSV (all trials): " & LastLoopCSVPath
+    If ProjectChecksEnabled Then lstResults.AddItem "Trial summary: " & ProjectTrialSummary
+    lstResults.AddItem "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     HCA_CostHistory = globalBestCostHistory
     HCA_MaxIter = maxIter
@@ -1121,11 +1106,11 @@ Private Sub cmdCompare_Click()
     End If
     
     lstResults.Clear
-    AddResultLine "COMPARE: HCA vs BA (stored sessions)"
+    lstResults.AddItem "COMPARE: HCA vs BA (stored sessions)"
     Call ClearGraph(picGraph)
     If hcaComparisonKey <> baComparisonKey Then
-        AddResultLine "Inputs/material/seed/trials/budget differ; no ranking."
-        AddResultLine "Run both methods with matching settings before comparing."
+        lstResults.AddItem "Inputs/material/seed/trials/budget differ; no ranking."
+        lstResults.AddItem "Run both methods with matching settings before comparing."
         Exit Sub
     End If
 
@@ -1135,17 +1120,17 @@ Private Sub cmdCompare_Click()
             baStoredHistory, baStoredMaxIter, baStoredBestIter)
     End If
     If hcaStoredBestIter > 0 Then
-        AddResultLine "HCA: " & Format(hcaStoredBestCost, "#,##0.00") & " Baht/m; first best evaluation " & hcaStoredBestIter
+        lstResults.AddItem "HCA: " & Format(hcaStoredBestCost, "#,##0.00") & " Baht/m; first best evaluation " & hcaStoredBestIter
     Else
-        AddResultLine "HCA: NO_SOLUTION"
+        lstResults.AddItem "HCA: NO_SOLUTION"
     End If
     If baStoredBestIter > 0 Then
-        AddResultLine "BA: " & Format(baStoredBestCost, "#,##0.00") & " Baht/m; first best evaluation " & baStoredBestIter
+        lstResults.AddItem "BA: " & Format(baStoredBestCost, "#,##0.00") & " Baht/m; first best evaluation " & baStoredBestIter
     Else
-        AddResultLine "BA: NO_SOLUTION"
+        lstResults.AddItem "BA: NO_SOLUTION"
     End If
-    AddResultLine CompareObservedResults(hcaStoredBestCost, hcaStoredBestIter, baStoredBestCost, baStoredBestIter)
-    AddResultLine "Observed session results only; no global-optimum guarantee."
+    lstResults.AddItem CompareObservedResults(hcaStoredBestCost, hcaStoredBestIter, baStoredBestCost, baStoredBestIter)
+    lstResults.AddItem "Observed session results only; no global-optimum guarantee."
 End Sub
 
 '================================================================================

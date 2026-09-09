@@ -1,0 +1,11 @@
+{
+  "native_clipped_rows_before": 38,
+  "native_clipped_rows_after": 0,
+  "native_layout_failures": 0,
+  "full_reports_H4_H5_unchanged": true,
+  "optimizer_and_engineering_code_unchanged": true,
+  "hashes": {
+    "Form1.frm": "6b1e949bef7ec037f983e250237eb529d301b0fa38f6daa08025f3dcab10f0f8",
+    "modShared.bas": "a5d0a3c6c90d86e29e6bd3067e5bc200d015480c473a00712c93c7fbf7b7807f"
+  }
+}

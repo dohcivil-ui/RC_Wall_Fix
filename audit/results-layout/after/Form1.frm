@@ -17,7 +17,7 @@ Begin VB.Form Form1
    LinkTopic       =   "Form1"
    ScaleHeight     =   9705
    ScaleWidth      =   22320
-   ShowInTaskbar   =   0   'False
+   ShowInTaskbar   =   -1  'True
    Begin VB.TextBox txtSeed
       Height          =   375
       Left            =   19800
@@ -725,7 +725,6 @@ Private Sub cmdBA_Click()
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
-    lstResults.TopIndex = 0
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     BA_CostHistory = globalBestCostHistory
     BA_MaxIter = maxIter
@@ -1015,7 +1014,6 @@ Private Sub cmdRun_Click()
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
-    lstResults.TopIndex = 0
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     HCA_CostHistory = globalBestCostHistory
     HCA_MaxIter = maxIter

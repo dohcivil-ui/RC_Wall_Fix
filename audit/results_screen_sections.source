@@ -1,0 +1,111 @@
+Private Function ScreenResultRow(label As String, value As String) As String
+    ScreenResultRow = label & ": " & value & vbCrLf
+End Function
+
+Private Function ScreenResultSection(title As String) As String
+    ScreenResultSection = "-------------------------------" & vbCrLf & "=== " & title & " ===" & vbCrLf
+End Function
+
+Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algorithm As String) As String
+    Dim r As ProjectDetail, s As String, i As Integer, member As String, shearLimit As Double
+    Dim w1 As Double, w2 As Double, w3 As Double, w4 As Double, weight As Double
+    Dim x1 As Double, x2 As Double, x3 As Double, x4 As Double, e As Double, qt As Double, qh As Double
+    Dim qmax As Double, qmin As Double
+    If Not ProjectChecksEnabled Then
+        FormatScreenResults = FormatResults(d, mat, algorithm)
+        Exit Function
+    End If
+    If Not d.IsValid Then
+        FormatScreenResults = "NO_SOLUTION: no admissible design." & vbCrLf
+        Exit Function
+    End If
+    currentMaterial = mat: currentWSD = CalculateWSDParameters(mat.fy, mat.fc)
+    If Not CheckProjectDesign(d, r) Then
+        FormatScreenResults = "Check failed: " & LastValidationReason & vbCrLf
+        Exit Function
+    End If
+    s = "=== MATERIAL PROPERTIES ===" & vbCrLf
+    s = s & ScreenResultRow("Steel", mat.SteelGrade & " (fy=" & mat.fy & ", fs=" & currentWSD.fs & " ksc)")
+    s = s & ScreenResultRow("Concrete f'c", mat.fc & " ksc (fc=" & Format$(currentWSD.fc, "0.00") & " ksc)")
+    s = s & ScreenResultRow("WSD n=Es/Ec", Format$(currentWSD.n, "0.00"))
+    s = s & "k_bal=" & Format$(currentWSD.k, "0.000") & ", j_bal=" & Format$(currentWSD.j, "0.000") & ", R_bal=" & Format$(currentWSD.R, "0.00") & " ksc" & vbCrLf
+    s = s & ScreenResultRow("Concrete price", Format$(mat.concretePrice, "#,##0.00") & " Baht/m3")
+    s = s & ScreenResultRow("Steel price", Format$(mat.SteelPrice, "0.00") & " Baht/kg")
+    s = s & ScreenResultSection("OPTIMIZATION RESULTS")
+    s = s & ScreenResultRow("Algorithm", algorithm)
+    s = s & ScreenResultRow("Best Found at Trial", CStr(modDataStructures.BestTrial))
+    s = s & ScreenResultRow("Best Found at Evaluation", CStr(modDataStructures.BestCostIteration))
+    s = s & "Validation: PASS (configured checks)" & vbCrLf
+    s = s & ScreenResultSection("TOTAL COST")
+    s = s & ScreenResultRow("Total", Format$(r.Cost, "#,##0.00") & " Baht/m")
+    s = s & "Concrete + main steel only" & vbCrLf
+    s = s & ScreenResultSection("DIMENSIONS")
+    s = s & "H=" & Format$(H, "0.00") & " m, H1=" & Format$(H1, "0.00") & " m" & vbCrLf
+    s = s & ScreenResultRow("Stem_top (tt)", Format$(d.tt, "0.00") & " m")
+    s = s & ScreenResultRow("Stem_bottom (tb)", Format$(d.tb, "0.00") & " m")
+    s = s & ScreenResultRow("Base_width (B)", Format$(d.Base, "0.00") & " m")
+    s = s & ScreenResultRow("Base_thickness", Format$(d.TBase, "0.00") & " m")
+    s = s & ScreenResultRow("Toe", Format$(d.LToe, "0.00") & " m")
+    s = s & ScreenResultRow("Heel", Format$(d.LHeel, "0.00") & " m")
+    s = s & ScreenResultRow("Stem height H-TBase", Format$(H - d.TBase, "0.00") & " m")
+    s = s & ScreenResultRow("Clear cover", Format$(cover, "0.000") & " m")
+    s = s & ScreenResultSection("EARTH PRESSURES")
+    s = s & "Ka=" & Format$(CalculateKa(), "0.000") & ", Kp=" & Format$(CalculateKp(), "0.000") & vbCrLf
+    s = s & "Full wall: active + passive (per m)" & vbCrLf
+    s = s & "Pa=" & Format$(CalculatePa(), "0.00") & " tf/m, Pp=" & Format$(CalculatePp(), "0.00") & " tf/m" & vbCrLf
+    s = s & ScreenResultSection("WEIGHTS")
+    weight = CalculateWTotal(d, w1, w2, w3, w4, x1, x2, x3, x4)
+    s = s & "Full weights, per metre of wall" & vbCrLf
+    s = s & ScreenResultRow("W1 (Soil on Toe)", Format$(w1, "0.00") & " tf/m")
+    s = s & ScreenResultRow("W2 (Soil on Heel)", Format$(w2, "0.00") & " tf/m")
+    s = s & ScreenResultRow("W3 (Stem)", Format$(w3, "0.00") & " tf/m")
+    s = s & ScreenResultRow("W4 (Base)", Format$(w4, "0.00") & " tf/m")
+    s = s & ScreenResultRow("W_total", Format$(weight, "0.00") & " tf/m")
+    s = s & ScreenResultSection("STEEL REINFORCEMENT")
+    For i = 0 To 2
+        member = "Stem": If i = 1 Then member = "Toe"
+        If i = 2 Then member = "Heel"
+        s = s & vbCrLf & "--- " & member & " ---" & vbCrLf
+        s = s & ScreenResultRow("Moment (envelope)", Format$(r.Moment(i), "0.00") & " tf.m/m")
+        s = s & ScreenResultRow("Steel", "DB" & WP_DB(r.DB(i)) & " @ " & Format$(WP_SP(r.SP(i)), "0.00") & " m")
+        s = s & "As_min=" & Format$(r.Minimum(i), "0.00") & ", As_prov=" & Format$(r.Steel(i), "0.00") & " cm2/m" & vbCrLf
+        s = s & ScreenResultRow("Effective depth", Format$(r.Depth(i), "0.000") & " m")
+    Next i
+    s = s & ScreenResultSection("SAFETY FACTORS")
+    s = s & "Minimum over 16 dead-load cases" & vbCrLf
+    s = s & ScreenResultRow("FS_Overturning", Format$(r.OT, "0.00") & " >= " & Format$(FS_OT_MIN, "0.00") & " PASS")
+    s = s & ScreenResultRow("FS_Sliding", Format$(r.SL, "0.00") & " >= " & Format$(FS_SL_MIN, "0.00") & " PASS")
+    s = s & ScreenResultRow("FS_Bearing", Format$(r.BC, "0.00") & " >= " & Format$(FS_BC_MIN, "0.00") & " PASS")
+    s = s & "Bearing ratio = allowable qa / q_max" & vbCrLf
+    s = s & ScreenResultSection("BEARING CAPACITY")
+    s = s & ScreenResultRow("q_max (16-case envelope)", Format$(qa / r.BC, "0.00") & " tf/m2")
+    s = s & ScreenResultRow("Allowable qa", Format$(qa, "0.00") & " tf/m2")
+    If BearingEdges(d, e, qt, qh) Then
+        qmax = qt: qmin = qh
+        If qh > qt Then qmax = qh: qmin = qt
+        s = s & "--- Full-weight case ---" & vbCrLf
+        s = s & ScreenResultRow("Eccentricity (e)", Format$(e, "0.000") & " m")
+        s = s & "Positive e points toward toe" & vbCrLf
+        s = s & "q_max=" & Format$(qmax, "0.00") & ", q_min=" & Format$(qmin, "0.00") & " tf/m2" & vbCrLf
+    End If
+    s = s & ScreenResultSection("MEMBER STRESSES")
+    s = s & "Envelope actual / allowable (kgf/cm2)" & vbCrLf
+    For i = 0 To 2
+        member = "Stem": If i = 1 Then member = "Toe"
+        If i = 2 Then member = "Heel"
+        s = s & "--- " & member & " ---" & vbCrLf
+        s = s & ScreenResultRow("Concrete", Format$(r.FcBound(i), "0.00") & " / " & Format$(currentWSD.fc, "0.00"))
+        s = s & ScreenResultRow("Steel", Format$(r.FsBound(i), "0.00") & " / " & Format$(currentWSD.fs, "0.00"))
+        shearLimit = r.ShearLimit
+        If i = 0 And d.tt <> d.tb Then shearLimit = shearLimit / 2#
+        s = s & ScreenResultRow("Shear", Format$(r.Shear(i), "0.00") & " / " & Format$(shearLimit, "0.00"))
+    Next i
+    s = s & ScreenResultSection("NOTES")
+    s = s & "As_min is minimum steel, not flexural As_req." & vbCrLf
+    s = s & "Flexure is checked using the actual bars." & vbCrLf
+    s = s & "No secondary steel, anchorage, laps or formwork." & vbCrLf
+    s = s & "Basis: " & PROJECT_CHECK_BASIS & vbCrLf
+    s = s & "Full checks, limits and assumptions: run.txt" & vbCrLf
+    FormatScreenResults = s
+End Function
+

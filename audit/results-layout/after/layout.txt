@@ -1,0 +1,203 @@
+H=5
+=== MATERIAL PROPERTIES ===
+Steel: SD40 (fy=4000, fs=1700 ksc)
+Concrete f'c: 320 ksc (fc=144.00 ksc)
+WSD n=Es/Ec: 7.55
+k_bal=0.390, j_bal=0.870, R_bal=24.44 ksc
+Concrete price: 2,617.00 Baht/m3
+Steel price: 24.00 Baht/kg
+-------------------------------
+=== OPTIMIZATION RESULTS ===
+Algorithm: BA
+Best Found at Trial: 1
+Best Found at Evaluation: 279
+Validation: PASS (configured checks)
+-------------------------------
+=== TOTAL COST ===
+Total: 8,538.42 Baht/m
+Concrete + main steel only
+-------------------------------
+=== DIMENSIONS ===
+H=5.00 m, H1=1.20 m
+Stem_top (tt): 0.20 m
+Stem_bottom (tb): 0.40 m
+Base_width (B): 3.00 m
+Base_thickness: 0.30 m
+Toe: 1.00 m
+Heel: 1.60 m
+Stem height H-TBase: 4.70 m
+Clear cover: 0.075 m
+-------------------------------
+=== EARTH PRESSURES ===
+Ka=0.333, Kp=3.000
+Full wall: active + passive (per m)
+Pa=7.50 tf/m, Pp=3.89 tf/m
+-------------------------------
+=== WEIGHTS ===
+Full weights, per metre of wall
+W1 (Soil on Toe): 1.65 tf/m
+W2 (Soil on Heel): 13.54 tf/m
+W3 (Stem): 3.38 tf/m
+W4 (Base): 2.16 tf/m
+W_total: 20.73 tf/m
+-------------------------------
+=== STEEL REINFORCEMENT ===
+
+--- Stem ---
+Moment (envelope): 9.73 tf.m/m
+Steel: DB16 @ 0.10 m
+As_min=11.28, As_prov=20.11 cm2/m
+Effective depth: 0.317 m
+
+--- Toe ---
+Moment (envelope): 3.36 tf.m/m
+Steel: DB16 @ 0.20 m
+As_min=6.00, As_prov=10.05 cm2/m
+Effective depth: 0.217 m
+
+--- Heel ---
+Moment (envelope): 5.26 tf.m/m
+Steel: DB25 @ 0.25 m
+As_min=6.00, As_prov=19.63 cm2/m
+Effective depth: 0.213 m
+-------------------------------
+=== SAFETY FACTORS ===
+Minimum over 16 dead-load cases
+FS_Overturning: 2.71 >= 2.00 PASS
+FS_Sliding: 1.93 >= 1.50 PASS
+FS_Bearing: 3.05 >= 1.00 PASS
+Bearing ratio = allowable qa / q_max
+-------------------------------
+=== BEARING CAPACITY ===
+q_max (16-case envelope): 9.83 tf/m2
+Allowable qa: 30.00 tf/m2
+--- Full-weight case ---
+Eccentricity (e): 0.191 m
+Positive e points toward toe
+q_max=9.56, q_min=4.26 tf/m2
+-------------------------------
+=== MEMBER STRESSES ===
+Envelope actual / allowable (kgf/cm2)
+--- Stem ---
+Concrete: 97.41 / 144.00
+Steel: 1687.30 / 1700.00
+Shear: 1.65 / 2.61
+--- Toe ---
+Concrete: 66.73 / 144.00
+Steel: 1669.72 / 1700.00
+Shear: 2.94 / 5.22
+--- Heel ---
+Concrete: 83.70 / 144.00
+Steel: 1405.25 / 1700.00
+Shear: 2.74 / 5.22
+-------------------------------
+=== NOTES ===
+As_min is minimum steel, not flexural As_req.
+Flexure is checked using the actual bars.
+No secondary steel, anchorage, laps or formwork.
+Basis: PROJECT_WSD_ACI99_V3_MAIN_ONLY
+Full checks, limits and assumptions: run.txt
+
+ROWS=99; AVAILABLE_PX=369
+H=4
+=== MATERIAL PROPERTIES ===
+Steel: SD40 (fy=4000, fs=1700 ksc)
+Concrete f'c: 280 ksc (fc=126.00 ksc)
+WSD n=Es/Ec: 8.07
+k_bal=0.374, j_bal=0.875, R_bal=20.64 ksc
+Concrete price: 2,524.00 Baht/m3
+Steel price: 24.00 Baht/kg
+-------------------------------
+=== OPTIMIZATION RESULTS ===
+Algorithm: BA
+Best Found at Trial: 1
+Best Found at Evaluation: 279
+Validation: PASS (configured checks)
+-------------------------------
+=== TOTAL COST ===
+Total: 4,985.56 Baht/m
+Concrete + main steel only
+-------------------------------
+=== DIMENSIONS ===
+H=4.00 m, H1=1.20 m
+Stem_top (tt): 0.20 m
+Stem_bottom (tb): 0.30 m
+Base_width (B): 2.00 m
+Base_thickness: 0.30 m
+Toe: 0.80 m
+Heel: 0.90 m
+Stem height H-TBase: 3.70 m
+Clear cover: 0.075 m
+-------------------------------
+=== EARTH PRESSURES ===
+Ka=0.333, Kp=3.000
+Full wall: active + passive (per m)
+Pa=4.80 tf/m, Pp=3.89 tf/m
+-------------------------------
+=== WEIGHTS ===
+Full weights, per metre of wall
+W1 (Soil on Toe): 1.32 tf/m
+W2 (Soil on Heel): 5.99 tf/m
+W3 (Stem): 2.22 tf/m
+W4 (Base): 1.44 tf/m
+W_total: 10.97 tf/m
+-------------------------------
+=== STEEL REINFORCEMENT ===
+
+--- Stem ---
+Moment (envelope): 4.41 tf.m/m
+Steel: DB16 @ 0.15 m
+As_min=7.63, As_prov=13.40 cm2/m
+Effective depth: 0.217 m
+
+--- Toe ---
+Moment (envelope): 1.88 tf.m/m
+Steel: DB12 @ 0.15 m
+As_min=6.00, As_prov=7.54 cm2/m
+Effective depth: 0.219 m
+
+--- Heel ---
+Moment (envelope): 1.85 tf.m/m
+Steel: DB12 @ 0.15 m
+As_min=6.00, As_prov=7.54 cm2/m
+Effective depth: 0.219 m
+-------------------------------
+=== SAFETY FACTORS ===
+Minimum over 16 dead-load cases
+FS_Overturning: 2.03 >= 2.00 PASS
+FS_Sliding: 1.98 >= 1.50 PASS
+FS_Bearing: 3.21 >= 1.00 PASS
+Bearing ratio = allowable qa / q_max
+-------------------------------
+=== BEARING CAPACITY ===
+q_max (16-case envelope): 9.36 tf/m2
+Allowable qa: 30.00 tf/m2
+--- Full-weight case ---
+Eccentricity (e): 0.218 m
+Positive e points toward toe
+q_max=9.07, q_min=1.90 tf/m2
+-------------------------------
+=== MEMBER STRESSES ===
+Envelope actual / allowable (kgf/cm2)
+--- Stem ---
+Concrete: 104.40 / 126.00
+Steel: 1690.37 / 1700.00
+Shear: 1.32 / 2.44
+--- Toe ---
+Concrete: 40.26 / 126.00
+Steel: 1225.58 / 1700.00
+Shear: 1.95 / 4.88
+--- Heel ---
+Concrete: 39.50 / 126.00
+Steel: 1202.58 / 1700.00
+Shear: 1.65 / 4.88
+-------------------------------
+=== NOTES ===
+As_min is minimum steel, not flexural As_req.
+Flexure is checked using the actual bars.
+No secondary steel, anchorage, laps or formwork.
+Basis: PROJECT_WSD_ACI99_V3_MAIN_ONLY
+Full checks, limits and assumptions: run.txt
+
+ROWS=99; AVAILABLE_PX=369
+CLIPPED_ROWS=0; FAILURES=0
