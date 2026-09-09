@@ -1,5 +1,7 @@
 # Released shared search policy: MEMBER_WEIGHTED_V1
 
+บันทึกวันที่ 9 กันยายน 2569: **แก้การสุ่ม HCA ให้พบราคาต่ำสุดเท่า BA แล้ว** — ผลทดสอบ VB6 ที่ H=5 ม. พบราคา 8,538.42 บาท/ม. ทั้งสองวิธี ภายใต้กติกาสุ่มร่วมกันของ commit `860b793` โดย HCA ใช้ seed 12374 และ BA ใช้ seed 12345 ผลนี้ไม่รับประกันว่าจะพบราคาเดียวกันทุก trial และยังไม่ยืนยันว่า HCA ลู่เข้าช้ากว่า BA
+
 The user authorized changing the random neighborhood, requiring HCA and every random movement in BA to use the same rules. The implementation makes the H5 reference price discoverable through normal stochastic search. It does not artificially delay HCA to produce a preferred comparison, inject the known design, stop at a target price or add an H5/seed-specific rule.
 
 ## Changes
