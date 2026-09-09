@@ -1,0 +1,27 @@
+{
+  "target_cost": 4985.56464,
+  "methods": {
+    "BA": {
+      "trials": 20,
+      "reached_common_target": 20,
+      "mean_evaluation_among_reached": 474,
+      "median_evaluation_among_reached": 407.0,
+      "min_evaluation_among_reached": 147,
+      "max_evaluation_among_reached": 1349,
+      "mean_final_cost": 4985.56464,
+      "min_final_cost": 4985.56464,
+      "max_final_cost": 4985.56464
+    },
+    "HCA": {
+      "trials": 20,
+      "reached_common_target": 19,
+      "mean_evaluation_among_reached": 1792.7368421052631,
+      "median_evaluation_among_reached": 1528,
+      "min_evaluation_among_reached": 128,
+      "max_evaluation_among_reached": 4019,
+      "mean_final_cost": 4989.725547999999,
+      "min_final_cost": 4985.56464,
+      "max_final_cost": 5068.7828
+    }
+  }
+}

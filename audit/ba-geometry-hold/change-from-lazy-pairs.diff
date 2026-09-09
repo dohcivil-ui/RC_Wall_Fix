@@ -1,0 +1,22 @@
+--- lazy-pairs/modBA.bas
++++ geometry-hold/modBA.bas
+@@ -564,6 +564,16 @@
+ End Sub
+ 
+ Private Sub DrawGeometryMove(move() As Integer)
+-    move(2) = Rand(-1, 1): move(1) = Rand(-1, 1)
+-    move(3) = Rand(-1, 1): move(5) = Rand(-1, 1): move(4) = Rand(-1, 1)
+-End Sub
++    move(2) = GeometryStep(): move(1) = GeometryStep()
++    move(3) = GeometryStep(): move(5) = GeometryStep(): move(4) = GeometryStep()
++End Sub
++
++Private Function GeometryStep() As Integer
++    ' Six equiprobable tickets: one step down, four stay, one step up.
++    ' Every geometry variable draws independently before the full evaluation.
++    Select Case Rand(1, 6)
++        Case 1: GeometryStep = -1
++        Case 6: GeometryStep = 1
++        Case Else: GeometryStep = 0
++    End Select
++End Function

@@ -1,0 +1,138 @@
+{
+  "check_count": 27,
+  "failures": 0,
+  "native_checks": 27,
+  "optimizer_runs": 0,
+  "protected_result_files": 326,
+  "checks": [
+    {
+      "check": "only retired exporter removed; no root files added",
+      "pass": true
+    },
+    {
+      "check": "only intended root files changed",
+      "pass": true
+    },
+    {
+      "check": "modBA.bas only two filename suffixes changed; search code unchanged",
+      "pass": true
+    },
+    {
+      "check": "modHillClimbing.bas only two filename suffixes changed; search code unchanged",
+      "pass": true
+    },
+    {
+      "check": "Form only removes combined hooks and updates error output paths",
+      "pass": true
+    },
+    {
+      "check": "VBP only removes retired exporter reference",
+      "pass": true
+    },
+    {
+      "check": "modHillClimbing.bas retains CRLF and no BOM",
+      "pass": true
+    },
+    {
+      "check": "RC_RT_HCA_v2.vbp retains CRLF and no BOM",
+      "pass": true
+    },
+    {
+      "check": "modBA.bas retains CRLF and no BOM",
+      "pass": true
+    },
+    {
+      "check": "Form1.frm retains CRLF and no BOM",
+      "pass": true
+    },
+    {
+      "check": "budget and zero-based logging unchanged",
+      "pass": true
+    },
+    {
+      "check": "probe redirects only output path",
+      "pass": true
+    },
+    {
+      "check": "probe invokes only export/log APIs, no optimizer or random draws",
+      "pass": true
+    },
+    {
+      "check": "all 27 native export replay checks passed",
+      "pass": true
+    },
+    {
+      "check": "accept-BA-H3-240.csv original sample unchanged",
+      "pass": true
+    },
+    {
+      "check": "accept-BA-H3-240.csv native export matches sample byte for byte",
+      "pass": true
+    },
+    {
+      "check": "loopPrice-BA-H3-240.csv original sample unchanged",
+      "pass": true
+    },
+    {
+      "check": "loopPrice-BA-H3-240.csv native export matches sample byte for byte",
+      "pass": true
+    },
+    {
+      "check": "accept-HCA-H3-240.csv original sample unchanged",
+      "pass": true
+    },
+    {
+      "check": "accept-HCA-H3-240.csv native export matches sample byte for byte",
+      "pass": true
+    },
+    {
+      "check": "loopPrice-HCA-H3-240.csv original sample unchanged",
+      "pass": true
+    },
+    {
+      "check": "loopPrice-HCA-H3-240.csv native export matches sample byte for byte",
+      "pass": true
+    },
+    {
+      "check": "no per-trial directories or combined output",
+      "pass": true
+    },
+    {
+      "check": "all 326 user result_csv files and inventory unchanged",
+      "pass": true
+    },
+    {
+      "check": "production VB6 compile succeeded",
+      "pass": true
+    },
+    {
+      "check": "probe VB6 compile succeeded",
+      "pass": true
+    },
+    {
+      "check": "production starts real root Form1 and excludes probes/retired exporter",
+      "pass": true
+    }
+  ],
+  "root_after": {
+    "Form1.frm": "b6894e57f05108023ba018cffde3224cf77b05486ca8c012db702c90c695a177",
+    "Form1.frx": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+    "frmBestDesign.frm": "fcf34f54a4dd45c3776acbde78ffc7b1f90274973ca120f4f92c6e3b4293c448",
+    "modBA.bas": "a811f9d644983b27d0805e52b7ee2dbf1feb9fc9e21a4d6475218c52ccd077b7",
+    "modBatch.bas": "1343e0c74f80e2d2f99d2617c455e7c7dbf731c01a9d17d66e7a4862d82b06e8",
+    "modBatch.v0.5.bak.bas": "4aed32d9bf713a161e8d40bea2733d08119cac40a4c55e4dcb968a42f719c1ab",
+    "modDataStructures.bas": "bf278662ac062f6ecaaee0b7f0262855963592e04bbdd120bf495c85c2d1268b",
+    "modEnhancedValidation.bas": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6",
+    "modExport.bas": "9a4cbfa7831fd01f37788a55c64d6cca58b8f5fde9a0977f43dbefcb8566facb",
+    "modFontHelper.bas": "37148fa6707e08dee200d5f75499cfdce90ba9f773c71ca4e06b070a3f4b3d3f",
+    "modGraphing.bas": "4dd8ada14466ffc5aa4ae981a83fcf45b3a6d54df5272071f5bf19ee7be20b92",
+    "modHillClimbing.bas": "2ea3edffd64d5dcf894bcc6009d95a00ded8a39d15a51572ce5ee269e9ca518a",
+    "modPDFReport.bas": "9d22abd3f0e8a69cdded858ca2b6d0b50c26ee520d0ce7c22eaaee243e19364e",
+    "modProjectChecks.bas": "11f197c69e07189f469170950f19011c92cdf3d792149e9b946706ebe647df44",
+    "modSettings.bas": "97536c63299d2276f1ef8e5916808defe02a1221fa4da58a02d2d39aed44d7b1",
+    "modShared.bas": "af40ec0acbfb1c897929db7507dde8529ec9b441c5b7311ff2544c26db0fae32",
+    "modWSD.bas": "4d6fe3009b8ecdac6fd8216c5dd83a9b6766fc9e2409de64e3861ba27827185e",
+    "RC_RT_HCA_v2.vbp": "32e8334482ebd02b53140d410c2b36aed0c4ec41e51ad80411ca7a8e4b4d35c1"
+  },
+  "production_exe_sha256": "ac05b9bc5c9e88eb000f95c7350110e2f255e6a34e11076ec1ee65884c2e6c02"
+}

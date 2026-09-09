@@ -1,0 +1,929 @@
+{
+  "passed": true,
+  "scope": "Two predeclared frozen exploratory stages,10 trials per method per stage; no optimization run by this summarizer.",
+  "limitations": "Stage2 was triggered by favorable stage1 according to the frozen protocol. The combined20 per method are descriptive exploratory data, not an independent confirmatory sample or significance test. No paired-seed design is assumed.",
+  "frozen_candidate_sha256": {
+    "modBA.bas": "2ab871c6ec13062ca23a80a4bbed93caf67a75e2bc4e7bb5547f62b526ced8f7",
+    "modHillClimbing.bas": "ddd0991257675844898e9ddc251beacff9ad1f9d1d1264f72d5e65768b068922",
+    "modShared.bas": "af40ec0acbfb1c897929db7507dde8529ec9b441c5b7311ff2544c26db0fae32"
+  },
+  "total_evaluations": 200000,
+  "stages": {
+    "geometry-hold-10": {
+      "comparison": {
+        "capped_effort_relative_reduction_ba_vs_hca": 0.3879858657243816,
+        "ba_at_least_hca_target_attainment": true,
+        "prespecified_stage1_replication_trigger_met": true,
+        "interpretation": "Descriptive exploratory comparison; trigger for a frozen replication, not proof of overall or statistically significant superiority. All misses remain in capped effort."
+      },
+      "methods": {
+        "BA": {
+          "summary": {
+            "best_cost": {
+              "count": 10,
+              "mean": 2942.3419200000003,
+              "sample_sd": 0.0,
+              "median": 2942.3419200000003,
+              "minimum": 2942.3419200000003,
+              "maximum": 2942.3419200000003
+            },
+            "first_feasible_evaluation": {
+              "count": 10,
+              "mean": 16.7,
+              "sample_sd": 11.015645439303338,
+              "median": 15.5,
+              "minimum": 4,
+              "maximum": 40
+            },
+            "first_known_target_evaluation": {
+              "count": 10,
+              "mean": 259.8,
+              "sample_sd": 127.67563066876414,
+              "median": 219.0,
+              "minimum": 133,
+              "maximum": 536
+            },
+            "first_common_target_evaluation": {
+              "count": 10,
+              "mean": 259.8,
+              "sample_sd": 127.67563066876414,
+              "median": 219.0,
+              "minimum": 133,
+              "maximum": 536
+            },
+            "first_final_best_evaluation": {
+              "count": 10,
+              "mean": 259.8,
+              "sample_sd": 127.67563066876414,
+              "median": 219.0,
+              "minimum": 133,
+              "maximum": 536
+            },
+            "capped_known_target_effort": {
+              "count": 10,
+              "mean": 259.8,
+              "sample_sd": 127.67563066876414,
+              "median": 219.0,
+              "minimum": 133,
+              "maximum": 536
+            }
+          },
+          "target_attainment": {
+            "successes": 10,
+            "total": 10,
+            "checkpoints": {
+              "100": 0,
+              "250": 7,
+              "500": 9,
+              "1000": 10,
+              "2500": 10,
+              "5000": 10
+            }
+          }
+        },
+        "HCA": {
+          "summary": {
+            "best_cost": {
+              "count": 10,
+              "mean": 2942.3419200000003,
+              "sample_sd": 0.0,
+              "median": 2942.3419200000003,
+              "minimum": 2942.3419200000003,
+              "maximum": 2942.3419200000003
+            },
+            "first_feasible_evaluation": {
+              "count": 10,
+              "mean": 5.4,
+              "sample_sd": 3.9777157040470126,
+              "median": 4.0,
+              "minimum": 2,
+              "maximum": 15
+            },
+            "first_known_target_evaluation": {
+              "count": 10,
+              "mean": 424.5,
+              "sample_sd": 237.83853066033407,
+              "median": 379.5,
+              "minimum": 144,
+              "maximum": 984
+            },
+            "first_common_target_evaluation": {
+              "count": 10,
+              "mean": 424.5,
+              "sample_sd": 237.83853066033407,
+              "median": 379.5,
+              "minimum": 144,
+              "maximum": 984
+            },
+            "first_final_best_evaluation": {
+              "count": 10,
+              "mean": 424.5,
+              "sample_sd": 237.83853066033407,
+              "median": 379.5,
+              "minimum": 144,
+              "maximum": 984
+            },
+            "capped_known_target_effort": {
+              "count": 10,
+              "mean": 424.5,
+              "sample_sd": 237.83853066033407,
+              "median": 379.5,
+              "minimum": 144,
+              "maximum": 984
+            }
+          },
+          "target_attainment": {
+            "successes": 10,
+            "total": 10,
+            "checkpoints": {
+              "100": 0,
+              "250": 2,
+              "500": 8,
+              "1000": 10,
+              "2500": 10,
+              "5000": 10
+            }
+          }
+        }
+      }
+    },
+    "geometry-hold-replication-10": {
+      "comparison": {
+        "capped_effort_relative_reduction_ba_vs_hca": 0.2591623036649215,
+        "ba_at_least_hca_target_attainment": true,
+        "prespecified_stage1_replication_trigger_met": true,
+        "interpretation": "Descriptive exploratory comparison; trigger for a frozen replication, not proof of overall or statistically significant superiority. All misses remain in capped effort."
+      },
+      "methods": {
+        "BA": {
+          "summary": {
+            "best_cost": {
+              "count": 10,
+              "mean": 2942.3419200000003,
+              "sample_sd": 0.0,
+              "median": 2942.3419200000003,
+              "minimum": 2942.3419200000003,
+              "maximum": 2942.3419200000003
+            },
+            "first_feasible_evaluation": {
+              "count": 10,
+              "mean": 19,
+              "sample_sd": 17.074997966487597,
+              "median": 14.0,
+              "minimum": 4,
+              "maximum": 59
+            },
+            "first_known_target_evaluation": {
+              "count": 10,
+              "mean": 283,
+              "sample_sd": 160.4029647827967,
+              "median": 242.0,
+              "minimum": 102,
+              "maximum": 630
+            },
+            "first_common_target_evaluation": {
+              "count": 10,
+              "mean": 283,
+              "sample_sd": 160.4029647827967,
+              "median": 242.0,
+              "minimum": 102,
+              "maximum": 630
+            },
+            "first_final_best_evaluation": {
+              "count": 10,
+              "mean": 283,
+              "sample_sd": 160.4029647827967,
+              "median": 242.0,
+              "minimum": 102,
+              "maximum": 630
+            },
+            "capped_known_target_effort": {
+              "count": 10,
+              "mean": 283,
+              "sample_sd": 160.4029647827967,
+              "median": 242.0,
+              "minimum": 102,
+              "maximum": 630
+            }
+          },
+          "target_attainment": {
+            "successes": 10,
+            "total": 10,
+            "checkpoints": {
+              "100": 0,
+              "250": 6,
+              "500": 9,
+              "1000": 10,
+              "2500": 10,
+              "5000": 10
+            }
+          }
+        },
+        "HCA": {
+          "summary": {
+            "best_cost": {
+              "count": 10,
+              "mean": 2942.3419200000003,
+              "sample_sd": 0.0,
+              "median": 2942.3419200000003,
+              "minimum": 2942.3419200000003,
+              "maximum": 2942.3419200000003
+            },
+            "first_feasible_evaluation": {
+              "count": 10,
+              "mean": 4.4,
+              "sample_sd": 2.4129281427805145,
+              "median": 3.0,
+              "minimum": 2,
+              "maximum": 9
+            },
+            "first_known_target_evaluation": {
+              "count": 10,
+              "mean": 382,
+              "sample_sd": 170.76950026928762,
+              "median": 316.0,
+              "minimum": 201,
+              "maximum": 742
+            },
+            "first_common_target_evaluation": {
+              "count": 10,
+              "mean": 382,
+              "sample_sd": 170.76950026928762,
+              "median": 316.0,
+              "minimum": 201,
+              "maximum": 742
+            },
+            "first_final_best_evaluation": {
+              "count": 10,
+              "mean": 382,
+              "sample_sd": 170.76950026928762,
+              "median": 316.0,
+              "minimum": 201,
+              "maximum": 742
+            },
+            "capped_known_target_effort": {
+              "count": 10,
+              "mean": 382,
+              "sample_sd": 170.76950026928762,
+              "median": 316.0,
+              "minimum": 201,
+              "maximum": 742
+            }
+          },
+          "target_attainment": {
+            "successes": 10,
+            "total": 10,
+            "checkpoints": {
+              "100": 0,
+              "250": 2,
+              "500": 8,
+              "1000": 10,
+              "2500": 10,
+              "5000": 10
+            }
+          }
+        }
+      }
+    }
+  },
+  "all_outcomes": [
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 1,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 147,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 147,
+      "capped_known_target_effort": 147
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 2,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 418,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 418,
+      "capped_known_target_effort": 418
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 3,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 212,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 212,
+      "capped_known_target_effort": 212
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 4,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 536,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 536,
+      "capped_known_target_effort": 536
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 5,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 221,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 221,
+      "capped_known_target_effort": 221
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 6,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 221,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 221,
+      "capped_known_target_effort": 221
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 7,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 314,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 314,
+      "capped_known_target_effort": 314
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 8,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 217,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 217,
+      "capped_known_target_effort": 217
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 9,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 133,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 133,
+      "capped_known_target_effort": 133
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "BA",
+      "trial": 10,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 179,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 179,
+      "capped_known_target_effort": 179
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 1,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 204,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 204,
+      "capped_known_target_effort": 204
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 2,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 245,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 245,
+      "capped_known_target_effort": 245
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 3,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 102,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 102,
+      "capped_known_target_effort": 102
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 4,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 427,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 427,
+      "capped_known_target_effort": 427
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 5,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 630,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 630,
+      "capped_known_target_effort": 630
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 6,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 346,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 346,
+      "capped_known_target_effort": 346
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 7,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 351,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 351,
+      "capped_known_target_effort": 351
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 8,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 132,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 132,
+      "capped_known_target_effort": 132
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 9,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 154,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 154,
+      "capped_known_target_effort": 154
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "BA",
+      "trial": 10,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 239,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 239,
+      "capped_known_target_effort": 239
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 1,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 616,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 616,
+      "capped_known_target_effort": 616
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 2,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 267,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 267,
+      "capped_known_target_effort": 267
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 3,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 477,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 477,
+      "capped_known_target_effort": 477
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 4,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 144,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 144,
+      "capped_known_target_effort": 144
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 5,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 248,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 248,
+      "capped_known_target_effort": 248
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 6,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 418,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 418,
+      "capped_known_target_effort": 418
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 7,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 446,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 446,
+      "capped_known_target_effort": 446
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 8,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 341,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 341,
+      "capped_known_target_effort": 341
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 9,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 984,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 984,
+      "capped_known_target_effort": 984
+    },
+    {
+      "stage": "geometry-hold-10",
+      "method": "HCA",
+      "trial": 10,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 304,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 304,
+      "capped_known_target_effort": 304
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 1,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 742,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 742,
+      "capped_known_target_effort": 742
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 2,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 314,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 314,
+      "capped_known_target_effort": 314
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 3,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 318,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 318,
+      "capped_known_target_effort": 318
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 4,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 201,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 201,
+      "capped_known_target_effort": 201
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 5,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 525,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 525,
+      "capped_known_target_effort": 525
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 6,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 259,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 259,
+      "capped_known_target_effort": 259
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 7,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 271,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 271,
+      "capped_known_target_effort": 271
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 8,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 490,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 490,
+      "capped_known_target_effort": 490
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 9,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 228,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 228,
+      "capped_known_target_effort": 228
+    },
+    {
+      "stage": "geometry-hold-replication-10",
+      "method": "HCA",
+      "trial": 10,
+      "final_valid": true,
+      "final_price": 2942.3419200000003,
+      "first_known_target_evaluation": 472,
+      "first_known_target_native_hex": "B3632310AFFCA640",
+      "first_native_final_best_evaluation": 472,
+      "capped_known_target_effort": 472
+    }
+  ],
+  "methods": {
+    "BA": {
+      "summary": {
+        "best_cost": {
+          "count": 20,
+          "mean": 2942.3419200000003,
+          "median": 2942.3419200000003,
+          "sample_sd": 0.0,
+          "minimum": 2942.3419200000003,
+          "maximum": 2942.3419200000003
+        },
+        "first_known_target_evaluation": {
+          "count": 20,
+          "mean": 271.4,
+          "median": 221.0,
+          "sample_sd": 141.60040142672804,
+          "minimum": 102,
+          "maximum": 630
+        },
+        "capped_known_target_effort": {
+          "count": 20,
+          "mean": 271.4,
+          "median": 221.0,
+          "sample_sd": 141.60040142672804,
+          "minimum": 102,
+          "maximum": 630
+        },
+        "first_feasible_evaluation": {
+          "count": 20,
+          "mean": 17.85,
+          "median": 14.5,
+          "sample_sd": 14.03482510719224,
+          "minimum": 4,
+          "maximum": 59
+        },
+        "first_final_best_evaluation": {
+          "count": 20,
+          "mean": 271.4,
+          "median": 221.0,
+          "sample_sd": 141.60040142672804,
+          "minimum": 102,
+          "maximum": 630
+        }
+      },
+      "target_attainment": {
+        "successes": 20,
+        "total": 20,
+        "checkpoints": {
+          "100": 0,
+          "250": 13,
+          "500": 18,
+          "1000": 20,
+          "2500": 20,
+          "5000": 20
+        }
+      },
+      "neighbor_counts": {
+        "total": 99540,
+        "invalid": 33767,
+        "rejected": 99138,
+        "valid": 65773,
+        "accepted": 402
+      },
+      "midpoint_counts": {
+        "total": 440,
+        "invalid": 28,
+        "rejected": 407,
+        "valid": 412,
+        "accepted": 33
+      },
+      "steel_pair_counts": {
+        "total_member_proposals": 298620,
+        "local": 273783,
+        "nonself": 149319,
+        "self": 149301,
+        "added_weight_rank_only": 24837
+      },
+      "changed_geometry_counts": {
+        "0": 39603,
+        "1": 39895,
+        "2": 16400,
+        "3": 3287,
+        "4": 343,
+        "5": 12
+      },
+      "zero_full_vector_counts": {
+        "total": 4878,
+        "valid": 4869,
+        "invalid": 9
+      }
+    },
+    "HCA": {
+      "summary": {
+        "best_cost": {
+          "count": 20,
+          "mean": 2942.3419200000003,
+          "median": 2942.3419200000003,
+          "sample_sd": 0.0,
+          "minimum": 2942.3419200000003,
+          "maximum": 2942.3419200000003
+        },
+        "first_known_target_evaluation": {
+          "count": 20,
+          "mean": 403.25,
+          "median": 329.5,
+          "sample_sd": 202.69185193812123,
+          "minimum": 144,
+          "maximum": 984
+        },
+        "capped_known_target_effort": {
+          "count": 20,
+          "mean": 403.25,
+          "median": 329.5,
+          "sample_sd": 202.69185193812123,
+          "minimum": 144,
+          "maximum": 984
+        },
+        "first_feasible_evaluation": {
+          "count": 20,
+          "mean": 4.9,
+          "median": 3.0,
+          "sample_sd": 3.242805802647487,
+          "minimum": 2,
+          "maximum": 15
+        },
+        "first_final_best_evaluation": {
+          "count": 20,
+          "mean": 403.25,
+          "median": 329.5,
+          "sample_sd": 202.69185193812123,
+          "minimum": 144,
+          "maximum": 984
+        }
+      },
+      "target_attainment": {
+        "successes": 20,
+        "total": 20,
+        "checkpoints": {
+          "100": 0,
+          "250": 4,
+          "500": 16,
+          "1000": 20,
+          "2500": 20,
+          "5000": 20
+        }
+      },
+      "neighbor_counts": {
+        "total": 99980,
+        "invalid": 54360,
+        "rejected": 99707,
+        "valid": 45620,
+        "accepted": 273
+      },
+      "midpoint_counts": {},
+      "steel_pair_counts": {},
+      "changed_geometry_counts": {
+        "0": 37657,
+        "3": 11922,
+        "1": 22628,
+        "2": 22983,
+        "4": 4077,
+        "5": 713
+      },
+      "zero_full_vector_counts": {
+        "total": 1488,
+        "invalid": 2,
+        "valid": 1486
+      }
+    }
+  },
+  "combined_comparison": {
+    "capped_effort_relative_reduction_ba_vs_hca": 0.3269683818970862,
+    "capped_effort_sample_sd_relative_reduction_ba_vs_hca": 0.3014006232970997,
+    "ba_target_attainment": {
+      "successes": 20,
+      "total": 20,
+      "checkpoints": {
+        "100": 0,
+        "250": 13,
+        "500": 18,
+        "1000": 20,
+        "2500": 20,
+        "5000": 20
+      }
+    },
+    "hca_target_attainment": {
+      "successes": 20,
+      "total": 20,
+      "checkpoints": {
+        "100": 0,
+        "250": 4,
+        "500": 16,
+        "1000": 20,
+        "2500": 20,
+        "5000": 20
+      }
+    }
+  }
+}

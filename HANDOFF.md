@@ -1,57 +1,80 @@
-# RC_Wall_Fix handoff — 2026-09-09
+# Handoff — version revise BA pass with resersh
 
-## Workspace and checkpoint
+งานต่อเนื่องจากแชทวันที่ 9 กันยายน 2569 ให้ถือสถานะในไฟล์นี้เป็นปัจจุบัน ประวัติการทดลอง/คำสั่งเดิมเก็บครบใน [handoff-history](audit/handoff-history-2026-09-09.md) หัวข้อ “Current” ในประวัตินั้นเป็นสถานะในอดีต อ่านเมื่อจำเป็นต้องตรวจที่มาของการตัดสินใจ
 
-- Work directly in `C:\reserch 69\RC_Wall_Fix` only; remote `https://github.com/dohcivil-ui/RC_Wall_Fix`, branch `main`.
-- Latest code checkpoint: `d0f399a`, pushed and pulled successfully. This is an empty documentation checkpoint following `ee09e26` (kg/cm^2 labels), `030f4fa` (original ton labels), and `254cbba` (multiline TextBox).
-- Checkpoint message: แก้ไขช่องผลลัพธ์เป็น TextBox หลายบรรทัด ตัดบรรทัดอัตโนมัติ เลื่อนอ่านและคัดลอกได้ แต่แก้ข้อความไม่ได้ ใช้หน่วยตามโค้ดคำนวณมาแสดงผล
-- No pending code change at handoff. The user has NOT specified a new implementation task; read this, inspect status, then await the next instruction.
-- Read AGENTS.md and JIT_code_audit.md if present (not found in earlier checks), then the root `RC_RT_HCA_v2.vbp` to identify active files.
-- User-owned `result_csv` files have many deletions and untracked experiment archives. Do not stage, restore, delete, overwrite, or include them in commits. Stage only task-owned files explicitly.
-- Preserve original VB6 byte encoding, CRLF and no BOM. Use byte-preserving patches, not UTF-8 rewriting of .frm/.bas. No large refactoring or unsolicited scope expansion.
+## เริ่มงานในแชทใหม่
 
-## Completed UI and unit work
+1. ใช้ `C:\reserch 69\RC_Wall_Fix` โดยตรง ไม่สร้าง worktree หรือย้ายไปอีกสำเนา
+2. อ่านไฟล์นี้และ AGENTS.md ถ้ามี ตรวจ git status, branch, remote และ `RC_RT_HCA_v2.vbp` ก่อนแก้ ปัจจุบันไม่มี AGENTS.md ใน root
+3. โปรเจกต์ที่ผู้ใช้รันคือ `RC_RT_HCA_v2.vbp` เปิดใหม่ใน VB6 แล้ว F5 ผู้ใช้ต้องการรันทดลองเอง
+4. ถ้ายังไม่มีคำสั่งงานใหม่ ให้สรุปสถานะสั้น ๆ แล้วรอผู้ใช้ ไม่เริ่มค้นหาวิธี BA หรือรันทดลองต่อเอง
 
-- `Form1.frm`: `txtResults` is a native VB.TextBox replacing lstResults; MultiLine=True, ScrollBars=2 (vertical), Locked=True, Enabled=True. Original size, position and CordiaUPC font retained.
-- `AddResultLine` appends original text plus vbCrLf using SelStart/SelLength/SelText. No manual 48-character wrapping. Clear, comparison and both optimizer result paths use txtResults. BA/HCA completion sets SelStart=0.
-- `modShared.FormatScreenResults` presents old-style sections: materials, optimization, price, dimensions, pressures, weights, reinforcement, safety factors, bearing, member stresses and notes. Detailed run.txt remains available.
-- User explicitly requires simple original display units. Current labels: `ton`, `ton-m`, `ton/m2`, **`kg/cm^2`**. Do not restore `tf`, `tf/m`, `tf.m/m` or `ksc` display labels. The calculation is per 1 m of wall length, and kg in stress labels means kilogram-force. These were STRING-ONLY edits, with no numerical conversion.
-- Input concrete-strength label also says kg/cm^2. SectionStresses uses depth*100 (cm), 100 cm section width, and moment*100000 (kg-force.cm).
-- As_min is actual minimum steel, not flexural As_req; do not mislabel it. Envelope quantities and full-weight nominal bearing case are distinguished.
+## สถานะโค้ดที่ติดตั้งแล้ว
 
-## Engineering and pricing scope already agreed
+- BA ใช้ candidate ที่ทดสอบ H3/H4/H5 แล้วและผู้ใช้อนุญาตให้ติดตั้งเมื่อผล H5 สนับสนุนความได้เปรียบโดยรวม ไม่ใช่ BA=HCA control และไม่ใช่ acceptRuns รุ่นกลางทาง
+- HCA ใช้ตัวค้นหาเดิม: เริ่มแบบเดิม สุ่มปรับจากสถานะปัจจุบันตามกฎ HCA เดิม ยอมรับแบบที่ผ่านและราคาดีขึ้น เก็บ best และทำงานครบงบ
+- BA มีข้อเสนอจุดกึ่งกลางร่วมของ tb/TBase/Base แล้วสุ่มสถานะข้างเคียงครบตัวแปรพร้อมกัน มิติทั้งห้าสุ่มอิสระ P(คงค่า)=2/3, P(+1)=P(-1)=1/6; คู่ขนาด–ระยะเหล็กทั้งสามส่วนใช้ตัวเลือกข้างเคียงและโอกาสคงคู่ 1/2
+- จุดกึ่งกลางเลือกค่าที่ใกล้ที่สุดจาก domain เดิม หากห่างเท่ากันเลือกค่าต่ำกว่า ไม่เพิ่มขนาดใหม่ Midpoint ทั้งสามเปลี่ยนพร้อมกัน พร้อม repair tt≤tb เดิม และถูกนับงบทุกครั้ง; ถ้าไม่ผ่าน/ไม่ดีขึ้น คืนสถานะครบ 11 ค่า
+- ช่วงค้นหาระหว่าง midpoint มี 20,40,60,... ข้อเสนอ ปรับปลายช่วงจาก incumbent และราคาอ้างอิงเมื่อจบช่วง Bounds นี้ใช้หาจุดกึ่งกลาง; ข้อเสนอสุ่มยังใช้ domain โจทย์เดิม ไม่ใช่บังคับตัด domain ครึ่งถาวร จึงต้องอธิบายวิธีตามโค้ดจริง
+- การเปรียบเทียบเป็น BA ทั้งวิธีเทียบ HCA ทั้งวิธี ไม่ได้แยกพิสูจน์ประโยชน์ของ bisection เพียงกลไกเดียว Comments บางแห่งยังเป็นคำอธิบายจากการพัฒนารุ่นเก่า อย่าใช้ comment ที่ว่า “both buttons use HCA” เพื่อตัดสินว่า BA ปัจจุบันเรียก HCA
+- ช่อง seed และการตั้ง seed ซ้ำถูกนำออกแล้ว Randomize ครั้งแรกจากระบบและใช้ stream ต่อไปตามธรรมชาติ หน้าต่างหลักเปิดกลางหน้าจอ
 
-- H and H1 measured from base underside. Full-wall active/passive use H and H1, resultants at H/3 and H1/3. Stem calculations use H-TBase and H1-TBase of each candidate. Full active AND passive are required for this project.
-- Reference H=5, TBase=.30, H1=1.20, soil unit weight1.8, phi30: stem4.70m, active moment10.3823, net with full passive9.7262 ton-m. Stem .20m, clear cover .075m, DB12@.25 must be rejected.
-- SD40, fy4000, fs1700; fc allowable .45fc'; n=2040000/(15100*sqrt(fc')). Actual selected DB and spacing determine steel area and effective depth.
-- Current basis PROJECT_WSD_ACI99_V3_MAIN_ONLY (provided reference plus ACI99 supplement). This is NOT certification of all EIT2562 requirements. Consult existing source notes for criteria; never invent standards.
-- Stability thresholds in code: overturning >=2, sliding >=1.5, bearing qa_allowable/qmax >=1. Use actual VB6 inputs, not potentially incorrect diagram labels. 16 vertical dead-load factor .85/1.0 combinations are checked with full active/passive.
-- Price includes all structural concrete (stem+base) and main stem/toe/heel steel only. Excludes anchorage, laps, secondary/horizontal steel and formwork, per explicit user direction. Do not add these or tune formulas to retain a price.
+## ข้อกำหนดที่ต้องรักษา
 
-## Search, CSV and final picture constraints
+- รักษาสูตร หน่วย ราคา domain และชุดตรวจเดิม ไม่เพิ่มขอบเขตวิศวกรรมหรือเปลี่ยนอัลกอริทึมเอง การแก้เพิ่มเติมต้องตรงคำสั่งผู้ใช้
+- แบบที่ยอมรับต้องผ่านชุดตรวจที่เปิดใช้อยู่ รวม overturning, sliding, bearing ทั้งสามข้อ และการตรวจหน้าตัด/เหล็กที่กำหนด ไม่ลดเกณฑ์เพื่อให้ BA ชนะ
+- ผู้ใช้ต้องการ BA ได้เปรียบภาพรวมประมาณ 10% ขึ้นไป ไม่ต้องชนะทุกครั้ง พิจารณาทั้งชุดรวมครั้งที่ไม่ถึงราคาอ้างอิง และรายงาน SD ประกอบ ไม่บังคับว่า SD ทุกตัวต้องต่ำกว่า
+- รักษา `result_csv` ทั้งไฟล์ที่มีอยู่และรายการที่ผู้ใช้ลบไปแล้ว ห้ามเขียน/ลบ/คืนไฟล์/จัดระเบียบหรือ stage ผลเหล่านี้เอง ปัจจุบันมี tracked deletions และ untracked archive ค้างอยู่โดยตั้งใจไม่รวมใน checkpoint
+- ไม่รัน optimizer หรือ 30 trials เพิ่ม ผู้ใช้จะรันจาก VB6 เอง การตรวจล่าสุดเป็นเพียง replay ข้อมูลตัวอย่างผ่านส่วนส่งออกใน audit
+- แก้ VB6 แบบรักษา encoding เดิม/CRLF ไม่มี BOM; อย่าเขียน .frm/.bas ทั้งไฟล์เป็น UTF-8
 
-- BA contracts ONLY tb, TBase, Base, never five variables. tt, LToe and reinforcement remain in shared random search.
-- BA/HCA use the same MEMBER_WEIGHTED_V1 random movement helper DrawSearchMove/SearchMoveIncludes. BA-specific contraction bounds and deterministic midpoint steps remain. Do not reintroduce HCA-only steel sweeps, hardcoded target designs/prices or artificial delays.
-- Evaluation budgets include initial/reset/neighbor checks; global best updates from all feasible entry paths. Seeds repeat runs. No-solution is explicit.
-- Both have found H5 cost8538.41892 in bounded native evidence, with different seeds. BA is not guaranteed faster every trial; neither heuristic guarantees global optimum. Do not rig results to make HCA slower.
-- Native current-policy results: `audit/h5-search/release/README.md`, `bench.txt`, `holdout.txt`, `verification.json`. H5 HCA seed12374 found8538.41892 at evaluation3162; BA seed12345 found it at4196. These DIFFERENT seeds are not a fair direct convergence comparison. `audit/h5-search/final` is an UNSHIPPED older policy; do not treat it as release evidence.
-- CSV root `C:\reserch 69\RC_Wall_Fix\result_csv`. Primary names accept-BA/HCA-H3/H4/H5.csv and loopPrice-BA/HCA-H3/H4/H5.csv.
-- accept schema: No.,Rejected,Passed,Passed and Better value (last trial in primary; individual trial copies preserved). loopPrice schema: No.,Loop,BestPrice, one row per trial. CSV row/evaluation indices are zero-based; internal evaluations one-based. Keep buffering/performance fixes and archives.
-- Final picture appears once after all trials. Choose feasible lowest cost, tie-break on fewer evaluations to first find it. Native frmBestDesign popup with OK/X, SVG10x8cm, outlined geometry, dimensions and steel circles with DB/spacing leaders, method and price; no PNG, earth fill, force arrows or footer.
+## CSV ปัจจุบันตามตัวอย่างของผู้ใช้
 
-## Verification evidence and tooling
+ไฟล์หลักอยู่ใน `C:\reserch 69\RC_Wall_Fix\result_csv` ชื่อใช้ H และ f′c ที่รันจริง ตัวอย่าง H3/fc240:
 
-- VB6 compiler installed: `C:\Program Files (x86)\Microsoft Visual Studio\VB98\VB6.EXE`.
-- Latest compile: `audit/unit-labels/compile-kgcm2.log` succeeded against root sources via `audit/unit-labels/MainCompile.vbp`. This compile includes TextBox and final kg/cm^2 labels.
-- Actual VB6 TextBox runtime test: `audit/results-textbox/runtime.txt`, FAILURES=0. H4/H5 report text preserved; native wrapped line count7 increased to10 on narrowing; locked/enabled and selected-text checks succeeded. Test loaded real Form1 invisibly, not a screenshot test or optimizer run.
-- This runtime evidence predates unit string changes; after those, only compilation and source comparisons were rerun. Do not claim a new runtime or fresh 30-trial test.
-- `python audit/verify_results_layout.py` verifies historical native evidence and current presentation-only scope, normalizing authorized unit label changes. It is NOT a new native runtime test.
-- Before TextBox: historical `audit/results-layout` native ListBox evidence had38 clipped rows before manual wrapping,0 after. Keep historical reports intact; do not overwrite them to match new labels.
-- No fresh 30-trial research batch is authorized; user prefers running those themselves. Bounded diagnostic tests only when justified. Keep outputs isolated under audit, never result_csv.
-- Do not run old change_results_textbox.py or results_layout_edit.py blindly: they are one-time migration/prototype scripts, not current application entry points.
-- If VB6 IDE holds stale project files open, reload them; do not save stale editor state over current disk source. Compile separate audit projects with absolute source paths; don't interrupt user IDE.
-- For future work: state what actually compiled/ran, give evidence, and list limits. Do not claim PASS without evidence or imply that UI checks certify structural safety.
+| ไฟล์ | คอลัมน์ | ขอบเขตข้อมูล |
+|---|---|---|
+| accept-BA-H3-240.csv | No.,Rejected,Passed,Passed and Better value | ประวัติ Trial สุดท้าย |
+| accept-HCA-H3-240.csv | No.,Rejected,Passed,Passed and Better value | ประวัติ Trial สุดท้าย |
+| loopPrice-BA-H3-240.csv | No.,Loop,BestPrice | สรุปทุก Trial |
+| loopPrice-HCA-H3-240.csv | No.,Loop,BestPrice | สรุปทุก Trial |
 
-## Suggested first prompt in the new chat
+ราคา 2 ตำแหน่ง No. ใน loopPrice เริ่ม1 และมีหนึ่งแถวต่อ Trial กรณีไม่มีคำตอบผ่านยังมีแถวและราคาว่าง ระบบ archive เดิมคงไว้ ไม่มีโฟลเดอร์ราย Trial, acceptRuns หรือการบันทึก accept ซ้ำท้ายชุด modTrialExport ถูกนำออกจากโปรเจกต์แล้ว
 
-ทำงานต่อในโปรเจกต์ C:\reserch 69\RC_Wall_Fix โดยใช้โฟลเดอร์นี้โดยตรง อ่าน HANDOFF.md และ AGENTS.md ถ้ามีก่อน แล้วตรวจ git status และไฟล์ .vbp ยืนยันสถานะล่าสุด ห้ามแตะผลทดลอง result_csv ห้ามเปลี่ยนสูตร อัลกอริทึม หน่วย หรือขอบเขตงานเพิ่มเติมเอง และยังไม่รัน 30 trials เมื่ออ่านครบแล้วสรุปสถานะสั้น ๆ และรอคำสั่งงานถัดไปจากผม
+ตั้ง5,000 หมายถึง5,000การประเมินรวมค่าเริ่มต้น: accept No.0–4,999 ตัวอย่างเก่ามี0–5,000 แต่ไม่ได้เพิ่มงบหรือเติมแถวตามตัวอย่างเก่า CSV Loop เริ่ม0 ส่วนเลข best evaluation บนหน้าจอเริ่ม1 ต้องแปลงฐานก่อนเทียบ อย่าแก้เลขให้ดูเหมือนเร็วขึ้น
+
+แหล่งตัวอย่างอ่านอย่างเดียว: `D:\rc-rt-optimize-v2\vb6_samples` รายงานล่าสุด [sample-csv-export/REPORT.md](audit/sample-csv-export/REPORT.md)
+
+## หลักฐานผลพัฒนาที่มีอยู่
+
+แต่ละ trial ใช้5,000การประเมินจริง ทั้งสองวิธีทำครบงบ ตัวชี้วัด effort เป็นจำนวนประเมินถึงราคาอ้างอิงร่วมครั้งแรก; ถ้าไม่ถึงใช้ค่าจำกัด5,000 พร้อมระบุว่าไม่ถึง ไม่ใช่อ้างว่าพบที่รอบ5,000 ราคาอ้างอิงเป็นค่าดีที่สุดที่พบ ไม่ใช่ optimum ที่พิสูจน์แล้ว
+
+| กรณี | ถึงราคา BA/HCA | effort เฉลี่ย BA/HCA | SD effort BA/HCA | ลด effort |
+|---|---|---|---|---|
+| H3/fc240 | 20/20 : 20/20 | 271.40 : 403.25 | 141.60 : 202.69 | 32.70% |
+| H4/fc280 | 20/20 : 19/20 | 474.00 : 1953.10 | 298.33 : 1356.85 | 75.73% |
+| H5/fc320 | 11/20 : 4/20 | 2719.85 : 4346.30 | 2141.78 : 1379.23 | 37.42% |
+
+H3 เป็น10+10ต่อวิธีสองชุดที่คง candidate เดียวกัน H4/H5 เป็น20ต่อวิธีในแต่ละกรณี SD effort ของ BA ที่ H5 สูงกว่า HCA ต้องรายงานตามจริง ทุกคำตอบสุดท้ายผ่านชุดตรวจ แต่ไม่ใช่ทุก trial ถึงราคาอ้างอิง ไม่มีการคำนวณ p-value สำหรับชุดใหม่30ครั้ง
+
+อ่านตามงานที่จะทำ:
+- วิเคราะห์ที่มาหรือ logic BA: [H3 protocol/report](audit/ba-geometry-hold/REPORT.md) และ candidate-modBA.bas ในโฟลเดอร์เดียวกัน
+- วิเคราะห์ H4: [รายงาน H4](audit/ba-geometry-hold-h4-fc280-20/REPORT.md)
+- วิเคราะห์ H5: [รายงาน H5](audit/ba-geometry-hold-h5-fc320-20/REPORT.md)
+- ตรวจการติดตั้ง: [installation report](audit/ba-geometry-hold-installation/REPORT.md) หมายเหตุ whole-file hash เก่าต่างได้จากการเปลี่ยนชื่อ CSV ล่าสุด; search core ยังตรง candidate
+- ตรวจส่งออกปัจจุบัน: [verification.json](audit/sample-csv-export/verification.json) ผ่าน27 native +27 independent checks คอมไพล์ root sources ผ่าน ไม่มี optimizer call ใน probe ตัวอย่างทั้ง4ตรงทุกไบต์และ result_csv ทั้ง326ไฟล์ไม่เปลี่ยน
+
+## งานค้างที่ต้องทำต่อเมื่อผู้ใช้ส่งข้อมูล/สั่ง
+
+1. รอผลผู้ใช้รัน VB6 รุ่นล่าสุด 30ครั้งต่อวิธีภายใต้โจทย์เดียวกัน ไม่เลือก archived รุ่นเก่ามาแทน
+2. ผู้ใช้กำหนด one-sided paired t-test ที่ α=0.05 จับคู่ตามลำดับ No.1–30 จาก loopPrice ของ BA/HCA เพราะ accept หลักมีเพียง Trial สุดท้าย ตรวจ H/fc/งบและจำนวนคู่จริงก่อนคำนวณ ระบุ run-order pairing ตามจริง ไม่เรียก shared-seed pairs ไม่เรียงผลตามราคา/ความเร็วเพื่อเลือกคู่
+3. ระบุตัวชี้วัด ทิศทางสมมติฐาน และกรณีไม่ถึงเป้าหมายให้ชัด ประเมินทั้งชุด ไม่สรุปความเร็วจาก first-best ที่คนละราคาเพียงอย่างเดียว และไม่ใช้150000แถว trace เป็น150000ตัวอย่างอิสระ
+4. บทความต้นฉบับ `C:\reserch 69\การออกแบบกำแพงกันดินคอนกรีตเสริมเหล็ก edit22.docx` ตรวจแบบอ่านอย่างเดียวแล้ว15หน้า ยังไม่แก้ไฟล์ ดู [REVIEW.md](audit/manuscript-edit22-review/REVIEW.md) ก่อนแก้ เมื่อผู้ใช้สั่งให้แก้ต้องไม่เกิน15หน้าและตรวจ layout ใหม่
+
+## Git checkpoint และไฟล์ที่คงในเครื่อง
+
+Repo `https://github.com/dohcivil-ui/RC_Wall_Fix.git`, branch `main`; ผู้ใช้สั่ง commit → pull → push ใช้ commit subject ตรงตัวว่า `version revise BA pass with resersh` ตรวจ hash/remote ปัจจุบันด้วย git log/status ไม่อนุมานว่า working tree ต้องสะอาด
+
+Checkpoint รวม root source ที่แก้, handoff, คำสั่งเปิดแชท และหลักฐานสรุป/ค่ารายTrialที่เกี่ยวข้อง ส่วน result_csv, raw evaluation traces ขนาดใหญ่, EXE, PDF/ภาพ render และการทดลองรุ่นเก่าบางส่วนยังเป็นไฟล์ local จึงอาจมี untracked files หลัง push ไม่มีการ clean/stash/reset หรือเปลี่ยนผลเหล่านี้เพื่อทำให้ status สะอาด
+
+ข้อความพร้อมใช้เปิดแชทใหม่อยู่ใน [NEXT_CHAT_PROMPT.md](NEXT_CHAT_PROMPT.md)

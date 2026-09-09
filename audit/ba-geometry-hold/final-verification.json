@@ -1,0 +1,136 @@
+{
+  "passed": true,
+  "final": true,
+  "checks": [
+    {
+      "check": "All eleven root sources unchanged",
+      "passed": true
+    },
+    {
+      "check": "Root VBP EXE FRX inventory and hashes unchanged",
+      "passed": true
+    },
+    {
+      "check": "User result_csv inventory and hashes unchanged",
+      "passed": true
+    },
+    {
+      "check": "modHillClimbing.bas original root byte identity",
+      "passed": true
+    },
+    {
+      "check": "modShared.bas original root byte identity",
+      "passed": true
+    },
+    {
+      "check": "BA changes only geometry draw procedures",
+      "passed": true
+    },
+    {
+      "check": "Native mechanism after passes",
+      "passed": true
+    },
+    {
+      "check": "modBA.bas CRLF and no BOM",
+      "passed": true
+    },
+    {
+      "check": "modHillClimbing.bas CRLF and no BOM",
+      "passed": true
+    },
+    {
+      "check": "modShared.bas CRLF and no BOM",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 91 native checks",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 100000 vectors",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 modBA.bas declared snapshot",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 modBA.bas executed bytes with declared hooks",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 modHillClimbing.bas declared snapshot",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 modHillClimbing.bas executed bytes with declared hooks",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 modShared.bas declared snapshot",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-10 modShared.bas executed bytes with declared hooks",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 91 native checks",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 100000 vectors",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 modBA.bas declared snapshot",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 modBA.bas executed bytes with declared hooks",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 modHillClimbing.bas declared snapshot",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 modHillClimbing.bas executed bytes with declared hooks",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 modShared.bas declared snapshot",
+      "passed": true
+    },
+    {
+      "check": "geometry-hold-replication-10 modShared.bas executed bytes with declared hooks",
+      "passed": true
+    },
+    {
+      "check": "Replication was prespecified and stage1 qualified",
+      "passed": true
+    },
+    {
+      "check": "Required replication completed or not triggered",
+      "passed": true
+    }
+  ],
+  "protected_file_count": 326,
+  "root_source_hashes": {
+    "modEnhancedValidation.bas": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6",
+    "modGraphing.bas": "4dd8ada14466ffc5aa4ae981a83fcf45b3a6d54df5272071f5bf19ee7be20b92",
+    "Form1.frm": "714c3e503adbf074fc0f3d5b1f10403519c8114ae6bb2bfcde2f086862e23838",
+    "frmBestDesign.frm": "fcf34f54a4dd45c3776acbde78ffc7b1f90274973ca120f4f92c6e3b4293c448",
+    "modWSD.bas": "4d6fe3009b8ecdac6fd8216c5dd83a9b6766fc9e2409de64e3861ba27827185e",
+    "modDataStructures.bas": "bf278662ac062f6ecaaee0b7f0262855963592e04bbdd120bf495c85c2d1268b",
+    "modShared.bas": "af40ec0acbfb1c897929db7507dde8529ec9b441c5b7311ff2544c26db0fae32",
+    "modBatch.bas": "1343e0c74f80e2d2f99d2617c455e7c7dbf731c01a9d17d66e7a4862d82b06e8",
+    "modBA.bas": "6b7d0e6139146fb4035e9b8e1d0439adc95c7f7a81791d37e91c94180982f619",
+    "modHillClimbing.bas": "ddd0991257675844898e9ddc251beacff9ad1f9d1d1264f72d5e65768b068922",
+    "modProjectChecks.bas": "11f197c69e07189f469170950f19011c92cdf3d792149e9b946706ebe647df44"
+  },
+  "stages": [
+    "geometry-hold-10",
+    "geometry-hold-replication-10"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "accept-BA-H3-240.csv": {
+    "sha256": "523070279be765d5fca0f2dda82c5b1bcfdccf88787d5404006e593c8ef0a75c",
+    "header": [
+      "No.",
+      "Rejected",
+      "Passed",
+      "Passed and Better value"
+    ],
+    "row_count": 5001,
+    "first_no": "0",
+    "last_no": "5000",
+    "crlf_count": 5002,
+    "lf_count": 5002
+  },
+  "loopPrice-BA-H3-240.csv": {
+    "sha256": "753f882abb8eba483b4f4b9ee8d11045415ba2b32d66cb0d82c257ead543046b",
+    "header": [
+      "No.",
+      "Loop",
+      "BestPrice"
+    ],
+    "row_count": 30,
+    "first_no": "1",
+    "last_no": "30",
+    "crlf_count": 31,
+    "lf_count": 31
+  },
+  "accept-HCA-H3-240.csv": {
+    "sha256": "9a6b6be2e416bd0f75d6df013fb7b825006973d866944608248315b3ef7fd51c",
+    "header": [
+      "No.",
+      "Rejected",
+      "Passed",
+      "Passed and Better value"
+    ],
+    "row_count": 5001,
+    "first_no": "0",
+    "last_no": "5000",
+    "crlf_count": 5002,
+    "lf_count": 5002
+  },
+  "loopPrice-HCA-H3-240.csv": {
+    "sha256": "54c60f5ddc56e89c9b4eba2622c6095da3dd0fc1ad77704de1f48d3368cec0b6",
+    "header": [
+      "No.",
+      "Loop",
+      "BestPrice"
+    ],
+    "row_count": 30,
+    "first_no": "1",
+    "last_no": "30",
+    "crlf_count": 31,
+    "lf_count": 31
+  }
+}

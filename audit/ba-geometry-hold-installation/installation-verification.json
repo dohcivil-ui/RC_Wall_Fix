@@ -1,0 +1,155 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "backup BA matches pre-test root",
+      "passed": true
+    },
+    {
+      "name": "backup Form1 matches pre-test root",
+      "passed": true
+    },
+    {
+      "name": "candidate remains frozen",
+      "passed": true
+    },
+    {
+      "name": "installed BA is byte-identical to frozen tested candidate",
+      "passed": true
+    },
+    {
+      "name": "executed batch BA is byte-identical to installed BA",
+      "passed": true
+    },
+    {
+      "name": "all public BA callable signatures retained",
+      "passed": true
+    },
+    {
+      "name": "BA history export retained",
+      "passed": true
+    },
+    {
+      "name": "exactly one old UI label AddResultLine \"BA (HCA baseline)\"",
+      "passed": true
+    },
+    {
+      "name": "exactly one old UI label AddResultLine \"BA HCA baseline - Trial \"",
+      "passed": true
+    },
+    {
+      "name": "Form1 changes only the two stale BA progress labels",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modEnhancedValidation.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modGraphing.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source frmBestDesign.frm",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modWSD.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modDataStructures.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modShared.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modBatch.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modHillClimbing.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged root source modProjectChecks.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged frozen original comparator modHillClimbing.bas",
+      "passed": true
+    },
+    {
+      "name": "unchanged frozen original comparator modShared.bas",
+      "passed": true
+    },
+    {
+      "name": "root project, EXE and FRX inventory/bytes unchanged",
+      "passed": true
+    },
+    {
+      "name": "user result_csv inventory and bytes unchanged",
+      "passed": true
+    },
+    {
+      "name": "CRLF and no BOM modBA.bas",
+      "passed": true
+    },
+    {
+      "name": "CRLF and no BOM Form1.frm",
+      "passed": true
+    },
+    {
+      "name": "GUI concrete strength 320 remains at index 4",
+      "passed": true
+    },
+    {
+      "name": "main form remains centered",
+      "passed": true
+    },
+    {
+      "name": "320 concrete price remains 2617",
+      "passed": true
+    },
+    {
+      "name": "production compile succeeded",
+      "passed": true
+    },
+    {
+      "name": "compiled project uses every actual root module/form",
+      "passed": true
+    },
+    {
+      "name": "compiled production startup is Form1",
+      "passed": true
+    },
+    {
+      "name": "compiled project contains no optimizer probe module",
+      "passed": true
+    }
+  ],
+  "check_count": 32,
+  "scope": "Source installation and prior production compile; no optimizer execution",
+  "root_sources_after": {
+    "modEnhancedValidation.bas": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6",
+    "modGraphing.bas": "4dd8ada14466ffc5aa4ae981a83fcf45b3a6d54df5272071f5bf19ee7be20b92",
+    "Form1.frm": "32e69a6df2ac23baffb3fa00bb7f774b5ba75b6fe690ac65495e6f9328e852be",
+    "frmBestDesign.frm": "fcf34f54a4dd45c3776acbde78ffc7b1f90274973ca120f4f92c6e3b4293c448",
+    "modWSD.bas": "4d6fe3009b8ecdac6fd8216c5dd83a9b6766fc9e2409de64e3861ba27827185e",
+    "modDataStructures.bas": "bf278662ac062f6ecaaee0b7f0262855963592e04bbdd120bf495c85c2d1268b",
+    "modShared.bas": "af40ec0acbfb1c897929db7507dde8529ec9b441c5b7311ff2544c26db0fae32",
+    "modBatch.bas": "1343e0c74f80e2d2f99d2617c455e7c7dbf731c01a9d17d66e7a4862d82b06e8",
+    "modBA.bas": "2ab871c6ec13062ca23a80a4bbed93caf67a75e2bc4e7bb5547f62b526ced8f7",
+    "modHillClimbing.bas": "ddd0991257675844898e9ddc251beacff9ad1f9d1d1264f72d5e65768b068922",
+    "modProjectChecks.bas": "11f197c69e07189f469170950f19011c92cdf3d792149e9b946706ebe647df44"
+  },
+  "candidate_sha256": "2ab871c6ec13062ca23a80a4bbed93caf67a75e2bc4e7bb5547f62b526ced8f7",
+  "compile_project": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-geometry-hold-installation\\production\\Production.vbp",
+  "compile_log": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-geometry-hold-installation\\production\\compile.log",
+  "limitations": [
+    "Does not claim fresh performance trials or runtime UI interaction after installation.",
+    "Performance evidence belongs to the unchanged candidate's recorded batch."
+  ]
+}

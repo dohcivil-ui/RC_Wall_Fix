@@ -1,0 +1,438 @@
+ D result_csv/BA-25690909-002837-seed20260909/evaluations.csv
+ D result_csv/BA-25690909-002837-seed20260909/loopPrice-BA-H5-1.csv
+ D result_csv/BA-25690909-002837-seed20260909/loopPrice-BA-H5.csv
+ D result_csv/BA-25690909-002837-seed20260909/run.txt
+ D result_csv/BA-25690909-002837-seed20260909/trial-summary.csv
+ D result_csv/BA-25690909-003513-seed12345/evaluations.csv
+ D result_csv/BA-25690909-003513-seed12345/run.txt
+ D result_csv/BA-25690909-003513-seed12345/trial-summary.csv
+ D result_csv/BA-25690909-003513-seed20260908/evaluations.csv
+ D result_csv/BA-25690909-003513-seed20260908/run.txt
+ D result_csv/BA-25690909-003513-seed20260908/trial-summary.csv
+ D result_csv/BA-25690909-003555-seed12345/evaluations.csv
+ D result_csv/BA-25690909-003555-seed12345/run.txt
+ D result_csv/BA-25690909-003555-seed12345/trial-summary.csv
+ D result_csv/BA-25690909-003555-seed12346/evaluations.csv
+ D result_csv/BA-25690909-003555-seed12346/run.txt
+ D result_csv/BA-25690909-003555-seed20260908/evaluations.csv
+ D result_csv/BA-25690909-003555-seed20260908/run.txt
+ D result_csv/BA-25690909-003555-seed20260908/trial-summary.csv
+ D result_csv/BA-25690909-004237-seed20260908/accept-BA-H5.csv
+ D result_csv/BA-25690909-004237-seed20260908/evaluations.csv
+ D result_csv/BA-25690909-004237-seed20260908/run.txt
+ D result_csv/BA-25690909-004237-seed20260908/trial-summary.csv
+ D result_csv/BA-25690909-004238-seed12345/accept-BA-H5.csv
+ D result_csv/BA-25690909-004238-seed12345/evaluations.csv
+ D result_csv/BA-25690909-004238-seed12345/run.txt
+ D result_csv/BA-25690909-004238-seed12345/trial-summary.csv
+ D result_csv/BA-25690909-004238-seed12346/accept-BA-H5.csv
+ D result_csv/BA-25690909-004238-seed12346/evaluations.csv
+ D result_csv/BA-25690909-004238-seed12346/run.txt
+ D result_csv/BA-25690909-005241-seed12345/accept-BA-H5.csv
+ D result_csv/BA-25690909-005241-seed12345/evaluations.csv
+ D result_csv/BA-25690909-005241-seed12345/run.txt
+ D result_csv/BA-25690909-005241-seed12345/trial-summary.csv
+ D result_csv/BA-25690909-005241-seed12346/accept-BA-H5.csv
+ D result_csv/BA-25690909-005241-seed12346/evaluations.csv
+ D result_csv/BA-25690909-005241-seed12346/run.txt
+ D result_csv/BA-25690909-005241-seed20260908/accept-BA-H5.csv
+ D result_csv/BA-25690909-005241-seed20260908/evaluations.csv
+ D result_csv/BA-25690909-005241-seed20260908/run.txt
+ D result_csv/BA-25690909-005241-seed20260908/trial-summary.csv
+ D result_csv/BA-25690909-005325-seed12345/accept-BA-H5.csv
+ D result_csv/BA-25690909-005325-seed12345/evaluations.csv
+ D result_csv/BA-25690909-005325-seed12345/run.txt
+ D result_csv/BA-25690909-005325-seed12345/trial-summary.csv
+ D result_csv/BA-25690909-005325-seed12346/accept-BA-H5.csv
+ D result_csv/BA-25690909-005325-seed12346/evaluations.csv
+ D result_csv/BA-25690909-005325-seed12346/run.txt
+ D result_csv/BA-25690909-005325-seed20260908/accept-BA-H5.csv
+ D result_csv/BA-25690909-005325-seed20260908/evaluations.csv
+ D result_csv/BA-25690909-005325-seed20260908/run.txt
+ D result_csv/BA-25690909-005325-seed20260908/trial-summary.csv
+ D result_csv/BA-25690909-005355-seed12345/accept-BA-H5.csv
+ D result_csv/BA-25690909-005355-seed12345/evaluations.csv
+ D result_csv/BA-25690909-005355-seed12345/run.txt
+ D result_csv/BA-25690909-005355-seed12345/trial-summary.csv
+ D result_csv/BA-25690909-005355-seed12346/accept-BA-H5.csv
+ D result_csv/BA-25690909-005355-seed12346/evaluations.csv
+ D result_csv/BA-25690909-005355-seed12346/run.txt
+ D result_csv/BA-25690909-005355-seed20260908/accept-BA-H5.csv
+ D result_csv/BA-25690909-005355-seed20260908/evaluations.csv
+ D result_csv/BA-25690909-005355-seed20260908/run.txt
+ D result_csv/BA-25690909-005355-seed20260908/trial-summary.csv
+ D result_csv/BA-25690909-005416-seed42-1/accept-BA-H5.csv
+ D result_csv/BA-25690909-005416-seed42-1/evaluations.csv
+ D result_csv/BA-25690909-005416-seed42-1/run.txt
+ D result_csv/BA-25690909-005416-seed42-2/accept-BA-H5.csv
+ D result_csv/BA-25690909-005416-seed42-2/evaluations.csv
+ D result_csv/BA-25690909-005416-seed42-2/run.txt
+ D result_csv/BA-25690909-005416-seed42/accept-BA-H3.csv
+ D result_csv/BA-25690909-005416-seed42/evaluations.csv
+ D result_csv/BA-25690909-005416-seed42/run.txt
+ D result_csv/BA-25690909-005417-seed12345-1/accept-BA-H5.csv
+ D result_csv/BA-25690909-005417-seed12345-1/evaluations.csv
+ D result_csv/BA-25690909-005417-seed12345-1/run.txt
+ D result_csv/BA-25690909-005417-seed12345/accept-BA-H5.csv
+ D result_csv/BA-25690909-005417-seed12345/evaluations.csv
+ D result_csv/BA-25690909-005417-seed12345/run.txt
+ D result_csv/BA-25690909-005417-seed12346/accept-BA-H5.csv
+ D result_csv/BA-25690909-005417-seed12346/evaluations.csv
+ D result_csv/BA-25690909-005417-seed12346/run.txt
+ D result_csv/BA-25690909-005417-seed7/accept-BA-H5.csv
+ D result_csv/BA-25690909-005417-seed7/evaluations.csv
+ D result_csv/BA-25690909-005417-seed7/run.txt
+ D result_csv/BA-25690909-005423-seed12345/accept-BA-H5.csv
+ D result_csv/BA-25690909-005423-seed12345/evaluations.csv
+ D result_csv/BA-25690909-005423-seed12345/run.txt
+ D result_csv/BA-25690909-005423-seed12345/trial-summary.csv
+ D result_csv/BA-25690909-005423-seed20260908-1/accept-BA-H5.csv
+ D result_csv/BA-25690909-005423-seed20260908-1/evaluations.csv
+ D result_csv/BA-25690909-005423-seed20260908-1/run.txt
+ D result_csv/BA-25690909-005423-seed20260908-1/trial-summary.csv
+ D result_csv/BA-25690909-005423-seed20260908/accept-BA-H5.csv
+ D result_csv/BA-25690909-005423-seed20260908/evaluations.csv
+ D result_csv/BA-25690909-005423-seed20260908/run.txt
+ D result_csv/ENTRY-TEST-25690909-005416-seed123/evaluations.csv
+ D result_csv/ENTRY-TEST-25690909-005416-seed123/run.txt
+ D result_csv/FEASIBLE-COST-TEST-25690909-005416-seed123/evaluations.csv
+ D result_csv/FEASIBLE-COST-TEST-25690909-005416-seed123/run.txt
+ D result_csv/HCA-25690909-002837-seed20260909/evaluations.csv
+ D result_csv/HCA-25690909-002837-seed20260909/loopPrice-HCA-H5-1.csv
+ D result_csv/HCA-25690909-002837-seed20260909/loopPrice-HCA-H5.csv
+ D result_csv/HCA-25690909-002837-seed20260909/run.txt
+ D result_csv/HCA-25690909-002837-seed20260909/trial-summary.csv
+ D result_csv/HCA-25690909-003513-seed12345/evaluations.csv
+ D result_csv/HCA-25690909-003513-seed12345/run.txt
+ D result_csv/HCA-25690909-003513-seed12345/trial-summary.csv
+ D result_csv/HCA-25690909-003513-seed20260908/evaluations.csv
+ D result_csv/HCA-25690909-003513-seed20260908/run.txt
+ D result_csv/HCA-25690909-003513-seed20260908/trial-summary.csv
+ D result_csv/HCA-25690909-003555-seed12345/evaluations.csv
+ D result_csv/HCA-25690909-003555-seed12345/run.txt
+ D result_csv/HCA-25690909-003555-seed12345/trial-summary.csv
+ D result_csv/HCA-25690909-003555-seed12346/evaluations.csv
+ D result_csv/HCA-25690909-003555-seed12346/run.txt
+ D result_csv/HCA-25690909-003555-seed20260908/evaluations.csv
+ D result_csv/HCA-25690909-003555-seed20260908/run.txt
+ D result_csv/HCA-25690909-003555-seed20260908/trial-summary.csv
+ D result_csv/HCA-25690909-004238-seed12345/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-004238-seed12345/evaluations.csv
+ D result_csv/HCA-25690909-004238-seed12345/run.txt
+ D result_csv/HCA-25690909-004238-seed12345/trial-summary.csv
+ D result_csv/HCA-25690909-004238-seed12346/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-004238-seed12346/evaluations.csv
+ D result_csv/HCA-25690909-004238-seed12346/run.txt
+ D result_csv/HCA-25690909-004238-seed20260908/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-004238-seed20260908/evaluations.csv
+ D result_csv/HCA-25690909-004238-seed20260908/run.txt
+ D result_csv/HCA-25690909-004238-seed20260908/trial-summary.csv
+ D result_csv/HCA-25690909-005241-seed12345/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005241-seed12345/evaluations.csv
+ D result_csv/HCA-25690909-005241-seed12345/run.txt
+ D result_csv/HCA-25690909-005241-seed12345/trial-summary.csv
+ D result_csv/HCA-25690909-005241-seed20260908/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005241-seed20260908/evaluations.csv
+ D result_csv/HCA-25690909-005241-seed20260908/run.txt
+ D result_csv/HCA-25690909-005241-seed20260908/trial-summary.csv
+ D result_csv/HCA-25690909-005242-seed12346/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005242-seed12346/evaluations.csv
+ D result_csv/HCA-25690909-005242-seed12346/run.txt
+ D result_csv/HCA-25690909-005325-seed12345/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005325-seed12345/evaluations.csv
+ D result_csv/HCA-25690909-005325-seed12345/run.txt
+ D result_csv/HCA-25690909-005325-seed12345/trial-summary.csv
+ D result_csv/HCA-25690909-005325-seed12346/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005325-seed12346/evaluations.csv
+ D result_csv/HCA-25690909-005325-seed12346/run.txt
+ D result_csv/HCA-25690909-005325-seed20260908/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005325-seed20260908/evaluations.csv
+ D result_csv/HCA-25690909-005325-seed20260908/run.txt
+ D result_csv/HCA-25690909-005325-seed20260908/trial-summary.csv
+ D result_csv/HCA-25690909-005355-seed12345/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005355-seed12345/evaluations.csv
+ D result_csv/HCA-25690909-005355-seed12345/run.txt
+ D result_csv/HCA-25690909-005355-seed12345/trial-summary.csv
+ D result_csv/HCA-25690909-005355-seed12346/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005355-seed12346/evaluations.csv
+ D result_csv/HCA-25690909-005355-seed12346/run.txt
+ D result_csv/HCA-25690909-005355-seed20260908/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005355-seed20260908/evaluations.csv
+ D result_csv/HCA-25690909-005355-seed20260908/run.txt
+ D result_csv/HCA-25690909-005355-seed20260908/trial-summary.csv
+ D result_csv/HCA-25690909-005416-seed42/accept-HCA-H3.csv
+ D result_csv/HCA-25690909-005416-seed42/evaluations.csv
+ D result_csv/HCA-25690909-005416-seed42/run.txt
+ D result_csv/HCA-25690909-005417-seed12345/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005417-seed12345/evaluations.csv
+ D result_csv/HCA-25690909-005417-seed12345/run.txt
+ D result_csv/HCA-25690909-005417-seed12346/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005417-seed12346/evaluations.csv
+ D result_csv/HCA-25690909-005417-seed12346/run.txt
+ D result_csv/HCA-25690909-005417-seed42-1/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005417-seed42-1/evaluations.csv
+ D result_csv/HCA-25690909-005417-seed42-1/run.txt
+ D result_csv/HCA-25690909-005417-seed42/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005417-seed42/evaluations.csv
+ D result_csv/HCA-25690909-005417-seed42/run.txt
+ D result_csv/HCA-25690909-005417-seed7/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005417-seed7/evaluations.csv
+ D result_csv/HCA-25690909-005417-seed7/run.txt
+ D result_csv/HCA-25690909-005418-seed12346/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005418-seed12346/evaluations.csv
+ D result_csv/HCA-25690909-005418-seed12346/run.txt
+ D result_csv/HCA-25690909-005423-seed20260908/accept-HCA-H5.csv
+ D result_csv/HCA-25690909-005423-seed20260908/evaluations.csv
+ D result_csv/HCA-25690909-005423-seed20260908/run.txt
+ D result_csv/accept-BA-H5-trial1-seed12345-1.csv
+ D result_csv/accept-BA-H5-trial1-seed12345.csv
+ D result_csv/accept-BA-H5-trial1-seed20260908-1.csv
+ D result_csv/accept-BA-H5-trial1-seed20260908.csv
+ D result_csv/accept-BA-H5-trial2-seed12346.csv
+ M result_csv/accept-BA-H5.csv
+ D result_csv/accept-HCA-H5-trial1-seed12345-1.csv
+ D result_csv/accept-HCA-H5-trial1-seed12345.csv
+ D result_csv/accept-HCA-H5-trial1-seed20260908-1.csv
+ D result_csv/accept-HCA-H5-trial1-seed20260908.csv
+ D result_csv/accept-HCA-H5-trial2-seed12346.csv
+ M result_csv/accept-HCA-H5.csv
+ D result_csv/loopPrice-BA-H5-1.csv
+ D result_csv/loopPrice-BA-H5-2.csv
+ D result_csv/loopPrice-BA-H5-3.csv
+ D result_csv/loopPrice-BA-H5-4.csv
+ D result_csv/loopPrice-BA-H5-5.csv
+ D result_csv/loopPrice-BA-H5-6.csv
+ D result_csv/loopPrice-BA-H5-7.csv
+ M result_csv/loopPrice-BA-H5.csv
+ D result_csv/loopPrice-HCA-H5-1.csv
+ D result_csv/loopPrice-HCA-H5-2.csv
+ D result_csv/loopPrice-HCA-H5-3.csv
+ D result_csv/loopPrice-HCA-H5-4.csv
+ D result_csv/loopPrice-HCA-H5-5.csv
+ D result_csv/loopPrice-HCA-H5-6.csv
+ D result_csv/loopPrice-HCA-H5-7.csv
+ M result_csv/loopPrice-HCA-H5.csv
+?? result_csv/BA-25690909-134515-seed12345/
+?? result_csv/BA-25690909-134516-seed12346/
+?? result_csv/BA-25690909-134517-seed12347/
+?? result_csv/BA-25690909-134518-seed12348/
+?? result_csv/BA-25690909-134519-seed12349/
+?? result_csv/BA-25690909-134521-seed12350/
+?? result_csv/BA-25690909-134522-seed12351/
+?? result_csv/BA-25690909-134523-seed12352/
+?? result_csv/BA-25690909-134525-seed12353/
+?? result_csv/BA-25690909-134526-seed12354/
+?? result_csv/BA-25690909-134527-seed12355/
+?? result_csv/BA-25690909-134529-seed12356/
+?? result_csv/BA-25690909-134530-seed12357/
+?? result_csv/BA-25690909-134531-seed12358/
+?? result_csv/BA-25690909-134533-seed12359/
+?? result_csv/BA-25690909-134534-seed12360/
+?? result_csv/BA-25690909-134535-seed12361/
+?? result_csv/BA-25690909-134537-seed12362/
+?? result_csv/BA-25690909-134538-seed12363/
+?? result_csv/BA-25690909-134539-seed12364/
+?? result_csv/BA-25690909-134540-seed12365/
+?? result_csv/BA-25690909-134542-seed12366/
+?? result_csv/BA-25690909-134543-seed12367/
+?? result_csv/BA-25690909-134544-seed12368/
+?? result_csv/BA-25690909-134545-seed12369/
+?? result_csv/BA-25690909-134547-seed12370/
+?? result_csv/BA-25690909-134548-seed12371/
+?? result_csv/BA-25690909-134549-seed12372/
+?? result_csv/BA-25690909-134551-seed12373/
+?? result_csv/BA-25690909-134552-seed12374/
+?? result_csv/BA-25690909-151935-seed12345/
+?? result_csv/BA-25690909-151937-seed12346/
+?? result_csv/BA-25690909-151938-seed12347/
+?? result_csv/BA-25690909-151940-seed12348/
+?? result_csv/BA-25690909-151941-seed12349/
+?? result_csv/BA-25690909-151942-seed12350/
+?? result_csv/BA-25690909-151944-seed12351/
+?? result_csv/BA-25690909-151945-seed12352/
+?? result_csv/BA-25690909-151947-seed12353/
+?? result_csv/BA-25690909-151948-seed12354/
+?? result_csv/BA-25690909-151950-seed12355/
+?? result_csv/BA-25690909-151951-seed12356/
+?? result_csv/BA-25690909-151952-seed12357/
+?? result_csv/BA-25690909-151954-seed12358/
+?? result_csv/BA-25690909-151955-seed12359/
+?? result_csv/BA-25690909-151957-seed12360/
+?? result_csv/BA-25690909-151958-seed12361/
+?? result_csv/BA-25690909-152000-seed12362/
+?? result_csv/BA-25690909-152001-seed12363/
+?? result_csv/BA-25690909-152002-seed12364/
+?? result_csv/BA-25690909-152004-seed12365/
+?? result_csv/BA-25690909-152005-seed12366/
+?? result_csv/BA-25690909-152007-seed12367/
+?? result_csv/BA-25690909-152008-seed12368/
+?? result_csv/BA-25690909-152009-seed12369/
+?? result_csv/BA-25690909-152011-seed12370/
+?? result_csv/BA-25690909-152012-seed12371/
+?? result_csv/BA-25690909-152014-seed12372/
+?? result_csv/BA-25690909-152015-seed12373/
+?? result_csv/BA-25690909-152016-seed12374/
+?? result_csv/BA-25690909-152126-seed12345/
+?? result_csv/BA-25690909-152127-seed12346/
+?? result_csv/BA-25690909-152128-seed12347/
+?? result_csv/BA-25690909-152129-seed12348/
+?? result_csv/BA-25690909-152130-seed12349/
+?? result_csv/BA-25690909-152131-seed12350/
+?? result_csv/BA-25690909-152132-seed12351/
+?? result_csv/BA-25690909-152134-seed12352/
+?? result_csv/BA-25690909-152135-seed12353/
+?? result_csv/BA-25690909-152136-seed12354/
+?? result_csv/BA-25690909-152138-seed12355/
+?? result_csv/BA-25690909-152139-seed12356/
+?? result_csv/BA-25690909-152140-seed12357/
+?? result_csv/BA-25690909-152141-seed12358/
+?? result_csv/BA-25690909-152142-seed12359/
+?? result_csv/BA-25690909-152143-seed12360/
+?? result_csv/BA-25690909-152144-seed12361/
+?? result_csv/BA-25690909-152145-seed12362/
+?? result_csv/BA-25690909-152147-seed12363/
+?? result_csv/BA-25690909-152148-seed12364/
+?? result_csv/BA-25690909-152149-seed12365/
+?? result_csv/BA-25690909-152150-seed12366/
+?? result_csv/BA-25690909-152151-seed12367/
+?? result_csv/BA-25690909-152152-seed12368/
+?? result_csv/BA-25690909-152153-seed12369/
+?? result_csv/BA-25690909-152154-seed12370/
+?? result_csv/BA-25690909-152155-seed12371/
+?? result_csv/BA-25690909-152156-seed12372/
+?? result_csv/BA-25690909-152158-seed12373/
+?? result_csv/BA-25690909-152159-seed12374/
+?? result_csv/HCA-25690909-134414-seed12345/
+?? result_csv/HCA-25690909-134415-seed12346/
+?? result_csv/HCA-25690909-134416-seed12347/
+?? result_csv/HCA-25690909-134417-seed12348/
+?? result_csv/HCA-25690909-134419-seed12349/
+?? result_csv/HCA-25690909-134420-seed12350/
+?? result_csv/HCA-25690909-134421-seed12351/
+?? result_csv/HCA-25690909-134422-seed12352/
+?? result_csv/HCA-25690909-134424-seed12353/
+?? result_csv/HCA-25690909-134425-seed12354/
+?? result_csv/HCA-25690909-134426-seed12355/
+?? result_csv/HCA-25690909-134427-seed12356/
+?? result_csv/HCA-25690909-134429-seed12357/
+?? result_csv/HCA-25690909-134430-seed12358/
+?? result_csv/HCA-25690909-134431-seed12359/
+?? result_csv/HCA-25690909-134432-seed12360/
+?? result_csv/HCA-25690909-134434-seed12361/
+?? result_csv/HCA-25690909-134435-seed12362/
+?? result_csv/HCA-25690909-134436-seed12363/
+?? result_csv/HCA-25690909-134437-seed12364/
+?? result_csv/HCA-25690909-134438-seed12365/
+?? result_csv/HCA-25690909-134440-seed12366/
+?? result_csv/HCA-25690909-134441-seed12367/
+?? result_csv/HCA-25690909-134442-seed12368/
+?? result_csv/HCA-25690909-134443-seed12369/
+?? result_csv/HCA-25690909-134444-seed12370/
+?? result_csv/HCA-25690909-134446-seed12371/
+?? result_csv/HCA-25690909-134447-seed12372/
+?? result_csv/HCA-25690909-134448-seed12373/
+?? result_csv/HCA-25690909-134450-seed12374/
+?? result_csv/HCA-25690909-151407-seed12345/
+?? result_csv/HCA-25690909-151409-seed12346/
+?? result_csv/HCA-25690909-151410-seed12347/
+?? result_csv/HCA-25690909-151412-seed12348/
+?? result_csv/HCA-25690909-151413-seed12349/
+?? result_csv/HCA-25690909-151414-seed12350/
+?? result_csv/HCA-25690909-151416-seed12351/
+?? result_csv/HCA-25690909-151417-seed12352/
+?? result_csv/HCA-25690909-151418-seed12353/
+?? result_csv/HCA-25690909-151420-seed12354/
+?? result_csv/HCA-25690909-151421-seed12355/
+?? result_csv/HCA-25690909-151422-seed12356/
+?? result_csv/HCA-25690909-151423-seed12357/
+?? result_csv/HCA-25690909-151425-seed12358/
+?? result_csv/HCA-25690909-151426-seed12359/
+?? result_csv/HCA-25690909-151428-seed12360/
+?? result_csv/HCA-25690909-151429-seed12361/
+?? result_csv/HCA-25690909-151431-seed12362/
+?? result_csv/HCA-25690909-151432-seed12363/
+?? result_csv/HCA-25690909-151434-seed12364/
+?? result_csv/HCA-25690909-151435-seed12365/
+?? result_csv/HCA-25690909-151436-seed12366/
+?? result_csv/HCA-25690909-151438-seed12367/
+?? result_csv/HCA-25690909-151441-seed12368/
+?? result_csv/HCA-25690909-151443-seed12369/
+?? result_csv/HCA-25690909-151445-seed12370/
+?? result_csv/HCA-25690909-151447-seed12371/
+?? result_csv/HCA-25690909-151449-seed12372/
+?? result_csv/HCA-25690909-151451-seed12373/
+?? result_csv/HCA-25690909-151453-seed12374/
+?? result_csv/HCA-25690909-152040-seed12345/
+?? result_csv/HCA-25690909-152042-seed12346/
+?? result_csv/HCA-25690909-152043-seed12347/
+?? result_csv/HCA-25690909-152044-seed12348/
+?? result_csv/HCA-25690909-152045-seed12349/
+?? result_csv/HCA-25690909-152046-seed12350/
+?? result_csv/HCA-25690909-152048-seed12351/
+?? result_csv/HCA-25690909-152049-seed12352/
+?? result_csv/HCA-25690909-152050-seed12353/
+?? result_csv/HCA-25690909-152051-seed12354/
+?? result_csv/HCA-25690909-152053-seed12355/
+?? result_csv/HCA-25690909-152054-seed12356/
+?? result_csv/HCA-25690909-152055-seed12357/
+?? result_csv/HCA-25690909-152056-seed12358/
+?? result_csv/HCA-25690909-152058-seed12359/
+?? result_csv/HCA-25690909-152059-seed12360/
+?? result_csv/HCA-25690909-152100-seed12361/
+?? result_csv/HCA-25690909-152101-seed12362/
+?? result_csv/HCA-25690909-152102-seed12363/
+?? result_csv/HCA-25690909-152103-seed12364/
+?? result_csv/HCA-25690909-152105-seed12365/
+?? result_csv/HCA-25690909-152106-seed12366/
+?? result_csv/HCA-25690909-152107-seed12367/
+?? result_csv/HCA-25690909-152108-seed12368/
+?? result_csv/HCA-25690909-152109-seed12369/
+?? result_csv/HCA-25690909-152110-seed12370/
+?? result_csv/HCA-25690909-152111-seed12371/
+?? result_csv/HCA-25690909-152113-seed12372/
+?? result_csv/HCA-25690909-152114-seed12373/
+?? result_csv/HCA-25690909-152115-seed12374/
+?? result_csv/accept-BA-H3.csv
+?? result_csv/accept-HCA-H3.csv
+?? result_csv/archive/accept-BA-H3-25690909-095119.csv
+?? result_csv/archive/accept-BA-H3-25690909-152018.csv
+?? result_csv/archive/accept-BA-H4-25690909-012729.csv
+?? result_csv/archive/accept-BA-H4-25690909-095238.csv
+?? result_csv/archive/accept-BA-H5-25690909-012248.csv
+?? result_csv/archive/accept-BA-H5-25690909-012951.csv
+?? result_csv/archive/accept-BA-H5-25690909-095417.csv
+?? result_csv/archive/accept-BA-H5-25690909-102335.csv
+?? result_csv/archive/accept-HCA-H3-25690909-095027.csv
+?? result_csv/archive/accept-HCA-H3-25690909-151455.csv
+?? result_csv/archive/accept-HCA-H4-25690909-012649.csv
+?? result_csv/archive/accept-HCA-H4-25690909-095203.csv
+?? result_csv/archive/accept-HCA-H5-25690909-012148.csv
+?? result_csv/archive/accept-HCA-H5-25690909-012346.csv
+?? result_csv/archive/accept-HCA-H5-25690909-012425.csv
+?? result_csv/archive/accept-HCA-H5-25690909-012905.csv
+?? result_csv/archive/accept-HCA-H5-25690909-095347.csv
+?? result_csv/archive/accept-HCA-H5-25690909-095444.csv
+?? result_csv/archive/accept-HCA-H5-25690909-095509.csv
+?? result_csv/archive/accept-HCA-H5-25690909-102301.csv
+?? result_csv/archive/loopPrice-BA-H3-25690909-095119.csv
+?? result_csv/archive/loopPrice-BA-H3-25690909-152018.csv
+?? result_csv/archive/loopPrice-BA-H4-25690909-012729.csv
+?? result_csv/archive/loopPrice-BA-H4-25690909-095238.csv
+?? result_csv/archive/loopPrice-BA-H5-25690909-012248.csv
+?? result_csv/archive/loopPrice-BA-H5-25690909-012951.csv
+?? result_csv/archive/loopPrice-BA-H5-25690909-095417.csv
+?? result_csv/archive/loopPrice-BA-H5-25690909-102335.csv
+?? result_csv/archive/loopPrice-HCA-H3-25690909-095027.csv
+?? result_csv/archive/loopPrice-HCA-H3-25690909-151455.csv
+?? result_csv/archive/loopPrice-HCA-H4-25690909-012649.csv
+?? result_csv/archive/loopPrice-HCA-H4-25690909-095203.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-012148.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-012346.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-012425.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-012905.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-095347.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-095444.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-095509.csv
+?? result_csv/archive/loopPrice-HCA-H5-25690909-102301.csv
+?? result_csv/loopPrice-BA-H3.csv
+?? result_csv/loopPrice-HCA-H3.csv

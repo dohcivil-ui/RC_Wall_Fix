@@ -1,0 +1,690 @@
+[
+  {
+    "check": "40 completed trials",
+    "passed": true
+  },
+  {
+    "check": "Actual H5/fc320 for every trial",
+    "passed": true
+  },
+  {
+    "check": "declared source files match executed snapshot",
+    "passed": true
+  },
+  {
+    "check": "user result_csv unchanged",
+    "passed": true
+  },
+  {
+    "check": "BA exactly twenty unique trial numbers",
+    "passed": true
+  },
+  {
+    "check": "BA 100000 actual evaluations",
+    "passed": true
+  },
+  {
+    "check": "BA native loopPrice has twenty trials",
+    "passed": true
+  },
+  {
+    "check": "BA trial 1 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 1 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 1 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 1 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 2 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 2 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 2 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 2 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 3 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 3 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 3 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 3 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 4 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 4 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 4 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 4 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 5 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 5 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 5 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 5 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 6 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 6 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 6 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 6 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 7 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 7 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 7 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 7 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 8 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 8 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 8 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 8 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 9 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 9 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 9 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 9 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 10 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 10 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 10 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 10 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 11 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 11 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 11 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 11 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 12 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 12 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 12 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 12 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 13 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 13 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 13 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 13 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 14 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 14 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 14 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 14 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 15 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 15 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 15 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 15 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 16 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 16 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 16 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 16 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 17 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 17 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 17 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 17 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 18 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 18 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 18 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 18 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 19 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 19 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 19 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 19 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA trial 20 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "BA trial 20 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "BA trial 20 configured safety",
+    "passed": true
+  },
+  {
+    "check": "BA trial 20 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "BA screen earliest at method minimum price",
+    "passed": true
+  },
+  {
+    "check": "HCA exactly twenty unique trial numbers",
+    "passed": true
+  },
+  {
+    "check": "HCA 100000 actual evaluations",
+    "passed": true
+  },
+  {
+    "check": "HCA native loopPrice has twenty trials",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 1 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 1 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 1 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 1 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 2 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 2 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 2 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 2 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 3 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 3 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 3 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 3 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 4 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 4 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 4 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 4 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 5 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 5 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 5 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 5 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 6 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 6 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 6 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 6 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 7 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 7 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 7 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 7 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 8 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 8 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 8 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 8 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 9 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 9 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 9 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 9 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 10 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 10 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 10 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 10 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 11 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 11 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 11 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 11 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 12 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 12 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 12 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 12 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 13 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 13 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 13 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 13 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 14 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 14 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 14 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 14 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 15 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 15 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 15 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 15 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 16 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 16 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 16 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 16 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 17 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 17 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 17 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 17 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 18 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 18 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 18 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 18 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 19 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 19 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 19 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 19 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 20 sequential budget",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 20 exact native best matches raw trace",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 20 configured safety",
+    "passed": true
+  },
+  {
+    "check": "HCA trial 20 native loop matches 1-based evaluation",
+    "passed": true
+  },
+  {
+    "check": "HCA screen earliest at method minimum price",
+    "passed": true
+  }
+]

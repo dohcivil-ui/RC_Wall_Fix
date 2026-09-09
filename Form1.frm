@@ -17,24 +17,8 @@ Begin VB.Form Form1
    LinkTopic       =   "Form1"
    ScaleHeight     =   9705
    ScaleWidth      =   22320
+   StartUpPosition =   2  'CenterScreen
    ShowInTaskbar   =   0   'False
-   Begin VB.TextBox txtSeed
-      Height          =   375
-      Left            =   19800
-      Top             =   8880
-      Width           =   1455
-      TabIndex        =   45
-      Text            =   "12345"
-      ToolTipText     =   "Integer seed; trial n uses seed+n-1 (same for BA/HCA)"
-   End
-   Begin VB.Label lblSeed
-      Caption         =   "Seed"
-      Height          =   375
-      Left            =   19800
-      Top             =   8400
-      Width           =   1455
-      TabIndex        =   46
-   End
    Begin VB.CommandButton cmdCommand1 
       Caption         =   "Command1"
       Height          =   675
@@ -588,7 +572,6 @@ Private fcArray(1 To 8) As Integer  ' รองรับ 8 ค่า: 180,210,240,280,300,320,350,
 ' Bisection Base + HCA Random (tt, tb, TBase, LToe, Steel)
 ' ================================================================================
 Private Sub cmdBA_Click()
-    Dim firstSeed As Long
     Dim h As Double, H1 As Double, mu As Double
     Dim gamma_soil As Double, phi As Double, qa As Double
     Dim gamma_con As Double, cover As Double
@@ -618,7 +601,6 @@ Private Sub cmdBA_Click()
     cover = CDbl(txtCover.Text) / 100
     maxIter = CLng(txtMaxIter.Text)
     numTrials = CInt(txtTrials.Text)
-    firstSeed = CLng(txtSeed.Text)
     
     If cboConcreteStrength.Text = "Random" Then
         Dim fcOptionsBA(1 To 5) As Integer
@@ -627,7 +609,6 @@ Private Sub cmdBA_Click()
         fcOptionsBA(3) = 240
         fcOptionsBA(4) = 280
         fcOptionsBA(5) = 320
-        Call SeedSearchRandom(firstSeed)
         fc = fcOptionsBA(Int(Rnd * 5) + 1)
     Else
         fc = CInt(cboConcreteStrength.Text)
@@ -636,11 +617,12 @@ Private Sub cmdBA_Click()
     concretePrice = modShared.GetConcretePrice(fc)
     selectedMaterial = modShared.GetSD40Material(fc, concretePrice, modShared.STEEL_PRICE_SD40)
     
+    On Error GoTo RunExportError
     cmdBA.Enabled = False: cmdRun.Enabled = False: cmdCommand1.Enabled = False: cmdCompare.Enabled = False
     Me.MousePointer = vbHourglass
     
     AddResultLine "============================================"
-    AddResultLine "BA (tb, TBase, Base only)"
+    AddResultLine "BA"
     AddResultLine "============================================"
     AddResultLine "กำลังคำนวณ " & numTrials & " Trials..."
     DoEvents
@@ -653,7 +635,6 @@ Private Sub cmdBA_Click()
     Unload frmBestDesign
     ProjectTrialSummary = ""
     
-    Call SeedSearchRandom(firstSeed)
     
     Dim trial As Integer
     For trial = 1 To numTrials
@@ -661,7 +642,7 @@ Private Sub cmdBA_Click()
         
         trialDesign = modBA.BisectionOptimization( _
             maxIter, h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, selectedMaterial, _
-            RandomSeed:=firstSeed + CLng(trial) - 1, TrialNumber:=CLng(trial))
+            TrialNumber:=CLng(trial))
         
         trialCost = modShared.CalculateCost(trialDesign)
         Call RecordProjectTrial
@@ -686,7 +667,7 @@ Private Sub cmdBA_Click()
         
         txtResults.Text = vbNullString
         AddResultLine "============================================"
-        AddResultLine "BA triple - Trial " & trial & "/" & numTrials
+        AddResultLine "BA - Trial " & trial & "/" & numTrials
         AddResultLine "============================================"
         If trialDesign.IsValid Then
             AddResultLine "Trial Cost: " & Format(trialCost, "#,##0.00") & " Baht/m"
@@ -724,11 +705,11 @@ Private Sub cmdBA_Click()
     Me.MousePointer = vbDefault
 
     
-    AddResultLine "CSV and per-trial reports: " & ResultCsvRoot()
+    AddResultLine "CSV output: " & ResultCsvRoot()
     AddResultLine "accept CSV (last trial): " & LastAcceptCSVPath
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
-    If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
-    AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
+    If ProjectChecksEnabled And Len(ProjectTrialSummary) > 0 Then AddResultLine "Trial summary: " & ProjectTrialSummary
+    AddResultLine "Budget includes initial/reset/neighbor evaluations."
     txtResults.SelStart = 0
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     BA_CostHistory = globalBestCostHistory
@@ -746,11 +727,14 @@ For siBA = 1 To maxIter
     baStoredHistory(siBA) = globalBestCostHistory(siBA)
 Next siBA
 baHasRun = True
-baComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials, firstSeed), "|")
+baComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "BA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     
     
     
+    Exit Sub
+RunExportError:
+    Call ShowRunExportError(Err.Description)
 End Sub
 
 Private Sub cmdCommand1_Click()
@@ -760,6 +744,18 @@ End Sub
 ' ========================================
 ' Form Load Event
 ' ========================================
+Private Sub ShowRunExportError(ByVal message As String)
+    cmdBA.Enabled = True: cmdRun.Enabled = True: cmdCommand1.Enabled = True: cmdCompare.Enabled = True
+    Me.MousePointer = vbDefault
+    AddResultLine "Run stopped: " & message
+    If Len(LastAcceptCSVPath) > 0 Then
+        AddResultLine "Last saved accept CSV: " & LastAcceptCSVPath
+    End If
+    If Len(LastLoopCSVPath) > 0 Then
+        AddResultLine "Last saved loopPrice CSV: " & LastLoopCSVPath
+    End If
+End Sub
+
 Public Sub AddResultLine(ByVal text As String)
     ' Native multiline TextBox wraps visually; preserve the report text.
     txtResults.SelStart = Len(txtResults.Text)
@@ -768,6 +764,7 @@ Public Sub AddResultLine(ByVal text As String)
 End Sub
 
 Private Sub Form_Load()
+    Call InitializeSearchRandom
     txtH.ToolTipText = "Retained soil elevation above BASE UNDERSIDE; stem=H-TBase"
     txtH1.ToolTipText = "FRONT soil elevation above BASE UNDERSIDE (not retained height)"
     txtCover.ToolTipText = "CLEAR cover to bar surface (cm); d=t-cover-db/2"
@@ -824,7 +821,6 @@ End Sub
 ' Run Button Click HCA Event
 ' ========================================
 Private Sub cmdRun_Click()
-    Dim firstSeed As Long
     Dim h As Double
     Dim H1 As Double
     Dim mu As Double
@@ -866,7 +862,6 @@ Private Sub cmdRun_Click()
     cover = CDbl(txtCover.Text) / 100  ' Convert cm to m
     maxIter = CLng(txtMaxIter.Text)
     numTrials = CInt(txtTrials.Text)
-    firstSeed = CLng(txtSeed.Text)
     
     ' ============================================
     ' v2.4: ล็อค SD40 และ Validate f'c
@@ -880,7 +875,6 @@ Private Sub cmdRun_Click()
         fcOptions(3) = 240
         fcOptions(4) = 280
         fcOptions(5) = 320
-        Call SeedSearchRandom(firstSeed)
         fc = fcOptions(Int(Rnd * 5) + 1)
     Else
         fc = CInt(cboConcreteStrength.Text)
@@ -906,10 +900,9 @@ Private Sub cmdRun_Click()
     'sd30 = 20+3 =23 บาท/กก (3 บาท/กก คือค่าแรง)
     'sd40 = 21+3 =24 บาท/กก
     
-    ' Initialize random seed
-    Call SeedSearchRandom(firstSeed)
     
     ' Disable button during calculation
+    On Error GoTo RunExportError
     cmdBA.Enabled = False: cmdRun.Enabled = False: cmdCommand1.Enabled = False: cmdCompare.Enabled = False
     Me.MousePointer = vbHourglass
     
@@ -945,7 +938,7 @@ Private Sub cmdRun_Click()
         ' Run Optimization
         bestDesign = HillClimbingOptimization( _
             maxIter, h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, selectedMaterial, _
-            RandomSeed:=firstSeed + CLng(trial) - 1, TrialNumber:=CLng(trial))
+            TrialNumber:=CLng(trial))
         
         ' คำนวณราคาของ Trial นี้
         currentCost = CalculateCost(bestDesign)
@@ -1008,11 +1001,11 @@ Private Sub cmdRun_Click()
 
     
     ' แสดงข้อความสรุปครั้งเดียวตอนจบ
-    AddResultLine "CSV and per-trial reports: " & ResultCsvRoot()
+    AddResultLine "CSV output: " & ResultCsvRoot()
     AddResultLine "accept CSV (last trial): " & LastAcceptCSVPath
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
-    If ProjectChecksEnabled Then AddResultLine "Trial summary: " & ProjectTrialSummary
-    AddResultLine "Seed start: " & firstSeed & "; budget includes initial/reset/neighbor."
+    If ProjectChecksEnabled And Len(ProjectTrialSummary) > 0 Then AddResultLine "Trial summary: " & ProjectTrialSummary
+    AddResultLine "Budget includes initial/reset/neighbor evaluations."
     txtResults.SelStart = 0
            ' === เก็บข้อมูลสำหรับ Compare Graph ===
     HCA_CostHistory = globalBestCostHistory
@@ -1030,10 +1023,13 @@ For siHCA = 1 To maxIter
     hcaStoredHistory(siHCA) = globalBestCostHistory(siHCA)
 Next siHCA
 hcaHasRun = True
-hcaComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials, firstSeed), "|")
+hcaComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "HCA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     
     
+    Exit Sub
+RunExportError:
+    Call ShowRunExportError(Err.Description)
 End Sub
 
 ' ========================================
@@ -1080,9 +1076,6 @@ Private Function ValidateInputs() As Boolean
     If CDbl(txtCover.Text) / 100# >= 0.2 Then Exit Function
     If CDbl(txtMaxIter.Text) <> Fix(CDbl(txtMaxIter.Text)) Then Exit Function
     If CDbl(txtTrials.Text) <> Fix(CDbl(txtTrials.Text)) Then Exit Function
-    If Not IsNumeric(txtSeed.Text) Then Exit Function
-    If CDbl(txtSeed.Text) <> Fix(CDbl(txtSeed.Text)) Then Exit Function
-    If CDbl(txtSeed.Text) < 0 Or CDbl(txtSeed.Text) + CDbl(txtTrials.Text) > 2147483647# Then Exit Function
     ValidateInputs = True
 InvalidInput:
 End Function
@@ -1122,7 +1115,7 @@ Private Sub cmdCompare_Click()
     AddResultLine "COMPARE: HCA vs BA (stored sessions)"
     Call ClearGraph(picGraph)
     If hcaComparisonKey <> baComparisonKey Then
-        AddResultLine "Inputs/material/seed/trials/budget differ; no ranking."
+        AddResultLine "Inputs/material/trials/budget differ; no ranking."
         AddResultLine "Run both methods with matching settings before comparing."
         Exit Sub
     End If

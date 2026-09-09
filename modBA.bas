@@ -1,34 +1,25 @@
 Attribute VB_Name = "modBA"
 '================================================================================
-' Module: modBA.bas
+' Module: modHillClimbing.bas
 ' Project: RC_RT_HCA v2.8 - Cantilever Retaining Wall Optimization
-' ?????????: ?????????????????? (Bisection Algorithm - BA) - ???¡?? functions ?? modShared
-'??????: 3.1 - Triple Bisection + ???????????????? CSV
-'?????: 2567
-
-'?????÷?????????? 3#:
-'Triple Bisection: ???????? Base, TBase, ??? tb ?¡????????? (Bisection) ??????????þ??????
-
-'HCA-style: ??????????????????? (tt, LToe) ??????????????????????? 6 ?????
-
-'Constraint (??????): ??????? tt <= tb (???? Clamp ??????????????????)
-
-'Inner Loop: ??? 20 ? Countloop ?? (????????????????? ??????÷? Bisection)
-
-'????????????? (Mid): ????????????? HCA ???????????????????? (Max)
-
-'??û???????????? 3.1:
-'??? CSV Export: ???????????????? HCA ?????ä?????????????? ????????µ????????????? (Check Valid)
-
-'?????????????? (Rejected): ???????????????????????? ??????????????? (999999999) ??????
+' Purpose: Hill Climbing Algorithm (HCA) - ???????? functions ??? modShared
+' Version: 5.1 - Fixed CSV Export (Rejected ????????????)
+' Date: 2567
+'
+' ??????????? v5.1:
+' - ????? CSV Export: ????????????? Check Valid
+' - Rejected ???????????? ?????? 999999999
 '================================================================================
 Option Explicit
+Private PairDB() As Integer, PairSP() As Integer, PairWeight() As Double
+Private PairCount As Integer
+Public CostHistory_BA() As Double
 
 '================================================================================
-' SECTION 1: Module-Level Variables
+' SECTION 1: Module-Level Variables (?????? HCA)
 '================================================================================
 
-' Current Design Indices (????? HCA)
+' Current Design Indices
 Private Currenttt As Integer
 Private Currenttb As Integer
 Private CurrentTBase As Integer
@@ -41,27 +32,11 @@ Private CurrentToeSP As Integer
 Private CurrentHeelDB As Integer
 Private CurrentHeelSP As Integer
 
-' Bisection Variables (????? Base)
-Private MinBase As Integer      ' Index ??????? Base
-Private MaxBase As Integer      ' Index **??????** Base
-Private MidBase As Integer      ' Index **?????** Base
-Private MidPrice As Double      ' ???? MidBase
+' Full design-domain bounds. HCA never contracts these ranges.
+Private FixedTbMax As Integer, FixedTBaseMax As Integer
+Private FixedBaseMin As Integer, FixedBaseMax As Integer
 
-' Bisection Variables (?????? TBase) - v2.0
-Private MinTBase As Integer     ' Index ????????? TBase
-Private MaxTBase As Integer     ' Index ????????? TBase
-Private MidTBase As Integer     ' Index ??????? TBase
-Private MidPriceTBase As Double ' ??????? MidTBase
-
-' Bisection Variables (?????? tb) - v3.0
-Private Mintb As Integer        ' Index ????????? tb
-Private Maxtb As Integer        ' Index ????????? tb
-Private Midtb As Integer        ' Index ??????? tb
-Private MidPricetb As Double    ' ??????? Midtb
-
-' Loop Counters
-Private Countloop As Long
-Private totalcount As Long
+' Cost History ?????? CostHistory_BA
 
 ' CSV Export
 Private csvAcceptData As String
@@ -69,159 +44,93 @@ Private csvLoopData As String
 Private loopCount As Long
 Private bestIterationInRun As Long
 
-' Tracking (?????????? modDataStructures)
-Public CostHistory_BA() As Double
-
 '================================================================================
-' SECTION 1.5: Helper Functions (**???¡?? Form1**)
+' SECTION 2: Initialize Design (Conservative - Max values)
 '================================================================================
 
-'--------------------------------------------------------------------------------
-' Get Concrete Price by f'c (Maha Sarakham Province)
-'--------------------------------------------------------------------------------
-Public Function GetConcretePrice_BA(fc As Integer) As Double
-    GetConcretePrice_BA = modShared.GetConcretePrice(fc)
-End Function
-
-'--------------------------------------------------------------------------------
-' Get SD40 Material Properties
-'--------------------------------------------------------------------------------
-Public Function GetSD40Material_BA(fc As Integer, _
-                                   concPrice As Double, _
-                                   steelPrice As Double) As MaterialProperties
-    GetSD40Material_BA = modShared.GetSD40Material(fc, concPrice, steelPrice)
-End Function
-
-'--------------------------------------------------------------------------------
-' Steel Price Constant
-'--------------------------------------------------------------------------------
-' Public Const STEEL_PRICE_SD40_BA As Double = 24  ' Baht/kg    ' DEAD CODE: orphan Const, no refs outside L98 (commented 20260512-121028)
-
-'================================================================================
-' SECTION 2: Initialize Design (Mid values - **????? HCA**)
-' v3.0: **????** tb Bisection bounds
-'================================================================================
-
-Private Sub InitializeCurrentDesign_BA()
-    Dim tb_max_idx As Integer, TBase_max_idx As Integer
-    Dim Base_min_idx As Integer, Base_max_idx As Integer
-    Dim LToe_min_idx As Integer, LToe_max_idx As Integer
+Private Sub InitializeCurrentDesign()
+    Dim tb_max_val As Double, TBase_max_val As Double
+    Dim Base_target As Double, LToe_target As Double
+    Dim LBase_Max_Ratio As Double
     Dim i As Integer
     
-    ' === tb: ?? Min/Max Index ??? constraint tb <= 0.12H ===
-    ' v3.0: ??????? Bisection bounds ?????? tb
-    tb_max_idx = tb_max
-    For i = tb_max To TB_MIN Step -1
-        If WP_tb(i) <= 0.12 * modShared.H Then
-            tb_max_idx = i
+    
+    ' === tb: Max = 0.12 × H ===
+    tb_max_val = 0.12 * modShared.H
+    Currenttb = TB_MIN
+    For i = modShared.tb_max To modShared.TB_MIN Step -1
+        If WP_tb(i) <= tb_max_val Then
+            Currenttb = i
             Exit For
         End If
     Next i
     
-    ' ??????? tb Bisection bounds
-    Mintb = TB_MIN
-    Maxtb = tb_max_idx
-    Midtb = (Mintb + Maxtb) / 2
-    Currenttb = Maxtb
-    
-   ' === tt: ???????????? ???? <= tb ===
-'Currenttt = (TT_MIN + TT_MAX) / 2
-
-' === tt: ???????? Max ???? <= tb ===
+    ' === tt: ???????? Max ???? <= tb ===
 Currenttt = TT_MAX
-For i = TT_MAX To TT_MIN Step -1
+For i = modShared.TT_MAX To modShared.TT_MIN Step -1
     If WP_tt(i) <= WP_tb(Currenttb) Then
         Currenttt = i
         Exit For
     End If
 Next i
 
-    If Currenttt < TT_MIN Then Currenttt = TT_MIN
-    If Currenttt > TT_MAX Then Currenttt = TT_MAX
-    ' Constraint: tt <= tb
-    If WP_tt(Currenttt) > WP_tb(Currenttb) Then
-        For i = TT_MAX To TT_MIN Step -1
-            If WP_tt(i) <= WP_tb(Currenttb) Then
-                Currenttt = i
+    ' ???? >= tt
+    If WP_tb(Currenttb) < WP_tt(Currenttt) Then
+        For i = modShared.TB_MIN To modShared.tb_max
+            If WP_tb(i) >= WP_tt(Currenttt) Then
+                Currenttb = i
                 Exit For
             End If
         Next i
     End If
     
-    ' === TBase: ?? Max Index ??? constraint TBase <= 0.15H ===
-    ' v2.0: ??????? Bisection bounds ?????? TBase
-    TBase_max_idx = TBase_max
-    For i = TBase_max To TBASE_MIN Step -1
-        If WP_TBase(i) <= 0.15 * modShared.H Then
-            TBase_max_idx = i
+    ' === TBase: Max = 0.15 × H ===
+    TBase_max_val = 0.15 * modShared.H
+    CurrentTBase = TBASE_MIN
+    For i = modShared.TBase_max To modShared.TBASE_MIN Step -1
+        If WP_TBase(i) <= TBase_max_val Then
+            CurrentTBase = i
             Exit For
         End If
     Next i
     
-    ' ??????? TBase Bisection bounds
-    MinTBase = TBASE_MIN
-    MaxTBase = TBase_max_idx
-    MidTBase = (MinTBase + MaxTBase) / 2
-    CurrentTBase = MaxTBase
+    ' === Base: 0.5H - 0.7H ===
+    Base_target = 0.7 * modShared.H
+    CurrentBase = BASE_MIN
+    For i = modShared.BASE_MAX To modShared.BASE_MIN Step -1
+        If WP_Base(i) <= Base_target Then
+            CurrentBase = i
+            Exit For
+        End If
+    Next i
     
-    ' === Base: ?? Min/Max Index ??? constraint 0.5H <= Base <= 0.7H ===
-    Base_min_idx = BASE_MIN
+    ' === LToe: 0.2 × H ===
+    LToe_target = 0.2 * modShared.H
+    CurrentLToe = LTOE_MIN
+    For i = modShared.LTOE_MAX To modShared.LTOE_MIN Step -1
+        If WP_LToe(i) <= LToe_target Then
+            CurrentLToe = i
+            Exit For
+        End If
+    Next i
+    
+    ' === ?????: Max (DB28 @ 0.10m) ===
+    CurrentStemDB = DB_MAX:  CurrentStemSP = SP_MIN
+    CurrentToeDB = DB_MAX:   CurrentToeSP = SP_MIN
+    CurrentHeelDB = DB_MAX:  CurrentHeelSP = SP_MIN
+
+    FixedTbMax = Currenttb: FixedTBaseMax = CurrentTBase
+    FixedBaseMax = CurrentBase: FixedBaseMin = BASE_MIN
     For i = BASE_MIN To BASE_MAX
-        If WP_Base(i) >= 0.5 * modShared.H Then
-            Base_min_idx = i
-            Exit For
-        End If
+        If WP_Base(i) >= 0.5 * modShared.H Then FixedBaseMin = i: Exit For
     Next i
-    
-    Base_max_idx = BASE_MAX
-    For i = BASE_MAX To BASE_MIN Step -1
-        If WP_Base(i) <= 0.7 * modShared.H Then
-            Base_max_idx = i
-            Exit For
-        End If
-    Next i
-    
-    ' ??????? Base Bisection bounds
-    MinBase = Base_min_idx
-    MaxBase = Base_max_idx
-    MidBase = (MinBase + MaxBase) / 2
-    CurrentBase = MaxBase
-    
-    ' === LToe: ?? Min/Max Index ??? constraint 0.1H <= LToe <= 0.2H ===
-    LToe_min_idx = LTOE_MIN
-    For i = LTOE_MIN To LTOE_MAX
-        If WP_LToe(i) >= 0.1 * modShared.H Then
-            LToe_min_idx = i
-            Exit For
-        End If
-    Next i
-    
-    LToe_max_idx = LTOE_MAX
-    For i = LTOE_MAX To LTOE_MIN Step -1
-        If WP_LToe(i) <= 0.2 * modShared.H Then
-            LToe_max_idx = i
-            Exit For
-        End If
-    Next i
-    
-    ' ???????????????
-    CurrentLToe = LToe_max_idx
-    
-    ' === ?????: ??????????????? ===
-    CurrentStemDB = DB_MAX
-    CurrentStemSP = SP_MIN
-    CurrentToeDB = DB_MAX
-    CurrentToeSP = SP_MIN
-    CurrentHeelDB = DB_MAX
-    CurrentHeelSP = SP_MIN
-    
 End Sub
 
 '================================================================================
 ' SECTION 3: Get Design from Current Indices
 '================================================================================
 
-Private Function GetDesignFromCurrent_BA() As Design
+Private Function GetDesignFromCurrent() As Design
     Dim d As Design
     
     d.tt = WP_tt(Currenttt)
@@ -231,7 +140,7 @@ Private Function GetDesignFromCurrent_BA() As Design
     d.LToe = WP_LToe(CurrentLToe)
     d.LHeel = d.Base - d.LToe - d.tb
     
-    ' Steel indices
+    ' Steel indices (for reference)
     d.ASst_DB = CurrentStemDB
     d.ASst_Sp = CurrentStemSP
     d.AStoe_DB = CurrentToeDB
@@ -239,28 +148,27 @@ Private Function GetDesignFromCurrent_BA() As Design
     d.ASheel_DB = CurrentHeelDB
     d.ASheel_Sp = CurrentHeelSP
     
-    GetDesignFromCurrent_BA = d
+    GetDesignFromCurrent = d
 End Function
 
 '================================================================================
-' SECTION 4: Generate Neighbor (????????????? - HCA Style)
-' v3.0: tb ??????? [Mintb, Maxtb] ??? tt <= tb
+' SECTION 4: Generate Neighbor (???????????????????)
 '================================================================================
 
-Private Sub GenerateNeighbor_BA(ByRef Newtt As Integer, ByRef Newtb As Integer, _
+Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
                                 ByRef NewTBase As Integer, ByRef NewBase As Integer, _
                                 ByRef NewLToe As Integer, _
                                 ByRef NewStemDB As Integer, ByRef NewStemSP As Integer, _
                                 ByRef NewToeDB As Integer, ByRef NewToeSP As Integer, _
                                 ByRef NewHeelDB As Integer, ByRef NewHeelSP As Integer)
 
+    ' Five one-level geometry moves plus three simultaneous coupled-steel moves.
     Dim Step As Integer, move(0 To 11) As Integer
     Dim LToe_min_idx As Integer, LToe_max_idx As Integer
     Dim i As Integer
 
-    Call DrawSearchMove(move)
+    Call DrawGeometryMove(move)
 
-    ' === ????? LToe constraint indices ===
     LToe_min_idx = LTOE_MIN
     For i = LTOE_MIN To LTOE_MAX
         If WP_LToe(i) >= 0.1 * modShared.H Then
@@ -277,98 +185,42 @@ Private Sub GenerateNeighbor_BA(ByRef Newtt As Integer, ByRef Newtb As Integer, 
         End If
     Next i
 
-    ' === tb: step = Rand(-2, 2) ?????????? [Mintb, Maxtb] ===
-    ' v3.0: ??? Bisection bounds
     Step = move(2)
     Newtb = Currenttb + Step
-    If Newtb < Mintb Then Newtb = Mintb
-    If Newtb > Maxtb Then Newtb = Maxtb
+    If Newtb < TB_MIN Then Newtb = TB_MIN
+    If Newtb > FixedTbMax Then Newtb = FixedTbMax
 
-    ' === tt: step = Rand(-2, 2) ??????? <= tb ===
-    ' v3.0: Constraint tt <= tb
     Step = move(1)
     Newtt = Currenttt + Step
     If Newtt < TT_MIN Then Newtt = TT_MIN
     If Newtt > TT_MAX Then Newtt = TT_MAX
 
-    ' Clamp tt ??? <= tb (????????!)
-    If WP_tt(Newtt) > WP_tb(Newtb) Then
-        ' ?? tt index ??????????????? <= tb
-        For i = TT_MAX To TT_MIN Step -1
-            If WP_tt(i) <= WP_tb(Newtb) Then
-                Newtt = i
-                Exit For
-            End If
-        Next i
-    End If
+    ' Do not move tt by extra levels: unchanged GeometryOK rejects tt > tb.
 
-    ' === TBase: step = Rand(-5, 5) ?????????? [MinTBase, MaxTBase] ===
-    ' v2.0: ??? Bisection bounds
     Step = move(3)
     NewTBase = CurrentTBase + Step
-    If NewTBase < MinTBase Then NewTBase = MinTBase
-    If NewTBase > MaxTBase Then NewTBase = MaxTBase
+    If NewTBase < TBASE_MIN Then NewTBase = TBASE_MIN
+    If NewTBase > FixedTBaseMax Then NewTBase = FixedTBaseMax
 
-    ' === LToe: step = Rand(-2, 2) ===
     Step = move(5)
     NewLToe = CurrentLToe + Step
     If NewLToe < LToe_min_idx Then NewLToe = LToe_min_idx
     If NewLToe > LToe_max_idx Then NewLToe = LToe_max_idx
 
-    ' === Base: step = Rand(-1, 1) ?????????? [MinBase, MaxBase] ===
     Step = move(4)
     NewBase = CurrentBase + Step
-    If NewBase < MinBase Then NewBase = MinBase
-    If NewBase > MaxBase Then NewBase = MaxBase
+    If NewBase < FixedBaseMin Then NewBase = FixedBaseMin
+    If NewBase > FixedBaseMax Then NewBase = FixedBaseMax
 
-    ' === ?????: uniform DB/SP pairs ===
+    Call PairNeighbor(CurrentStemDB, CurrentStemSP, NewStemDB, NewStemSP)
+    Call PairNeighbor(CurrentToeDB, CurrentToeSP, NewToeDB, NewToeSP)
+    Call PairNeighbor(CurrentHeelDB, CurrentHeelSP, NewHeelDB, NewHeelSP)
 
-    NewStemDB = move(6)
-    If NewStemDB < DB_MIN Then NewStemDB = DB_MIN
-    If NewStemDB > DB_MAX Then NewStemDB = DB_MAX
-
-    NewStemSP = move(7)
-    If NewStemSP < SP_MIN Then NewStemSP = SP_MIN
-    If NewStemSP > SP_MAX Then NewStemSP = SP_MAX
-
-    NewToeDB = move(8)
-    If NewToeDB < DB_MIN Then NewToeDB = DB_MIN
-    If NewToeDB > DB_MAX Then NewToeDB = DB_MAX
-
-    NewToeSP = move(9)
-    If NewToeSP < SP_MIN Then NewToeSP = SP_MIN
-    If NewToeSP > SP_MAX Then NewToeSP = SP_MAX
-
-    NewHeelDB = move(10)
-    If NewHeelDB < DB_MIN Then NewHeelDB = DB_MIN
-    If NewHeelDB > DB_MAX Then NewHeelDB = DB_MAX
-
-    NewHeelSP = move(11)
-    If NewHeelSP < SP_MIN Then NewHeelSP = SP_MIN
-    If NewHeelSP > SP_MAX Then NewHeelSP = SP_MAX
-
-
-    ' Keep components outside the selected move at the current state.
-    If Not SearchMoveIncludes(move(0), 1) Then
-        Newtt = Currenttt: Newtb = Currenttb
-    End If
-    If Not SearchMoveIncludes(move(0), 2) Then
-        NewTBase = CurrentTBase: NewBase = CurrentBase: NewLToe = CurrentLToe
-    End If
-    If Not SearchMoveIncludes(move(0), 3) Then
-        NewStemDB = CurrentStemDB: NewStemSP = CurrentStemSP
-    End If
-    If Not SearchMoveIncludes(move(0), 4) Then
-        NewToeDB = CurrentToeDB: NewToeSP = CurrentToeSP
-    End If
-    If Not SearchMoveIncludes(move(0), 5) Then
-        NewHeelDB = CurrentHeelDB: NewHeelSP = CurrentHeelSP
-    End If
 End Sub
 
 '================================================================================
-' SECTION 5: Main Bisection Optimization Function
-' v3.1: Triple Bisection + Fixed CSV Export
+' SECTION 5: Hill Climbing Algorithm (Main Optimization Function)
+' v5.1: Fixed CSV Export - ????????????? Check Valid
 '================================================================================
 
 Public Function BisectionOptimization(MaxIterations As Long, _
@@ -393,17 +245,17 @@ Public Function BisectionOptimization(MaxIterations As Long, _
                        Optional sharedToeSP As Integer = 0, _
                        Optional sharedHeelDB As Integer = 0, _
                        Optional sharedHeelSP As Integer = 0, _
-                       Optional RandomSeed As Long = 12345, _
                        Optional TrialNumber As Long = 1) As Design
 
+    Dim lo(1 To 3) As Integer, hi(1 To 3) As Integer
+    Dim phase As Long, phaseMoves As Long, needMidpoint As Boolean
+    Dim referenceCost As Double
     Dim current As Design, neighbor As Design
     Dim currentCost As Double, neighborCost As Double, currentValid As Boolean, ok As Boolean
     Dim saved(1 To 11) As Integer
     Dim Newtt As Integer, Newtb As Integer, NewTBase As Integer, NewBase As Integer, NewLToe As Integer
     Dim NewStemDB As Integer, NewStemSP As Integer, NewToeDB As Integer, NewToeSP As Integer
     Dim NewHeelDB As Integer, NewHeelSP As Integer, i As Long, j As Integer
-    Dim rootMintb As Integer, rootMaxtb As Integer, rootMinTBase As Integer, rootMaxTBase As Integer
-    Dim rootMinBase As Integer, rootMaxBase As Integer, innerIterations As Long, roundValid As Boolean
     modShared.H = wall_height: modShared.H1 = backfill_height
     modShared.gamma_soil = soil_gamma: modShared.gamma_concrete = concrete_gamma
     modShared.phi = friction_angle: modShared.mu = friction_coef
@@ -411,9 +263,10 @@ Public Function BisectionOptimization(MaxIterations As Long, _
     modShared.currentMaterial = material
     modShared.currentWSD = CalculateWSDParameters(material.fy, material.fc)
     Call InitializeArrays
+    Call InitializePairOptions
     ReDim CostHistory_BA(1 To MaxIterations)
-    Call BeginSearch(MaxIterations, RandomSeed, "BA", TrialNumber)
-    Call InitializeCurrentDesign_BA
+    Call BeginSearch(MaxIterations, "BA", TrialNumber)
+    Call InitializeCurrentDesign
     If useSharedInit Then
         If sharedtt < TT_MIN Or sharedtt > TT_MAX Then Err.Raise 5, , "Invalid shared tt index"
         Currenttt = sharedtt
@@ -438,33 +291,49 @@ Public Function BisectionOptimization(MaxIterations As Long, _
         If sharedHeelSP < SP_MIN Or sharedHeelSP > SP_MAX Then Err.Raise 5, , "Invalid shared HeelSP index"
         CurrentHeelSP = sharedHeelSP
     End If
-    rootMintb = Mintb: rootMaxtb = Maxtb
-    rootMinTBase = MinTBase: rootMaxTBase = MaxTBase
-    rootMinBase = MinBase: rootMaxBase = MaxBase
-    MidPricetb = NO_SOLUTION_COST: MidPriceTBase = NO_SOLUTION_COST: MidPrice = NO_SOLUTION_COST
-    Countloop = 0
-    current = GetDesignFromCurrent_BA()
+    current = GetDesignFromCurrent()
     currentValid = EvaluateCandidate(current, "initial", currentCost)
     If Not currentValid Then currentCost = NO_SOLUTION_COST
     CostHistory_BA(EvaluationCount) = RunBestCost
+    lo(1) = TB_MIN: hi(1) = FixedTbMax
+    lo(2) = TBASE_MIN: hi(2) = FixedTBaseMax
+    lo(3) = FixedBaseMin: hi(3) = FixedBaseMax
+    phase = 1: phaseMoves = 0: needMidpoint = True
+    referenceCost = NO_SOLUTION_COST
     Do While EvaluationCount < MaxIterations
-        Countloop = Countloop + 1
-        If Countloop > 1 Then
-            Currenttb = Midtb: CurrentTBase = MidTBase: CurrentBase = MidBase
-            If WP_tt(Currenttt) > WP_tb(Currenttb) Then
-                For j = TT_MAX To TT_MIN Step -1
-                    If WP_tt(j) <= WP_tb(Currenttb) Then Currenttt = j: Exit For
-                Next j
+        If needMidpoint Then
+            saved(1) = Currenttt
+            saved(2) = Currenttb
+            saved(3) = CurrentTBase
+            saved(4) = CurrentBase
+            saved(5) = CurrentLToe
+            saved(6) = CurrentStemDB
+            saved(7) = CurrentStemSP
+            saved(8) = CurrentToeDB
+            saved(9) = CurrentToeSP
+            saved(10) = CurrentHeelDB
+            saved(11) = CurrentHeelSP
+            Call MoveToCenter(lo, hi)
+            neighbor = GetDesignFromCurrent()
+            ok = EvaluateCandidate(neighbor, "midpoint", neighborCost)
+            If ok And (Not currentValid Or neighborCost < currentCost) Then
+                current = neighbor: currentCost = neighborCost: currentValid = True
+            Else
+                Currenttt = saved(1)
+                Currenttb = saved(2)
+                CurrentTBase = saved(3)
+                CurrentBase = saved(4)
+                CurrentLToe = saved(5)
+                CurrentStemDB = saved(6)
+                CurrentStemSP = saved(7)
+                CurrentToeDB = saved(8)
+                CurrentToeSP = saved(9)
+                CurrentHeelDB = saved(10)
+                CurrentHeelSP = saved(11)
             End If
-            current = GetDesignFromCurrent_BA()
-            currentValid = EvaluateCandidate(current, "reset", currentCost)
-            If Not currentValid Then currentCost = NO_SOLUTION_COST
             CostHistory_BA(EvaluationCount) = RunBestCost
-        End If
-        roundValid = currentValid
-        innerIterations = 20 * Countloop
-        For i = 1 To innerIterations
-            If EvaluationCount >= MaxIterations Then Exit For
+            phaseMoves = 0: needMidpoint = False
+        Else
         saved(1) = Currenttt
         saved(2) = Currenttb
         saved(3) = CurrentTBase
@@ -476,7 +345,7 @@ Public Function BisectionOptimization(MaxIterations As Long, _
         saved(9) = CurrentToeSP
         saved(10) = CurrentHeelDB
         saved(11) = CurrentHeelSP
-        Call GenerateNeighbor_BA(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
+        Call GenerateNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
         Currenttt = Newtt
         Currenttb = Newtb
         CurrentTBase = NewTBase
@@ -488,7 +357,7 @@ Public Function BisectionOptimization(MaxIterations As Long, _
         CurrentToeSP = NewToeSP
         CurrentHeelDB = NewHeelDB
         CurrentHeelSP = NewHeelSP
-        neighbor = GetDesignFromCurrent_BA()
+        neighbor = GetDesignFromCurrent()
         ok = EvaluateCandidate(neighbor, "neighbor", neighborCost)
         If ok And (Not currentValid Or neighborCost < currentCost) Then
             current = neighbor: currentCost = neighborCost: currentValid = True
@@ -506,49 +375,78 @@ Public Function BisectionOptimization(MaxIterations As Long, _
             CurrentHeelSP = saved(11)
         End If
         CostHistory_BA(EvaluationCount) = RunBestCost
-        DoEvents
-        If ok Then roundValid = True
-        Next i
-        ' Preserve the original THREE-variable heuristic, not a monotone proof.
-        ' Invalid rounds supply no evidence for removing any part of the domain.
-        If Not roundValid Or (Mintb = Maxtb And MinTBase = MaxTBase And MinBase = MaxBase) Then
-            Mintb = rootMintb: Maxtb = rootMaxtb
-            MinTBase = rootMinTBase: MaxTBase = rootMaxTBase
-            MinBase = rootMinBase: MaxBase = rootMaxBase
-            MidPricetb = NO_SOLUTION_COST: MidPriceTBase = NO_SOLUTION_COST: MidPrice = NO_SOLUTION_COST
-            ' Reopen bounds without a full-domain random jump.
-            ' Resume from current; all random moves use GenerateNeighbor_BA.
-            Midtb = Currenttb: MidTBase = CurrentTBase: MidBase = CurrentBase
-            RunRecoveryCount = RunRecoveryCount + 1
-        Else
-            If currentCost < MidPricetb Then
-                Maxtb = Currenttb: MidPricetb = currentCost
-            Else
-                Mintb = Currenttb
-            End If
-            If currentCost < MidPriceTBase Then
-                MaxTBase = CurrentTBase: MidPriceTBase = currentCost
-            Else
-                MinTBase = CurrentTBase
-            End If
-            If currentCost < MidPrice Then
-                MaxBase = CurrentBase: MidPrice = currentCost
-            Else
-                MinBase = CurrentBase
-            End If
-            Midtb = (Mintb + Maxtb) \ 2
-            MidTBase = (MinTBase + MaxTBase) \ 2
-            MidBase = (MinBase + MaxBase) \ 2
+        phaseMoves = phaseMoves + 1
+        If phaseMoves = 20 * phase And EvaluationCount < MaxIterations Then
+            Call UpdateCenterBounds(lo, hi, currentCost, currentValid, referenceCost)
+            phase = phase + 1: needMidpoint = True
         End If
+        End If
+        DoEvents
     Loop
     Call FinishSearch
     BisectionOptimization = RunBest
 End Function
 
-'================================================================================
-' SECTION 6: CSV Export Functions (?????? HCA)
-' v3.1: ???????????????????? HCA
-'================================================================================
+
+' EXPERIMENT: center relocation + full-domain HCA, adapted from the supplied column.
+' All three centers change together. Center bounds do NOT clamp random proposals.
+' Every relocated state is evaluated and counted; global best never resets.
+
+Private Function NearestCenter(values() As Double, lo As Integer, hi As Integer) As Integer
+    Dim center As Double, distance As Double, bestDistance As Double, i As Integer
+    center = (values(lo) + values(hi)) / 2
+    bestDistance = 1E+30
+    For i = lo To hi
+        distance = Abs(values(i) - center)
+        ' At a numerical tie use the lower existing size; no new design sizes.
+        If distance < bestDistance - 0.000000000001 Then
+            NearestCenter = i: bestDistance = distance
+        End If
+    Next i
+End Function
+
+Private Sub MoveToCenter(lo() As Integer, hi() As Integer)
+    Dim i As Integer
+    Currenttb = NearestCenter(WP_tb, lo(1), hi(1))
+    CurrentTBase = NearestCenter(WP_TBase, lo(2), hi(2))
+    CurrentBase = NearestCenter(WP_Base, lo(3), hi(3))
+    ' Preserve the wall's existing tt <= tb compatibility repair.
+    If WP_tt(Currenttt) > WP_tb(Currenttb) Then
+        For i = TT_MAX To TT_MIN Step -1
+            If WP_tt(i) <= WP_tb(Currenttb) Then Currenttt = i: Exit For
+        Next i
+    End If
+End Sub
+
+Private Sub UpdateCenterBounds(lo() As Integer, hi() As Integer, cost As Double, valid As Boolean, referenceCost As Double)
+    Dim axis As Integer, swap As Integer
+    If Not valid Then Exit Sub
+    If cost < referenceCost Then
+        referenceCost = cost
+        hi(1) = Currenttb: hi(2) = CurrentTBase: hi(3) = CurrentBase
+    Else
+        lo(1) = Currenttb: lo(2) = CurrentTBase: lo(3) = CurrentBase
+    End If
+    ' A global-domain walk may cross the old center bounds. Keep them ordered.
+    For axis = 1 To 3
+        If lo(axis) > hi(axis) Then
+            swap = lo(axis): lo(axis) = hi(axis): hi(axis) = swap
+        End If
+    Next axis
+End Sub
+
+Public Function GetConcretePrice_BA(fc As Integer) As Double
+    GetConcretePrice_BA = modShared.GetConcretePrice(fc)
+End Function
+
+'--------------------------------------------------------------------------------
+' Get SD40 Material Properties
+'--------------------------------------------------------------------------------
+Public Function GetSD40Material_BA(fc As Integer, _
+                                   concPrice As Double, _
+                                   steelPrice As Double) As MaterialProperties
+    GetSD40Material_BA = modShared.GetSD40Material(fc, concPrice, steelPrice)
+End Function
 
 Public Sub InitCSVExport_BA()
     csvAcceptData = "No.,Rejected,Passed,Passed and Better value" & vbCrLf
@@ -593,14 +491,88 @@ Public Sub LogLoopResult_BA(bestPrice As Double)
 End Sub
 
 Public Sub SaveAcceptCSV_BA(wallHeight As Double)
-    LastAcceptCSVPath = WriteExportCSV("accept-BA-H" & Replace$(CStr(wallHeight), ",", "."), csvAcceptData)
+    LastAcceptCSVPath = WriteExportCSV("accept-BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), csvAcceptData, True)
 End Sub
 
 Public Sub SaveLoopPriceCSV_BA(wallHeight As Double)
-    LastAcceptCSVPath = WriteExportCSV("accept-BA-H" & Replace$(CStr(wallHeight), ",", "."), csvAcceptData, True)
-    LastLoopCSVPath = WriteExportCSV("loopPrice-BA-H" & Replace$(CStr(wallHeight), ",", "."), csvLoopData, True)
+    LastLoopCSVPath = WriteExportCSV("loopPrice-BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), csvLoopData, True)
 End Sub
 
-'================================================================================
-' END OF MODULE: modBA.bas v3.1 - Triple Bisection + Fixed CSV Export
-'================================================================================
+
+' Only sampler representation changes; all twenty original DB/SP pairs remain.
+Private Sub InitializePairOptions()
+    Dim db As Integer, sp As Integer, i As Integer, j As Integer
+    Dim tempIndex As Integer, tempWeight As Double
+    PairCount = (DB_MAX - DB_MIN + 1) * (SP_MAX - SP_MIN + 1)
+    ReDim PairDB(1 To PairCount): ReDim PairSP(1 To PairCount): ReDim PairWeight(1 To PairCount)
+    i = 0
+    For db = DB_MIN To DB_MAX
+        For sp = SP_MIN To SP_MAX
+            i = i + 1: PairDB(i) = db: PairSP(i) = sp
+            PairWeight(i) = ProvidedSteelWeight(db, sp, 1#)
+        Next sp
+    Next db
+    For i = 1 To PairCount - 1
+        For j = i + 1 To PairCount
+            If PairWeight(j) < PairWeight(i) Or _
+               (PairWeight(j) = PairWeight(i) And PairDB(j) < PairDB(i)) Or _
+               (PairWeight(j) = PairWeight(i) And PairDB(j) = PairDB(i) And PairSP(j) < PairSP(i)) Then
+                tempWeight = PairWeight(i): PairWeight(i) = PairWeight(j): PairWeight(j) = tempWeight
+                tempIndex = PairDB(i): PairDB(i) = PairDB(j): PairDB(j) = tempIndex
+                tempIndex = PairSP(i): PairSP(i) = PairSP(j): PairSP(j) = tempIndex
+            End If
+        Next j
+    Next i
+End Sub
+
+Private Function BuildPairChoices(db As Integer, sp As Integer, choices() As Integer) As Integer
+    Dim rank As Integer, i As Integer, count As Integer
+    For i = 1 To PairCount
+        If PairDB(i) = db And PairSP(i) = sp Then rank = i: Exit For
+    Next i
+    If rank = 0 Then Err.Raise 5, , "Unknown current steel pair"
+    ReDim choices(1 To PairCount)
+    For i = 1 To PairCount
+        If (Abs(PairDB(i) - db) <= 1 And Abs(PairSP(i) - sp) <= 1) Or Abs(i - rank) <= 1 Then
+            count = count + 1: choices(count) = i
+        End If
+    Next i
+    BuildPairChoices = count
+End Function
+
+Private Sub PairNeighbor(db As Integer, sp As Integer, newDB As Integer, newSP As Integer)
+    Dim choices() As Integer, count As Integer, ticket As Integer, i As Integer
+    count = BuildPairChoices(db, sp, choices)
+    newDB = db: newSP = sp
+    If count <= 1 Then Exit Sub
+    ' Independent draw for every member: half stay, half select another pair.
+    ' All previous non-self choices remain equally likely and reachable.
+    ticket = Rand(1, 2 * (count - 1))
+    If ticket <= count - 1 Then Exit Sub
+    ticket = ticket - (count - 1)
+    For i = 1 To count
+        If PairDB(choices(i)) <> db Or PairSP(choices(i)) <> sp Then
+            ticket = ticket - 1
+            If ticket = 0 Then
+                newDB = PairDB(choices(i)): newSP = PairSP(choices(i))
+                Exit Sub
+            End If
+        End If
+    Next i
+    Err.Raise 5, , "Invalid coupled-pair draw"
+End Sub
+
+Private Sub DrawGeometryMove(move() As Integer)
+    move(2) = GeometryStep(): move(1) = GeometryStep()
+    move(3) = GeometryStep(): move(5) = GeometryStep(): move(4) = GeometryStep()
+End Sub
+
+Private Function GeometryStep() As Integer
+    ' Six equiprobable tickets: one step down, four stay, one step up.
+    ' Every geometry variable draws independently before the full evaluation.
+    Select Case Rand(1, 6)
+        Case 1: GeometryStep = -1
+        Case 6: GeometryStep = 1
+        Case Else: GeometryStep = 0
+    End Select
+End Function

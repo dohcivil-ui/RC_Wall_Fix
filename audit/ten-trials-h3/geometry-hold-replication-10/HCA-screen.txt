@@ -1,0 +1,103 @@
+=== MATERIAL PROPERTIES ===
+Steel: SD40 (fy=4000, fs=1700 kg/cm^2)
+Concrete f'c: 240 kg/cm^2 (fc=108.00 kg/cm^2)
+WSD n=Es/Ec: 8.72
+k_bal=0.357, j_bal=0.881, R_bal=16.96 kg/cm^2
+Concrete price: 2,430.00 Baht/m3
+Steel price: 24.00 Baht/kg
+-------------------------------
+=== OPTIMIZATION RESULTS ===
+Algorithm: HCA
+Best Found at Trial: 4
+Best Found at Evaluation: 201
+Validation: PASS (configured checks)
+-------------------------------
+=== TOTAL COST ===
+Total: 2,942.34 Baht/m
+Concrete + main steel only
+-------------------------------
+=== DIMENSIONS ===
+H=3.00 m, H1=1.20 m
+Stem_top (tt): 0.20 m
+Stem_bottom (tb): 0.20 m
+Base_width (B): 1.50 m
+Base_thickness: 0.30 m
+Toe: 0.40 m
+Heel: 0.90 m
+Stem height H-TBase: 2.70 m
+Clear cover: 0.075 m
+-------------------------------
+=== EARTH PRESSURES ===
+Ka=0.333, Kp=3.000
+Full wall: active + passive (per m)
+Pa=2.70 ton, Pp=3.89 ton
+-------------------------------
+=== WEIGHTS ===
+Full weights, per metre of wall
+W1 (Soil on Toe): 0.65 ton
+W2 (Soil on Heel): 4.37 ton
+W3 (Stem): 1.30 ton
+W4 (Base): 1.08 ton
+W_total: 7.40 ton
+-------------------------------
+=== STEEL REINFORCEMENT ===
+
+--- Stem ---
+Moment (envelope): 1.31 ton-m
+Steel: DB12 @ 0.15 m
+As_min=4.18, As_prov=7.54 cm2/m
+Effective depth: 0.119 m
+
+--- Toe ---
+Moment (envelope): 0.30 ton-m
+Steel: DB12 @ 0.15 m
+As_min=6.00, As_prov=7.54 cm2/m
+Effective depth: 0.219 m
+
+--- Heel ---
+Moment (envelope): 0.63 ton-m
+Steel: DB12 @ 0.15 m
+As_min=6.00, As_prov=7.54 cm2/m
+Effective depth: 0.219 m
+-------------------------------
+=== SAFETY FACTORS ===
+Minimum over 16 dead-load cases
+FS_Overturning: 2.52 >= 2.00 PASS
+FS_Sliding: 2.84 >= 1.50 PASS
+FS_Bearing: 4.70 >= 1.00 PASS
+Bearing ratio = allowable qa / q_max
+-------------------------------
+=== BEARING CAPACITY ===
+q_max (16-case envelope): 6.39 ton/m2
+Allowable qa: 30.00 ton/m2
+--- Full-weight case ---
+Eccentricity (e): 0.069 m
+Positive e points toward toe
+q_max=6.30, q_min=3.56 ton/m2
+-------------------------------
+=== MEMBER STRESSES ===
+Envelope actual / allowable (kg/cm^2)
+--- Stem ---
+Concrete: 72.60 / 108.00
+Steel: 1614.07 / 1700.00
+Shear: 0.92 / 4.52
+--- Toe ---
+Concrete: 6.26 / 108.00
+Steel: 197.29 / 1700.00
+Shear: 0.67 / 4.52
+--- Heel ---
+Concrete: 12.96 / 108.00
+Steel: 408.20 / 1700.00
+Shear: 0.53 / 4.52
+-------------------------------
+=== NOTES ===
+As_min is minimum steel, not flexural As_req.
+Flexure is checked using the actual bars.
+No secondary steel, anchorage, laps or formwork.
+Basis: PROJECT_WSD_ACI99_V3_MAIN_ONLY
+
+CSV output: C:\reserch 69\RC_Wall_Fix\audit\ten-trials-h3\geometry-hold-replication-10\output
+accept CSV (last trial): C:\reserch 69\RC_Wall_Fix\audit\ten-trials-h3\geometry-hold-replication-10\output\accept-HCA-H3.csv
+loopPrice CSV (all trials): C:\reserch 69\RC_Wall_Fix\audit\ten-trials-h3\geometry-hold-replication-10\output\loopPrice-HCA-H3.csv
+Budget includes initial/reset/neighbor evaluations.
+

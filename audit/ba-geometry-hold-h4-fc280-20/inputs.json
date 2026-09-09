@@ -1,0 +1,19 @@
+{
+  "H_m": 4,
+  "fc_kg_cm2": 280,
+  "trials_per_method": 20,
+  "evaluation_budget_per_trial": 5000,
+  "H1_m": 1.2,
+  "gamma_soil": 1.8,
+  "gamma_concrete": 2.4,
+  "phi_deg": 30,
+  "mu": 0.6,
+  "qa": 30,
+  "cover_GUI_cm": 7.5,
+  "methods": [
+    "BA",
+    "HCA"
+  ],
+  "batch_directory": "audit/parameter-trials/h4-fc280-20",
+  "target_definition": "Minimum valid cost observed symmetrically across this entire batch, using existing ten-decimal trace display; exact Double best checked separately. Not a proven global optimum."
+}

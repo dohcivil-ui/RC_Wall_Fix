@@ -1,0 +1,31 @@
+PASS isolated output path
+PASS BA source accept header
+PASS BA exact accept filename
+PASS BA complete accept sample bytes reproduced
+PASS BA replayed sample row count only
+PASS BA source loopPrice header
+PASS BA exact loopPrice filename
+PASS BA complete loopPrice sample bytes reproduced
+PASS BA replayed all sample summary rows
+PASS BA summary save preserves last accept
+PASS HCA source accept header
+PASS HCA exact accept filename
+PASS HCA complete accept sample bytes reproduced
+PASS HCA replayed sample row count only
+PASS HCA source loopPrice header
+PASS HCA exact loopPrice filename
+PASS HCA complete loopPrice sample bytes reproduced
+PASS HCA replayed all sample summary rows
+PASS HCA summary save preserves last accept
+PASS no redundant last-trial accept archive
+PASS no combined acceptRuns files
+PASS BA names use actual H and fc
+PASS BA no-solution summary retained with blank price
+PASS BA no-solution rejection column retained
+PASS HCA names use actual H and fc
+PASS HCA no-solution summary retained with blank price
+PASS HCA no-solution rejection column retained
+CHECKS=27
+FAILURES=0
+OPTIMIZER_RUNS=0
+MODE=CSV_FIXTURE_REPLAY_ONLY

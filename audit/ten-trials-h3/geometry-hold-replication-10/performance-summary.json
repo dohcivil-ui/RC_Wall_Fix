@@ -1,0 +1,44 @@
+{
+  "BA": {
+    "n": 10,
+    "target_attainment": 10,
+    "failures_to_target": 0,
+    "mean_effort_all_runs": 283,
+    "sd_effort_all_runs": 160.4029647827967,
+    "mean_target_first_successes": 283,
+    "sd_target_first_successes": 160.4029647827967,
+    "median_target_first_successes": 242.0,
+    "mean_final_cost": 2942.34192,
+    "sd_final_cost": 0.0,
+    "attainment_by_budget": {
+      "100": 0,
+      "250": 6,
+      "500": 9,
+      "1000": 10,
+      "2500": 10,
+      "5000": 10
+    }
+  },
+  "HCA": {
+    "n": 10,
+    "target_attainment": 10,
+    "failures_to_target": 0,
+    "mean_effort_all_runs": 382,
+    "sd_effort_all_runs": 170.76950026928762,
+    "mean_target_first_successes": 382,
+    "sd_target_first_successes": 170.76950026928762,
+    "median_target_first_successes": 316.0,
+    "mean_final_cost": 2942.34192,
+    "sd_final_cost": 0.0,
+    "attainment_by_budget": {
+      "100": 0,
+      "250": 2,
+      "500": 8,
+      "1000": 10,
+      "2500": 10,
+      "5000": 10
+    }
+  },
+  "relative_effort_reduction_percent": 25.916230366492144,
+  "replication_trigger_met": true
+}

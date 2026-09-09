@@ -286,8 +286,7 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
                        Optional sharedToeSP As Integer = 0, _
                        Optional sharedHeelDB As Integer = 0, _
                        Optional sharedHeelSP As Integer = 0, _
-                       Optional RandomSeed As Long = 12345, _
-                       Optional TrialNumber As Long = 1) As Design
+                       Optional TrialNumber As Long = 1, Optional ReportAsBA As Boolean = False) As Design
 
     Dim current As Design, neighbor As Design
     Dim currentCost As Double, neighborCost As Double, currentValid As Boolean, ok As Boolean
@@ -303,7 +302,12 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
     modShared.currentWSD = CalculateWSDParameters(material.fy, material.fc)
     Call InitializeArrays
     ReDim modDataStructures.CostHistory(1 To MaxIterations)
-    Call BeginSearch(MaxIterations, RandomSeed, "HCA", TrialNumber)
+    ' Reporting only: both buttons use the unchanged HCA search below.
+    If ReportAsBA Then
+        Call BeginSearch(MaxIterations, "BA", TrialNumber)
+    Else
+        Call BeginSearch(MaxIterations, "HCA", TrialNumber)
+    End If
     Call InitializeCurrentDesign
     If useSharedInit Then
         If sharedtt < TT_MIN Or sharedtt > TT_MAX Then Err.Raise 5, , "Invalid shared tt index"
@@ -428,12 +432,11 @@ Public Sub LogLoopResult(bestPrice As Double)
 End Sub
 
 Public Sub SaveAcceptCSV(wallHeight As Double)
-    LastAcceptCSVPath = WriteExportCSV("accept-HCA-H" & Replace$(CStr(wallHeight), ",", "."), csvAcceptData)
+    LastAcceptCSVPath = WriteExportCSV("accept-HCA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), csvAcceptData, True)
 End Sub
 
 Public Sub SaveLoopPriceCSV(wallHeight As Double)
-    LastAcceptCSVPath = WriteExportCSV("accept-HCA-H" & Replace$(CStr(wallHeight), ",", "."), csvAcceptData, True)
-    LastLoopCSVPath = WriteExportCSV("loopPrice-HCA-H" & Replace$(CStr(wallHeight), ",", "."), csvLoopData, True)
+    LastLoopCSVPath = WriteExportCSV("loopPrice-HCA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), csvLoopData, True)
 End Sub
 
 '================================================================================

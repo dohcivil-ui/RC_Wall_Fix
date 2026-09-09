@@ -1,0 +1,26 @@
+OK: isolated output root
+OK: BA no run folder
+OK: BA invalid candidate and evaluation count
+OK: BA no implicit summary
+OK: BA fixed accept name
+OK: BA CSV categories and zero-based indices
+OK: BA no run folder
+OK: BA invalid candidate and evaluation count
+OK: BA no implicit summary
+OK: BA fixed accept name
+OK: BA CSV categories and zero-based indices
+OK: BA fixed loop name
+OK: BA loop rows retained
+OK: HCA no run folder
+OK: HCA invalid candidate and evaluation count
+OK: HCA no implicit summary
+OK: HCA fixed accept name
+OK: HCA CSV categories and zero-based indices
+OK: HCA no run folder
+OK: HCA invalid candidate and evaluation count
+OK: HCA no implicit summary
+OK: HCA fixed accept name
+OK: HCA CSV categories and zero-based indices
+OK: HCA fixed loop name
+OK: HCA loop rows retained
+FAILURES=0

@@ -1,0 +1,32 @@
+{
+  "authorization": "User explicitly authorized applying the code if the H5/fc320 twenty-per-method comparison again supports overall advantage.",
+  "observed_reference": 8538.41892,
+  "BA_attainment": 11,
+  "HCA_attainment": 4,
+  "complete_sample_effort_reduction_percent": 37.421484941214366,
+  "SD_capped_effort_BA": 2141.777011219766,
+  "SD_capped_effort_HCA": 1379.225873643007,
+  "SD_caveat": "BA capped-effort SD is higher; disclosed. User treats SD as supporting evidence, not a mandatory lower-than-HCA gate.",
+  "SD_final_price_BA": 40.23723546508009,
+  "SD_final_price_HCA": 115.61871393459661,
+  "changed_root_files": [
+    "modBA.bas",
+    "Form1.frm"
+  ],
+  "source_hashes_after": {
+    "modEnhancedValidation.bas": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6",
+    "modGraphing.bas": "4dd8ada14466ffc5aa4ae981a83fcf45b3a6d54df5272071f5bf19ee7be20b92",
+    "Form1.frm": "32e69a6df2ac23baffb3fa00bb7f774b5ba75b6fe690ac65495e6f9328e852be",
+    "frmBestDesign.frm": "fcf34f54a4dd45c3776acbde78ffc7b1f90274973ca120f4f92c6e3b4293c448",
+    "modWSD.bas": "4d6fe3009b8ecdac6fd8216c5dd83a9b6766fc9e2409de64e3861ba27827185e",
+    "modDataStructures.bas": "bf278662ac062f6ecaaee0b7f0262855963592e04bbdd120bf495c85c2d1268b",
+    "modShared.bas": "af40ec0acbfb1c897929db7507dde8529ec9b441c5b7311ff2544c26db0fae32",
+    "modBatch.bas": "1343e0c74f80e2d2f99d2617c455e7c7dbf731c01a9d17d66e7a4862d82b06e8",
+    "modBA.bas": "2ab871c6ec13062ca23a80a4bbed93caf67a75e2bc4e7bb5547f62b526ced8f7",
+    "modHillClimbing.bas": "ddd0991257675844898e9ddc251beacff9ad1f9d1d1264f72d5e65768b068922",
+    "modProjectChecks.bas": "11f197c69e07189f469170950f19011c92cdf3d792149e9b946706ebe647df44"
+  },
+  "compile_project": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-geometry-hold-installation\\production\\Production.vbp",
+  "root_executable_replaced": false,
+  "new_performance_trials_after_install": 0
+}

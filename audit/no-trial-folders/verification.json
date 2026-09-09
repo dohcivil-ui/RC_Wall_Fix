@@ -1,0 +1,20 @@
+{
+  "only_archive_directory": true,
+  "exact_primary_files": true,
+  "BA_both_trial_copies_preserved": true,
+  "HCA_both_trial_copies_preserved": true,
+  "no_detailed_reports": true,
+  "result_csv_git_status_unchanged": true,
+  "Form1.frm_non_ascii_preserved": true,
+  "Form1.frm_crlf_no_bom": true,
+  "modBA.bas_non_ascii_preserved": true,
+  "modBA.bas_crlf_no_bom": true,
+  "modHillClimbing.bas_non_ascii_preserved": true,
+  "modHillClimbing.bas_crlf_no_bom": true,
+  "modProjectChecks.bas_non_ascii_preserved": true,
+  "modProjectChecks.bas_crlf_no_bom": true,
+  "modShared.bas_non_ascii_preserved": true,
+  "modShared.bas_crlf_no_bom": true,
+  "modBA.bas_only_export_argument_changed": true,
+  "modHillClimbing.bas_only_export_argument_changed": true
+}
