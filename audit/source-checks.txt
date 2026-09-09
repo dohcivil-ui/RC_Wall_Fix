@@ -1,4 +1,5 @@
 BA original neighbor routine unchanged
+BA recovery reopens bounds at current; no random calls outside the HCA-equivalent neighbor generator
 HCA matches BA draw order, step sizes and repairs with full bounds; final steel sweep removed
 BA still has only tb, TBase, Base bisection bounds
 Original unit-price and bar-mass primitives unchanged; project detail quantities use modProjectChecks

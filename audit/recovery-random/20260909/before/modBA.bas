@@ -503,10 +503,9 @@ Public Function BisectionOptimization(MaxIterations As Long, _
             MinTBase = rootMinTBase: MaxTBase = rootMaxTBase
             MinBase = rootMinBase: MaxBase = rootMaxBase
             MidPricetb = NO_SOLUTION_COST: MidPriceTBase = NO_SOLUTION_COST: MidPrice = NO_SOLUTION_COST
-            ' Reopen bounds without a full-domain random jump.
-            ' Resume from current; all random moves use GenerateNeighbor_BA.
-            Midtb = Currenttb: MidTBase = CurrentTBase: MidBase = CurrentBase
+            Midtb = Rand(Mintb, Maxtb): MidTBase = Rand(MinTBase, MaxTBase): MidBase = Rand(MinBase, MaxBase)
             RunRecoveryCount = RunRecoveryCount + 1
+            Call RecoveryCheck.RecordRecovery(Currenttb, CurrentTBase, CurrentBase, Midtb, MidTBase, MidBase)
         Else
             If currentCost < MidPricetb Then
                 Maxtb = Currenttb: MidPricetb = currentCost

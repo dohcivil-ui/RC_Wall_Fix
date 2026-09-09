@@ -1,0 +1,21 @@
+
+Algorithm : SHA256
+Hash      : 1CF1A874B719D4A7300ECBF89C8CFD22DAA753AAFC17D3A0C9A3C793E2124B0B
+Path      : C:\reserch 69\RC_Wall_Fix\modBA.bas
+
+Algorithm : SHA256
+Hash      : B4ED31FD8CB242A73BE3F072C6ACC43EC8BCC17E54C36056BB9562E86FFB510C
+Path      : C:\reserch 69\RC_Wall_Fix\modHillClimbing.bas
+
+Algorithm : SHA256
+Hash      : DA78A729B5EA0A3138C223C9AC2BEBE245EB151EF3626CF82F3612FA7776ECA7
+Path      : C:\reserch 69\RC_Wall_Fix\modShared.bas
+
+Algorithm : SHA256
+Hash      : 2E073EFE2F0EDF11F13E295DEA60636C0B78878F34CF80F4C8A133B25046F39E
+Path      : C:\reserch 69\RC_Wall_Fix\audit\recovery-random\20260909\after\MainCompile.exe
+
+Algorithm : SHA256
+Hash      : C977F6ABF958740C04B90B4622E60C424D178A92DF6E6D380C34087AA5630D16
+Path      : C:\reserch 69\RC_Wall_Fix\audit\recovery-random\20260909\after\RecoveryCheck.exe
+

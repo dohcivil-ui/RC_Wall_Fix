@@ -507,6 +507,7 @@ Public Function BisectionOptimization(MaxIterations As Long, _
             ' Resume from current; all random moves use GenerateNeighbor_BA.
             Midtb = Currenttb: MidTBase = CurrentTBase: MidBase = CurrentBase
             RunRecoveryCount = RunRecoveryCount + 1
+            Call RecoveryCheck.RecordRecovery(Currenttb, CurrentTBase, CurrentBase, Midtb, MidTBase, MidBase)
         Else
             If currentCost < MidPricetb Then
                 Maxtb = Currenttb: MidPricetb = currentCost

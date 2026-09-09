@@ -9,7 +9,7 @@
   },
   {
     "file": "modBA.bas",
-    "sha256": "162e3716a34b085742c40e5ce26db6b90f6072d0149282ea73fed78cb4419af8"
+    "sha256": "1cf1a874b719d4a7300ecbf89c8cfd22daa753aafc17d3a0c9a3c793e2124b0b"
   },
   {
     "file": "modBatch.bas",
@@ -25,7 +25,7 @@
   },
   {
     "file": "modHillClimbing.bas",
-    "sha256": "00b556035bcacaa0efa25ed385e6b1ee13818cdf79a240438d0373041499dd7b"
+    "sha256": "b4ed31fd8cb242a73be3f072c6acc43ec8bcc17e54c36056bb9562e86ffb510c"
   },
   {
     "file": "modProjectChecks.bas",

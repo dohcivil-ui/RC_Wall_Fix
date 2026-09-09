@@ -10,6 +10,11 @@ def routine(s,name):
 result=[]
 assert routine(read(P/'modBA.bas'),'GenerateNeighbor_BA') == routine(read(B/'modBA.bas'),'GenerateNeighbor_BA')
 result.append('BA original neighbor routine unchanged')
+ba_outside_neighbor = read(P/'modBA.bas').replace(routine(read(P/'modBA.bas'),'GenerateNeighbor_BA'), '')
+ba_outside_neighbor = '\n'.join(line.split("'",1)[0] for line in ba_outside_neighbor.splitlines())
+assert not re.search(r'\b(?:Rand\s*\(|Rnd\b|Randomize\b)', ba_outside_neighbor, re.I)
+assert 'Midtb = Currenttb: MidTBase = CurrentTBase: MidBase = CurrentBase' in ba_outside_neighbor
+result.append('BA recovery reopens bounds at current; no random calls outside the HCA-equivalent neighbor generator')
 def normalized_neighbor(body):
     return [re.sub(r'\s+', '', line.split("'",1)[0]).lower() for line in body.splitlines()
             if line.split("'",1)[0].strip()]
