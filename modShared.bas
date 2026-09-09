@@ -817,21 +817,21 @@ Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algo
     s = s & ScreenResultSection("EARTH PRESSURES")
     s = s & "Ka=" & Format$(CalculateKa(), "0.000") & ", Kp=" & Format$(CalculateKp(), "0.000") & vbCrLf
     s = s & "Full wall: active + passive (per m)" & vbCrLf
-    s = s & "Pa=" & Format$(CalculatePa(), "0.00") & " tf/m, Pp=" & Format$(CalculatePp(), "0.00") & " tf/m" & vbCrLf
+    s = s & "Pa=" & Format$(CalculatePa(), "0.00") & " ton, Pp=" & Format$(CalculatePp(), "0.00") & " ton" & vbCrLf
     s = s & ScreenResultSection("WEIGHTS")
     weight = CalculateWTotal(d, w1, w2, w3, w4, x1, x2, x3, x4)
     s = s & "Full weights, per metre of wall" & vbCrLf
-    s = s & ScreenResultRow("W1 (Soil on Toe)", Format$(w1, "0.00") & " tf/m")
-    s = s & ScreenResultRow("W2 (Soil on Heel)", Format$(w2, "0.00") & " tf/m")
-    s = s & ScreenResultRow("W3 (Stem)", Format$(w3, "0.00") & " tf/m")
-    s = s & ScreenResultRow("W4 (Base)", Format$(w4, "0.00") & " tf/m")
-    s = s & ScreenResultRow("W_total", Format$(weight, "0.00") & " tf/m")
+    s = s & ScreenResultRow("W1 (Soil on Toe)", Format$(w1, "0.00") & " ton")
+    s = s & ScreenResultRow("W2 (Soil on Heel)", Format$(w2, "0.00") & " ton")
+    s = s & ScreenResultRow("W3 (Stem)", Format$(w3, "0.00") & " ton")
+    s = s & ScreenResultRow("W4 (Base)", Format$(w4, "0.00") & " ton")
+    s = s & ScreenResultRow("W_total", Format$(weight, "0.00") & " ton")
     s = s & ScreenResultSection("STEEL REINFORCEMENT")
     For i = 0 To 2
         member = "Stem": If i = 1 Then member = "Toe"
         If i = 2 Then member = "Heel"
         s = s & vbCrLf & "--- " & member & " ---" & vbCrLf
-        s = s & ScreenResultRow("Moment (envelope)", Format$(r.Moment(i), "0.00") & " tf.m/m")
+        s = s & ScreenResultRow("Moment (envelope)", Format$(r.Moment(i), "0.00") & " ton-m")
         s = s & ScreenResultRow("Steel", "DB" & WP_DB(r.DB(i)) & " @ " & Format$(WP_SP(r.SP(i)), "0.00") & " m")
         s = s & "As_min=" & Format$(r.Minimum(i), "0.00") & ", As_prov=" & Format$(r.Steel(i), "0.00") & " cm2/m" & vbCrLf
         s = s & ScreenResultRow("Effective depth", Format$(r.Depth(i), "0.000") & " m")
@@ -843,18 +843,18 @@ Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algo
     s = s & ScreenResultRow("FS_Bearing", Format$(r.BC, "0.00") & " >= " & Format$(FS_BC_MIN, "0.00") & " PASS")
     s = s & "Bearing ratio = allowable qa / q_max" & vbCrLf
     s = s & ScreenResultSection("BEARING CAPACITY")
-    s = s & ScreenResultRow("q_max (16-case envelope)", Format$(qa / r.BC, "0.00") & " tf/m2")
-    s = s & ScreenResultRow("Allowable qa", Format$(qa, "0.00") & " tf/m2")
+    s = s & ScreenResultRow("q_max (16-case envelope)", Format$(qa / r.BC, "0.00") & " ton/m2")
+    s = s & ScreenResultRow("Allowable qa", Format$(qa, "0.00") & " ton/m2")
     If BearingEdges(d, e, qt, qh) Then
         qmax = qt: qmin = qh
         If qh > qt Then qmax = qh: qmin = qt
         s = s & "--- Full-weight case ---" & vbCrLf
         s = s & ScreenResultRow("Eccentricity (e)", Format$(e, "0.000") & " m")
         s = s & "Positive e points toward toe" & vbCrLf
-        s = s & "q_max=" & Format$(qmax, "0.00") & ", q_min=" & Format$(qmin, "0.00") & " tf/m2" & vbCrLf
+        s = s & "q_max=" & Format$(qmax, "0.00") & ", q_min=" & Format$(qmin, "0.00") & " ton/m2" & vbCrLf
     End If
     s = s & ScreenResultSection("MEMBER STRESSES")
-    s = s & "Envelope actual / allowable (kgf/cm2)" & vbCrLf
+    s = s & "Envelope actual / allowable (ksc)" & vbCrLf
     For i = 0 To 2
         member = "Stem": If i = 1 Then member = "Toe"
         If i = 2 Then member = "Heel"
@@ -1249,8 +1249,8 @@ Private Function SectionCheckSummary(label As String, M As Double, depth As Doub
     If stem Then minimum = MinStemRatio * thickness * 10000# Else minimum = MinBaseRatio * thickness * 10000#
     If nominalStress < 0 Then nominalStress = shear / (10# * depth)
     SectionCheckSummary = label & ": d=" & Format(depth, "0.0000") & " m; fc_actual=" & Format(c, "0.00") & _
-        "/" & currentWSD.fc & "; fs_actual=" & Format(s, "0.00") & "/" & currentWSD.fs & " kgf/cm2" & vbCrLf & _
-        "v=" & Format(nominalStress, "0.000") & "/" & AllowableShear & " kgf/cm2; As_min=" & minimum & " cm2/m" & vbCrLf
+        "/" & currentWSD.fc & "; fs_actual=" & Format(s, "0.00") & "/" & currentWSD.fs & " ksc" & vbCrLf & _
+        "v=" & Format(nominalStress, "0.000") & "/" & AllowableShear & " ksc; As_min=" & minimum & " cm2/m" & vbCrLf
     If Not WSDCriteriaReady() Then SectionCheckSummary = SectionCheckSummary & "Allowables/minimums UNVERIFIED (zero means unset, never a passing criterion)." & vbCrLf
 End Function
 
@@ -1288,16 +1288,16 @@ Private Function AuditMember(d As Design, part As Integer, label As String, thic
     result = AuditRow(label & " bars", "DB" & WP_DB(db) & " @ " & Format$(WP_SP(sp), "0.00") & " m", "specified candidate", "INPUT", "Design")
     result = result & AuditRow(label & " effective depth", Format$(depth, "0.0000") & " m", "t-cover-db/2 > 0", "CALCULATED", "Main bar outermost; single layer assumption")
     result = result & AuditRow(label & " As", Format$(steel, "0.0000") & " cm2/m", "area per metre", "CALCULATED", "CalculateAsProv")
-    result = result & AuditCompare(label & " signed M", moment, 0, True, "tf.m/m", "Supported tension face; modShared", failed)
+    result = result & AuditCompare(label & " signed M", moment, 0, True, "ton-m", "Supported tension face; modShared", failed)
     ' A necessary condition only: M=T*z, T<=As*fy and z<=d for the
     ' singly reinforced pure-bending model. NOT a WSD allowable capacity.
     bound = steel * currentMaterial.fy * depth / 1000#
-    result = result & AuditCompare(label & " necessary yield bound", Abs(moment), bound, False, "tf.m/m", "M<=As*fy*d; no modular ratio or code allowable used", yieldFailed)
+    result = result & AuditCompare(label & " necessary yield bound", Abs(moment), bound, False, "ton-m", "M<=As*fy*d; no modular ratio or code allowable used", yieldFailed)
     If Not SectionStresses(moment, depth, steel, currentWSD.n, c, st, jActual) Then Err.Raise 5, , "Invalid section"
     source = "Reference Es/Ec n=" & currentWSD.n & "; EIT clause UNVERIFIED"
     If WSDCriteriaReady() Then source = "Configured screening only: " & WSDSource
-    result = result & AuditCompare(label & " concrete stress", c, currentWSD.fc, False, "kgf/cm2", source, failed)
-    result = result & AuditCompare(label & " steel stress", st, currentWSD.fs, False, "kgf/cm2", source, failed)
+    result = result & AuditCompare(label & " concrete stress", c, currentWSD.fc, False, "ksc", source, failed)
+    result = result & AuditCompare(label & " steel stress", st, currentWSD.fs, False, "ksc", source, failed)
     shear = MemberShearStress(d, part, depth)
     If part = 0 Then
         Dim shearHeight As Double
@@ -1305,9 +1305,9 @@ Private Function AuditMember(d As Design, part As Integer, label As String, thic
         result = result & AuditRow("Stem governing shear height", Format$(shearHeight, "0.0000") & " m", "above base top", "CALCULATED", "Maximum nominal abs(V)/(b*d) along tapered stem; EIT critical-section rule UNVERIFIED")
     End If
     If AllowableShear > 0 Then
-        result = result & AuditCompare(label & " nominal shear V/bd", shear, AllowableShear, False, "kgf/cm2", source & "; shear section/definition require review", failed)
+        result = result & AuditCompare(label & " nominal shear V/bd", shear, AllowableShear, False, "ksc", source & "; shear section/definition require review", failed)
     Else
-        result = result & AuditRow(label & " nominal shear V/bd", Format$(shear, "0.0000") & " kgf/cm2", "UNSET", "UNVERIFIED", "EIT shear limit/definition/critical section missing")
+        result = result & AuditRow(label & " nominal shear V/bd", Format$(shear, "0.0000") & " ksc", "UNSET", "UNVERIFIED", "EIT shear limit/definition/critical section missing")
     End If
     If ratio > 0 Then
         result = result & AuditCompare(label & " minimum steel", steel, ratio * 10000# * thickness, True, "cm2/m", source & "; gross-area ratio", failed)
@@ -1353,7 +1353,7 @@ Public Function BuildDesignCheckReport(d As Design, Optional stemOnly As Boolean
         result = result & AuditCompare("Sliding FS", sl, FS_SL_MIN, True, "", "Existing project stability criterion", failed)
         If BearingEdges(d, e, qt, qh) Then
             result = result & AuditCompare("Full contact abs(e)", Abs(e), d.Base / 6#, False, "m", "Linear full-compression model; signed e=" & Format$(e, "0.0000") & " positive to toe", failed)
-            result = result & AuditRow("q_toe / q_heel", Format$(qt, "0.0000") & " / " & Format$(qh, "0.0000") & " tf/m2", "signed pressure diagram", "CALCULATED", "BearingEdges")
+            result = result & AuditRow("q_toe / q_heel", Format$(qt, "0.0000") & " / " & Format$(qh, "0.0000") & " ton/m2", "signed pressure diagram", "CALCULATED", "BearingEdges")
             ok = CheckFS_BC(d, bc, e, qmax, qmin)
             result = result & AuditCompare("Bearing qa/qmax", bc, FS_BC_MIN, True, "", "qa INPUT interpreted as ALLOWABLE", failed)
             result = result & AuditMember(d, 1, "Toe", d.TBase, d.AStoe_DB, d.AStoe_Sp, failed, yieldFailed)

@@ -2,6 +2,11 @@
 from pathlib import Path
 import re,json,subprocess,hashlib
 P=Path(__file__).resolve().parent.parent
+def display_units(data):
+    # The later unit-label edit changes display strings only (ton/ton-m/ksc).
+    for old,new in ((b'tf.m/m',b'ton-m'),(b'tf/m2',b'ton/m2'),(b'tf/m',b'ton'),(b'kgf/cm2',b'ksc')):
+        data=data.replace(old,new)
+    return data
 D=P/'audit/results-layout'
 before=(D/'before/layout.txt').read_text(encoding='latin1')
 after=(D/'after/layout.txt').read_text(encoding='latin1')
@@ -15,8 +20,8 @@ assert 'As_min=' in after and 'not flexural As_req' in after
 assert 'q_max (16-case envelope)' in after and '--- Full-weight case ---' in after
 b=(P/'modShared.bas').read_bytes()
 start=b.index(b'Private Function ScreenResultRow(');end=b.index(b'Public Function FormatResults(',start)
-assert b[:start]+b[end:]==(D/'before/modShared.bas').read_bytes()
-assert b[start:end].replace(b'\r\n',b'\n')==(P/'audit/results_screen_sections.source').read_bytes().replace(b'\r\n',b'\n')
+assert display_units(b[:start]+b[end:])==display_units((D/'before/modShared.bas').read_bytes())
+assert display_units(b[start:end]).replace(b'\r\n',b'\n')==display_units((P/'audit/results_screen_sections.source').read_bytes()).replace(b'\r\n',b'\n')
 form=(P/'Form1.frm').read_bytes()
 if b'Begin VB.TextBox txtResults' in form:
     probe=(P/'audit/results-textbox/runtime.txt').read_text()
@@ -40,7 +45,7 @@ clean=clean.replace(b'FormatScreenResults(bestDesign, selectedMaterial, "HCA")',
 clean=clean.replace(b'    lstResults.TopIndex = 0\r\n',b'')
 assert clean==original
 for name in ('modBA.bas','modHillClimbing.bas','modProjectChecks.bas','modWSD.bas'):
-    assert (P/name).read_bytes()==subprocess.check_output(['git','show','e4c2e79:'+name],cwd=P)
+    assert display_units((P/name).read_bytes())==display_units(subprocess.check_output(['git','show','e4c2e79:'+name],cwd=P))
 for name in ('Form1.frm','modShared.bas'):
     data=(P/name).read_bytes();assert data.count(b'\n')==data.count(b'\r\n') and not data.startswith(b'\xef\xbb\xbf')
 assert 'succeeded' in (D/'compile-main.log').read_text().lower()
