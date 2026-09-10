@@ -40,87 +40,25 @@ Private csvAcceptData As String
 Private csvLoopData As String
 Private loopCount As Long
 Private bestIterationInRun As Long
+' Retain a whole trial trace for the graph: lowest valid cost, then earliest loop.
+Private bestAcceptData As String
+Private bestAcceptTrial As Long
+Private bestAcceptIteration As Long
+Private bestAcceptCost As Double
+Public SelectedTrialCSVPath As String
 
 '================================================================================
 ' SECTION 2: Initialize Design (Conservative - Max values)
 '================================================================================
 
 Private Sub InitializeCurrentDesign()
-    Dim tb_max_val As Double, TBase_max_val As Double
-    Dim Base_target As Double, LToe_target As Double
-    Dim LBase_Max_Ratio As Double
-    Dim i As Integer
-    
-    
-    ' === tb: Max = 0.12 × H ===
-    tb_max_val = 0.12 * modShared.H
-    Currenttb = TB_MIN
-    For i = modShared.tb_max To modShared.TB_MIN Step -1
-        If WP_tb(i) <= tb_max_val Then
-            Currenttb = i
-            Exit For
-        End If
-    Next i
-    
-    ' === tt: ???????? Max ???? <= tb ===
-Currenttt = TT_MAX
-For i = modShared.TT_MAX To modShared.TT_MIN Step -1
-    If WP_tt(i) <= WP_tb(Currenttb) Then
-        Currenttt = i
-        Exit For
-    End If
-Next i
-
-    ' ???? >= tt
-    If WP_tb(Currenttb) < WP_tt(Currenttt) Then
-        For i = modShared.TB_MIN To modShared.tb_max
-            If WP_tb(i) >= WP_tt(Currenttt) Then
-                Currenttb = i
-                Exit For
-            End If
-        Next i
-    End If
-    
-    ' === TBase: Max = 0.15 × H ===
-    TBase_max_val = 0.15 * modShared.H
-    CurrentTBase = TBASE_MIN
-    For i = modShared.TBase_max To modShared.TBASE_MIN Step -1
-        If WP_TBase(i) <= TBase_max_val Then
-            CurrentTBase = i
-            Exit For
-        End If
-    Next i
-    
-    ' === Base: 0.5H - 0.7H ===
-    Base_target = 0.7 * modShared.H
-    CurrentBase = BASE_MIN
-    For i = modShared.BASE_MAX To modShared.BASE_MIN Step -1
-        If WP_Base(i) <= Base_target Then
-            CurrentBase = i
-            Exit For
-        End If
-    Next i
-    
-    ' === LToe: 0.2 × H ===
-    LToe_target = 0.2 * modShared.H
-    CurrentLToe = LTOE_MIN
-    For i = modShared.LTOE_MAX To modShared.LTOE_MIN Step -1
-        If WP_LToe(i) <= LToe_target Then
-            CurrentLToe = i
-            Exit For
-        End If
-    Next i
-    
-    ' === ?????: Max (DB28 @ 0.10m) ===
-    CurrentStemDB = DB_MAX:  CurrentStemSP = SP_MIN
-    CurrentToeDB = DB_MAX:   CurrentToeSP = SP_MIN
-    CurrentHeelDB = DB_MAX:  CurrentHeelSP = SP_MIN
-
-    FixedTbMax = Currenttb: FixedTBaseMax = CurrentTBase
-    FixedBaseMax = CurrentBase: FixedBaseMin = BASE_MIN
-    For i = BASE_MIN To BASE_MAX
-        If WP_Base(i) >= 0.5 * modShared.H Then FixedBaseMin = i: Exit For
-    Next i
+    Currenttt = TT_MAX: Currenttb = tb_max
+    CurrentTBase = TBase_max: CurrentBase = BASE_MAX: CurrentLToe = LTOE_MAX
+    CurrentStemDB = DB_MAX: CurrentStemSP = SP_MIN
+    CurrentToeDB = DB_MAX: CurrentToeSP = SP_MIN
+    CurrentHeelDB = DB_MAX: CurrentHeelSP = SP_MIN
+    FixedTbMax = tb_max: FixedTBaseMax = TBase_max
+    FixedBaseMin = BASE_MIN: FixedBaseMax = BASE_MAX
 End Sub
 
 '================================================================================
@@ -166,21 +104,7 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
 
     Call DrawSearchMove(move)
 
-    LToe_min_idx = LTOE_MIN
-    For i = LTOE_MIN To LTOE_MAX
-        If WP_LToe(i) >= 0.1 * modShared.H Then
-            LToe_min_idx = i
-            Exit For
-        End If
-    Next i
-
-    LToe_max_idx = LTOE_MAX
-    For i = LTOE_MAX To LTOE_MIN Step -1
-        If WP_LToe(i) <= 0.2 * modShared.H Then
-            LToe_max_idx = i
-            Exit For
-        End If
-    Next i
+    LToe_min_idx = LTOE_MIN: LToe_max_idx = LTOE_MAX
 
     Step = move(2)
     Newtb = Currenttb + Step
@@ -216,27 +140,27 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
     If NewBase < FixedBaseMin Then NewBase = FixedBaseMin
     If NewBase > FixedBaseMax Then NewBase = FixedBaseMax
 
-    NewStemDB = move(6)
+    NewStemDB = CurrentStemDB + move(6)
     If NewStemDB < DB_MIN Then NewStemDB = DB_MIN
     If NewStemDB > DB_MAX Then NewStemDB = DB_MAX
 
-    NewStemSP = move(7)
+    NewStemSP = CurrentStemSP + move(7)
     If NewStemSP < SP_MIN Then NewStemSP = SP_MIN
     If NewStemSP > SP_MAX Then NewStemSP = SP_MAX
 
-    NewToeDB = move(8)
+    NewToeDB = CurrentToeDB + move(8)
     If NewToeDB < DB_MIN Then NewToeDB = DB_MIN
     If NewToeDB > DB_MAX Then NewToeDB = DB_MAX
 
-    NewToeSP = move(9)
+    NewToeSP = CurrentToeSP + move(9)
     If NewToeSP < SP_MIN Then NewToeSP = SP_MIN
     If NewToeSP > SP_MAX Then NewToeSP = SP_MAX
 
-    NewHeelDB = move(10)
+    NewHeelDB = CurrentHeelDB + move(10)
     If NewHeelDB < DB_MIN Then NewHeelDB = DB_MIN
     If NewHeelDB > DB_MAX Then NewHeelDB = DB_MAX
 
-    NewHeelSP = move(11)
+    NewHeelSP = CurrentHeelSP + move(11)
     If NewHeelSP < SP_MIN Then NewHeelSP = SP_MIN
     If NewHeelSP > SP_MAX Then NewHeelSP = SP_MAX
 
@@ -257,6 +181,17 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
     If Not SearchMoveIncludes(move(0), 5) Then
         NewHeelDB = CurrentHeelDB: NewHeelSP = CurrentHeelSP
     End If
+    ' Keep dependent toe/heel layout compatible with the proposed width and stem.
+    ' Apply the SAME geometry repair to BA and HCA; the validator remains decisive.
+    If WP_Base(NewBase) - WP_tb(Newtb) - WP_LToe(NewLToe) <= WP_LToe(NewLToe) + 0.000000001 Then
+        For i = NewLToe To LTOE_MIN Step -1
+            If WP_Base(NewBase) - WP_tb(Newtb) - WP_LToe(i) > WP_LToe(i) + 0.000000001 Then
+                NewLToe = i
+                Exit For
+            End If
+        Next i
+    End If
+
 End Sub
 
 '================================================================================
@@ -336,6 +271,7 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
     current = GetDesignFromCurrent()
     currentValid = EvaluateCandidate(current, "initial", currentCost)
     If Not currentValid Then currentCost = NO_SOLUTION_COST
+    Call modFeasibilityRecovery.InitializeRecovery(current, currentValid)
     modDataStructures.CostHistory(EvaluationCount) = RunBestCost
     Do While EvaluationCount < MaxIterations
         saved(1) = Currenttt
@@ -365,6 +301,9 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
         ok = EvaluateCandidate(neighbor, "neighbor", neighborCost)
         If ok And (Not currentValid Or neighborCost < currentCost) Then
             current = neighbor: currentCost = neighborCost: currentValid = True
+            modFeasibilityRecovery.RecoveryActive = False
+        ElseIf Not currentValid And modFeasibilityRecovery.AcceptRecovery(neighbor) Then
+            current = neighbor: currentCost = NO_SOLUTION_COST
         Else
             Currenttt = saved(1)
             Currenttb = saved(2)
@@ -398,6 +337,11 @@ Public Sub InitLoopCounter()
     csvLoopData = "No.,Loop,BestPrice" & vbCrLf
     LastLoopCSVPath = ""
     loopCount = 0
+    bestAcceptData = ""
+    bestAcceptTrial = 0
+    bestAcceptIteration = 0
+    bestAcceptCost = NO_SOLUTION_COST
+    SelectedTrialCSVPath = ""
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -429,6 +373,17 @@ Public Sub LogLoopResult(bestPrice As Double)
     loopCount = loopCount + 1
     If RunBest.IsValid Then price = CsvPrice(bestPrice)
     csvLoopData = csvLoopData & loopCount & "," & bestIterationInRun & "," & price & vbCrLf
+    ' Use unrounded cost, matching Form1's best-trial selection. Keep the first
+    ' trial when both cost and loop tie. Invalid trials remain in loopPrice only.
+    If RunBest.IsValid Then
+        If bestAcceptTrial = 0 Or bestPrice < bestAcceptCost Or _
+           (bestPrice = bestAcceptCost And bestIterationInRun < bestAcceptIteration) Then
+            bestAcceptData = csvAcceptData
+            bestAcceptTrial = loopCount
+            bestAcceptIteration = bestIterationInRun
+            bestAcceptCost = bestPrice
+        End If
+    End If
 End Sub
 
 Public Sub SaveAcceptCSV(wallHeight As Double)
@@ -437,8 +392,54 @@ End Sub
 
 Public Sub SaveLoopPriceCSV(wallHeight As Double)
     LastLoopCSVPath = WriteExportCSV("loopPrice-HCA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), csvLoopData, True)
+    Call SaveSelectedTrialCSV(wallHeight)
+End Sub
+
+Private Sub SaveSelectedTrialCSV(wallHeight As Double)
+    Dim caseSuffix As String, selectedData As String
+    caseSuffix = "HCA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc)
+    selectedData = "No.,Loop,BestPrice,Trials,Status" & vbCrLf
+    If bestAcceptTrial > 0 Then
+        ' FinishSearch already saved the last trial. Replace it only if another
+        ' trial won; WriteExportCSV preserves that last trace in the archive.
+        If bestAcceptTrial <> loopCount Then
+            LastAcceptCSVPath = WriteExportCSV("accept-" & caseSuffix, bestAcceptData, True)
+        End If
+        selectedData = selectedData & bestAcceptTrial & "," & bestAcceptIteration & "," & _
+                       CsvPrice(bestAcceptCost) & "," & loopCount & ",SELECTED" & vbCrLf
+    Else
+        ' Retain the last rejected trace for diagnosis; do not invent a winner.
+        selectedData = selectedData & ",,," & loopCount & ",NO_SOLUTION" & vbCrLf
+    End If
+    SelectedTrialCSVPath = WriteExportCSV("selectedTrial-" & caseSuffix, selectedData, True)
 End Sub
 
 '================================================================================
 ' END OF MODULE: modHillClimbing.bas v5.1
 '================================================================================
+
+Public Sub AssertSteelNeighborhood(ByVal dbIndex As Integer, ByVal spIndex As Integer)
+    Dim nt As Integer, nb As Integer, nf As Integer, nw As Integer, nl As Integer
+    Dim sd As Integer, ss As Integer, td As Integer, ts As Integer, hd As Integer, hs As Integer
+    Dim k As Integer, seenLower As Boolean, seenUpper As Boolean, seenSPDown As Boolean, seenSPUp As Boolean
+    Call InitializeCurrentDesign
+    CurrentStemDB = dbIndex: CurrentToeDB = dbIndex: CurrentHeelDB = dbIndex
+    CurrentStemSP = spIndex: CurrentToeSP = spIndex: CurrentHeelSP = spIndex
+
+    For k = 1 To 100
+        Call GenerateNeighbor(nt, nb, nf, nw, nl, sd, ss, td, ts, hd, hs)
+        If sd < DB_MIN Or sd > DB_MAX Or td < DB_MIN Or td > DB_MAX Or hd < DB_MIN Or hd > DB_MAX Then Err.Raise 5, , "Steel outside catalogue"
+        If ss < SP_MIN Or ss > SP_MAX Or ts < SP_MIN Or ts > SP_MAX Or hs < SP_MIN Or hs > SP_MAX Then Err.Raise 5, , "Spacing outside catalogue"
+        If Abs(sd - dbIndex) > 1 Or Abs(td - dbIndex) > 1 Or Abs(hd - dbIndex) > 1 Then Err.Raise 5, , "Steel jumped more than one index"
+        If Abs(ss - spIndex) > 1 Or Abs(ts - spIndex) > 1 Or Abs(hs - spIndex) > 1 Then Err.Raise 5, , "Spacing jumped more than one index"
+        If sd = dbIndex - 1 Or td = dbIndex - 1 Or hd = dbIndex - 1 Then seenLower = True
+        If sd = dbIndex + 1 Or td = dbIndex + 1 Or hd = dbIndex + 1 Then seenUpper = True
+        If ss = spIndex - 1 Or ts = spIndex - 1 Or hs = spIndex - 1 Then seenSPDown = True
+        If ss = spIndex + 1 Or ts = spIndex + 1 Or hs = spIndex + 1 Then seenSPUp = True
+        ' Deliberately keep the incumbent: rejected candidates must not accumulate.
+    Next k
+    If dbIndex > DB_MIN And Not seenLower Then Err.Raise 5, , "Lower adjacent steel not reached"
+    If dbIndex < DB_MAX And Not seenUpper Then Err.Raise 5, , "Upper adjacent steel not reached"
+    If spIndex > SP_MIN And Not seenSPDown Then Err.Raise 5, , "Lower adjacent spacing not reached"
+    If spIndex < SP_MAX And Not seenSPUp Then Err.Raise 5, , "Upper adjacent spacing not reached"
+End Sub

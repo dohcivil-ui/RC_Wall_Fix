@@ -79,6 +79,10 @@ Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHe
     Me.ZOrder 0
 End Sub
 
+Friend Function SaveResultImage(ByVal wallHeight As Double, ByVal algorithm As String) As String
+    SaveResultImage = SaveResultPicture(picSketch, "design-" & algorithm & "-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc))
+End Function
+
 Private Function ValidGeometry(d As Design, wallHeight As Double, frontHeight As Double) As Boolean
     If d.tt <= 0 Or d.tb < d.tt Or d.TBase <= 0 Or d.Base <= 0 Or d.LToe <= 0 Or d.LHeel <= 0 Then Exit Function
     If wallHeight <= d.TBase Or frontHeight < d.TBase Or frontHeight > wallHeight Then Exit Function
@@ -128,7 +132,7 @@ Private Function ValidBars(d As Design) As Boolean
 End Function
 
 Private Function RebarText(DB As Integer, SP As Integer) As String
-    RebarText = "DB" & WP_DB(DB) & " @ " & Format$(WP_SP(SP), "0.00") & " m"
+    RebarText = "DB" & WP_DB(DB) & " @ " & Format$(WP_SP(SP), "0.00#") & " m"
 End Function
 
 Private Sub DrawMainBars(d As Design, pixelsPerMetre As Double, clearCover As Double, x0 As Double, x1 As Double, toe As Double, back As Double, y0 As Double, yTop As Double, yBase As Double)

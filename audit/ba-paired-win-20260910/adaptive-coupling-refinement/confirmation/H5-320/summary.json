@@ -1,0 +1,148 @@
+{
+  "case": "H5/fc320",
+  "height": 5,
+  "fc": 320,
+  "trials_per_method": 30,
+  "seed_range": [
+    142345,
+    142374
+  ],
+  "evaluations": 300000,
+  "initial_price": 38041.658879999995,
+  "shared_initial_design_and_price_verified": true,
+  "methods": {
+    "BA": {
+      "valid_trials": 30,
+      "no_solution": 0,
+      "selected": {
+        "trial": 22,
+        "seed": 142366,
+        "price": 9087.936964285715,
+        "evaluation": 366,
+        "loop": 365
+      },
+      "min_price": 9087.936964285715,
+      "max_price": 9451.709561142858,
+      "price": {
+        "mean": 9184.793774942858,
+        "sd": 117.76165702765545
+      },
+      "first_feasible_evaluation": {
+        "mean": 4.366666666666666,
+        "sd": 4.582450280659097
+      },
+      "best_evaluation": {
+        "mean": 2007.8,
+        "sd": 1234.7270925607197
+      },
+      "best_loop": {
+        "mean": 2006.8,
+        "sd": 1234.7270925607197
+      },
+      "rejection_counts": {
+        "MEMBER_FLEXURE": 26031,
+        "ENVELOPE_BASE_CONTACT": 27058,
+        "MINIMUM_MAIN_STEEL": 32435,
+        "STEM_STRESS_OR_INTERVAL_BOUND": 33894,
+        "MEMBER_SHEAR": 624,
+        "MAXIMUM_MAIN_STEEL": 2834,
+        "STEM_SHEAR_REINFORCEMENT_REQUIRED": 211
+      }
+    },
+    "HCA": {
+      "valid_trials": 30,
+      "no_solution": 0,
+      "selected": {
+        "trial": 17,
+        "seed": 142361,
+        "price": 9130.417414285715,
+        "evaluation": 2306,
+        "loop": 2305
+      },
+      "min_price": 9130.417414285715,
+      "max_price": 12633.63279,
+      "price": {
+        "mean": 9651.291677842857,
+        "sd": 756.1741018336287
+      },
+      "first_feasible_evaluation": {
+        "mean": 33.06666666666667,
+        "sd": 22.688191267452453
+      },
+      "best_evaluation": {
+        "mean": 3127.6,
+        "sd": 1189.027147974633
+      },
+      "best_loop": {
+        "mean": 3126.6,
+        "sd": 1189.027147974633
+      },
+      "rejection_counts": {
+        "MEMBER_FLEXURE": 26227,
+        "MINIMUM_MAIN_STEEL": 59777,
+        "ENVELOPE_BASE_CONTACT": 16739,
+        "MEMBER_SHEAR": 723,
+        "STEM_STRESS_OR_INTERVAL_BOUND": 10692,
+        "MAXIMUM_MAIN_STEEL": 4122,
+        "MAXIMUM_MAIN_STEEL_REVERSED_HEEL": 13,
+        "STEM_SHEAR_REINFORCEMENT_REQUIRED": 52
+      }
+    }
+  },
+  "paired": {
+    "total_pairs": 30,
+    "both_valid": 30,
+    "ba_price_le": 27,
+    "ba_best_found_earlier": 22,
+    "joint_wins": 21,
+    "winning_trials": [
+      1,
+      2,
+      4,
+      5,
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      15,
+      16,
+      17,
+      18,
+      20,
+      21,
+      22,
+      24,
+      25,
+      27,
+      30
+    ],
+    "criterion": "BA exact final price <= HCA and first-found final-best evaluation < HCA; at least 18/30 same-seed pairs",
+    "criterion_met": true
+  },
+  "ba_midpoint_proposals_verified": 23113,
+  "ba_local_proposals_verified": 126857,
+  "ba_parent_selections_verified": 149970,
+  "ba_geometry_bridge_proposals_verified": 0,
+  "ba_expansion_bridge_proposals_verified": 1823,
+  "ba_proposal_draws_verified": 553277,
+  "ba_frontier_entries_verified": 90,
+  "ba_fixed_base_coupled_proposals_verified": 15608,
+  "steel_local_proposals_verified": 299940,
+  "accepted_and_restored_states_verified": 300000,
+  "alternate_recovery": false,
+  "one_split_recovery": true,
+  "geometry_bridge_rules": false,
+  "reverse_steel_bridge_rules": true,
+  "stagnation_midpoint": true,
+  "unseen_proposal_rules": true,
+  "unseen_bridge_frontier_rules": true,
+  "fixed_base_coupled_rules": true,
+  "wide_steel_bridge_rules": true,
+  "midpoint_rejection_backoff": false,
+  "feasible_midpoint_policy": "Wide intervals: prior evaluation modulo 2 until 32 evaluations since the global best, then modulo 8; declared bridge follow-ups stay local",
+  "recovery_policy": "Midpoint only when prior evaluation count equals 1; incumbent-local for later recovery proposals",
+  "source": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-paired-win-20260910\\adaptive-coupling-refinement\\candidate",
+  "root_and_protected_results_unchanged": true
+}

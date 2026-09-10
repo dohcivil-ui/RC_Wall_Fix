@@ -1,0 +1,51 @@
+{
+  "frozen_at": "2026-09-10T17:28:13.400696+00:00",
+  "source": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-paired-win-20260910\\adaptive-coupling-refinement\\candidate",
+  "sources": {
+    "Form1.frm": "ab479e9e23ceb2ba4d37282c3be6e1ff9c943c67cb3387ced224dba90785716a",
+    "Form1.frx": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+    "frmBestDesign.frm": "2d013023867253a8b600ed9c2cac045c2f384457c95fbd5483fdda999675b451",
+    "modBA.bas": "10be5d9fbde4a3b499843e31fc103783865a76bd118499f1551e77d01e2e700f",
+    "modBatch.bas": "d0290fecc7ca2c06c6fd3a76b9e9f7f3eeea76950dcd998d4975e6c379761af9",
+    "modBatch.v0.5.bak.bas": "4aed32d9bf713a161e8d40bea2733d08119cac40a4c55e4dcb968a42f719c1ab",
+    "modDataStructures.bas": "bf278662ac062f6ecaaee0b7f0262855963592e04bbdd120bf495c85c2d1268b",
+    "modEnhancedValidation.bas": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6",
+    "modExport.bas": "9a4cbfa7831fd01f37788a55c64d6cca58b8f5fde9a0977f43dbefcb8566facb",
+    "modFeasibilityMerit.bas": "a820edc7d65f5ef83d0dfe49badd90524fa4629266cc41d6111b528e3368f1d6",
+    "modFeasibilityRecovery.bas": "f9621891fb7cbec498127bede50a2c977e7731b67769300542c68f334704db35",
+    "modFontHelper.bas": "37148fa6707e08dee200d5f75499cfdce90ba9f773c71ca4e06b070a3f4b3d3f",
+    "modGraphing.bas": "4dd8ada14466ffc5aa4ae981a83fcf45b3a6d54df5272071f5bf19ee7be20b92",
+    "modHillClimbing.bas": "99186511c99e03779e2e49a24d92880798095dbf28018fadb6f3e314ce5d31c0",
+    "modPDFReport.bas": "9d22abd3f0e8a69cdded858ca2b6d0b50c26ee520d0ce7c22eaaee243e19364e",
+    "modProjectChecks.bas": "724280d69fc6ebffa77843dd4c1d3b44f85a191e094b878129677bb0d18ec33a",
+    "modSettings.bas": "97536c63299d2276f1ef8e5916808defe02a1221fa4da58a02d2d39aed44d7b1",
+    "modShared.bas": "5df7728f0e157c3c9bf10362bf162fa11ce6e66f24c0438aca38ab7c589767d5",
+    "modWSD.bas": "4d6fe3009b8ecdac6fd8216c5dd83a9b6766fc9e2409de64e3861ba27827185e",
+    "RC_RT_HCA_v2.vbp": "12c91244df21e717ad90ea790c46ac278587b780ef94b807e4900cc20be46979"
+  },
+  "cases": [
+    {
+      "H": 3,
+      "fc": 240,
+      "pairs": 30
+    },
+    {
+      "H": 4,
+      "fc": 280,
+      "pairs": 30
+    },
+    {
+      "H": 5,
+      "fc": 320,
+      "pairs": 30
+    }
+  ],
+  "seed_range": [
+    142345,
+    142374
+  ],
+  "evaluation_budget_per_method_per_trial": 5000,
+  "criterion": "Both valid, exact BA final best price <= HCA, and BA first-final-best evaluation < HCA in at least18/30 same-seed pairs for eachcase. One unchanged BA version acrossallcases.",
+  "development_evidence": "regression/summary-all-heights.json",
+  "note": "Reserved before this variant was tested. Previous failed confirmations and all rejected sampler variants are preserved as development evidence. This common variant met28/18/22jointwins in30 developmentpairs. Keep all new outcomes; no seed substitution."
+}

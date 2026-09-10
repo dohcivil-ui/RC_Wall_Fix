@@ -15,7 +15,7 @@ Attribute VB_Name = "modBatch"
 ' - Added Public Sub RunBatchStep3_A3 (Phase A3 only, 540 runs, ~10 min)
 '   * 3 H x 3 fc x 2 algo x 30 trials per cell = 540 runs
 '   * fc list: {240, 280, 320} (mid-high practical range)
-'   * Output: RESULT_CSV_ROOT\batch_step3_A3_{timestamp}.csv (separate file)
+'   * Output: RESULT_CSV_ROOT\batch_step3_A3.csv (overwrite on repeat)
 ' - Added ShowSummaryStep3_A3 with per-cell consistency check
 '   * Deterministic verification: counts unique costs per cell
 '   * BA vs HCA verdict per (H, fc) cell
@@ -605,9 +605,9 @@ Private Sub AppendRunRow(filePath As String, phase As String, algoName As String
           Format(d.tt, "0.000") & "," & Format(d.tb, "0.000") & "," & _
           Format(d.TBase, "0.000") & "," & Format(d.Base, "0.000") & "," & _
           Format(d.LToe, "0.000") & "," & Format(d.LHeel, "0.000") & "," & _
-          stemDB & "," & Format(stemSP, "0.00") & "," & _
-          toeDB & "," & Format(toeSP, "0.00") & "," & _
-          heelDB & "," & Format(heelSP, "0.00") & "," & _
+          stemDB & "," & Format(stemSP, "0.00#") & "," & _
+          toeDB & "," & Format(toeSP, "0.00#") & "," & _
+          heelDB & "," & Format(heelSP, "0.00#") & "," & _
           Format(runtime, "0.00") & "," & _
           Format(Now, "yyyy-mm-dd hh:nn:ss") & "," & EvaluationCount & "," & RunStatus
     
@@ -630,7 +630,7 @@ End Function
 Private Function ResolveSPValue(spIdx As Integer) As Double
     If spIdx >= modShared.SP_MIN And spIdx <= modShared.SP_MAX Then
         ResolveSPValue = modShared.WP_SP(spIdx)
-    ElseIf spIdx >= 1 And spIdx <= 4 Then
+    ElseIf spIdx >= 1 And spIdx <= UBound(modShared.SPArray) Then
         ResolveSPValue = modShared.SPArray(spIdx)
     Else
         ResolveSPValue = 0
@@ -642,11 +642,5 @@ End Function
 '================================================================================
 
 Private Function BatchOutputPath(stem As String) As String
-    Dim p As String, n As Long, prefix As String
-    prefix = ResultCsvRoot() & "\" & stem & "-" & Format$(Now, "yyyymmdd-hhnnss")
-    p = prefix & ".csv"
-    Do While Len(Dir$(p)) > 0
-        n = n + 1: p = prefix & "-" & n & ".csv"
-    Loop
-    BatchOutputPath = p
+    BatchOutputPath = ResultCsvRoot() & "\" & stem & ".csv"
 End Function

@@ -1,0 +1,38 @@
+{
+  "GUI_compile": "passed",
+  "CSV_fixtures": "PASS BA fixture distinguishes last from best\nPASS BA chosen whole trace is trial 3 (price then loop; stable tie)\nPASS BA all summary rows and no-solution retained\nPASS BA selected trial is identified\nPASS BA resets between batches and accepts loop zero\nPASS BA refreshed selection metadata\nPASS BA all-invalid keeps diagnostic last trace\nPASS BA no stale winner for new H/fc with no solution\nPASS BA single-trial trace preserved\nPASS BA single-trial metadata\nPASS HCA fixture distinguishes last from best\nPASS HCA chosen whole trace is trial 3 (price then loop; stable tie)\nPASS HCA all summary rows and no-solution retained\nPASS HCA selected trial is identified\nPASS HCA resets between batches and accepts loop zero\nPASS HCA refreshed selection metadata\nPASS HCA all-invalid keeps diagnostic last trace\nPASS HCA no stale winner for new H/fc with no solution\nPASS HCA single-trial trace preserved\nPASS HCA single-trial metadata\nCHECKS=20\nFAILURES=0\nOPTIMIZER_RUNS=0",
+  "initial_only_calls": 12,
+  "neighbor_evaluations": 0,
+  "replayed_confirmed_graphs": 9,
+  "graph_edge_cases": 2,
+  "optimizer_source_unchanged": true,
+  "reporting_files_changed": [
+    "Form1.frm",
+    "modGraphing.bas",
+    "modShared.bas"
+  ],
+  "source_hashes": {
+    "Form1.frm": "02593d140c7310e53da338e44190cd18dcddff55787cedbcbcaa3beacaf8c770",
+    "Form1.frx": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+    "frmBestDesign.frm": "2d013023867253a8b600ed9c2cac045c2f384457c95fbd5483fdda999675b451",
+    "modBA.bas": "e6ab8b41b990fb1f2cb0133adff26c1df027c1e8d0d368671632f2bb5babb6d4",
+    "modBatch.bas": "d0290fecc7ca2c06c6fd3a76b9e9f7f3eeea76950dcd998d4975e6c379761af9",
+    "modBatch.v0.5.bak.bas": "4aed32d9bf713a161e8d40bea2733d08119cac40a4c55e4dcb968a42f719c1ab",
+    "modDataStructures.bas": "bf278662ac062f6ecaaee0b7f0262855963592e04bbdd120bf495c85c2d1268b",
+    "modEnhancedValidation.bas": "6541032ccedc8dcf9f057ca25b20bbb25c29cda04f8c9a97d3dc267d872a45d6",
+    "modExport.bas": "9a4cbfa7831fd01f37788a55c64d6cca58b8f5fde9a0977f43dbefcb8566facb",
+    "modFeasibilityMerit.bas": "a820edc7d65f5ef83d0dfe49badd90524fa4629266cc41d6111b528e3368f1d6",
+    "modFeasibilityRecovery.bas": "f9621891fb7cbec498127bede50a2c977e7731b67769300542c68f334704db35",
+    "modFontHelper.bas": "37148fa6707e08dee200d5f75499cfdce90ba9f773c71ca4e06b070a3f4b3d3f",
+    "modGraphing.bas": "87f0ee5293fdb90e15c7755bf507dd12083b726157f1826534a4b6dab3649e09",
+    "modHillClimbing.bas": "a34f232c0c8dd052291292a97b85e918468043a63742f90de434b5b89c510bfa",
+    "modPDFReport.bas": "9d22abd3f0e8a69cdded858ca2b6d0b50c26ee520d0ce7c22eaaee243e19364e",
+    "modProjectChecks.bas": "724280d69fc6ebffa77843dd4c1d3b44f85a191e094b878129677bb0d18ec33a",
+    "modSettings.bas": "97536c63299d2276f1ef8e5916808defe02a1221fa4da58a02d2d39aed44d7b1",
+    "modShared.bas": "6e1f960cb4431542da91aa561f9b8ee3c176ddd4f4166e41bde23859f04684c1",
+    "modWSD.bas": "4d6fe3009b8ecdac6fd8216c5dd83a9b6766fc9e2409de64e3861ba27827185e",
+    "RC_RT_HCA_v2.vbp": "12c91244df21e717ad90ea790c46ac278587b780ef94b807e4900cc20be46979"
+  },
+  "protected_result_files": 890,
+  "result_csv_unchanged": true
+}

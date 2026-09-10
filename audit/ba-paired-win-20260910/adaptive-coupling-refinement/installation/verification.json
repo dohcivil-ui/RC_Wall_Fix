@@ -1,0 +1,33 @@
+{
+  "installed": "modBA.bas",
+  "sha256": "e6ab8b41b990fb1f2cb0133adff26c1df027c1e8d0d368671632f2bb5babb6d4",
+  "native_UI_compile": "passed",
+  "executable_statements_match_confirmed_candidate": true,
+  "joint_wins": 26,
+  "pairs": 30,
+  "optimizer_runs_during_installation": 0,
+  "only_BA_changed": true,
+  "result_csv_unchanged": true,
+  "protected_files": 890,
+  "all_heights": [
+    {
+      "height": 3,
+      "fc": 240,
+      "joint_wins": 26,
+      "pairs": 30
+    },
+    {
+      "height": 4,
+      "fc": 280,
+      "joint_wins": 24,
+      "pairs": 30
+    },
+    {
+      "height": 5,
+      "fc": 320,
+      "joint_wins": 21,
+      "pairs": 30
+    }
+  ],
+  "all_heights_summary": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-paired-win-20260910\\adaptive-coupling-refinement\\confirmation\\summary-all-heights.json"
+}

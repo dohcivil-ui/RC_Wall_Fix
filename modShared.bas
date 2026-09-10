@@ -59,14 +59,14 @@ Public WP_LToe(80 To 89) As Double
 
 ' === เหล็กเสริม ===
 ' DB:     Index 100-104 (12, 16, 20, 25, 28 mm, 5 ค่า)
-' SP:     Index 110-113 (0.10, 0.15, 0.20, 0.25 m, 4 ค่า)
+' SP: Index 110-115 (0.10, 0.125, 0.15, 0.175, 0.20, 0.25 m; 6 values)
 
 Public WP_DB(100 To 104) As Integer
-Public WP_SP(110 To 113) As Double
+Public WP_SP(110 To 115) As Double
 
 ' === Arrays สำหรับ modWSD (Index 1-based) ===
 Public DBArray(1 To 5) As Integer
-Public SPArray(1 To 4) As Double
+Public SPArray(1 To 6) As Double
 Public fcArray(1 To 8) As Integer
 Public concretePrice(1 To 8) As Double
 Public fyArray(1 To 2) As Integer
@@ -78,7 +78,7 @@ Public Const TBASE_MIN As Integer = 40: Public Const TBase_max As Integer = 54
 Public Const BASE_MIN As Integer = 60:  Public Const BASE_MAX As Integer = 71
 Public Const LTOE_MIN As Integer = 80:  Public Const LTOE_MAX As Integer = 89
 Public Const DB_MIN As Integer = 100:   Public Const DB_MAX As Integer = 104
-Public Const SP_MIN As Integer = 110:   Public Const SP_MAX As Integer = 113
+Public Const SP_MIN As Integer = 110:   Public Const SP_MAX As Integer = 115
 
 '================================================================================
 ' SECTION 3: Module-Level Variables (ค่าจาก TextBox)
@@ -105,6 +105,8 @@ Public RunTrial As Long
 Public RunAlgorithm As String
 Public RunBest As Design
 Public RunBestCost As Double
+' Reporting only: quantity cost of the initial state, even when rejected.
+Public RunInitialQuantityCost As Double
 Public RunBestEvaluation As Long
 Public RunStatus As String
 Public RunFolder As String
@@ -159,9 +161,9 @@ Public Sub InitializeArrays()
     WP_DB(100) = 12:  WP_DB(101) = 16:  WP_DB(102) = 20
     WP_DB(103) = 25:  WP_DB(104) = 28
     
-    ' === SP (Index 110-113): 0.10, 0.15, 0.20, 0.25 m ===
-    WP_SP(110) = 0.1:   WP_SP(111) = 0.15
-    WP_SP(112) = 0.2:   WP_SP(113) = 0.25
+    ' === SP (Index 110-115): 0.10, 0.125, 0.15, 0.175, 0.20, 0.25 m ===
+    WP_SP(110) = 0.1:   WP_SP(111) = 0.125: WP_SP(112) = 0.15
+    WP_SP(113) = 0.175: WP_SP(114) = 0.2: WP_SP(115) = 0.25
     
     ' === Arrays สำหรับ modWSD (Index 1-based) ===
     
@@ -170,8 +172,8 @@ Public Sub InitializeArrays()
     DBArray(4) = 25:  DBArray(5) = 28
     
     ' SPArray (m)
-    SPArray(1) = 0.1:   SPArray(2) = 0.15
-    SPArray(3) = 0.2:   SPArray(4) = 0.25
+    SPArray(1) = 0.1:   SPArray(2) = 0.125: SPArray(3) = 0.15
+    SPArray(4) = 0.175: SPArray(5) = 0.2: SPArray(6) = 0.25
     
     ' fcArray (ksc)
     fcArray(1) = 180:  fcArray(2) = 210:  fcArray(3) = 240
@@ -199,15 +201,15 @@ End Sub
 '--------------------------------------------------------------------------------
 Public Sub DrawSearchMove(ByRef move() As Integer)
     ' Both optimizers use these exact twelve draws, in this order.
-    ' Geometry entries are index increments; bar entries are absolute indices.
+    ' Geometry and steel entries are increments from current catalogue indices.
     move(2) = Rand(-2, 2)       ' tb
     move(1) = Rand(-2, 2)       ' tt
     move(3) = Rand(-5, 5)      ' TBase
     move(5) = Rand(-2, 2)      ' LToe
     move(4) = Rand(-1, 1)      ' Base
-    move(6) = Rand(DB_MIN, DB_MAX): move(7) = Rand(SP_MIN, SP_MAX)
-    move(8) = Rand(DB_MIN, DB_MAX): move(9) = Rand(SP_MIN, SP_MAX)
-    move(10) = Rand(DB_MIN, DB_MAX): move(11) = Rand(SP_MIN, SP_MAX)
+    move(6) = Rand(-1, 1): move(7) = Rand(-1, 1)
+    move(8) = Rand(-1, 1): move(9) = Rand(-1, 1)
+    move(10) = Rand(-1, 1): move(11) = Rand(-1, 1)
     ' Whole design: 7/12; each of the five member moves: 1/12.
     move(0) = Rand(0, 11)
     If move(0) > 5 Then move(0) = 0
@@ -799,6 +801,7 @@ Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algo
     s = s & ScreenResultRow("Best Found at Trial", CStr(modDataStructures.BestTrial))
     s = s & ScreenResultRow("Best Found at Evaluation", CStr(modDataStructures.BestCostIteration))
     s = s & "Validation: PASS (configured checks)" & vbCrLf
+    s = s & PROJECT_MEMBER_LOADS & vbCrLf
     s = s & ScreenResultSection("TOTAL COST")
     s = s & ScreenResultRow("Total", Format$(r.Cost, "#,##0.00") & " Baht/m")
     s = s & "Concrete + main steel only" & vbCrLf
@@ -829,10 +832,15 @@ Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algo
         member = "Stem": If i = 1 Then member = "Toe"
         If i = 2 Then member = "Heel"
         s = s & vbCrLf & "--- " & member & " ---" & vbCrLf
-        s = s & ScreenResultRow("Moment (envelope)", Format$(r.Moment(i), "0.00") & " ton-m")
-        s = s & ScreenResultRow("Steel", "DB" & WP_DB(r.DB(i)) & " @ " & Format$(WP_SP(r.SP(i)), "0.00") & " m")
+        s = s & ScreenResultRow("Moment (book design)", Format$(r.Moment(i), "0.00") & " ton-m")
+        s = s & ScreenResultRow("Steel", "DB" & WP_DB(r.DB(i)) & " @ " & Format$(WP_SP(r.SP(i)), "0.00#") & " m")
         s = s & "As_min=" & Format$(r.Minimum(i), "0.00") & ", As_prov=" & Format$(r.Steel(i), "0.00") & " cm2/m" & vbCrLf
         s = s & ScreenResultRow("Effective depth", Format$(r.Depth(i), "0.000") & " m")
+        If i > 0 And r.ReverseMoment(i) > 0.000000001 Then
+            s = s & ScreenResultRow("Reverse moment |M|", Format$(r.ReverseMoment(i), "0.0000") & " ton-m")
+            s = s & ScreenResultRow("Reverse depth", Format$(r.ReverseDepth(i), "0.000") & " m")
+            s = s & ScreenResultRow("Reverse tension cc", Format$(d.TBase - cover - WP_DB(r.DB(i)) / 1000#, "0.000") & " m")
+        End If
     Next i
     s = s & ScreenResultSection("SAFETY FACTORS")
     s = s & "Minimum over 16 dead-load cases" & vbCrLf
@@ -862,10 +870,16 @@ Public Function FormatScreenResults(d As Design, mat As MaterialProperties, algo
         shearLimit = r.ShearLimit
         If i = 0 And d.tt <> d.tb Then shearLimit = shearLimit / 2#
         s = s & ScreenResultRow("Shear", Format$(r.Shear(i), "0.00") & " / " & Format$(shearLimit, "0.00"))
+        If i > 0 And r.ReverseMoment(i) > 0.000000001 Then
+            s = s & ScreenResultRow("Concrete (reversed)", Format$(r.ReverseFc(i), "0.00") & " / " & Format$(currentWSD.fc, "0.00"))
+            s = s & ScreenResultRow("Steel (reversed)", Format$(r.ReverseFs(i), "0.00") & " / " & Format$(currentWSD.fs, "0.00"))
+            s = s & ScreenResultRow("Shear (reversed)", Format$(r.ReverseShear(i), "0.00") & " / " & Format$(shearLimit, "0.00"))
+        End If
     Next i
     s = s & ScreenResultSection("NOTES")
     s = s & "As_min is minimum steel, not flexural As_req." & vbCrLf
     s = s & "Flexure is checked using the actual bars." & vbCrLf
+    s = s & "Net-load reverse bending remains a separate check on the same bars." & vbCrLf
     s = s & "No secondary steel, anchorage, laps or formwork." & vbCrLf
     s = s & "Basis: " & PROJECT_CHECK_BASIS & vbCrLf
     FormatScreenResults = s
@@ -996,7 +1010,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     End If
     If d.ASst_Sp >= SP_MIN And d.ASst_Sp <= SP_MAX Then
         stemSP_val = WP_SP(d.ASst_Sp)
-    ElseIf d.ASst_Sp >= 1 And d.ASst_Sp <= 4 Then
+    ElseIf d.ASst_Sp >= 1 And d.ASst_Sp <= UBound(SPArray) Then
         stemSP_val = SPArray(d.ASst_Sp)
     Else
         stemSP_val = 0.15
@@ -1005,7 +1019,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     
     result = result & vbCrLf & "--- Stem ---" & vbCrLf
     result = result & "Moment: " & Format(M_stem, "0.00") & " ton-m" & vbCrLf
-    result = result & "Steel: DB" & stemDB_val & " @ " & Format(stemSP_val, "0.00") & "m" & vbCrLf
+    result = result & "Steel: DB" & stemDB_val & " @ " & Format(stemSP_val, "0.00#") & "m" & vbCrLf
     result = result & "As_req: " & Format(As_req_stem, "0.00") & ", As_prov: " & Format(As_prov_stem, "0.00") & " cm2/m" & vbCrLf
     
     ' Toe
@@ -1018,7 +1032,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     End If
     If d.AStoe_Sp >= SP_MIN And d.AStoe_Sp <= SP_MAX Then
         toeSP_val = WP_SP(d.AStoe_Sp)
-    ElseIf d.AStoe_Sp >= 1 And d.AStoe_Sp <= 4 Then
+    ElseIf d.AStoe_Sp >= 1 And d.AStoe_Sp <= UBound(SPArray) Then
         toeSP_val = SPArray(d.AStoe_Sp)
     Else
         toeSP_val = 0.15
@@ -1027,7 +1041,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     
     result = result & vbCrLf & "--- Toe ---" & vbCrLf
     result = result & "Moment: " & Format(M_toe, "0.00") & " ton-m" & vbCrLf
-    result = result & "Steel: DB" & toeDB_val & " @ " & Format(toeSP_val, "0.00") & "m" & vbCrLf
+    result = result & "Steel: DB" & toeDB_val & " @ " & Format(toeSP_val, "0.00#") & "m" & vbCrLf
     result = result & "As_req: " & Format(As_req_toe, "0.00") & ", As_prov: " & Format(As_prov_toe, "0.00") & " cm2/m" & vbCrLf
     
     ' Heel
@@ -1040,7 +1054,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     End If
     If d.ASheel_Sp >= SP_MIN And d.ASheel_Sp <= SP_MAX Then
         heelSP_val = WP_SP(d.ASheel_Sp)
-    ElseIf d.ASheel_Sp >= 1 And d.ASheel_Sp <= 4 Then
+    ElseIf d.ASheel_Sp >= 1 And d.ASheel_Sp <= UBound(SPArray) Then
         heelSP_val = SPArray(d.ASheel_Sp)
     Else
         heelSP_val = 0.15
@@ -1049,7 +1063,7 @@ Public Function FormatResults(d As Design, mat As MaterialProperties, _
     
     result = result & vbCrLf & "--- Heel ---" & vbCrLf
     result = result & "Moment: " & Format(M_heel, "0.00") & " ton-m" & vbCrLf
-    result = result & "Steel: DB" & heelDB_val & " @ " & Format(heelSP_val, "0.00") & "m" & vbCrLf
+    result = result & "Steel: DB" & heelDB_val & " @ " & Format(heelSP_val, "0.00#") & "m" & vbCrLf
     result = result & "As_req: " & Format(As_req_heel, "0.00") & ", As_prov: " & Format(As_prov_heel, "0.00") & " cm2/m" & vbCrLf
     result = result & "-------------------------------" & vbCrLf
     
@@ -1109,14 +1123,15 @@ Public Sub BeginSearch(budget As Long, algorithm As String, Optional trial As Lo
     If algorithm = "HCA" Then InitCSVExport
     RunBest = emptyDesign: RunBestCost = NO_SOLUTION_COST: RunBestEvaluation = 0
     RunRecoveryCount = 0
+    RunInitialQuantityCost = 0
     RunStatus = "NO_SOLUTION"
-    ' Export primary CSVs and archive only; do not create per-trial folders.
+    ' Export fixed root filenames; do not create archives or per-trial folders.
     RunFolder = ""
 End Sub
 
 Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateCost As Double) As Boolean
     Dim ot As Double, sl As Double, bc As Double, ok As Boolean, improved As Boolean
-    Dim exportPrice As String, quantities As ProjectDetail
+    Dim exportPrice As String, quantities As ProjectDetail, quantityCost As Double
     If EvaluationCount >= EvaluationBudget Then Err.Raise 5, , "Evaluation budget exhausted"
     EvaluationCount = EvaluationCount + 1
     candidateCost = NO_SOLUTION_COST
@@ -1133,12 +1148,14 @@ Public Function EvaluateCandidate(d As Design, entry As String, ByRef candidateC
     End If
     ' Keep search cost/validity unchanged; export rejected material quantities separately.
     If ok Then
-        exportPrice = CsvPrice(candidateCost)
+        quantityCost = candidateCost
     ElseIf ProjectChecksEnabled Then
-        If ProjectQuantityCost(d, quantities) Then exportPrice = CsvPrice(quantities.Cost)
+        If ProjectQuantityCost(d, quantities) Then quantityCost = quantities.Cost
     ElseIf GeometryOK(d) Then
-        exportPrice = CsvPrice(CalculateCostFull(d, d.ASst_DB, d.ASst_Sp, d.AStoe_DB, d.AStoe_Sp, d.ASheel_DB, d.ASheel_Sp))
+        quantityCost = CalculateCostFull(d, d.ASst_DB, d.ASst_Sp, d.AStoe_DB, d.AStoe_Sp, d.ASheel_DB, d.ASheel_Sp)
     End If
+    If quantityCost > 0 Then exportPrice = CsvPrice(quantityCost)
+    If EvaluationCount = 1 Then RunInitialQuantityCost = quantityCost
     ' Reference files number the initial evaluation 0; the budget still counts it.
     If RunAlgorithm = "BA" Then LogIteration_BA EvaluationCount - 1, exportPrice, ok, improved
     If RunAlgorithm = "HCA" Then LogIteration EvaluationCount - 1, exportPrice, ok, improved
@@ -1167,38 +1184,39 @@ Public Function ResultCsvRoot() As String
 End Function
 
 Public Function UniqueExportPath(stem As String, Optional rootLevel As Boolean = False) As String
-    Dim n As Long, p As String, folder As String
-    folder = RunFolder
-    If rootLevel Or Len(folder) = 0 Then folder = ResultCsvRoot()
-    p = folder & "\" & stem & ".csv"
-    Do While Len(Dir$(p)) > 0
-        n = n + 1: p = folder & "\" & stem & "-" & n & ".csv"
-    Loop
-    UniqueExportPath = p
+    ' Legacy signature retained; every export now overwrites its fixed root name.
+    UniqueExportPath = ResultCsvRoot() & "\" & stem & ".csv"
 End Function
 
 Public Function WriteExportCSV(stem As String, data As String, Optional fixedRootName As Boolean = False) As String
-    Dim filePath As String, f As Integer, backupFolder As String, backupPath As String, prefix As String, n As Long
+    Dim filePath As String, f As Integer, errorNumber As Long, errorText As String
+    On Error GoTo ExportFailed
     filePath = UniqueExportPath(stem)
-    If fixedRootName Then
-        filePath = ResultCsvRoot() & "\" & stem & ".csv"
-        If Len(Dir$(filePath)) > 0 Then
-            backupFolder = ResultCsvRoot() & "\archive"
-            If Dir$(backupFolder, vbDirectory) = "" Then MkDir backupFolder
-            prefix = backupFolder & "\" & stem & "-" & Format$(Now, "yyyymmdd-hhnnss")
-            backupPath = prefix & ".csv"
-            Do While Len(Dir$(backupPath)) > 0
-                n = n + 1: backupPath = prefix & "-" & n & ".csv"
-            Loop
-            ' Preserve the previous primary file before replacing its contents.
-            FileCopy filePath, backupPath
-        End If
-    End If
     f = FreeFile
     Open filePath For Output As #f
     Print #f, data;
     Close #f
     WriteExportCSV = filePath
+    Exit Function
+ExportFailed:
+    errorNumber = Err.Number: errorText = Err.Description
+    On Error Resume Next
+    If f > 0 Then Close #f
+    On Error GoTo 0
+    Err.Raise errorNumber, "WriteExportCSV", "Cannot save " & filePath & ": " & errorText
+End Function
+
+Public Function SaveResultPicture(pic As PictureBox, stem As String) As String
+    Dim filePath As String, errorNumber As Long, errorText As String
+    On Error GoTo ExportFailed
+    filePath = ResultCsvRoot() & "\" & stem & ".bmp"
+    ' Image includes AutoRedraw drawing and text, not just the Picture property.
+    SavePicture pic.Image, filePath
+    SaveResultPicture = filePath
+    Exit Function
+ExportFailed:
+    errorNumber = Err.Number: errorText = Err.Description
+    Err.Raise errorNumber, "SaveResultPicture", "Cannot save " & filePath & ": " & errorText
 End Function
 
 Public Sub InitializeSearchRandom()
@@ -1252,7 +1270,7 @@ Private Function AuditMember(d As Design, part As Integer, label As String, thic
         Case 1: moment = CalculateMomentToe(d): ratio = MinBaseRatio
         Case 2: moment = CalculateMomentHeel(d): ratio = MinBaseRatio
     End Select
-    result = AuditRow(label & " bars", "DB" & WP_DB(db) & " @ " & Format$(WP_SP(sp), "0.00") & " m", "specified candidate", "INPUT", "Design")
+    result = AuditRow(label & " bars", "DB" & WP_DB(db) & " @ " & Format$(WP_SP(sp), "0.00#") & " m", "specified candidate", "INPUT", "Design")
     result = result & AuditRow(label & " effective depth", Format$(depth, "0.0000") & " m", "t-cover-db/2 > 0", "CALCULATED", "Main bar outermost; single layer assumption")
     result = result & AuditRow(label & " As", Format$(steel, "0.0000") & " cm2/m", "area per metre", "CALCULATED", "CalculateAsProv")
     result = result & AuditCompare(label & " signed M", moment, 0, True, "ton-m", "Supported tension face; modShared", failed)

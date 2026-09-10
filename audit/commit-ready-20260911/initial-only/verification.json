@@ -1,0 +1,75 @@
+{
+  "pairs": [
+    {
+      "H": 3,
+      "fc": 240,
+      "mode": "current",
+      "price": "29924.3644800000",
+      "exact_price_equal": true,
+      "all_dimensions_and_rebars_equal": true,
+      "initial_csv_bytes_equal": true,
+      "valid": "False",
+      "reason": "MAXIMUM_MAIN_STEEL_REVERSED_HEEL"
+    },
+    {
+      "H": 3,
+      "fc": 240,
+      "mode": "catalog_max",
+      "price": "29924.3644800000",
+      "exact_price_equal": true,
+      "all_dimensions_and_rebars_equal": true,
+      "initial_csv_bytes_equal": true,
+      "valid": "False",
+      "reason": "MAXIMUM_MAIN_STEEL_REVERSED_HEEL"
+    },
+    {
+      "H": 4,
+      "fc": 280,
+      "mode": "current",
+      "price": "33912.9116800000",
+      "exact_price_equal": true,
+      "all_dimensions_and_rebars_equal": true,
+      "initial_csv_bytes_equal": true,
+      "valid": "False",
+      "reason": "MEMBER_FLEXURE"
+    },
+    {
+      "H": 4,
+      "fc": 280,
+      "mode": "catalog_max",
+      "price": "33912.9116800000",
+      "exact_price_equal": true,
+      "all_dimensions_and_rebars_equal": true,
+      "initial_csv_bytes_equal": true,
+      "valid": "False",
+      "reason": "MEMBER_FLEXURE"
+    },
+    {
+      "H": 5,
+      "fc": 320,
+      "mode": "current",
+      "price": "38041.6588800000",
+      "exact_price_equal": true,
+      "all_dimensions_and_rebars_equal": true,
+      "initial_csv_bytes_equal": true,
+      "valid": "False",
+      "reason": "MEMBER_FLEXURE"
+    },
+    {
+      "H": 5,
+      "fc": 320,
+      "mode": "catalog_max",
+      "price": "38041.6588800000",
+      "exact_price_equal": true,
+      "all_dimensions_and_rebars_equal": true,
+      "initial_csv_bytes_equal": true,
+      "valid": "False",
+      "reason": "MEMBER_FLEXURE"
+    }
+  ],
+  "initial_only_entry_point_calls": 12,
+  "neighbor_midpoint_evaluations": 0,
+  "root_unchanged": true,
+  "protected_result_files": 890,
+  "protected_results_unchanged": true
+}

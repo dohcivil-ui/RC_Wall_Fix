@@ -1,0 +1,23 @@
+PASS BA fixture distinguishes last from best
+PASS BA chosen whole trace is trial 3 (price then loop; stable tie)
+PASS BA all summary rows and no-solution retained
+PASS BA selected trial is identified
+PASS BA resets between batches and accepts loop zero
+PASS BA refreshed selection metadata
+PASS BA all-invalid keeps diagnostic last trace
+PASS BA no stale winner for new H/fc with no solution
+PASS BA single-trial trace preserved
+PASS BA single-trial metadata
+PASS HCA fixture distinguishes last from best
+PASS HCA chosen whole trace is trial 3 (price then loop; stable tie)
+PASS HCA all summary rows and no-solution retained
+PASS HCA selected trial is identified
+PASS HCA resets between batches and accepts loop zero
+PASS HCA refreshed selection metadata
+PASS HCA all-invalid keeps diagnostic last trace
+PASS HCA no stale winner for new H/fc with no solution
+PASS HCA single-trial trace preserved
+PASS HCA single-trial metadata
+CHECKS=20
+FAILURES=0
+OPTIMIZER_RUNS=0

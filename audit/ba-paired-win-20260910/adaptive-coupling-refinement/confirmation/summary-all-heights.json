@@ -1,0 +1,103 @@
+{
+  "same_algorithm_all_cases": true,
+  "source_BA_sha256": "10be5d9fbde4a3b499843e31fc103783865a76bd118499f1551e77d01e2e700f",
+  "seed_range": [
+    142345,
+    142374
+  ],
+  "cases": [
+    {
+      "height": 3,
+      "fc": 240,
+      "pairs": 30,
+      "joint_wins": 26,
+      "win_percent": 86.66666666666667,
+      "criterion_met": true,
+      "BA_valid": 30,
+      "HCA_valid": 30,
+      "BA_price_le_HCA": 30,
+      "BA_mean_price": 3076.9201542857145,
+      "HCA_mean_price": 3101.1315220571432,
+      "BA_mean_first_best_loop": 364.96666666666664,
+      "HCA_mean_first_best_loop": 1304.6,
+      "BA_selected": {
+        "trial": 28,
+        "seed": 142372,
+        "price": 3076.9201542857145,
+        "evaluation": 129,
+        "loop": 128
+      },
+      "HCA_selected": {
+        "trial": 2,
+        "seed": 142346,
+        "price": 3076.9201542857145,
+        "evaluation": 371,
+        "loop": 370
+      },
+      "evidence": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-paired-win-20260910\\adaptive-coupling-refinement\\confirmation\\H3-240"
+    },
+    {
+      "height": 4,
+      "fc": 280,
+      "pairs": 30,
+      "joint_wins": 24,
+      "win_percent": 80.0,
+      "criterion_met": true,
+      "BA_valid": 30,
+      "HCA_valid": 30,
+      "BA_price_le_HCA": 29,
+      "BA_mean_price": 5163.149435352381,
+      "HCA_mean_price": 5208.277444495238,
+      "BA_mean_first_best_loop": 1111.9333333333334,
+      "HCA_mean_first_best_loop": 2320.0666666666666,
+      "BA_selected": {
+        "trial": 24,
+        "seed": 142368,
+        "price": 5162.013968,
+        "evaluation": 215,
+        "loop": 214
+      },
+      "HCA_selected": {
+        "trial": 22,
+        "seed": 142366,
+        "price": 5162.013968,
+        "evaluation": 1345,
+        "loop": 1344
+      },
+      "evidence": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-paired-win-20260910\\adaptive-coupling-refinement\\confirmation\\H4-280"
+    },
+    {
+      "height": 5,
+      "fc": 320,
+      "pairs": 30,
+      "joint_wins": 21,
+      "win_percent": 70.0,
+      "criterion_met": true,
+      "BA_valid": 30,
+      "HCA_valid": 30,
+      "BA_price_le_HCA": 27,
+      "BA_mean_price": 9184.793774942858,
+      "HCA_mean_price": 9651.291677842857,
+      "BA_mean_first_best_loop": 2006.8,
+      "HCA_mean_first_best_loop": 3126.6,
+      "BA_selected": {
+        "trial": 22,
+        "seed": 142366,
+        "price": 9087.936964285715,
+        "evaluation": 366,
+        "loop": 365
+      },
+      "HCA_selected": {
+        "trial": 17,
+        "seed": 142361,
+        "price": 9130.417414285715,
+        "evaluation": 2306,
+        "loop": 2305
+      },
+      "evidence": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-paired-win-20260910\\adaptive-coupling-refinement\\confirmation\\H5-320"
+    }
+  ],
+  "all_cases_meet_60_percent": true,
+  "all_trials_valid": true,
+  "paired_csv": "C:\\reserch 69\\RC_Wall_Fix\\audit\\ba-paired-win-20260910\\adaptive-coupling-refinement\\confirmation\\comparison-H3-H4-H5-30pairs.csv"
+}

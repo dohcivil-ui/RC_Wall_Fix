@@ -40,3 +40,5 @@ ThreadPerObject=0
 MaxNumberOfThreads=1
 
 Module=modProjectChecks; modProjectChecks.bas
+Module=modFeasibilityRecovery; modFeasibilityRecovery.bas
+Module=modFeasibilityMerit; modFeasibilityMerit.bas

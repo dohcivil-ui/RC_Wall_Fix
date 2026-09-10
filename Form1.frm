@@ -550,6 +550,7 @@ Dim hcaStoredBestIter As Long
 Dim hcaStoredMaxIter As Long
 Dim hcaHasRun As Boolean
 Private hcaComparisonKey As String
+Private hcaStoredInitialCost As Double
 
 Dim baStoredHistory() As Double
 Dim baStoredBestCost As Double
@@ -557,6 +558,7 @@ Dim baStoredBestIter As Long
 Dim baStoredMaxIter As Long
 Dim baHasRun As Boolean
 Private baComparisonKey As String
+Private baStoredInitialCost As Double
 
 ' ==========================================
 ' Form Variables
@@ -582,6 +584,7 @@ Private Sub cmdBA_Click()
     Dim trialDesign As Design, bestDesign As Design
     Dim trialCost As Double, globalBestCost As Double
     Dim globalBestTrial As Integer, globalBestIteration As Long
+    Dim globalBestInitialCost As Double
     Dim globalBestCostHistory() As Double
     
     txtResults.Text = vbNullString
@@ -657,6 +660,7 @@ Private Sub cmdBA_Click()
             bestDesign = trialDesign
             globalBestTrial = trial
             globalBestIteration = modDataStructures.BestCostIteration
+            globalBestInitialCost = RunInitialQuantityCost
             
             ReDim globalBestCostHistory(1 To maxIter)
             Dim k As Long
@@ -699,14 +703,19 @@ Private Sub cmdBA_Click()
     Next j
     
     Call ClearGraph(picGraph)
-    If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration)
+    If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration, globalBestInitialCost)
     
     cmdBA.Enabled = True: cmdRun.Enabled = True: cmdCommand1.Enabled = True: cmdCompare.Enabled = True
     Me.MousePointer = vbDefault
 
     
     AddResultLine "CSV output: " & ResultCsvRoot()
-    AddResultLine "accept CSV (last trial): " & LastAcceptCSVPath
+    If globalBestTrial > 0 Then
+        AddResultLine "accept CSV (best trial " & globalBestTrial & "): " & LastAcceptCSVPath
+    Else
+        AddResultLine "accept CSV (last trial; no feasible trial): " & LastAcceptCSVPath
+    End If
+    AddResultLine "Selected trial details: " & modBA.SelectedTrialCSVPath_BA
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled And Len(ProjectTrialSummary) > 0 Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Budget includes initial/reset/neighbor evaluations."
@@ -718,6 +727,7 @@ Private Sub cmdBA_Click()
     BA_HasData = (globalBestIteration > 0)
     
     ' --- Store results for Compare ---
+baStoredInitialCost = globalBestInitialCost
 baStoredBestCost = globalBestCost
 baStoredBestIter = globalBestIteration
 baStoredMaxIter = maxIter
@@ -729,6 +739,9 @@ Next siBA
 baHasRun = True
 baComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "BA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
+    AddResultLine "Design image: " & frmBestDesign.SaveResultImage(h, "BA")
+    AddResultLine "Convergence image: " & SaveResultPicture(picGraph, "convergence-BA-H" & Replace$(CStr(h), ",", ".") & "-" & CStr(selectedMaterial.fc))
+    txtResults.SelStart = 0
     
     
     
@@ -838,6 +851,7 @@ Private Sub cmdRun_Click()
     Dim globalBestTrial As Integer
     Dim globalBestIteration As Long
     Dim currentCost As Double
+    Dim globalBestInitialCost As Double
     Dim globalBestCostHistory() As Double   ' เพิ่มบรรทัดนี้
     
     Call InitializeArrays
@@ -952,6 +966,7 @@ Private Sub cmdRun_Click()
             globalBestCost = currentCost
             globalBestTrial = trial
             globalBestIteration = modDataStructures.BestCostIteration
+            globalBestInitialCost = RunInitialQuantityCost
             ' เก็บ CostHistory ของ Trial ที่ดีที่สุด
             globalBestCostHistory = modDataStructures.CostHistory
             Debug.Print ">>> NEW GLOBAL BEST at Trial " & trial & ": " & Format(globalBestCost, "#,##0.00") & " Baht/m"
@@ -991,7 +1006,7 @@ Private Sub cmdRun_Click()
     'Call DrawCostGraph(picGraph, modDataStructures.CostHistory, modDataStructures.BestCostIteration)
      ' === Draw Graph (ใช้ CostHistory ของ Trial ที่ดีที่สุด) ===
     Call ClearGraph(picGraph)
-    If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration)
+    If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration, globalBestInitialCost)
     
     ' Re-enable button
     cmdBA.Enabled = True: cmdRun.Enabled = True: cmdCommand1.Enabled = True: cmdCompare.Enabled = True
@@ -1002,7 +1017,12 @@ Private Sub cmdRun_Click()
     
     ' แสดงข้อความสรุปครั้งเดียวตอนจบ
     AddResultLine "CSV output: " & ResultCsvRoot()
-    AddResultLine "accept CSV (last trial): " & LastAcceptCSVPath
+    If globalBestTrial > 0 Then
+        AddResultLine "accept CSV (best trial " & globalBestTrial & "): " & LastAcceptCSVPath
+    Else
+        AddResultLine "accept CSV (last trial; no feasible trial): " & LastAcceptCSVPath
+    End If
+    AddResultLine "Selected trial details: " & modHillClimbing.SelectedTrialCSVPath
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled And Len(ProjectTrialSummary) > 0 Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Budget includes initial/reset/neighbor evaluations."
@@ -1014,6 +1034,7 @@ Private Sub cmdRun_Click()
     HCA_HasData = (globalBestIteration > 0)
     
     ' --- Store results for Compare ---
+hcaStoredInitialCost = globalBestInitialCost
 hcaStoredBestCost = globalBestCost
 hcaStoredBestIter = globalBestIteration
 hcaStoredMaxIter = maxIter
@@ -1025,6 +1046,9 @@ Next siHCA
 hcaHasRun = True
 hcaComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "HCA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
+    AddResultLine "Design image: " & frmBestDesign.SaveResultImage(h, "HCA")
+    AddResultLine "Convergence image: " & SaveResultPicture(picGraph, "convergence-HCA-H" & Replace$(CStr(h), ",", ".") & "-" & CStr(selectedMaterial.fc))
+    txtResults.SelStart = 0
     
     
     Exit Sub
@@ -1210,6 +1234,10 @@ Private Sub DrawDualCostGraph(pic As PictureBox, _
     Next i
     
     ' === ปรับ Range ให้มี padding ===
+    If hcaStoredInitialCost > maxCost Then maxCost = hcaStoredInitialCost
+    If baStoredInitialCost > maxCost Then maxCost = baStoredInitialCost
+    If hcaStoredInitialCost > 0 And hcaStoredInitialCost < minCost Then minCost = hcaStoredInitialCost
+    If baStoredInitialCost > 0 And baStoredInitialCost < minCost Then minCost = baStoredInitialCost
     If maxCost - minCost < 1000 Then
         minCost = minCost - 500
         maxCost = maxCost + 500
@@ -1330,6 +1358,12 @@ pic.ForeColor = vbGreen  ' Dark Green
         End If
     Next i
     
+    ' Initial reference is distinct from the feasible best-so-far curves.
+    pic.ForeColor = vbBlue
+    Call DrawInitialCostReference(pic, HCA_History, hcaStoredInitialCost, marginLeft + xScale, xScale, minCost, marginTop + graphHeight, yScale, marginLeft + 200, marginTop + 100, "HCA")
+    pic.ForeColor = vbGreen
+    Call DrawInitialCostReference(pic, BA_History, baStoredInitialCost, marginLeft + xScale, xScale, minCost, marginTop + graphHeight, yScale, marginLeft + 200, marginTop + 320, "BA")
+
     ' === Draw Legend Box ===
     legendX = marginLeft + graphWidth - 1200
     legendY = marginTop + 100

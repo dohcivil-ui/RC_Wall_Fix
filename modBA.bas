@@ -1,18 +1,37 @@
 Attribute VB_Name = "modBA"
-'================================================================================
-' Module: modHillClimbing.bas
-' Project: RC_RT_HCA v2.8 - Cantilever Retaining Wall Optimization
-' Purpose: Hill Climbing Algorithm (HCA) - ???????? functions ??? modShared
-' Version: 5.1 - Fixed CSV Export (Rejected ????????????)
-' Date: 2567
-'
-' ??????????? v5.1:
-' - ????? CSV Export: ????????????? Check Valid
-' - Rejected ???????????? ?????? 999999999
-'================================================================================
+' BA: initial three-axis midpoint neighbors, then local feasibility recovery.
+' After feasibility, alternate midpoint/local proposals while ranges are wide.
+' A bounded feasible archive and adjacent steel transitions preserve RunBest.
+' Every proposed design uses the shared validator and evaluation budget.
 Option Explicit
+Public ConceptUpper(1 To 3) As Integer
+Public ConceptProposed(1 To 3) As Integer
+Public ProposalMidpoint As Boolean
+Private ProposalGroup As Integer
+Private CoupledLocalCount As Long
+Private SeenProposalIndices As Object
+Private ProposalRedraw As Boolean, SamplingForEvaluation As Boolean
+Public ProposalDraws As Integer, TotalProposalDraws As Long
+Public ProposalActiveBridge As Boolean
+Public ProposalFrontierEntry As Boolean
+Public ProposalFixedBaseCoupled As Boolean
+Private BridgeDesign As Design, BridgeOrigin As Design
+Private BridgePending As Boolean, BridgeInUse As Boolean, BridgeGroup As Integer
+Private BridgeNext As Boolean, BridgeRemaining As Integer
+Private BridgeHoldDB As Boolean
+Private Const BRIDGE_STEEL As Integer = 1
+Private Const BRIDGE_EXPANSION As Integer = 3
+Private BridgeKind As Integer
+Public ProposalExpansionGroup As Integer
+Private ProposalDBStep As Integer, ProposalSPStep As Integer
 Private PairDB() As Integer, PairSP() As Integer, PairWeight() As Double
 Private PairCount As Integer
+Private Const BRANCH_CAPACITY As Integer = 4
+Private Const BRANCH_PERIOD As Integer = 8
+Private BranchDesign(1 To BRANCH_CAPACITY) As Design
+Private BranchIndices(1 To 11, 1 To BRANCH_CAPACITY) As Integer
+Private BranchCount As Integer, BranchProposals As Long
+
 Public CostHistory_BA() As Double
 
 '================================================================================
@@ -32,7 +51,7 @@ Private CurrentToeSP As Integer
 Private CurrentHeelDB As Integer
 Private CurrentHeelSP As Integer
 
-' Full design-domain bounds. HCA never contracts these ranges.
+' Original catalogue bounds remain available to local BA proposals.
 Private FixedTbMax As Integer, FixedTBaseMax As Integer
 Private FixedBaseMin As Integer, FixedBaseMax As Integer
 
@@ -43,87 +62,25 @@ Private csvAcceptData As String
 Private csvLoopData As String
 Private loopCount As Long
 Private bestIterationInRun As Long
+' Retain a whole trial trace for the graph: lowest valid cost, then earliest loop.
+Private bestAcceptData As String
+Private bestAcceptTrial As Long
+Private bestAcceptIteration As Long
+Private bestAcceptCost As Double
+Public SelectedTrialCSVPath_BA As String
 
 '================================================================================
 ' SECTION 2: Initialize Design (Conservative - Max values)
 '================================================================================
 
 Private Sub InitializeCurrentDesign()
-    Dim tb_max_val As Double, TBase_max_val As Double
-    Dim Base_target As Double, LToe_target As Double
-    Dim LBase_Max_Ratio As Double
-    Dim i As Integer
-    
-    
-    ' === tb: Max = 0.12 × H ===
-    tb_max_val = 0.12 * modShared.H
-    Currenttb = TB_MIN
-    For i = modShared.tb_max To modShared.TB_MIN Step -1
-        If WP_tb(i) <= tb_max_val Then
-            Currenttb = i
-            Exit For
-        End If
-    Next i
-    
-    ' === tt: ???????? Max ???? <= tb ===
-Currenttt = TT_MAX
-For i = modShared.TT_MAX To modShared.TT_MIN Step -1
-    If WP_tt(i) <= WP_tb(Currenttb) Then
-        Currenttt = i
-        Exit For
-    End If
-Next i
-
-    ' ???? >= tt
-    If WP_tb(Currenttb) < WP_tt(Currenttt) Then
-        For i = modShared.TB_MIN To modShared.tb_max
-            If WP_tb(i) >= WP_tt(Currenttt) Then
-                Currenttb = i
-                Exit For
-            End If
-        Next i
-    End If
-    
-    ' === TBase: Max = 0.15 × H ===
-    TBase_max_val = 0.15 * modShared.H
-    CurrentTBase = TBASE_MIN
-    For i = modShared.TBase_max To modShared.TBASE_MIN Step -1
-        If WP_TBase(i) <= TBase_max_val Then
-            CurrentTBase = i
-            Exit For
-        End If
-    Next i
-    
-    ' === Base: 0.5H - 0.7H ===
-    Base_target = 0.7 * modShared.H
-    CurrentBase = BASE_MIN
-    For i = modShared.BASE_MAX To modShared.BASE_MIN Step -1
-        If WP_Base(i) <= Base_target Then
-            CurrentBase = i
-            Exit For
-        End If
-    Next i
-    
-    ' === LToe: 0.2 × H ===
-    LToe_target = 0.2 * modShared.H
-    CurrentLToe = LTOE_MIN
-    For i = modShared.LTOE_MAX To modShared.LTOE_MIN Step -1
-        If WP_LToe(i) <= LToe_target Then
-            CurrentLToe = i
-            Exit For
-        End If
-    Next i
-    
-    ' === ?????: Max (DB28 @ 0.10m) ===
-    CurrentStemDB = DB_MAX:  CurrentStemSP = SP_MIN
-    CurrentToeDB = DB_MAX:   CurrentToeSP = SP_MIN
-    CurrentHeelDB = DB_MAX:  CurrentHeelSP = SP_MIN
-
-    FixedTbMax = Currenttb: FixedTBaseMax = CurrentTBase
-    FixedBaseMax = CurrentBase: FixedBaseMin = BASE_MIN
-    For i = BASE_MIN To BASE_MAX
-        If WP_Base(i) >= 0.5 * modShared.H Then FixedBaseMin = i: Exit For
-    Next i
+    Currenttt = TT_MAX: Currenttb = tb_max
+    CurrentTBase = TBase_max: CurrentBase = BASE_MAX: CurrentLToe = LTOE_MAX
+    CurrentStemDB = DB_MAX: CurrentStemSP = SP_MIN
+    CurrentToeDB = DB_MAX: CurrentToeSP = SP_MIN
+    CurrentHeelDB = DB_MAX: CurrentHeelSP = SP_MIN
+    FixedTbMax = tb_max: FixedTBaseMax = TBase_max
+    FixedBaseMin = BASE_MIN: FixedBaseMax = BASE_MAX
 End Sub
 
 '================================================================================
@@ -155,35 +112,47 @@ End Function
 ' SECTION 4: Generate Neighbor (???????????????????)
 '================================================================================
 
-Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
+Private Sub DrawNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
                                 ByRef NewTBase As Integer, ByRef NewBase As Integer, _
                                 ByRef NewLToe As Integer, _
                                 ByRef NewStemDB As Integer, ByRef NewStemSP As Integer, _
                                 ByRef NewToeDB As Integer, ByRef NewToeSP As Integer, _
                                 ByRef NewHeelDB As Integer, ByRef NewHeelSP As Integer)
 
-    ' Five one-level geometry moves plus three simultaneous coupled-steel moves.
+    ' Begin with shared HCA-sized moves, then apply the BA phase policy.
     Dim Step As Integer, move(0 To 11) As Integer
+    Dim coupledPeriod As Integer
     Dim LToe_min_idx As Integer, LToe_max_idx As Integer
     Dim i As Integer
 
-    Call DrawGeometryMove(move)
-
-    LToe_min_idx = LTOE_MIN
-    For i = LTOE_MIN To LTOE_MAX
-        If WP_LToe(i) >= 0.1 * modShared.H Then
-            LToe_min_idx = i
-            Exit For
+    coupledPeriod = 8
+    If ConceptUpper(1) - TB_MIN > 4 Or ConceptUpper(2) - TBASE_MIN > 10 Or ConceptUpper(3) - BASE_MIN > 2 Then coupledPeriod = 4
+    Call DrawSearchMove(move)
+    ' After feasibility, refine one related member group per proposal.
+    If Not modFeasibilityRecovery.RecoveryActive Then move(0) = Rand(1, 5)
+    If Not modFeasibilityRecovery.RecoveryActive And Not BridgeInUse Then
+        If Not ProposalRedraw Then CoupledLocalCount = CoupledLocalCount + 1
+        If CoupledLocalCount Mod coupledPeriod = 0 Then move(0) = 0
+    End If
+    If BridgeInUse Then move(0) = BridgeGroup
+    ProposalGroup = move(0)
+    ProposalExpansionGroup = 0
+    If BridgeInUse And BridgeKind = BRIDGE_EXPANSION Then ProposalExpansionGroup = BridgeGroup
+    If BridgeInUse Then
+        If ProposalExpansionGroup > 0 Then
+            move(2 * BridgeGroup) = 0: move(2 * BridgeGroup + 1) = 1
+        Else
+            move(2 * BridgeGroup) = -1
+            If BridgeHoldDB Then move(2 * BridgeGroup) = 0
+            move(2 * BridgeGroup + 1) = -1
         End If
-    Next i
+    End If
+    If ProposalGroup >= 3 And ProposalGroup <= 5 Then
+        ProposalDBStep = move(2 * ProposalGroup)
+        ProposalSPStep = move(2 * ProposalGroup + 1)
+    End If
 
-    LToe_max_idx = LTOE_MAX
-    For i = LTOE_MAX To LTOE_MIN Step -1
-        If WP_LToe(i) <= 0.2 * modShared.H Then
-            LToe_max_idx = i
-            Exit For
-        End If
-    Next i
+    LToe_min_idx = LTOE_MIN: LToe_max_idx = LTOE_MAX
 
     Step = move(2)
     Newtb = Currenttb + Step
@@ -195,7 +164,14 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
     If Newtt < TT_MIN Then Newtt = TT_MIN
     If Newtt > TT_MAX Then Newtt = TT_MAX
 
-    ' Do not move tt by extra levels: unchanged GeometryOK rejects tt > tb.
+    If WP_tt(Newtt) > WP_tb(Newtb) Then
+        For i = TT_MAX To TT_MIN Step -1
+            If WP_tt(i) <= WP_tb(Newtb) Then
+                Newtt = i
+                Exit For
+            End If
+        Next i
+    End If
 
     Step = move(3)
     NewTBase = CurrentTBase + Step
@@ -212,9 +188,92 @@ Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
     If NewBase < FixedBaseMin Then NewBase = FixedBaseMin
     If NewBase > FixedBaseMax Then NewBase = FixedBaseMax
 
-    Call PairNeighbor(CurrentStemDB, CurrentStemSP, NewStemDB, NewStemSP)
-    Call PairNeighbor(CurrentToeDB, CurrentToeSP, NewToeDB, NewToeSP)
-    Call PairNeighbor(CurrentHeelDB, CurrentHeelSP, NewHeelDB, NewHeelSP)
+    NewStemDB = CurrentStemDB + move(6)
+    If NewStemDB < DB_MIN Then NewStemDB = DB_MIN
+    If NewStemDB > DB_MAX Then NewStemDB = DB_MAX
+
+    NewStemSP = CurrentStemSP + move(7)
+    If NewStemSP < SP_MIN Then NewStemSP = SP_MIN
+    If NewStemSP > SP_MAX Then NewStemSP = SP_MAX
+
+    NewToeDB = CurrentToeDB + move(8)
+    If NewToeDB < DB_MIN Then NewToeDB = DB_MIN
+    If NewToeDB > DB_MAX Then NewToeDB = DB_MAX
+
+    NewToeSP = CurrentToeSP + move(9)
+    If NewToeSP < SP_MIN Then NewToeSP = SP_MIN
+    If NewToeSP > SP_MAX Then NewToeSP = SP_MAX
+
+    NewHeelDB = CurrentHeelDB + move(10)
+    If NewHeelDB < DB_MIN Then NewHeelDB = DB_MIN
+    If NewHeelDB > DB_MAX Then NewHeelDB = DB_MAX
+
+    NewHeelSP = CurrentHeelSP + move(11)
+    If NewHeelSP < SP_MIN Then NewHeelSP = SP_MIN
+    If NewHeelSP > SP_MAX Then NewHeelSP = SP_MAX
+
+
+    ' Keep components outside the selected move at the current state.
+    If Not SearchMoveIncludes(move(0), 1) Then
+        Newtt = Currenttt: Newtb = Currenttb
+    End If
+    If Not SearchMoveIncludes(move(0), 2) Then
+        NewTBase = CurrentTBase: NewBase = CurrentBase: NewLToe = CurrentLToe
+    End If
+    If Not SearchMoveIncludes(move(0), 3) Then
+        NewStemDB = CurrentStemDB: NewStemSP = CurrentStemSP
+    End If
+    If Not SearchMoveIncludes(move(0), 4) Then
+        NewToeDB = CurrentToeDB: NewToeSP = CurrentToeSP
+    End If
+    If Not SearchMoveIncludes(move(0), 5) Then
+        NewHeelDB = CurrentHeelDB: NewHeelSP = CurrentHeelSP
+    End If
+
+    ' Three-axis midpoint proposals start from the first neighbor.
+    ' Override all three axes AFTER the HCA move-group selection.
+    ProposalFixedBaseCoupled = False
+    If Not modFeasibilityRecovery.RecoveryActive And Not BridgeInUse Then
+        If CoupledLocalCount Mod (2 * coupledPeriod) = 0 Then
+            NewTBase = CurrentTBase: NewBase = CurrentBase
+            ProposalFixedBaseCoupled = True
+        End If
+    End If
+    ' Bisection neighbors first; alternate with incumbent HCA neighbors while wide.
+    ' Once all ranges are narrow, keep both local directions open.
+    ProposalMidpoint = modFeasibilityRecovery.RecoveryActive And (EvaluationCount = 1)
+    If Not modFeasibilityRecovery.RecoveryActive Then
+        If ConceptUpper(1) - TB_MIN > 4 Or ConceptUpper(2) - TBASE_MIN > 10 Or ConceptUpper(3) - BASE_MIN > 2 Then
+            If EvaluationCount - RunBestEvaluation < 32 Then
+                ProposalMidpoint = (EvaluationCount Mod 2 = 0)
+            Else
+                ProposalMidpoint = (EvaluationCount Mod 8 = 0)
+            End If
+        End If
+    End If
+    If BridgeInUse Then ProposalMidpoint = False
+    If ProposalMidpoint Then
+        ProposalFixedBaseCoupled = False
+        Newtb = ConceptNeighborIndex(TB_MIN, ConceptUpper(1), 2)
+        NewTBase = ConceptNeighborIndex(TBASE_MIN, ConceptUpper(2), 5)
+        NewBase = ConceptNeighborIndex(BASE_MIN, ConceptUpper(3), 1)
+    End If
+    ConceptProposed(1) = Newtb: ConceptProposed(2) = NewTBase: ConceptProposed(3) = NewBase
+    If WP_tt(Newtt) > WP_tb(Newtb) Then
+        For i = TT_MAX To TT_MIN Step -1
+            If WP_tt(i) <= WP_tb(Newtb) Then Newtt = i: Exit For
+        Next i
+    End If
+    ' Keep dependent toe/heel layout compatible with the proposed width and stem.
+    ' Apply the SAME geometry repair to BA and HCA; the validator remains decisive.
+    If WP_Base(NewBase) - WP_tb(Newtb) - WP_LToe(NewLToe) <= WP_LToe(NewLToe) + 0.000000001 Then
+        For i = NewLToe To LTOE_MIN Step -1
+            If WP_Base(NewBase) - WP_tb(Newtb) - WP_LToe(i) > WP_LToe(i) + 0.000000001 Then
+                NewLToe = i
+                Exit For
+            End If
+        Next i
+    End If
 
 End Sub
 
@@ -247,9 +306,6 @@ Public Function BisectionOptimization(MaxIterations As Long, _
                        Optional sharedHeelSP As Integer = 0, _
                        Optional TrialNumber As Long = 1) As Design
 
-    Dim lo(1 To 3) As Integer, hi(1 To 3) As Integer
-    Dim phase As Long, phaseMoves As Long, needMidpoint As Boolean
-    Dim referenceCost As Double
     Dim current As Design, neighbor As Design
     Dim currentCost As Double, neighborCost As Double, currentValid As Boolean, ok As Boolean
     Dim saved(1 To 11) As Integer
@@ -263,10 +319,19 @@ Public Function BisectionOptimization(MaxIterations As Long, _
     modShared.currentMaterial = material
     modShared.currentWSD = CalculateWSDParameters(material.fy, material.fc)
     Call InitializeArrays
-    Call InitializePairOptions
     ReDim CostHistory_BA(1 To MaxIterations)
     Call BeginSearch(MaxIterations, "BA", TrialNumber)
+    CoupledLocalCount = 0
+    Set SeenProposalIndices = CreateObject("Scripting.Dictionary")
+    ProposalRedraw = False: SamplingForEvaluation = False
+    ProposalDraws = 0: TotalProposalDraws = 0: ProposalActiveBridge = False
+    ProposalFrontierEntry = False
+    ProposalFixedBaseCoupled = False
+    BridgePending = False: BridgeInUse = False: BridgeGroup = 0
+    BridgeNext = False: BridgeRemaining = 0: BridgeHoldDB = False
+    BridgeKind = 0: ProposalExpansionGroup = 0
     Call InitializeCurrentDesign
+    Call ResetBranches
     If useSharedInit Then
         If sharedtt < TT_MIN Or sharedtt > TT_MAX Then Err.Raise 5, , "Invalid shared tt index"
         Currenttt = sharedtt
@@ -293,47 +358,18 @@ Public Function BisectionOptimization(MaxIterations As Long, _
     End If
     current = GetDesignFromCurrent()
     currentValid = EvaluateCandidate(current, "initial", currentCost)
+    SeenProposalIndices.Item(Join(Array(Currenttt, Currenttb, CurrentTBase, CurrentBase, CurrentLToe, CurrentStemDB, CurrentStemSP, CurrentToeDB, CurrentToeSP, CurrentHeelDB, CurrentHeelSP), ":")) = currentValid
     If Not currentValid Then currentCost = NO_SOLUTION_COST
+    Call modFeasibilityRecovery.InitializeRecovery(current, currentValid)
+    If currentValid Then Call RememberBranch(current, currentCost)
     CostHistory_BA(EvaluationCount) = RunBestCost
-    lo(1) = TB_MIN: hi(1) = FixedTbMax
-    lo(2) = TBASE_MIN: hi(2) = FixedTBaseMax
-    lo(3) = FixedBaseMin: hi(3) = FixedBaseMax
-    phase = 1: phaseMoves = 0: needMidpoint = True
-    referenceCost = NO_SOLUTION_COST
+    ConceptUpper(1) = Currenttb: ConceptUpper(2) = CurrentTBase: ConceptUpper(3) = CurrentBase
     Do While EvaluationCount < MaxIterations
-        If needMidpoint Then
-            saved(1) = Currenttt
-            saved(2) = Currenttb
-            saved(3) = CurrentTBase
-            saved(4) = CurrentBase
-            saved(5) = CurrentLToe
-            saved(6) = CurrentStemDB
-            saved(7) = CurrentStemSP
-            saved(8) = CurrentToeDB
-            saved(9) = CurrentToeSP
-            saved(10) = CurrentHeelDB
-            saved(11) = CurrentHeelSP
-            Call MoveToCenter(lo, hi)
-            neighbor = GetDesignFromCurrent()
-            ok = EvaluateCandidate(neighbor, "midpoint", neighborCost)
-            If ok And (Not currentValid Or neighborCost < currentCost) Then
-                current = neighbor: currentCost = neighborCost: currentValid = True
-            Else
-                Currenttt = saved(1)
-                Currenttb = saved(2)
-                CurrentTBase = saved(3)
-                CurrentBase = saved(4)
-                CurrentLToe = saved(5)
-                CurrentStemDB = saved(6)
-                CurrentStemSP = saved(7)
-                CurrentToeDB = saved(8)
-                CurrentToeSP = saved(9)
-                CurrentHeelDB = saved(10)
-                CurrentHeelSP = saved(11)
-            End If
-            CostHistory_BA(EvaluationCount) = RunBestCost
-            phaseMoves = 0: needMidpoint = False
-        Else
+        If currentValid Then Call SelectBridgeParent(current, currentCost)
+        If currentValid And Not BridgeInUse Then Call SelectBranch(current, currentCost)
+        If currentValid Then
+            ConceptUpper(1) = Currenttb: ConceptUpper(2) = CurrentTBase: ConceptUpper(3) = CurrentBase
+        End If
         saved(1) = Currenttt
         saved(2) = Currenttb
         saved(3) = CurrentTBase
@@ -345,7 +381,9 @@ Public Function BisectionOptimization(MaxIterations As Long, _
         saved(9) = CurrentToeSP
         saved(10) = CurrentHeelDB
         saved(11) = CurrentHeelSP
+        SamplingForEvaluation = True
         Call GenerateNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
+        SamplingForEvaluation = False
         Currenttt = Newtt
         Currenttb = Newtb
         CurrentTBase = NewTBase
@@ -359,8 +397,16 @@ Public Function BisectionOptimization(MaxIterations As Long, _
         CurrentHeelSP = NewHeelSP
         neighbor = GetDesignFromCurrent()
         ok = EvaluateCandidate(neighbor, "neighbor", neighborCost)
+        If ok Then Call RememberBranch(neighbor, neighborCost)
+        TotalProposalDraws = TotalProposalDraws + ProposalDraws
+        SeenProposalIndices.Item(Join(Array(Currenttt, Currenttb, CurrentTBase, CurrentBase, CurrentLToe, CurrentStemDB, CurrentStemSP, CurrentToeDB, CurrentToeSP, CurrentHeelDB, CurrentHeelSP), ":")) = ok
+        If currentValid Then Call RememberBridge(neighbor, neighborCost, currentCost, ok, current)
         If ok And (Not currentValid Or neighborCost < currentCost) Then
             current = neighbor: currentCost = neighborCost: currentValid = True
+            modFeasibilityRecovery.RecoveryActive = False
+            ConceptUpper(1) = Currenttb: ConceptUpper(2) = CurrentTBase: ConceptUpper(3) = CurrentBase
+        ElseIf Not currentValid And modFeasibilityRecovery.AcceptRecovery(neighbor) Then
+            current = neighbor: currentCost = NO_SOLUTION_COST
         Else
             Currenttt = saved(1)
             Currenttb = saved(2)
@@ -375,65 +421,12 @@ Public Function BisectionOptimization(MaxIterations As Long, _
             CurrentHeelSP = saved(11)
         End If
         CostHistory_BA(EvaluationCount) = RunBestCost
-        phaseMoves = phaseMoves + 1
-        If phaseMoves = 20 * phase And EvaluationCount < MaxIterations Then
-            Call UpdateCenterBounds(lo, hi, currentCost, currentValid, referenceCost)
-            phase = phase + 1: needMidpoint = True
-        End If
-        End If
         DoEvents
     Loop
     Call FinishSearch
     BisectionOptimization = RunBest
 End Function
 
-
-' EXPERIMENT: center relocation + full-domain HCA, adapted from the supplied column.
-' All three centers change together. Center bounds do NOT clamp random proposals.
-' Every relocated state is evaluated and counted; global best never resets.
-
-Private Function NearestCenter(values() As Double, lo As Integer, hi As Integer) As Integer
-    Dim center As Double, distance As Double, bestDistance As Double, i As Integer
-    center = (values(lo) + values(hi)) / 2
-    bestDistance = 1E+30
-    For i = lo To hi
-        distance = Abs(values(i) - center)
-        ' At a numerical tie use the lower existing size; no new design sizes.
-        If distance < bestDistance - 0.000000000001 Then
-            NearestCenter = i: bestDistance = distance
-        End If
-    Next i
-End Function
-
-Private Sub MoveToCenter(lo() As Integer, hi() As Integer)
-    Dim i As Integer
-    Currenttb = NearestCenter(WP_tb, lo(1), hi(1))
-    CurrentTBase = NearestCenter(WP_TBase, lo(2), hi(2))
-    CurrentBase = NearestCenter(WP_Base, lo(3), hi(3))
-    ' Preserve the wall's existing tt <= tb compatibility repair.
-    If WP_tt(Currenttt) > WP_tb(Currenttb) Then
-        For i = TT_MAX To TT_MIN Step -1
-            If WP_tt(i) <= WP_tb(Currenttb) Then Currenttt = i: Exit For
-        Next i
-    End If
-End Sub
-
-Private Sub UpdateCenterBounds(lo() As Integer, hi() As Integer, cost As Double, valid As Boolean, referenceCost As Double)
-    Dim axis As Integer, swap As Integer
-    If Not valid Then Exit Sub
-    If cost < referenceCost Then
-        referenceCost = cost
-        hi(1) = Currenttb: hi(2) = CurrentTBase: hi(3) = CurrentBase
-    Else
-        lo(1) = Currenttb: lo(2) = CurrentTBase: lo(3) = CurrentBase
-    End If
-    ' A global-domain walk may cross the old center bounds. Keep them ordered.
-    For axis = 1 To 3
-        If lo(axis) > hi(axis) Then
-            swap = lo(axis): lo(axis) = hi(axis): hi(axis) = swap
-        End If
-    Next axis
-End Sub
 
 Public Function GetConcretePrice_BA(fc As Integer) As Double
     GetConcretePrice_BA = modShared.GetConcretePrice(fc)
@@ -457,6 +450,11 @@ Public Sub InitLoopCounter_BA()
     csvLoopData = "No.,Loop,BestPrice" & vbCrLf
     LastLoopCSVPath = ""
     loopCount = 0
+    bestAcceptData = ""
+    bestAcceptTrial = 0
+    bestAcceptIteration = 0
+    bestAcceptCost = NO_SOLUTION_COST
+    SelectedTrialCSVPath_BA = ""
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -488,6 +486,17 @@ Public Sub LogLoopResult_BA(bestPrice As Double)
     loopCount = loopCount + 1
     If RunBest.IsValid Then price = CsvPrice(bestPrice)
     csvLoopData = csvLoopData & loopCount & "," & bestIterationInRun & "," & price & vbCrLf
+    ' Use unrounded cost, matching Form1's best-trial selection. Keep the first
+    ' trial when both cost and loop tie. Invalid trials remain in loopPrice only.
+    If RunBest.IsValid Then
+        If bestAcceptTrial = 0 Or bestPrice < bestAcceptCost Or _
+           (bestPrice = bestAcceptCost And bestIterationInRun < bestAcceptIteration) Then
+            bestAcceptData = csvAcceptData
+            bestAcceptTrial = loopCount
+            bestAcceptIteration = bestIterationInRun
+            bestAcceptCost = bestPrice
+        End If
+    End If
 End Sub
 
 Public Sub SaveAcceptCSV_BA(wallHeight As Double)
@@ -496,83 +505,318 @@ End Sub
 
 Public Sub SaveLoopPriceCSV_BA(wallHeight As Double)
     LastLoopCSVPath = WriteExportCSV("loopPrice-BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), csvLoopData, True)
+    Call SaveSelectedTrialCSV_BA(wallHeight)
 End Sub
 
-
-' Only sampler representation changes; all twenty original DB/SP pairs remain.
-Private Sub InitializePairOptions()
-    Dim db As Integer, sp As Integer, i As Integer, j As Integer
-    Dim tempIndex As Integer, tempWeight As Double
-    PairCount = (DB_MAX - DB_MIN + 1) * (SP_MAX - SP_MIN + 1)
-    ReDim PairDB(1 To PairCount): ReDim PairSP(1 To PairCount): ReDim PairWeight(1 To PairCount)
-    i = 0
-    For db = DB_MIN To DB_MAX
-        For sp = SP_MIN To SP_MAX
-            i = i + 1: PairDB(i) = db: PairSP(i) = sp
-            PairWeight(i) = ProvidedSteelWeight(db, sp, 1#)
-        Next sp
-    Next db
-    For i = 1 To PairCount - 1
-        For j = i + 1 To PairCount
-            If PairWeight(j) < PairWeight(i) Or _
-               (PairWeight(j) = PairWeight(i) And PairDB(j) < PairDB(i)) Or _
-               (PairWeight(j) = PairWeight(i) And PairDB(j) = PairDB(i) And PairSP(j) < PairSP(i)) Then
-                tempWeight = PairWeight(i): PairWeight(i) = PairWeight(j): PairWeight(j) = tempWeight
-                tempIndex = PairDB(i): PairDB(i) = PairDB(j): PairDB(j) = tempIndex
-                tempIndex = PairSP(i): PairSP(i) = PairSP(j): PairSP(j) = tempIndex
-            End If
-        Next j
-    Next i
-End Sub
-
-Private Function BuildPairChoices(db As Integer, sp As Integer, choices() As Integer) As Integer
-    Dim rank As Integer, i As Integer, count As Integer
-    For i = 1 To PairCount
-        If PairDB(i) = db And PairSP(i) = sp Then rank = i: Exit For
-    Next i
-    If rank = 0 Then Err.Raise 5, , "Unknown current steel pair"
-    ReDim choices(1 To PairCount)
-    For i = 1 To PairCount
-        If (Abs(PairDB(i) - db) <= 1 And Abs(PairSP(i) - sp) <= 1) Or Abs(i - rank) <= 1 Then
-            count = count + 1: choices(count) = i
+Private Sub SaveSelectedTrialCSV_BA(wallHeight As Double)
+    Dim caseSuffix As String, selectedData As String
+    caseSuffix = "BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc)
+    selectedData = "No.,Loop,BestPrice,Trials,Status" & vbCrLf
+    If bestAcceptTrial > 0 Then
+        ' FinishSearch already saved the last trial. Replace it only if another
+        ' trial won; WriteExportCSV preserves that last trace in the archive.
+        If bestAcceptTrial <> loopCount Then
+            LastAcceptCSVPath = WriteExportCSV("accept-" & caseSuffix, bestAcceptData, True)
         End If
-    Next i
-    BuildPairChoices = count
+        selectedData = selectedData & bestAcceptTrial & "," & bestAcceptIteration & "," & _
+                       CsvPrice(bestAcceptCost) & "," & loopCount & ",SELECTED" & vbCrLf
+    Else
+        ' Retain the last rejected trace for diagnosis; do not invent a winner.
+        selectedData = selectedData & ",,," & loopCount & ",NO_SOLUTION" & vbCrLf
+    End If
+    SelectedTrialCSVPath_BA = WriteExportCSV("selectedTrial-" & caseSuffix, selectedData, True)
+End Sub
+
+
+' Original DB/SP catalogues and adjacent index bounds are unchanged.
+
+' Experiment only: midpoint is a sampling center, never a separate evaluation.
+Public Function ConceptNeighborIndex(ByVal lower As Integer, ByVal upper As Integer, ByVal radius As Integer, Optional ByVal ticket As Integer = 0) As Integer
+    Dim center As Integer, offset As Integer, candidate As Integer
+    Dim choices(1 To 20) As Integer, count As Integer
+    If upper < lower Then Err.Raise 5, , "Reversed concept interval"
+    If upper = lower Then ConceptNeighborIndex = lower: Exit Function
+    ' All three original catalogues are evenly spaced. A midpoint tie rounds up.
+    center = (lower + upper + 1) \ 2
+    For offset = -radius To radius
+        If offset <> 0 Then
+            candidate = center + offset
+            If candidate >= lower And candidate <= upper Then
+                count = count + 1: choices(count) = candidate
+            End If
+        End If
+    Next offset
+    If count = 0 Then Err.Raise 5, , "No concept neighbor inside interval"
+    If ticket = 0 Then ticket = Rand(1, count)
+    If ticket < 1 Or ticket > count Then Err.Raise 5, , "Invalid concept ticket"
+    ConceptNeighborIndex = choices(ticket)
 End Function
 
-Private Sub PairNeighbor(db As Integer, sp As Integer, newDB As Integer, newSP As Integer)
-    Dim choices() As Integer, count As Integer, ticket As Integer, i As Integer
-    count = BuildPairChoices(db, sp, choices)
-    newDB = db: newSP = sp
-    If count <= 1 Then Exit Sub
-    ' Independent draw for every member: half stay, half select another pair.
-    ' All previous non-self choices remain equally likely and reachable.
-    ticket = Rand(1, 2 * (count - 1))
-    If ticket <= count - 1 Then Exit Sub
-    ticket = ticket - (count - 1)
-    For i = 1 To count
-        If PairDB(choices(i)) <> db Or PairSP(choices(i)) <> sp Then
-            ticket = ticket - 1
-            If ticket = 0 Then
-                newDB = PairDB(choices(i)): newSP = PairSP(choices(i))
-                Exit Sub
-            End If
-        End If
+Public Sub ConceptFixtureChecks()
+    Dim expected(1 To 4) As Integer, i As Integer
+    expected(1) = 26: expected(2) = 27: expected(3) = 29: expected(4) = 30
+    For i = 1 To 4
+        If ConceptNeighborIndex(TB_MIN, tb_max, 2, i) <> expected(i) Then Err.Raise 5, , "First-center tb fixture"
     Next i
-    Err.Raise 5, , "Invalid coupled-pair draw"
+    expected(1) = 21: expected(2) = 22: expected(3) = 24: expected(4) = 25
+    For i = 1 To 4
+        If ConceptNeighborIndex(TB_MIN, 26, 2, i) <> expected(i) Then Err.Raise 5, , "Accepted .50 recenter fixture"
+    Next i
+    If ConceptNeighborIndex(TB_MIN, TB_MIN + 1, 2, 1) <> TB_MIN Then Err.Raise 5, , "Minimum unreachable"
+    If ConceptNeighborIndex(TB_MIN, TB_MIN, 2, 1) <> TB_MIN Then Err.Raise 5, , "Collapsed interval"
 End Sub
 
-Private Sub DrawGeometryMove(move() As Integer)
-    move(2) = GeometryStep(): move(1) = GeometryStep()
-    move(3) = GeometryStep(): move(5) = GeometryStep(): move(4) = GeometryStep()
+Public Sub AssertSteelNeighborhood(ByVal dbIndex As Integer, ByVal spIndex As Integer)
+    Dim nt As Integer, nb As Integer, nf As Integer, nw As Integer, nl As Integer
+    Dim sd As Integer, ss As Integer, td As Integer, ts As Integer, hd As Integer, hs As Integer
+    Dim k As Integer, seenLower As Boolean, seenUpper As Boolean, seenSPDown As Boolean, seenSPUp As Boolean
+    Call InitializeCurrentDesign
+    CurrentStemDB = dbIndex: CurrentToeDB = dbIndex: CurrentHeelDB = dbIndex
+    CurrentStemSP = spIndex: CurrentToeSP = spIndex: CurrentHeelSP = spIndex
+    ConceptUpper(1) = tb_max: ConceptUpper(2) = TBase_max: ConceptUpper(3) = BASE_MAX
+    For k = 1 To 100
+        Call GenerateNeighbor(nt, nb, nf, nw, nl, sd, ss, td, ts, hd, hs)
+        If sd < DB_MIN Or sd > DB_MAX Or td < DB_MIN Or td > DB_MAX Or hd < DB_MIN Or hd > DB_MAX Then Err.Raise 5, , "Steel outside catalogue"
+        If ss < SP_MIN Or ss > SP_MAX Or ts < SP_MIN Or ts > SP_MAX Or hs < SP_MIN Or hs > SP_MAX Then Err.Raise 5, , "Spacing outside catalogue"
+        If Abs(sd - dbIndex) > 1 Or Abs(td - dbIndex) > 1 Or Abs(hd - dbIndex) > 1 Then Err.Raise 5, , "Steel jumped more than one index"
+        If Abs(ss - spIndex) > 1 Or Abs(ts - spIndex) > 1 Or Abs(hs - spIndex) > 1 Then Err.Raise 5, , "Spacing jumped more than one index"
+        If sd = dbIndex - 1 Or td = dbIndex - 1 Or hd = dbIndex - 1 Then seenLower = True
+        If sd = dbIndex + 1 Or td = dbIndex + 1 Or hd = dbIndex + 1 Then seenUpper = True
+        If ss = spIndex - 1 Or ts = spIndex - 1 Or hs = spIndex - 1 Then seenSPDown = True
+        If ss = spIndex + 1 Or ts = spIndex + 1 Or hs = spIndex + 1 Then seenSPUp = True
+        ' Deliberately keep the incumbent: rejected candidates must not accumulate.
+    Next k
+    If dbIndex > DB_MIN And Not seenLower Then Err.Raise 5, , "Lower adjacent steel not reached"
+    If dbIndex < DB_MAX And Not seenUpper Then Err.Raise 5, , "Upper adjacent steel not reached"
+    If spIndex > SP_MIN And Not seenSPDown Then Err.Raise 5, , "Lower adjacent spacing not reached"
+    If spIndex < SP_MAX And Not seenSPUp Then Err.Raise 5, , "Upper adjacent spacing not reached"
 End Sub
 
-Private Function GeometryStep() As Integer
-    ' Six equiprobable tickets: one step down, four stay, one step up.
-    ' Every geometry variable draws independently before the full evaluation.
-    Select Case Rand(1, 6)
-        Case 1: GeometryStep = -1
-        Case 6: GeometryStep = 1
-        Case Else: GeometryStep = 0
+Private Sub RestoreFeasibleState(d As Design, ByRef current As Design, ByRef cost As Double)
+    Dim i As Integer
+    For i = TT_MIN To TT_MAX
+        If WP_tt(i) = d.tt Then Currenttt = i: Exit For
+    Next i
+    For i = TB_MIN To tb_max
+        If WP_tb(i) = d.tb Then Currenttb = i: Exit For
+    Next i
+    For i = TBASE_MIN To TBase_max
+        If WP_TBase(i) = d.TBase Then CurrentTBase = i: Exit For
+    Next i
+    For i = BASE_MIN To BASE_MAX
+        If WP_Base(i) = d.Base Then CurrentBase = i: Exit For
+    Next i
+    For i = LTOE_MIN To LTOE_MAX
+        If WP_LToe(i) = d.LToe Then CurrentLToe = i: Exit For
+    Next i
+    CurrentStemDB = d.ASst_DB: CurrentStemSP = d.ASst_Sp
+    CurrentToeDB = d.AStoe_DB: CurrentToeSP = d.AStoe_Sp
+    CurrentHeelDB = d.ASheel_DB: CurrentHeelSP = d.ASheel_Sp
+    current = d: cost = d.TotalCost
+End Sub
+
+Private Sub SelectBridgeParent(ByRef current As Design, ByRef cost As Double)
+    If BridgeInUse Then
+        If BridgeNext Then
+            Call RestoreFeasibleState(BridgeDesign, current, cost)
+            BridgeNext = False
+            Exit Sub
+        End If
+        If cost >= BridgeOrigin.TotalCost Then Call RestoreFeasibleState(BridgeOrigin, current, cost)
+        BridgeInUse = False: BridgeKind = 0
+    End If
+    If BridgePending Then
+        If BridgeKind <> BRIDGE_EXPANSION Then BridgeOrigin = current
+        Call RestoreFeasibleState(BridgeDesign, current, cost)
+        BridgeInUse = True: BridgePending = False: BridgeRemaining = 3
+    End If
+End Sub
+
+Private Sub RememberBridge(d As Design, ByVal cost As Double, ByVal parentCost As Double, ByVal valid As Boolean, parent As Design)
+    Dim db As Integer, spacing As Integer
+    If BridgeInUse And BridgeKind = BRIDGE_EXPANSION Then
+        BridgeRemaining = BridgeRemaining - 1
+        If Not valid Or cost < BridgeOrigin.TotalCost Or BridgeRemaining <= 0 Then Exit Sub
+        Select Case BridgeGroup
+            Case 3: spacing = d.ASst_Sp
+            Case 4: spacing = d.AStoe_Sp
+            Case 5: spacing = d.ASheel_Sp
+        End Select
+        If spacing >= SP_MAX Then Exit Sub
+        BridgeDesign = d: BridgeNext = True
+        Exit Sub
+    End If
+    If Not BridgeInUse Then
+        If StartExpansionBridge(d, cost, parentCost, valid, parent) Then Exit Sub
+    End If
+    If BridgeInUse Then
+        BridgeRemaining = BridgeRemaining - 1
+        If valid And cost < BridgeOrigin.TotalCost Then Exit Sub
+        If BridgeRemaining <= 0 Then Exit Sub
+        If valid Then
+            If cost > BridgeOrigin.TotalCost * 1.1 Then Exit Sub
+            Select Case BridgeGroup
+                Case 3: db = d.ASst_DB
+                Case 4: db = d.AStoe_DB
+                Case 5: db = d.ASheel_DB
+            End Select
+            If db <= DB_MIN Then Exit Sub
+            BridgeDesign = d: BridgeNext = True: BridgeHoldDB = False
+        ElseIf ProposalDBStep = -1 Then
+            ' Keep the last feasible parent; densify it once before retrying DB-1.
+            BridgeDesign = parent: BridgeNext = True: BridgeHoldDB = True
+        End If
+        Exit Sub
+    End If
+    If Not valid Or ProposalMidpoint Or ProposalGroup < 3 Or ProposalGroup > 5 Then Exit Sub
+    If ProposalDBStep <> 0 Or ProposalSPStep <> -1 Then Exit Sub
+    Select Case ProposalGroup
+        Case 3: db = d.ASst_DB
+        Case 4: db = d.AStoe_DB
+        Case 5: db = d.ASheel_DB
     End Select
+    ' Further densification cannot reduce cost when the DB catalogue is at minimum.
+    If db <= DB_MIN Then Exit Sub
+    If cost <= parentCost Or cost > parentCost * 1.1 Then Exit Sub
+    BridgeDesign = d: BridgeGroup = ProposalGroup: BridgePending = True: BridgeHoldDB = False
+    BridgeKind = BRIDGE_STEEL
+End Sub
+
+Private Function StartExpansionBridge(d As Design, ByVal cost As Double, ByVal parentCost As Double, ByVal valid As Boolean, parent As Design) As Boolean
+    Dim expected As Design, spacing As Integer
+    If Not valid Or ProposalMidpoint Or ProposalGroup < 3 Or ProposalGroup > 5 Then Exit Function
+    If d.tt <> parent.tt Or d.tb <> parent.tb Or d.TBase <> parent.TBase Then Exit Function
+    If d.Base <> parent.Base Or d.LToe <> parent.LToe Or d.LHeel <> parent.LHeel Then Exit Function
+    expected = parent
+    Select Case ProposalGroup
+        Case 3
+            expected.ASst_DB = expected.ASst_DB + 1: expected.ASst_Sp = expected.ASst_Sp + 1
+            spacing = d.ASst_Sp
+        Case 4
+            expected.AStoe_DB = expected.AStoe_DB + 1: expected.AStoe_Sp = expected.AStoe_Sp + 1
+            spacing = d.AStoe_Sp
+        Case 5
+            expected.ASheel_DB = expected.ASheel_DB + 1: expected.ASheel_Sp = expected.ASheel_Sp + 1
+            spacing = d.ASheel_Sp
+    End Select
+    If d.ASst_DB <> expected.ASst_DB Or d.ASst_Sp <> expected.ASst_Sp Then Exit Function
+    If d.AStoe_DB <> expected.AStoe_DB Or d.AStoe_Sp <> expected.AStoe_Sp Then Exit Function
+    If d.ASheel_DB <> expected.ASheel_DB Or d.ASheel_Sp <> expected.ASheel_Sp Then Exit Function
+    If spacing >= SP_MAX Then Exit Function
+    If cost <= parentCost Or cost > parentCost * 1.1 Then Exit Function
+    ' A larger bar may permit later spacing increases; evaluate every intermediate.
+    BridgeOrigin = parent: BridgeDesign = d: BridgeKind = BRIDGE_EXPANSION
+    BridgeGroup = ProposalGroup: BridgePending = True: BridgeNext = False: BridgeHoldDB = False
+    StartExpansionBridge = True
 End Function
+
+Private Sub GenerateNeighbor(ByRef Newtt As Integer, ByRef Newtb As Integer, _
+                                ByRef NewTBase As Integer, ByRef NewBase As Integer, _
+                                ByRef NewLToe As Integer, _
+                                ByRef NewStemDB As Integer, ByRef NewStemSP As Integer, _
+                                ByRef NewToeDB As Integer, ByRef NewToeSP As Integer, _
+                                ByRef NewHeelDB As Integer, ByRef NewHeelSP As Integer)
+    Dim drawIndex As Integer, drawLimit As Integer, signature As String
+    ' Standalone sampler fixtures neither publish nor accumulate actual-run draws.
+    If Not SamplingForEvaluation Then
+        ProposalRedraw = False
+        Call DrawNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
+        Exit Sub
+    End If
+    ProposalActiveBridge = BridgeInUse
+    ProposalFrontierEntry = False
+    drawLimit = 1
+    If Not modFeasibilityRecovery.RecoveryActive And Not ProposalActiveBridge Then drawLimit = 16
+    For drawIndex = 1 To drawLimit
+        ProposalRedraw = (drawIndex > 1)
+        Call DrawNeighbor(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP)
+        ProposalDraws = drawIndex
+        If drawLimit = 1 Then Exit For
+        signature = Join(Array(Newtt, Newtb, NewTBase, NewBase, NewLToe, NewStemDB, NewStemSP, NewToeDB, NewToeSP, NewHeelDB, NewHeelSP), ":")
+        If Not SeenProposalIndices.Exists(signature) Then Exit For
+        If HasUnseenExpansionContinuation(signature) Then
+            ProposalFrontierEntry = True
+            Exit For
+        End If
+    Next drawIndex
+    ProposalRedraw = False
+End Sub
+
+Private Function HasUnseenExpansionContinuation(ByVal signature As String) As Boolean
+    Dim expected As Variant, chain As Variant, dbPosition As Integer, spPosition As Integer
+    Dim stepIndex As Integer, nextSpacing As Integer, nextSignature As String
+    If modFeasibilityRecovery.RecoveryActive Or ProposalActiveBridge Or ProposalMidpoint Then Exit Function
+    If ProposalGroup < 3 Or ProposalGroup > 5 Then Exit Function
+    expected = Array(Currenttt, Currenttb, CurrentTBase, CurrentBase, CurrentLToe, CurrentStemDB, CurrentStemSP, CurrentToeDB, CurrentToeSP, CurrentHeelDB, CurrentHeelSP)
+    dbPosition = 2 * ProposalGroup - 1: spPosition = 2 * ProposalGroup
+    expected(dbPosition) = expected(dbPosition) + 1
+    expected(spPosition) = expected(spPosition) + 1
+    If Join(expected, ":") <> signature Then Exit Function
+    If Not SeenProposalIndices.Exists(signature) Then Exit Function
+    If Not CBool(SeenProposalIndices.Item(signature)) Then Exit Function
+    ' Historical booleans guide sampling only; the retained entry is evaluated again.
+    chain = Split(signature, ":")
+    For stepIndex = 1 To 3
+        nextSpacing = CInt(chain(spPosition)) + 1
+        If nextSpacing > SP_MAX Then Exit Function
+        chain(spPosition) = CStr(nextSpacing)
+        nextSignature = Join(chain, ":")
+        If Not SeenProposalIndices.Exists(nextSignature) Then
+            HasUnseenExpansionContinuation = True
+            Exit Function
+        End If
+        If Not CBool(SeenProposalIndices.Item(nextSignature)) Then Exit Function
+    Next stepIndex
+End Function
+
+Private Sub ResetBranches()
+    BranchCount = 0: BranchProposals = 0
+End Sub
+
+Private Sub RememberBranch(d As Design, ByVal cost As Double)
+    Dim slot As Integer, i As Integer, worst As Integer
+    For i = 1 To BranchCount
+        If BranchIndices(2, i) = Currenttb And BranchIndices(3, i) = CurrentTBase And BranchIndices(4, i) = CurrentBase And BranchIndices(6, i) = CurrentStemDB Then
+            If cost >= BranchDesign(i).TotalCost Then Exit Sub
+            slot = i: Exit For
+        End If
+    Next i
+    If slot = 0 Then
+        If BranchCount < BRANCH_CAPACITY Then
+            BranchCount = BranchCount + 1: slot = BranchCount
+        Else
+            worst = 1
+            For i = 2 To BranchCount
+                If BranchDesign(i).TotalCost > BranchDesign(worst).TotalCost Then worst = i
+            Next i
+            If cost >= BranchDesign(worst).TotalCost Then Exit Sub
+            slot = worst
+        End If
+    End If
+    BranchDesign(slot) = d
+    BranchIndices(1, slot) = Currenttt: BranchIndices(2, slot) = Currenttb
+    BranchIndices(3, slot) = CurrentTBase: BranchIndices(4, slot) = CurrentBase
+    BranchIndices(5, slot) = CurrentLToe
+    BranchIndices(6, slot) = CurrentStemDB: BranchIndices(7, slot) = CurrentStemSP
+    BranchIndices(8, slot) = CurrentToeDB: BranchIndices(9, slot) = CurrentToeSP
+    BranchIndices(10, slot) = CurrentHeelDB: BranchIndices(11, slot) = CurrentHeelSP
+End Sub
+
+Private Sub SelectBranch(ByRef d As Design, ByRef cost As Double)
+    Dim slot As Integer, i As Integer
+    BranchProposals = BranchProposals + 1
+    If BranchCount = 0 Or (BranchProposals Mod BRANCH_PERIOD) <> 0 Then Exit Sub
+    slot = Rand(1, BranchCount)
+    If Rand(1, 4) > 1 Then
+        For i = 1 To BranchCount
+            If BranchDesign(i).TotalCost < BranchDesign(slot).TotalCost Then slot = i
+        Next i
+    End If
+    d = BranchDesign(slot): cost = d.TotalCost
+    Currenttt = BranchIndices(1, slot): Currenttb = BranchIndices(2, slot)
+    CurrentTBase = BranchIndices(3, slot): CurrentBase = BranchIndices(4, slot)
+    CurrentLToe = BranchIndices(5, slot)
+    CurrentStemDB = BranchIndices(6, slot): CurrentStemSP = BranchIndices(7, slot)
+    CurrentToeDB = BranchIndices(8, slot): CurrentToeSP = BranchIndices(9, slot)
+    CurrentHeelDB = BranchIndices(10, slot): CurrentHeelSP = BranchIndices(11, slot)
+End Sub

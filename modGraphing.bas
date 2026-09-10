@@ -9,7 +9,7 @@ Option Explicit
 ' ========================================
 ' Draw Cost Reduction Graph
 ' ========================================
-Public Sub DrawCostGraph(pic As PictureBox, CostHistory() As Double, BestIteration As Long)
+Public Sub DrawCostGraph(pic As PictureBox, CostHistory() As Double, BestIteration As Long, Optional InitialCost As Double = 0)
     Dim i As Long
     Dim maxIter As Long
     Dim minCost As Double
@@ -48,6 +48,8 @@ Public Sub DrawCostGraph(pic As PictureBox, CostHistory() As Double, BestIterati
     Next i
     
     ' ถ้าไม่เจอค่าที่ถูกต้องเลย ให้ใช้ค่า default
+    If InitialCost > maxCost Then maxCost = InitialCost
+    If InitialCost > 0 And InitialCost < minCost Then minCost = InitialCost
     If minCost = 999999999# Then minCost = 0
     If maxCost = 0 Then maxCost = 10000
     
@@ -121,6 +123,8 @@ Public Sub DrawCostGraph(pic As PictureBox, CostHistory() As Double, BestIterati
         End If
     Next i
     
+    Call DrawInitialCostReference(pic, CostHistory, InitialCost, margin, xScale, minCost, pic.ScaleHeight - margin, yScale, margin + 200, margin + 100, "")
+
     ' === Mark Best Cost Point ===
     If BestIteration > 0 And BestIteration <= maxIter Then
         Dim bestX As Single
@@ -216,3 +220,36 @@ Public Sub ClearGraph(pic As PictureBox)
 End Sub
 
 
+
+' Draw a rejected initial quantity price without changing feasible cost history.
+' The dashed step is a reference until the first feasible design, not an acceptance.
+Public Sub DrawInitialCostReference(pic As PictureBox, history() As Double, ByVal initialCost As Double, ByVal firstX As Double, ByVal stepX As Double, ByVal minCost As Double, ByVal bottomY As Double, ByVal scaleY As Double, ByVal labelX As Double, ByVal labelY As Double, ByVal method As String)
+    Dim firstValid As Long, i As Long, startY As Double, nextX As Double, nextY As Double
+    Dim oldStyle As Integer, oldWidth As Integer, oldFill As Integer
+    If initialCost <= 0 Or initialCost >= 999000 Then Exit Sub
+    For i = LBound(history) To UBound(history)
+        If history(i) > 0 And history(i) < 999000 Then
+            firstValid = i
+            Exit For
+        End If
+    Next i
+    oldStyle = pic.DrawStyle: oldWidth = pic.DrawWidth: oldFill = pic.FillStyle
+    startY = bottomY - (initialCost - minCost) * scaleY
+    pic.DrawStyle = 1: pic.DrawWidth = 1
+    If firstValid > LBound(history) Then
+        nextX = firstX + (firstValid - LBound(history)) * stepX
+        nextY = bottomY - (history(firstValid) - minCost) * scaleY
+        pic.Line (firstX, startY)-(nextX, startY)
+        pic.Line (nextX, startY)-(nextX, nextY)
+    End If
+    pic.DrawStyle = 0: pic.FillStyle = 1
+    pic.Circle (firstX, startY), 60
+    pic.FontSize = 8: pic.FontBold = False
+    pic.CurrentX = labelX: pic.CurrentY = labelY
+    If firstValid = LBound(history) Then
+        pic.Print method & " Initial: " & Format$(initialCost, "#,##0.00") & " (feasible)"
+    Else
+        pic.Print method & " Initial: " & Format$(initialCost, "#,##0.00") & " (REJECTED; dashed reference)"
+    End If
+    pic.DrawStyle = oldStyle: pic.DrawWidth = oldWidth: pic.FillStyle = oldFill
+End Sub
