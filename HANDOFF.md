@@ -2,6 +2,8 @@
 
 ## สถานะปัจจุบัน — 11 กันยายน 2569
 
+Checkpoint โค้ดที่พร้อมให้ผู้ใช้รัน: 5cd5aca (5cd5acab710ff0586ad911a431cc17d7c520ed0b) บน main และ push ไป origin แล้ว เอกสาร handoff อาจมี commit ใหม่กว่านี้ ให้ตรวจ git log ก่อนงาน รุ่น d84d218 / e73c024 / cd31cc8 เป็นประวัติเก่า ห้าม checkout หรือคืนไฟล์จากรุ่นเหล่านั้นเพื่อเริ่มแชทใหม่
+
 อัปเดตการส่งออกล่าสุด: ผู้ใช้ต้องการเพียง 6 ไฟล์ต่อกรณี H/fc เมื่อรัน BA และ HCA: accept-BA/HCA-H{H}-{fc}.csv, loopPrice-BA/HCA-H{H}-{fc}.csv และ design-BA/HCA-H{H}-{fc}.bmp ใช้ชื่อเดิมทับได้ ไม่มี selectedTrial CSV หรือ convergence BMP เพิ่ม กราฟยังแสดงในโปรแกรม BMP เป็นภาพหน้าตัดของ Trial ที่เลือกราคาต่ำสุดก่อน/รอบน้อยสุดเมื่อราคาเท่ากัน แสดง Trial, ราคา และ Loop=bestEvaluation-1 ให้ตรงกับ CSV ที่เริ่ม No.0 ไม่เปลี่ยนตัวนับภายในหรือวิธีเลือก Trial
 
 ทดสอบเฉพาะการส่งออกด้วย fixtures และภาพทั้ง H3/H4/H5 ผ่าน54ข้อ รวมเลือก accept ที่ดีที่สุดซึ่งไม่ใช่ Trial สุดท้าย เก็บ loopPrice ทุก Trial และรันซ้ำเขียนทับ CSV/BMP ชื่อเดิม ตรวจได้4CSV+2BMPต่อกรณี คอมไพล์GUIผ่าน ไม่มี optimizer runs ผลผู้ใช้เดิมไม่เปลี่ยน ไฟล์ selectedTrial/convergence เก่าถ้ามีไม่ได้ลบ ดู audit/minimal-result-export-20260911/verified/runtime.txt และ verified-gui/compile.log
@@ -18,7 +20,17 @@ BA ปัจจุบัน SHA256 `cea19b7801309e8370b5fe943b31ac6c743085860be8
 
 กราฟคงรูปแบบ cd31cc8: อ่าน accept CSV 4 คอลัมน์เดิมของ Trial ที่เลือก เฉพาะ Passed and Better value อัปเดตเส้น ใช้ No. จริง ไม่เติมราคา/เลื่อนรอบ กราฟเดี่ยวและเปรียบเทียบเป็นเส้นขั้นบันไดตัดแกน X สี BA น้ำเงิน/HCA ส้ม ส่งออกเฉพาะ accept/loopPrice/design BMP ชื่อเดิมที่ result_csv ตามข้อกำหนด6ไฟล์ด้านบน ไม่เพิ่มคอลัมน์
 
-รักษา result_csv ทั้ง901ไฟล์ตาม snapshot ก่อนงานและรายการที่ผู้ใช้ลบ ห้าม stage/คืนผล/ลบ/จัดระเบียบเอง ไม่เขียน CSV/ภาพเดิมในงานนี้ รักษา source legacy bytes/CRLF/no BOM Remote origin=https://github.com/dohcivil-ui/RC_Wall_Fix.git บน main; ผู้ใช้เคยอนุญาต commit/pull/push แล้ว ตรวจ git log เพื่อดู checkpoint ล่าสุด
+รักษา result_csv ที่มีอยู่896ไฟล์ ณ ตอนส่งต่อและรายการที่ผู้ใช้ลบ ห้าม stage/คืนผล/ลบ/จัดระเบียบเอง ไม่เขียน CSV/ภาพเดิมในงานนี้ รักษา source legacy bytes/CRLF/no BOM Remote origin=https://github.com/dohcivil-ui/RC_Wall_Fix.git บน main; ผู้ใช้เคยอนุญาต commit/pull/push แล้ว ตรวจ git log เพื่อดู checkpoint ล่าสุด
+
+## งานต่อในแชทใหม่
+
+งานต่อในแชทใหม่: อ่าน NEXT_CHAT_PROMPT.md, สถานะบนสุดของ HANDOFF.md และ AGENTS.md ถ้ามี ตรวจ git status/branch/remote และ RC_RT_HCA_v2.vbp แล้วสรุปสถานะสั้น ๆ รอคำสั่งหรือผลรันจากผู้ใช้ ยังไม่เริ่ม optimizer/30 trials/แก้สูตรหรืออัลกอริทึมเพิ่ม ผู้ใช้จะเปิด VBP ใหม่แล้ว F5 เอง
+
+เมื่อผู้ใช้ส่งผลใหม่ ให้ตรวจ No.0 ของ accept ว่า BA/HCA ผ่านและราคาเท่ากันเมื่อ inputs เดียวกัน ตรวจ loopPrice ครบทุก Trial และ BMP แสดง Trial/ราคา/Loop ของ accept ที่เลือก อย่าใช้ตัวเลขผลเก่าหรือ fixtures ใน audit เป็นผลของชุดรันใหม่ เป้าหมายการทดลองเดิมคือ BA ราคาไม่สูงกว่า HCA และพบราคาสุดท้ายของตนก่อน โดยต้องการชนะอย่างน้อย60%ใน30ครั้งครบ H3/H4/H5 แต่ยังไม่ยืนยันผลเป้าหมายนี้หลังเปลี่ยนจุดเริ่มต้น
+
+GUI ยัง Randomize จากเวลาครั้งแรกและใช้ stream ต่อเนื่อง ไม่ได้จับคู่ seed อัตโนมัติ หากจะวิเคราะห์ paired t-test ต้องตรวจรูปแบบการจับคู่ของชุดทดลองจริงก่อน และห้ามอ้างว่าใช้ seed เดียวกันโดยไม่มีหลักฐาน
+
+มีรายการลบค้างใน git โดยตั้งใจ เช่น 3m hca.jpg และ result_csv พร้อมไฟล์ untracked จำนวนมาก ให้รักษาไว้ ไม่ใช้ git add -A / reset / clean / restore ทั้งโฟลเดอร์เพื่อทำให้ status สะอาด งานทดสอบถ้าผู้ใช้อนุญาตภายหลังให้แยกใน audit; เขียนผลจริงใน result_csv เฉพาะตามคำสั่งผู้ใช้
 
 ## ประวัติก่อน checkpoint นี้ — ไม่ใช่โค้ดหรือผลล่าสุด
 
