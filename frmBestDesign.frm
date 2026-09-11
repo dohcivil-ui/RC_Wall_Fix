@@ -41,6 +41,7 @@ Option Explicit
 Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHeight As Double, ByVal algorithm As String, ByVal trial As Long, Optional ByVal bestCost As Double = 0, Optional ByVal clearCover As Double = 0.075, Optional ByVal totalTrials As Long = 1, Optional ByVal bestEvaluation As Long = 0)
     Load Me
     Me.Tag = algorithm & "; trial=" & trial & "; trials=" & totalTrials & "; evaluation=" & bestEvaluation
+    If bestEvaluation > 0 Then Me.Tag = Me.Tag & "; Loop=" & (bestEvaluation - 1)
     picSketch.Cls
     picSketch.Tag = "NO_SOLUTION"
     picSketch.Font.Name = "Tahoma"
@@ -66,7 +67,7 @@ Friend Sub ShowBest(ByRef d As Design, ByVal wallHeight As Double, ByVal frontHe
             Me.Tag = Me.Tag & "; price=" & bestCost & "; Stem: " & RebarText(d.ASst_DB, d.ASst_Sp) & "; Toe: " & RebarText(d.AStoe_DB, d.AStoe_Sp) & "; Heel: " & RebarText(d.ASheel_DB, d.ASheel_Sp)
         End If
         If bestEvaluation > 0 Then
-            CenterText picSketch.ScaleWidth / 2, 69, "Best cost first found at evaluation " & bestEvaluation & "  |  Dimensions in metres"
+            CenterText picSketch.ScaleWidth / 2, 69, "Best cost first found at Loop " & (bestEvaluation - 1) & "  |  Dimensions in metres"
         Else
             CenterText picSketch.ScaleWidth / 2, 69, "Dimensions in metres  |  Same scale in both directions"
         End If

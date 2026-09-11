@@ -1,5 +1,9 @@
 ทำงานต่อใน C:\reserch 69\RC_Wall_Fix โดยใช้โฟลเดอร์นี้โดยตรง
 
+อัปเดตการส่งออกล่าสุด: ผู้ใช้ต้องการเพียง 6 ไฟล์ต่อกรณี H/fc เมื่อรัน BA และ HCA: accept-BA/HCA-H{H}-{fc}.csv, loopPrice-BA/HCA-H{H}-{fc}.csv และ design-BA/HCA-H{H}-{fc}.bmp ใช้ชื่อเดิมทับได้ ไม่มี selectedTrial CSV หรือ convergence BMP เพิ่ม กราฟยังแสดงในโปรแกรม BMP เป็นภาพหน้าตัดของ Trial ที่เลือกราคาต่ำสุดก่อน/รอบน้อยสุดเมื่อราคาเท่ากัน แสดง Trial, ราคา และ Loop=bestEvaluation-1 ให้ตรงกับ CSV ที่เริ่ม No.0 ไม่เปลี่ยนตัวนับภายในหรือวิธีเลือก Trial
+
+ทดสอบเฉพาะการส่งออกด้วย fixtures และภาพทั้ง H3/H4/H5 ผ่าน54ข้อ รวมเลือก accept ที่ดีที่สุดซึ่งไม่ใช่ Trial สุดท้าย เก็บ loopPrice ทุก Trial และรันซ้ำเขียนทับ CSV/BMP ชื่อเดิม ตรวจได้4CSV+2BMPต่อกรณี คอมไพล์GUIผ่าน ไม่มี optimizer runs ผลผู้ใช้เดิมไม่เปลี่ยน ไฟล์ selectedTrial/convergence เก่าถ้ามีไม่ได้ลบ ดู audit/minimal-result-export-20260911/verified/runtime.txt และ verified-gui/compile.log
+
 สถานะล่าสุด 11 กันยายน 2569: ผู้ใช้เปลี่ยนคำสั่งเป็น “แบบเริ่มต้นร่วมที่ตรวจผ่านจริง” เพื่อให้กราฟ BA/HCA เริ่มที่ No.0 ราคาเดียวกัน คำสั่งนี้แทนการคง max/Reject ใน cd31cc8 อย่าคืน max หรือเติมเส้น/ราคา Reject ลงกราฟ
 
 ค่าเริ่มต้นร่วมทุกความสูง: tt=.40, tb=.60, TBase=.50, B=3.00, toe=1.10, heel=1.30 เมตร; stem/toe DB20@.125, heel DB16@.15 อยู่ใน catalogue เดิมทั้งหมด ใช้ SetCommonInitialIndices ใน modShared.bas ทั้ง BA และ HCA ไม่มีการสุ่มหรือค้นหาเพื่อเตรียมจุดเริ่มต้น
@@ -10,10 +14,10 @@ RequireFeasibleInitial ตรวจแบบอ้างอิงนี้กั
 
 ผู้ใช้เปิด RC_RT_HCA_v2.vbp ใหม่แล้ว F5 เอง ยังไม่ได้รัน 30 trials จากจุดตั้งต้นใหม่ และไม่เปลี่ยน EXE เดิม ผลชนะเก่า H3=26/30 H4=24/30 H5=21/30 เป็นรุ่นเริ่ม max ไม่ใช่ผลยืนยัน initializer ใหม่นี้
 
-BA กลไก adaptive-coupling เดิม เปลี่ยนเฉพาะการตั้งต้นและเพิ่ม guard; SHA256 ปัจจุบัน e7010f8573f69b0aa5c989d8a90d88d1d507f71c9fa2a2289185d9f5339f8c5c
+BA กลไก adaptive-coupling เดิม เปลี่ยนเฉพาะการตั้งต้นและเพิ่ม guard; SHA256 ปัจจุบัน cea19b7801309e8370b5fe943b31ac6c743085860be8341ef3df4361f4977a8b
 กราฟ Form1.frm/modGraphing.bas ตาม cd31cc8 อ่าน 4 คอลัมน์เดิม ใช้ No. จริง เฉพาะ Passed and Better value อัปเดต best เส้นขั้นบันไดตัดแกน X, BA น้ำเงิน/HCA ส้ม ไม่มี initial ประดิษฐ์หรือเลื่อนเลขรอบ ผลเก่าไม่ได้วาดใหม่
 
 หลักฐานสั้น: audit/shared-feasible-start-20260911/verified/runtime.txt และ verified-gui/compile.log; driver verify.py และ fixtures.bas
 อ่าน HANDOFF.md สถานะบนสุด, AGENTS.md ถ้ามี และตรวจ git status/branch/remote/RC_RT_HCA_v2.vbp ก่อนทำงาน ตรวจ git log เพื่อทราบ commit ล่าสุด
-ห้ามเขียน ลบ คืนไฟล์ จัดระเบียบ หรือ stage result_csv และไฟล์ภาพที่ผู้ใช้ลบ ผลเดิม901ไฟล์ตรง snapshot ก่อนงาน คำสั่งทับCSV/BMPใช้เมื่อผู้ใช้รันVB6เท่านั้น คง accept/loopPrice/selectedTrial/BMP ชื่อเดิม ไม่เพิ่มไฟล์หรือคอลัมน์ส่งออก
+ห้ามเขียน ลบ คืนไฟล์ จัดระเบียบ หรือ stage result_csv และไฟล์ภาพที่ผู้ใช้ลบ ผลเดิม901ไฟล์ตรง snapshot ก่อนงาน คำสั่งทับCSV/BMPใช้เมื่อผู้ใช้รันVB6เท่านั้น ส่งออกเฉพาะ accept/loopPrice/design BMP ชื่อเดิมตามข้อกำหนด6ไฟล์ด้านบน ไม่เพิ่มคอลัมน์
 เลือก Trial แยกวิธีจากราคาต่ำสุดก่อน แล้วรอบน้อยสุดเมื่อราคาเท่ากัน ไม่เลือก seed เพื่อให้ชนะ รักษา VB6 legacy encoding/CRLF/no BOM

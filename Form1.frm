@@ -715,7 +715,6 @@ Private Sub cmdBA_Click()
     Else
         AddResultLine "accept CSV (last trial; no feasible trial): " & LastAcceptCSVPath
     End If
-    AddResultLine "Selected trial details: " & modBA.SelectedTrialCSVPath_BA
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled And Len(ProjectTrialSummary) > 0 Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Budget includes initial/reset/neighbor evaluations."
@@ -739,7 +738,6 @@ baHasRun = True
 baComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "BA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     AddResultLine "Design image: " & frmBestDesign.SaveResultImage(h, "BA")
-    AddResultLine "Convergence image: " & SaveResultPicture(picGraph, "convergence-BA-H" & Replace$(CStr(h), ",", ".") & "-" & CStr(selectedMaterial.fc))
     txtResults.SelStart = 0
     
     
@@ -1023,7 +1021,6 @@ Private Sub cmdRun_Click()
     Else
         AddResultLine "accept CSV (last trial; no feasible trial): " & LastAcceptCSVPath
     End If
-    AddResultLine "Selected trial details: " & modHillClimbing.SelectedTrialCSVPath
     AddResultLine "loopPrice CSV (all trials): " & LastLoopCSVPath
     If ProjectChecksEnabled And Len(ProjectTrialSummary) > 0 Then AddResultLine "Trial summary: " & ProjectTrialSummary
     AddResultLine "Budget includes initial/reset/neighbor evaluations."
@@ -1047,7 +1044,6 @@ hcaHasRun = True
 hcaComparisonKey = Join(Array(h, H1, gamma_soil, gamma_con, phi, mu, qa, cover, fc, maxIter, numTrials), "|")
     Call frmBestDesign.ShowBest(bestDesign, h, H1, "HCA", CLng(globalBestTrial), globalBestCost, cover, CLng(numTrials), globalBestIteration)
     AddResultLine "Design image: " & frmBestDesign.SaveResultImage(h, "HCA")
-    AddResultLine "Convergence image: " & SaveResultPicture(picGraph, "convergence-HCA-H" & Replace$(CStr(h), ",", ".") & "-" & CStr(selectedMaterial.fc))
     txtResults.SelStart = 0
     
     

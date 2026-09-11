@@ -2,6 +2,10 @@
 
 ## สถานะปัจจุบัน — 11 กันยายน 2569
 
+อัปเดตการส่งออกล่าสุด: ผู้ใช้ต้องการเพียง 6 ไฟล์ต่อกรณี H/fc เมื่อรัน BA และ HCA: accept-BA/HCA-H{H}-{fc}.csv, loopPrice-BA/HCA-H{H}-{fc}.csv และ design-BA/HCA-H{H}-{fc}.bmp ใช้ชื่อเดิมทับได้ ไม่มี selectedTrial CSV หรือ convergence BMP เพิ่ม กราฟยังแสดงในโปรแกรม BMP เป็นภาพหน้าตัดของ Trial ที่เลือกราคาต่ำสุดก่อน/รอบน้อยสุดเมื่อราคาเท่ากัน แสดง Trial, ราคา และ Loop=bestEvaluation-1 ให้ตรงกับ CSV ที่เริ่ม No.0 ไม่เปลี่ยนตัวนับภายในหรือวิธีเลือก Trial
+
+ทดสอบเฉพาะการส่งออกด้วย fixtures และภาพทั้ง H3/H4/H5 ผ่าน54ข้อ รวมเลือก accept ที่ดีที่สุดซึ่งไม่ใช่ Trial สุดท้าย เก็บ loopPrice ทุก Trial และรันซ้ำเขียนทับ CSV/BMP ชื่อเดิม ตรวจได้4CSV+2BMPต่อกรณี คอมไพล์GUIผ่าน ไม่มี optimizer runs ผลผู้ใช้เดิมไม่เปลี่ยน ไฟล์ selectedTrial/convergence เก่าถ้ามีไม่ได้ลบ ดู audit/minimal-result-export-20260911/verified/runtime.txt และ verified-gui/compile.log
+
 ผู้ใช้สั่งเปลี่ยนจาก max/Reject เป็นแบบเริ่มต้นร่วมที่ตรวจผ่านจริง บันทึกใน Passed and Better value ที่ No.0 ให้ BA/HCA มีราคาเริ่มต้นเท่ากัน ใช้โฟลเดอร์ root โดยตรงและจะรัน VB6 เอง คำสั่งนี้แทนข้อกำหนด max ในประวัติทั้งหมดด้านล่าง
 
 SetCommonInitialIndices ใน modShared.bas กำหนด tt=.40, tb=.60, TBase=.50, B=3.00, toe=1.10, heel=1.30 เมตร; stem/toe DB20@.125 และ heel DB16@.15 จาก catalogue เดิม ทั้ง modBA.bas และ modHillClimbing.bas เรียก helper เดียวกัน ไม่ใช้ผลดีที่สุดจากการทดลองหรือสุ่มก่อนเริ่ม ชุดมิติ/เหล็กเดียวกันทั้ง H3/H4/H5
@@ -10,9 +14,9 @@ RequireFeasibleInitial ตรวจชุดตรวจเดิมตาม in
 
 ผลตรวจ initial-only: H3/fc240=8,626.89, H4/fc280=10,621.25, H5/fc320=12,705.85 บาท/ม. BA/HCA เท่ากันทั้ง raw price และหน้าตัด/เหล็ก ใช้ H1=1.2, gamma_soil=1.8, gamma_concrete=2.4, phi=30, mu=.6, qa=30, cover=.075, SD40 ผ่านชุดตรวจปัจจุบันทั้งสาม ทดสอบ 12 initial-only calls ด้วย budget1 ไม่มี neighbor/midpoint และกรณี bearing input ไม่ผ่าน 2 กรณียืนยันหยุดก่อนส่งออก Regression109ข้อและคอมไพล์GUIผ่าน ดู audit/shared-feasible-start-20260911/verified/runtime.txt และ verified-gui/compile.log
 
-BA ปัจจุบัน SHA256 `e7010f8573f69b0aa5c989d8a90d88d1d507f71c9fa2a2289185d9f5339f8c5c` เป็น adaptive-coupling เดิมที่เปลี่ยนการตั้งต้น/guard เท่านั้น ผลชนะเก่า 26/30,24/30,21/30 เป็นการเริ่ม max ไม่ใช่ผลยืนยันสำหรับแบบตั้งต้นใหม่นี้ ยังไม่ได้รัน30trialsเพิ่ม ให้ผู้ใช้เปิด RC_RT_HCA_v2.vbp ใหม่แล้ว F5 เอง EXE เดิมไม่เปลี่ยน
+BA ปัจจุบัน SHA256 `cea19b7801309e8370b5fe943b31ac6c743085860be8341ef3df4361f4977a8b` เป็น adaptive-coupling เดิมที่เปลี่ยนการตั้งต้น/guard เท่านั้น ผลชนะเก่า 26/30,24/30,21/30 เป็นการเริ่ม max ไม่ใช่ผลยืนยันสำหรับแบบตั้งต้นใหม่นี้ ยังไม่ได้รัน30trialsเพิ่ม ให้ผู้ใช้เปิด RC_RT_HCA_v2.vbp ใหม่แล้ว F5 เอง EXE เดิมไม่เปลี่ยน
 
-กราฟคงรูปแบบ cd31cc8: อ่าน accept CSV 4 คอลัมน์เดิมของ Trial ที่เลือก เฉพาะ Passed and Better value อัปเดตเส้น ใช้ No. จริง ไม่เติมราคา/เลื่อนรอบ กราฟเดี่ยวและเปรียบเทียบเป็นเส้นขั้นบันไดตัดแกน X สี BA น้ำเงิน/HCA ส้ม คง accept/loopPrice/selectedTrial/BMP ชื่อเดิมที่ result_csv เมื่อผู้ใช้รัน ไม่เพิ่มชนิดไฟล์หรือคอลัมน์ส่งออก
+กราฟคงรูปแบบ cd31cc8: อ่าน accept CSV 4 คอลัมน์เดิมของ Trial ที่เลือก เฉพาะ Passed and Better value อัปเดตเส้น ใช้ No. จริง ไม่เติมราคา/เลื่อนรอบ กราฟเดี่ยวและเปรียบเทียบเป็นเส้นขั้นบันไดตัดแกน X สี BA น้ำเงิน/HCA ส้ม ส่งออกเฉพาะ accept/loopPrice/design BMP ชื่อเดิมที่ result_csv ตามข้อกำหนด6ไฟล์ด้านบน ไม่เพิ่มคอลัมน์
 
 รักษา result_csv ทั้ง901ไฟล์ตาม snapshot ก่อนงานและรายการที่ผู้ใช้ลบ ห้าม stage/คืนผล/ลบ/จัดระเบียบเอง ไม่เขียน CSV/ภาพเดิมในงานนี้ รักษา source legacy bytes/CRLF/no BOM Remote origin=https://github.com/dohcivil-ui/RC_Wall_Fix.git บน main; ผู้ใช้เคยอนุญาต commit/pull/push แล้ว ตรวจ git log เพื่อดู checkpoint ล่าสุด
 

@@ -67,7 +67,6 @@ Private bestAcceptData As String
 Private bestAcceptTrial As Long
 Private bestAcceptIteration As Long
 Private bestAcceptCost As Double
-Public SelectedTrialCSVPath_BA As String
 
 '================================================================================
 ' SECTION 2: Initialize Design (Common feasible reference)
@@ -452,7 +451,6 @@ Public Sub InitLoopCounter_BA()
     bestAcceptTrial = 0
     bestAcceptIteration = 0
     bestAcceptCost = NO_SOLUTION_COST
-    SelectedTrialCSVPath_BA = ""
 End Sub
 
 '--------------------------------------------------------------------------------
@@ -503,26 +501,15 @@ End Sub
 
 Public Sub SaveLoopPriceCSV_BA(wallHeight As Double)
     LastLoopCSVPath = WriteExportCSV("loopPrice-BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), csvLoopData, True)
-    Call SaveSelectedTrialCSV_BA(wallHeight)
+    Call SaveBestAcceptCSV_BA(wallHeight)
 End Sub
 
-Private Sub SaveSelectedTrialCSV_BA(wallHeight As Double)
-    Dim caseSuffix As String, selectedData As String
-    caseSuffix = "BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc)
-    selectedData = "No.,Loop,BestPrice,Trials,Status" & vbCrLf
-    If bestAcceptTrial > 0 Then
-        ' FinishSearch already saved the last trial. Replace it only if another
-        ' trial won; WriteExportCSV preserves that last trace in the archive.
-        If bestAcceptTrial <> loopCount Then
-            LastAcceptCSVPath = WriteExportCSV("accept-" & caseSuffix, bestAcceptData, True)
-        End If
-        selectedData = selectedData & bestAcceptTrial & "," & bestAcceptIteration & "," & _
-                       CsvPrice(bestAcceptCost) & "," & loopCount & ",SELECTED" & vbCrLf
-    Else
-        ' Retain the last rejected trace for diagnosis; do not invent a winner.
-        selectedData = selectedData & ",,," & loopCount & ",NO_SOLUTION" & vbCrLf
+Private Sub SaveBestAcceptCSV_BA(wallHeight As Double)
+    ' Preserve the complete selected trace without exporting an extra metadata file.
+    ' With no valid trial, keep the last rejected trace already saved by FinishSearch.
+    If bestAcceptTrial > 0 And bestAcceptTrial <> loopCount Then
+        LastAcceptCSVPath = WriteExportCSV("accept-BA-H" & Replace$(CStr(wallHeight), ",", ".") & "-" & CStr(currentMaterial.fc), bestAcceptData, True)
     End If
-    SelectedTrialCSVPath_BA = WriteExportCSV("selectedTrial-" & caseSuffix, selectedData, True)
 End Sub
 
 

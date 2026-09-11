@@ -1,0 +1,55 @@
+PASS BA H3 whole accept is best trial, not last
+PASS BA loopPrice keeps all trial rows
+PASS BA BMP reports selected trial and zero-based Loop
+PASS BA image saved with fixed method/H/fc filename
+PASS BA valid BMP
+PASS BA repeated run overwrites accept at same name
+PASS BA repeated run replaces loopPrice without stale rows
+PASS BA BMP overwrite uses same path
+PASS BA BMP updates best trial and Loop 0
+PASS HCA H3 whole accept is best trial, not last
+PASS HCA loopPrice keeps all trial rows
+PASS HCA BMP reports selected trial and zero-based Loop
+PASS HCA image saved with fixed method/H/fc filename
+PASS HCA valid BMP
+PASS HCA repeated run overwrites accept at same name
+PASS HCA repeated run replaces loopPrice without stale rows
+PASS HCA BMP overwrite uses same path
+PASS HCA BMP updates best trial and Loop 0
+PASS BA H4 whole accept is best trial, not last
+PASS BA loopPrice keeps all trial rows
+PASS BA BMP reports selected trial and zero-based Loop
+PASS BA image saved with fixed method/H/fc filename
+PASS BA valid BMP
+PASS BA repeated run overwrites accept at same name
+PASS BA repeated run replaces loopPrice without stale rows
+PASS BA BMP overwrite uses same path
+PASS BA BMP updates best trial and Loop 0
+PASS HCA H4 whole accept is best trial, not last
+PASS HCA loopPrice keeps all trial rows
+PASS HCA BMP reports selected trial and zero-based Loop
+PASS HCA image saved with fixed method/H/fc filename
+PASS HCA valid BMP
+PASS HCA repeated run overwrites accept at same name
+PASS HCA repeated run replaces loopPrice without stale rows
+PASS HCA BMP overwrite uses same path
+PASS HCA BMP updates best trial and Loop 0
+PASS BA H5 whole accept is best trial, not last
+PASS BA loopPrice keeps all trial rows
+PASS BA BMP reports selected trial and zero-based Loop
+PASS BA image saved with fixed method/H/fc filename
+PASS BA valid BMP
+PASS BA repeated run overwrites accept at same name
+PASS BA repeated run replaces loopPrice without stale rows
+PASS BA BMP overwrite uses same path
+PASS BA BMP updates best trial and Loop 0
+PASS HCA H5 whole accept is best trial, not last
+PASS HCA loopPrice keeps all trial rows
+PASS HCA BMP reports selected trial and zero-based Loop
+PASS HCA image saved with fixed method/H/fc filename
+PASS HCA valid BMP
+PASS HCA repeated run overwrites accept at same name
+PASS HCA repeated run replaces loopPrice without stale rows
+PASS HCA BMP overwrite uses same path
+PASS HCA BMP updates best trial and Loop 0
+CHECKS=54; FAILURES=0; OPTIMIZER_RUNS=0
