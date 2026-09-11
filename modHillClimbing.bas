@@ -48,15 +48,12 @@ Private bestAcceptCost As Double
 Public SelectedTrialCSVPath As String
 
 '================================================================================
-' SECTION 2: Initialize Design (Conservative - Max values)
+' SECTION 2: Initialize Design (Common feasible reference)
 '================================================================================
 
 Private Sub InitializeCurrentDesign()
-    Currenttt = TT_MAX: Currenttb = tb_max
-    CurrentTBase = TBase_max: CurrentBase = BASE_MAX: CurrentLToe = LTOE_MAX
-    CurrentStemDB = DB_MAX: CurrentStemSP = SP_MIN
-    CurrentToeDB = DB_MAX: CurrentToeSP = SP_MIN
-    CurrentHeelDB = DB_MAX: CurrentHeelSP = SP_MIN
+    Call SetCommonInitialIndices(Currenttt, Currenttb, CurrentTBase, CurrentBase, CurrentLToe, _
+        CurrentStemDB, CurrentStemSP, CurrentToeDB, CurrentToeSP, CurrentHeelDB, CurrentHeelSP)
     FixedTbMax = tb_max: FixedTBaseMax = TBase_max
     FixedBaseMin = BASE_MIN: FixedBaseMax = BASE_MAX
 End Sub
@@ -269,6 +266,7 @@ Public Function HillClimbingOptimization(MaxIterations As Long, _
         CurrentHeelSP = sharedHeelSP
     End If
     current = GetDesignFromCurrent()
+    Call RequireFeasibleInitial(current)
     currentValid = EvaluateCandidate(current, "initial", currentCost)
     If Not currentValid Then currentCost = NO_SOLUTION_COST
     Call modFeasibilityRecovery.InitializeRecovery(current, currentValid)

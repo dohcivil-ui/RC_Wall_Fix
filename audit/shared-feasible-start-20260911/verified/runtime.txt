@@ -1,0 +1,123 @@
+PASS BA H3 actual initial passes unchanged project checks
+PASS BA initial occupies exactly one evaluation
+PASS BA No.0 contains the real cost only in Better
+PASS BA original catalogue geometry
+PASS BA original catalogue reinforcement
+PASS BA graph genuinely starts at CSV No.0
+PASS BA in-memory first point matches real cost
+PASS BA no feasibility recovery
+INITIAL H=3; method=BA; cost=8626.89; FS=8.22,4.06,4.80
+PASS HCA H3 actual initial passes unchanged project checks
+PASS HCA initial occupies exactly one evaluation
+PASS HCA No.0 contains the real cost only in Better
+PASS HCA original catalogue geometry
+PASS HCA original catalogue reinforcement
+PASS HCA graph genuinely starts at CSV No.0
+PASS HCA in-memory first point matches real cost
+PASS HCA no feasibility recovery
+INITIAL H=3; method=HCA; cost=8626.89; FS=8.22,4.06,4.80
+PASS H3 BA/HCA same full design and raw price
+PASS BA H3 actual initial passes unchanged project checks
+PASS BA initial occupies exactly one evaluation
+PASS BA No.0 contains the real cost only in Better
+PASS BA original catalogue geometry
+PASS BA original catalogue reinforcement
+PASS BA graph genuinely starts at CSV No.0
+PASS BA in-memory first point matches real cost
+PASS BA no feasibility recovery
+INITIAL H=3; method=BA; cost=8626.89; FS=8.22,4.06,4.80
+PASS BA repeated trial has identical initializer
+PASS HCA H3 actual initial passes unchanged project checks
+PASS HCA initial occupies exactly one evaluation
+PASS HCA No.0 contains the real cost only in Better
+PASS HCA original catalogue geometry
+PASS HCA original catalogue reinforcement
+PASS HCA graph genuinely starts at CSV No.0
+PASS HCA in-memory first point matches real cost
+PASS HCA no feasibility recovery
+INITIAL H=3; method=HCA; cost=8626.89; FS=8.22,4.06,4.80
+PASS HCA repeated trial has identical initializer
+PASS BA H4 actual initial passes unchanged project checks
+PASS BA initial occupies exactly one evaluation
+PASS BA No.0 contains the real cost only in Better
+PASS BA original catalogue geometry
+PASS BA original catalogue reinforcement
+PASS BA graph genuinely starts at CSV No.0
+PASS BA in-memory first point matches real cost
+PASS BA no feasibility recovery
+INITIAL H=4; method=BA; cost=10621.25; FS=4.43,2.66,4.81
+PASS HCA H4 actual initial passes unchanged project checks
+PASS HCA initial occupies exactly one evaluation
+PASS HCA No.0 contains the real cost only in Better
+PASS HCA original catalogue geometry
+PASS HCA original catalogue reinforcement
+PASS HCA graph genuinely starts at CSV No.0
+PASS HCA in-memory first point matches real cost
+PASS HCA no feasibility recovery
+INITIAL H=4; method=HCA; cost=10621.25; FS=4.43,2.66,4.81
+PASS H4 BA/HCA same full design and raw price
+PASS BA H4 actual initial passes unchanged project checks
+PASS BA initial occupies exactly one evaluation
+PASS BA No.0 contains the real cost only in Better
+PASS BA original catalogue geometry
+PASS BA original catalogue reinforcement
+PASS BA graph genuinely starts at CSV No.0
+PASS BA in-memory first point matches real cost
+PASS BA no feasibility recovery
+INITIAL H=4; method=BA; cost=10621.25; FS=4.43,2.66,4.81
+PASS BA repeated trial has identical initializer
+PASS HCA H4 actual initial passes unchanged project checks
+PASS HCA initial occupies exactly one evaluation
+PASS HCA No.0 contains the real cost only in Better
+PASS HCA original catalogue geometry
+PASS HCA original catalogue reinforcement
+PASS HCA graph genuinely starts at CSV No.0
+PASS HCA in-memory first point matches real cost
+PASS HCA no feasibility recovery
+INITIAL H=4; method=HCA; cost=10621.25; FS=4.43,2.66,4.81
+PASS HCA repeated trial has identical initializer
+PASS BA H5 actual initial passes unchanged project checks
+PASS BA initial occupies exactly one evaluation
+PASS BA No.0 contains the real cost only in Better
+PASS BA original catalogue geometry
+PASS BA original catalogue reinforcement
+PASS BA graph genuinely starts at CSV No.0
+PASS BA in-memory first point matches real cost
+PASS BA no feasibility recovery
+INITIAL H=5; method=BA; cost=12705.85; FS=2.76,1.94,3.08
+PASS HCA H5 actual initial passes unchanged project checks
+PASS HCA initial occupies exactly one evaluation
+PASS HCA No.0 contains the real cost only in Better
+PASS HCA original catalogue geometry
+PASS HCA original catalogue reinforcement
+PASS HCA graph genuinely starts at CSV No.0
+PASS HCA in-memory first point matches real cost
+PASS HCA no feasibility recovery
+INITIAL H=5; method=HCA; cost=12705.85; FS=2.76,1.94,3.08
+PASS H5 BA/HCA same full design and raw price
+PASS BA H5 actual initial passes unchanged project checks
+PASS BA initial occupies exactly one evaluation
+PASS BA No.0 contains the real cost only in Better
+PASS BA original catalogue geometry
+PASS BA original catalogue reinforcement
+PASS BA graph genuinely starts at CSV No.0
+PASS BA in-memory first point matches real cost
+PASS BA no feasibility recovery
+INITIAL H=5; method=BA; cost=12705.85; FS=2.76,1.94,3.08
+PASS BA repeated trial has identical initializer
+PASS HCA H5 actual initial passes unchanged project checks
+PASS HCA initial occupies exactly one evaluation
+PASS HCA No.0 contains the real cost only in Better
+PASS HCA original catalogue geometry
+PASS HCA original catalogue reinforcement
+PASS HCA graph genuinely starts at CSV No.0
+PASS HCA in-memory first point matches real cost
+PASS HCA no feasibility recovery
+INITIAL H=5; method=HCA; cost=12705.85; FS=2.76,1.94,3.08
+PASS HCA repeated trial has identical initializer
+PASS BA invalid current inputs stop before No.0
+PASS BA failed initializer preserves previous CSV
+PASS HCA invalid current inputs stop before No.0
+PASS HCA failed initializer preserves previous CSV
+CHECKS=109; FAILURES=0
+INITIAL_ONLY_CALLS=12; NEIGHBOR_OR_MIDPOINT_EVALUATIONS=0

@@ -1,4 +1,24 @@
-# Handoff — BA รุ่นยืนยัน H3/H4/H5 และกราฟตาม accept CSV
+# Handoff — แบบเริ่มต้นร่วมผ่านจริงและกราฟ No.0
+
+## สถานะปัจจุบัน — 11 กันยายน 2569
+
+ผู้ใช้สั่งเปลี่ยนจาก max/Reject เป็นแบบเริ่มต้นร่วมที่ตรวจผ่านจริง บันทึกใน Passed and Better value ที่ No.0 ให้ BA/HCA มีราคาเริ่มต้นเท่ากัน ใช้โฟลเดอร์ root โดยตรงและจะรัน VB6 เอง คำสั่งนี้แทนข้อกำหนด max ในประวัติทั้งหมดด้านล่าง
+
+SetCommonInitialIndices ใน modShared.bas กำหนด tt=.40, tb=.60, TBase=.50, B=3.00, toe=1.10, heel=1.30 เมตร; stem/toe DB20@.125 และ heel DB16@.15 จาก catalogue เดิม ทั้ง modBA.bas และ modHillClimbing.bas เรียก helper เดียวกัน ไม่ใช้ผลดีที่สุดจากการทดลองหรือสุ่มก่อนเริ่ม ชุดมิติ/เหล็กเดียวกันทั้ง H3/H4/H5
+
+RequireFeasibleInitial ตรวจชุดตรวจเดิมตาม inputs ปัจจุบันก่อน No.0 หากไม่ผ่านให้หยุดพร้อมเหตุ ไม่เขียนทับผลเดิม หากผ่านจึงเข้า EvaluateCandidate(initial) ตามเดิม ซึ่งตรวจอีกครั้งและบันทึก No.0 เป็น Better จริง นับ initial เป็น evaluation1 จากงบรวม ไม่แก้สูตร เกณฑ์ หน่วย ราคา ขอบเขต กลไกเสนอ/ยอมรับเพื่อนบ้าน หรือ RNG ค่า No.0 ใหม่ไม่ใช่การเติมจุดในข้อมูลเก่า
+
+ผลตรวจ initial-only: H3/fc240=8,626.89, H4/fc280=10,621.25, H5/fc320=12,705.85 บาท/ม. BA/HCA เท่ากันทั้ง raw price และหน้าตัด/เหล็ก ใช้ H1=1.2, gamma_soil=1.8, gamma_concrete=2.4, phi=30, mu=.6, qa=30, cover=.075, SD40 ผ่านชุดตรวจปัจจุบันทั้งสาม ทดสอบ 12 initial-only calls ด้วย budget1 ไม่มี neighbor/midpoint และกรณี bearing input ไม่ผ่าน 2 กรณียืนยันหยุดก่อนส่งออก Regression109ข้อและคอมไพล์GUIผ่าน ดู audit/shared-feasible-start-20260911/verified/runtime.txt และ verified-gui/compile.log
+
+BA ปัจจุบัน SHA256 `e7010f8573f69b0aa5c989d8a90d88d1d507f71c9fa2a2289185d9f5339f8c5c` เป็น adaptive-coupling เดิมที่เปลี่ยนการตั้งต้น/guard เท่านั้น ผลชนะเก่า 26/30,24/30,21/30 เป็นการเริ่ม max ไม่ใช่ผลยืนยันสำหรับแบบตั้งต้นใหม่นี้ ยังไม่ได้รัน30trialsเพิ่ม ให้ผู้ใช้เปิด RC_RT_HCA_v2.vbp ใหม่แล้ว F5 เอง EXE เดิมไม่เปลี่ยน
+
+กราฟคงรูปแบบ cd31cc8: อ่าน accept CSV 4 คอลัมน์เดิมของ Trial ที่เลือก เฉพาะ Passed and Better value อัปเดตเส้น ใช้ No. จริง ไม่เติมราคา/เลื่อนรอบ กราฟเดี่ยวและเปรียบเทียบเป็นเส้นขั้นบันไดตัดแกน X สี BA น้ำเงิน/HCA ส้ม คง accept/loopPrice/selectedTrial/BMP ชื่อเดิมที่ result_csv เมื่อผู้ใช้รัน ไม่เพิ่มชนิดไฟล์หรือคอลัมน์ส่งออก
+
+รักษา result_csv ทั้ง901ไฟล์ตาม snapshot ก่อนงานและรายการที่ผู้ใช้ลบ ห้าม stage/คืนผล/ลบ/จัดระเบียบเอง ไม่เขียน CSV/ภาพเดิมในงานนี้ รักษา source legacy bytes/CRLF/no BOM Remote origin=https://github.com/dohcivil-ui/RC_Wall_Fix.git บน main; ผู้ใช้เคยอนุญาต commit/pull/push แล้ว ตรวจ git log เพื่อดู checkpoint ล่าสุด
+
+## ประวัติก่อน checkpoint นี้ — ไม่ใช่โค้ดหรือผลล่าสุด
+
+### สถานะก่อนเปลี่ยนจุดเริ่มต้น — Handoff — BA รุ่นยืนยัน H3/H4/H5 และกราฟตาม accept CSV
 
 ## สถานะปัจจุบัน — 11 กันยายน 2569
 
@@ -18,7 +38,8 @@ Form1.frm และ modGraphing.bas อ่านกราฟจาก accept CSV
 
 รักษาresult_csvทั้งหมด901ไฟล์ตาม snapshot ก่อนแก้กราฟและรายการที่ผู้ใช้ลบ ห้ามstage/คืนผล/ลบ/จัดระเบียบเอง CSVและBMPใช้ชื่อเดิมทับได้ที่ C:\reserch 69\RC_Wall_Fix\result_csv เมื่อผู้ใช้รันVB6เท่านั้น Preserve legacy source bytes/CRLF/no BOM ไม่เปลี่ยนสูตร/อัลกอริทึม/หน่วย/ขอบเขตหรือรันทดลองใหม่โดยไม่มีคำสั่ง
 
-## ประวัติก่อน checkpoint นี้ — ไม่ใช่โค้ดหรือผลล่าสุด
+
+
 
 ข้อความด้านล่างเก็บลำดับการทดลองเก่า รวมผลที่ไม่ผ่านและcandidateที่เลิกใช้ ข้อความ “ล่าสุด/สถานะปัจจุบัน” ในประวัติหมายถึงเวลานั้น ให้ยึดสถานะด้านบนและNEXT_CHAT_PROMPT.mdเสมอ
 

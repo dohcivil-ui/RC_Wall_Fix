@@ -192,6 +192,28 @@ Public Sub InitializeArrays()
     
 End Sub
 
+' A common reference, not an optimized result. Same indices for BA/HCA and H3/H4/H5.
+' tt=.40, tb=.60, TBase=.50, B=3.00, toe=1.10, heel=1.30 metres.
+' Main stem/toe DB20@.125; main heel DB16@.15, all from existing catalogues.
+Public Sub SetCommonInitialIndices(ByRef ttIndex As Integer, ByRef tbIndex As Integer, _
+                                  ByRef baseThicknessIndex As Integer, ByRef baseWidthIndex As Integer, ByRef toeIndex As Integer, _
+                                  ByRef stemDB As Integer, ByRef stemSP As Integer, ByRef toeDB As Integer, ByRef toeSP As Integer, _
+                                  ByRef heelDB As Integer, ByRef heelSP As Integer)
+    ttIndex = 9: tbIndex = 28: baseThicknessIndex = 44: baseWidthIndex = 63: toeIndex = 88
+    stemDB = 102: stemSP = 111: toeDB = 102: toeSP = 111: heelDB = 101: heelSP = 112
+End Sub
+
+Public Sub RequireFeasibleInitial(d As Design)
+    Dim ot As Double, sl As Double, bc As Double
+    ' Recheck the single reference against the current inputs; no preparation search.
+    ' Never label an invalid reference as Passed, or invent a replacement at No.0.
+    If Not CheckDesignValid(d, d.ASst_DB, d.ASst_Sp, d.AStoe_DB, d.AStoe_Sp, d.ASheel_DB, d.ASheel_Sp, ot, sl, bc) Then
+        Err.Raise vbObjectError + 2101, "RequireFeasibleInitial", _
+            "The common initial design does not pass the current inputs: " & LastValidationReason & _
+            ". No optimization started; existing result files were not overwritten."
+    End If
+End Sub
+
 '================================================================================
 ' SECTION 6: Utility Functions
 '================================================================================

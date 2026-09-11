@@ -1,18 +1,19 @@
 ทำงานต่อใน C:\reserch 69\RC_Wall_Fix โดยใช้โฟลเดอร์นี้โดยตรง
 
-สถานะล่าสุด 11 กันยายน 2569: ใช้ BA รุ่น adaptive-coupling ที่ยืนยันครบ H3/H4/H5 แล้ว ติดตั้งใน modBA.bas SHA256 e6ab8b41b990fb1f2cb0133adff26c1df027c1e8d0d368671632f2bb5babb6d4 อย่าติดตั้ง candidate รุ่นเก่าจากข้อความประวัติ
+สถานะล่าสุด 11 กันยายน 2569: ผู้ใช้เปลี่ยนคำสั่งเป็น “แบบเริ่มต้นร่วมที่ตรวจผ่านจริง” เพื่อให้กราฟ BA/HCA เริ่มที่ No.0 ราคาเดียวกัน คำสั่งนี้แทนการคง max/Reject ใน cd31cc8 อย่าคืน max หรือเติมเส้น/ราคา Reject ลงกราฟ
 
-ผลยืนยัน seed 142345–142374 จับคู่30คู่/ความสูง งบ5000 evaluations/วิธี/ครั้ง: BA ชนะ H3=26/30, H4=24/30, H5=21/30 ทั้งสองวิธีผ่าน30/30ทุกกรณี เกณฑ์ชนะ: ราคา BA≤HCA จากค่าก่อนปัด และพบราคาสุดท้ายของตนก่อน HCA ผลนี้ไม่รับประกันชุดสุ่มใหม่ GUIยังRandomizeจากเวลา ไม่ได้จับคู่seedอัตโนมัติ
+ค่าเริ่มต้นร่วมทุกความสูง: tt=.40, tb=.60, TBase=.50, B=3.00, toe=1.10, heel=1.30 เมตร; stem/toe DB20@.125, heel DB16@.15 อยู่ใน catalogue เดิมทั้งหมด ใช้ SetCommonInitialIndices ใน modShared.bas ทั้ง BA และ HCA ไม่มีการสุ่มหรือค้นหาเพื่อเตรียมจุดเริ่มต้น
 
-อัปเดตกราฟล่าสุด: ผู้ใช้ยืนยัน “คงแบบ max และบันทึก Reject ตามจริง” ทั้งสองวิธีจึงคงจุดตั้งต้น max เดิมและราคาเริ่มต้นเท่ากัน แต่ No.0 ที่ Reject ไม่ใช่คำตอบที่ผ่าน กราฟอ่านเฉพาะ Passed and Better value จาก accept CSV 4 คอลัมน์เดิม ใช้ No. จริง ไม่เลื่อนรอบ ไม่เติมจุดหรือเส้นเชื่อมราคา initial ที่ Reject หาก No.0 ไม่ผ่าน เส้นเริ่มที่รอบแรกที่มีคำตอบผ่านตามจริง คำสั่งนี้แทนการวาดเส้นประ initial ใน checkpoint e73c024
+RequireFeasibleInitial ตรวจแบบอ้างอิงนี้กับ inputs ปัจจุบันผ่านชุดตรวจเดิมก่อน EvaluateCandidate(initial) ถ้าไม่ผ่านให้แจ้งเหตุและหยุดก่อน No.0 โดยไม่เขียนทับผลเดิม ถ้าผ่าน EvaluateCandidate จะตรวจและบันทึกราคาจริงใน Passed and Better value ที่ No.0 ซึ่งนับเป็น evaluation 1 จากงบเดิม ไม่บังคับสถานะ Passed และไม่แก้สูตร หน่วย ขอบเขต กลไกค้นหา/ยอมรับ หรือ RNG
 
-แก้ Form1.frm และ modGraphing.bas ให้กราฟเดี่ยว/เปรียบเทียบอ่านประวัติของ Trial ที่เลือกจากตารางเดียวกัน ใช้กราฟขั้นบันไดตัดแกน X หลังรอบดีที่สุด สี BA น้ำเงิน/HCA ส้ม เส้นประสั้นที่จุดดีที่สุดเป็นเพียงเครื่องหมายบอกรอบ ยังไม่มีไฟล์ประวัติหรือคอลัมน์ส่งออกใหม่ คง accept/loopPrice/selectedTrial/BMP ชื่อเดิม
+ทดสอบ H3/fc240, H4/fc280, H5/fc320 ด้วย H1=1.2, gamma_soil=1.8, gamma_concrete=2.4, phi=30, mu=.6, qa=30, cover=.075, SD40: แบบผ่านจริงทั้งสาม ราคาเริ่ม BA=HCA คือ 8,626.89 / 10,621.25 / 12,705.85 บาท/ม. ตรวจซ้ำข้ามวิธีและ Trial ด้วยงบ 1 รวม 12 initial-only calls ไม่มี neighbor/midpoint; รวม regression 109 ข้อผ่านและคอมไพล์ GUI ผ่าน ค่า input อื่นต้องตรวจจริง ไม่อ้างว่าผ่านทุกเงื่อนไข
 
-คอมไพล์ GUI และ regression fixtures 15 ข้อผ่าน โดยไม่รัน optimizer เพิ่ม ตรวจ CSV ต้นแบบได้ BA No.32/HCA No.326 และผลผู้ใช้ปัจจุบัน BA No.102/HCA No.327; ผลปัจจุบันเริ่มผ่าน No.44/124 ตามจริง ไม่ได้แก้ PNG/CSV ใน result_csv ให้ผู้ใช้เปิด RC_RT_HCA_v2.vbp ใหม่แล้ว F5 เอง EXE เดิมไม่เปลี่ยน
+ผู้ใช้เปิด RC_RT_HCA_v2.vbp ใหม่แล้ว F5 เอง ยังไม่ได้รัน 30 trials จากจุดตั้งต้นใหม่ และไม่เปลี่ยน EXE เดิม ผลชนะเก่า H3=26/30 H4=24/30 H5=21/30 เป็นรุ่นเริ่ม max ไม่ใช่ผลยืนยัน initializer ใหม่นี้
 
-หลักฐานสั้น: audit/csv-graph-fix-20260911/ready/runtime.txt และ ready-gui/compile.log
-ผล90คู่: audit/ba-paired-win-20260910/adaptive-coupling-refinement/confirmation/comparison-H3-H4-H5-30pairs.csv
+BA กลไก adaptive-coupling เดิม เปลี่ยนเฉพาะการตั้งต้นและเพิ่ม guard; SHA256 ปัจจุบัน e7010f8573f69b0aa5c989d8a90d88d1d507f71c9fa2a2289185d9f5339f8c5c
+กราฟ Form1.frm/modGraphing.bas ตาม cd31cc8 อ่าน 4 คอลัมน์เดิม ใช้ No. จริง เฉพาะ Passed and Better value อัปเดต best เส้นขั้นบันไดตัดแกน X, BA น้ำเงิน/HCA ส้ม ไม่มี initial ประดิษฐ์หรือเลื่อนเลขรอบ ผลเก่าไม่ได้วาดใหม่
 
-อ่าน HANDOFF.md สถานะบนสุด, AGENTS.md ถ้ามี และตรวจ git status/branch/remote/RC_RT_HCA_v2.vbp ก่อนทำงาน ตรวจgit logเพื่อทราบcommitล่าสุด (ฐานก่อนcheckpointนี้คือ d84d218)
-ห้ามเขียน ลบ คืนไฟล์ จัดระเบียบ หรือ stage result_csv และไฟล์ภาพที่ผู้ใช้ลบ คำสั่งทับCSV/BMPใช้เมื่อผู้ใช้รันVB6เท่านั้น ผลเดิม901ไฟล์ตรงกับ snapshot ก่อนแก้กราฟและไม่เปลี่ยน ไม่แก้สูตร อัลกอริทึม หน่วย ขอบเขต หรือเพิ่มการทดลองเอง
-เลือกTrialแยกวิธีจากราคาต่ำสุดก่อน แล้วรอบน้อยสุดเมื่อราคาเท่ากัน ไม่คัดคู่หรือseedเพื่อทำให้ชนะ รักษาVB6 legacy encoding/CRLF/no BOM
+หลักฐานสั้น: audit/shared-feasible-start-20260911/verified/runtime.txt และ verified-gui/compile.log; driver verify.py และ fixtures.bas
+อ่าน HANDOFF.md สถานะบนสุด, AGENTS.md ถ้ามี และตรวจ git status/branch/remote/RC_RT_HCA_v2.vbp ก่อนทำงาน ตรวจ git log เพื่อทราบ commit ล่าสุด
+ห้ามเขียน ลบ คืนไฟล์ จัดระเบียบ หรือ stage result_csv และไฟล์ภาพที่ผู้ใช้ลบ ผลเดิม901ไฟล์ตรง snapshot ก่อนงาน คำสั่งทับCSV/BMPใช้เมื่อผู้ใช้รันVB6เท่านั้น คง accept/loopPrice/selectedTrial/BMP ชื่อเดิม ไม่เพิ่มไฟล์หรือคอลัมน์ส่งออก
+เลือก Trial แยกวิธีจากราคาต่ำสุดก่อน แล้วรอบน้อยสุดเมื่อราคาเท่ากัน ไม่เลือก seed เพื่อให้ชนะ รักษา VB6 legacy encoding/CRLF/no BOM
