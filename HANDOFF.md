@@ -1,4 +1,4 @@
-# Handoff — BA ผ่านเกณฑ์ H3/H4/H5 และกราฟเริ่มต้นร่วม
+# Handoff — BA รุ่นยืนยัน H3/H4/H5 และกราฟตาม accept CSV
 
 ## สถานะปัจจุบัน — 11 กันยายน 2569
 
@@ -6,13 +6,17 @@
 
 ใช้ modBA.bas SHA256 `e6ab8b41b990fb1f2cb0133adff26c1df027c1e8d0d368671632f2bb5babb6d4` รุ่น adaptive-coupling ซึ่งผ่านชุดยืนยัน seed142345–142374 30คู่/ความสูง: H3/fc240=26/30 (86.67%), H4/fc280=24/30 (80%), H5/fc320=21/30 (70%) ทั้งสองวิธีผ่านทุกTrial งบ5000evaluationsรวมinitial เกณฑ์นับชนะคือราคาBA≤HCAจากค่าดิบและBAพบราคาสุดท้ายของตนก่อนHCA ใช้BAโค้ดเดียวกันทั้งสามกรณี ไม่อ้างว่าทุกชุดสุ่มจะได้ผลเท่ากัน GUIใช้seedจากเวลาครั้งเดียว ไม่ได้จับคู่seedแบบชุดยืนยันอัตโนมัติ
 
-ราคาinitialตรงกันทั้งหน้าตัด/เหล็ก/ราคา: H3=29,924.364480 H4=33,912.911680 H5=38,041.658880บาท/ม. เริ่มtt=.60 tb=1.00 TBase=1.00 B=7.00 toe=1.20 heel=4.80เมตร และDB28@.10ทั้งสามชุด InitialถูกRejectตามการตรวจปัจจุบัน ราคาในCSVแถวNo.0จึงอยู่Rejected กราฟVB6แสดงราคาinitialด้วยจุดและเส้นประอ้างอิงจนพบแบบผ่านครั้งแรก โดยไม่แก้CostHistoryที่ใช้bestผ่านหรือการยอมรับคำตอบ พล็อตCSVต้องใช้แถว0แยกเป็นinitial และใช้Passed and Better valueสำหรับเส้นbestผ่านหลังจากนั้น ห้ามใช้ราคาที่rejectอื่นมาสร้างbest
+คำสั่งล่าสุดของผู้ใช้: “คงแบบ max และบันทึก Reject ตามจริง” ให้ใช้ข้อกำหนดนี้แทนการวาดราคา initial ด้วยเส้นประใน e73c024 ราคาและสถานะเริ่มต้นไม่เปลี่ยน: H3=29,924.364480 H4=33,912.911680 H5=38,041.658880 บาท/ม. เริ่ม tt=.60 tb=1.00 TBase=1.00 B=7.00 toe=1.20 heel=4.80 เมตร และ DB28@.10 ทั้งสามชุด No.0 ถูก Reject ตามชุดตรวจปัจจุบัน
 
-งานบันทึกนี้แก้เฉพาะส่วนรายงาน modShared.bas, modGraphing.bas และ Form1.frm; BA/HCA/สูตร/หน่วย/ขอบเขต/RNGคงรุ่นยืนยัน ตรวจinitial-only12callsโดยไม่มีneighbor, CSVfixtures20ข้อ, replay6เส้นเดิม/กราฟเปรียบเทียบ3ภาพ และedge cases2แบบผ่าน พร้อมคอมไพล์GUIผ่าน ไม่รันชุด30ครั้งเพิ่ม ไม่เปลี่ยนEXEเดิม ผู้ใช้เปิดRC_RT_HCA_v2.vbpใหม่และF5เอง
+Form1.frm และ modGraphing.bas อ่านกราฟจาก accept CSV ของ Trial ที่เลือกโดยตรง คง 4 คอลัมน์ No.,Rejected,Passed,Passed and Better value เฉพาะคอลัมน์สุดท้ายอัปเดตเส้น best และคงค่าผ่านเดิมในแถวอื่น ก่อนคำตอบผ่านครั้งแรกยังไม่มีเส้น ไม่เติมราคา Reject/เลื่อนเลข No./วาดเส้นอ้างอิง initial การพบราคาดีขึ้นจริงที่ปัดแล้วเท่าราคาเดิมยังเก็บ No. ของแถวนั้นเป็นรอบดีที่สุด กราฟเดี่ยวและเปรียบเทียบใช้ renderer เดียวกัน สี BA น้ำเงิน/HCA ส้ม พร้อมตัดแกน X และเครื่องหมายบอกรอบดีที่สุด เส้นประที่จุดดีที่สุดเป็น guide เท่านั้น
 
-หลักฐาน: [checkpoint](audit/commit-ready-20260911/README.md), [verification](audit/commit-ready-20260911/verification.json), [90คู่](audit/ba-paired-win-20260910/adaptive-coupling-refinement/confirmation/comparison-H3-H4-H5-30pairs.csv), [summary](audit/ba-paired-win-20260910/adaptive-coupling-refinement/confirmation/summary-all-heights.json)
+แก้ helper พล็อต Python ให้ใช้กติกาเดียวกัน ไม่ส่งไฟล์ประวัติหรือเพิ่มคอลัมน์ใหม่ คงการส่งออก accept/loopPrice/selectedTrial/BMP เดิม สูตร หน่วย ขอบเขต BA/HCA/RNG และวิธีเลือก Trial ไม่เปลี่ยน ผู้ใช้จะเปิด RC_RT_HCA_v2.vbp ใหม่แล้ว F5 เอง ไม่เปลี่ยน EXE เดิม
 
-รักษาresult_csvทั้งหมด890ไฟล์และรายการที่ผู้ใช้ลบ ห้ามstage/คืนผล/ลบ/จัดระเบียบเอง CSVและBMPใช้ชื่อเดิมทับได้ที่ C:\reserch 69\RC_Wall_Fix\result_csv เมื่อผู้ใช้รันVB6เท่านั้น Preserve legacy source bytes/CRLF/no BOM ไม่เปลี่ยนสูตร/อัลกอริทึม/หน่วย/ขอบเขตหรือรันทดลองใหม่โดยไม่มีคำสั่ง
+ตรวจ regression 15 ข้อผ่านและคอมไพล์ GUI ผ่าน: audit/csv-graph-fix-20260911/ready/runtime.txt และ ready-gui/compile.log ไม่รัน optimizer หรือ 30 trials เพิ่ม Replay CSV ต้นแบบตรง BA No.32/HCA No.326 ราคา 2,849.23 ส่วนผลผู้ใช้ปัจจุบันตรง BA No.102/HCA No.327 ราคา 3,076.92 และเริ่มผ่าน No.44/124 ตามจริง ผลปัจจุบันต่างจากชุดยืนยันเดิมและไม่ได้เขียนทับ
+
+ผลยืนยัน BA เดิม: audit/ba-paired-win-20260910/adaptive-coupling-refinement/confirmation/comparison-H3-H4-H5-30pairs.csv และ summary-all-heights.json ไม่รับประกันผลชุดสุ่มใหม่
+
+รักษาresult_csvทั้งหมด901ไฟล์ตาม snapshot ก่อนแก้กราฟและรายการที่ผู้ใช้ลบ ห้ามstage/คืนผล/ลบ/จัดระเบียบเอง CSVและBMPใช้ชื่อเดิมทับได้ที่ C:\reserch 69\RC_Wall_Fix\result_csv เมื่อผู้ใช้รันVB6เท่านั้น Preserve legacy source bytes/CRLF/no BOM ไม่เปลี่ยนสูตร/อัลกอริทึม/หน่วย/ขอบเขตหรือรันทดลองใหม่โดยไม่มีคำสั่ง
 
 ## ประวัติก่อน checkpoint นี้ — ไม่ใช่โค้ดหรือผลล่าสุด
 

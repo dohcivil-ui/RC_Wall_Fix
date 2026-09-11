@@ -550,7 +550,6 @@ Dim hcaStoredBestIter As Long
 Dim hcaStoredMaxIter As Long
 Dim hcaHasRun As Boolean
 Private hcaComparisonKey As String
-Private hcaStoredInitialCost As Double
 
 Dim baStoredHistory() As Double
 Dim baStoredBestCost As Double
@@ -558,7 +557,6 @@ Dim baStoredBestIter As Long
 Dim baStoredMaxIter As Long
 Dim baHasRun As Boolean
 Private baComparisonKey As String
-Private baStoredInitialCost As Double
 
 ' ==========================================
 ' Form Variables
@@ -584,7 +582,7 @@ Private Sub cmdBA_Click()
     Dim trialDesign As Design, bestDesign As Design
     Dim trialCost As Double, globalBestCost As Double
     Dim globalBestTrial As Integer, globalBestIteration As Long
-    Dim globalBestInitialCost As Double
+    Dim csvBestEvaluation As Long, csvInitialBest As Boolean
     Dim globalBestCostHistory() As Double
     
     txtResults.Text = vbNullString
@@ -660,7 +658,6 @@ Private Sub cmdBA_Click()
             bestDesign = trialDesign
             globalBestTrial = trial
             globalBestIteration = modDataStructures.BestCostIteration
-            globalBestInitialCost = RunInitialQuantityCost
             
             ReDim globalBestCostHistory(1 To maxIter)
             Dim k As Long
@@ -703,7 +700,10 @@ Private Sub cmdBA_Click()
     Next j
     
     Call ClearGraph(picGraph)
-    If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration, globalBestInitialCost)
+    Call ReadAcceptCostHistory(LastAcceptCSVPath, globalBestCostHistory, csvBestEvaluation, csvInitialBest)
+    If UBound(globalBestCostHistory) <> maxIter Or csvBestEvaluation <> globalBestIteration Then Err.Raise 5, , "Selected CSV does not match the selected trial"
+    Call DrawCostGraph(picGraph, globalBestCostHistory, csvBestEvaluation, 0, "BA")
+    If Not csvInitialBest Then AddResultLine "No. 0 has no feasible best price; the curve starts at the first recorded improvement."
     
     cmdBA.Enabled = True: cmdRun.Enabled = True: cmdCommand1.Enabled = True: cmdCompare.Enabled = True
     Me.MousePointer = vbDefault
@@ -727,7 +727,6 @@ Private Sub cmdBA_Click()
     BA_HasData = (globalBestIteration > 0)
     
     ' --- Store results for Compare ---
-baStoredInitialCost = globalBestInitialCost
 baStoredBestCost = globalBestCost
 baStoredBestIter = globalBestIteration
 baStoredMaxIter = maxIter
@@ -851,7 +850,7 @@ Private Sub cmdRun_Click()
     Dim globalBestTrial As Integer
     Dim globalBestIteration As Long
     Dim currentCost As Double
-    Dim globalBestInitialCost As Double
+    Dim csvBestEvaluation As Long, csvInitialBest As Boolean
     Dim globalBestCostHistory() As Double   ' เพิ่มบรรทัดนี้
     
     Call InitializeArrays
@@ -966,7 +965,6 @@ Private Sub cmdRun_Click()
             globalBestCost = currentCost
             globalBestTrial = trial
             globalBestIteration = modDataStructures.BestCostIteration
-            globalBestInitialCost = RunInitialQuantityCost
             ' เก็บ CostHistory ของ Trial ที่ดีที่สุด
             globalBestCostHistory = modDataStructures.CostHistory
             Debug.Print ">>> NEW GLOBAL BEST at Trial " & trial & ": " & Format(globalBestCost, "#,##0.00") & " Baht/m"
@@ -1006,7 +1004,10 @@ Private Sub cmdRun_Click()
     'Call DrawCostGraph(picGraph, modDataStructures.CostHistory, modDataStructures.BestCostIteration)
      ' === Draw Graph (ใช้ CostHistory ของ Trial ที่ดีที่สุด) ===
     Call ClearGraph(picGraph)
-    If globalBestIteration > 0 Then Call DrawCostGraph(picGraph, globalBestCostHistory, globalBestIteration, globalBestInitialCost)
+    Call ReadAcceptCostHistory(LastAcceptCSVPath, globalBestCostHistory, csvBestEvaluation, csvInitialBest)
+    If UBound(globalBestCostHistory) <> maxIter Or csvBestEvaluation <> globalBestIteration Then Err.Raise 5, , "Selected CSV does not match the selected trial"
+    Call DrawCostGraph(picGraph, globalBestCostHistory, csvBestEvaluation, 0, "HCA")
+    If Not csvInitialBest Then AddResultLine "No. 0 has no feasible best price; the curve starts at the first recorded improvement."
     
     ' Re-enable button
     cmdBA.Enabled = True: cmdRun.Enabled = True: cmdCommand1.Enabled = True: cmdCompare.Enabled = True
@@ -1034,7 +1035,6 @@ Private Sub cmdRun_Click()
     HCA_HasData = (globalBestIteration > 0)
     
     ' --- Store results for Compare ---
-hcaStoredInitialCost = globalBestInitialCost
 hcaStoredBestCost = globalBestCost
 hcaStoredBestIter = globalBestIteration
 hcaStoredMaxIter = maxIter
@@ -1185,228 +1185,7 @@ End Function
 Private Sub DrawDualCostGraph(pic As PictureBox, _
                               HCA_History() As Double, HCA_Iter As Long, HCA_BestIter As Long, _
                               BA_History() As Double, BA_Iter As Long, BA_BestIter As Long)
-    
-    Dim i As Long
-    Dim xScale As Double, yScale As Double
-    Dim xPos As Double, yPos As Double
-    Dim minCost As Double, maxCost As Double
-    Dim maxIter As Long
-    Dim marginLeft As Single, marginRight As Single
-    Dim marginTop As Single, marginBottom As Single
-    Dim graphWidth As Single, graphHeight As Single
-    Dim lastX As Single, lastY As Single
-    Dim firstPoint As Boolean
-    Dim gridLines As Integer
-    Dim labelValue As Double
-    Dim legendX As Single, legendY As Single
-    
-    ' === Margins ===
-    marginLeft = 800
-    marginRight = 150
-    marginTop = 400
-    marginBottom = 500
-    
-    graphWidth = pic.ScaleWidth - marginLeft - marginRight
-    graphHeight = pic.ScaleHeight - marginTop - marginBottom
-    
-    ' === หา Max Iterations ===
-    maxIter = HCA_Iter
-    If BA_Iter > maxIter Then maxIter = BA_Iter
-    
-    ' === หา Min/Max Cost จากทั้ง 2 arrays ===
-    minCost = 999999999
-    maxCost = 0
-    
-    ' Scan HCA
-    For i = 1 To HCA_Iter
-        If HCA_History(i) > 0 And HCA_History(i) < 999000 Then
-            If HCA_History(i) < minCost Then minCost = HCA_History(i)
-            If HCA_History(i) > maxCost Then maxCost = HCA_History(i)
-        End If
-    Next i
-    
-    ' Scan BA
-    For i = 1 To BA_Iter
-        If BA_History(i) > 0 And BA_History(i) < 999000 Then
-            If BA_History(i) < minCost Then minCost = BA_History(i)
-            If BA_History(i) > maxCost Then maxCost = BA_History(i)
-        End If
-    Next i
-    
-    ' === ปรับ Range ให้มี padding ===
-    If hcaStoredInitialCost > maxCost Then maxCost = hcaStoredInitialCost
-    If baStoredInitialCost > maxCost Then maxCost = baStoredInitialCost
-    If hcaStoredInitialCost > 0 And hcaStoredInitialCost < minCost Then minCost = hcaStoredInitialCost
-    If baStoredInitialCost > 0 And baStoredInitialCost < minCost Then minCost = baStoredInitialCost
-    If maxCost - minCost < 1000 Then
-        minCost = minCost - 500
-        maxCost = maxCost + 500
-    End If
-    minCost = minCost * 0.95
-    maxCost = maxCost * 1.05
-    
-    ' ป้องกัน Division by Zero
-    If maxCost <= minCost Then maxCost = minCost + 1000
-    If maxIter <= 0 Then maxIter = 1
-    
-    ' === Calculate Scales ===
-    xScale = graphWidth / maxIter
-    yScale = graphHeight / (maxCost - minCost)
-    
-    ' === Clear and Draw Background ===
-    pic.Cls
-    pic.BackColor = vbWhite
-    
-    ' === Draw Grid Lines ===
-    pic.ForeColor = &HE0E0E0  ' Light gray
-    pic.DrawWidth = 1
-    gridLines = 5
-    
-    ' Horizontal grid lines
-    For i = 0 To gridLines
-        yPos = marginTop + graphHeight - (graphHeight * i / gridLines)
-        pic.Line (marginLeft, yPos)-(marginLeft + graphWidth, yPos)
-    Next i
-    
-    ' Vertical grid lines
-    For i = 1 To 4
-        xPos = marginLeft + (graphWidth * i / 4)
-        pic.Line (xPos, marginTop)-(xPos, marginTop + graphHeight)
-    Next i
-    
-    ' === Draw Axes ===
-    pic.ForeColor = vbBlack
-    pic.DrawWidth = 2
-    pic.Line (marginLeft, marginTop)-(marginLeft, marginTop + graphHeight)
-    pic.Line (marginLeft, marginTop + graphHeight)-(marginLeft + graphWidth, marginTop + graphHeight)
-    
-    ' === Draw Y-axis Labels ===
-    pic.ForeColor = vbBlack
-    pic.FontSize = 8
-    pic.FontBold = False
-    For i = 0 To gridLines
-        yPos = marginTop + graphHeight - (graphHeight * i / gridLines)
-        labelValue = minCost + (maxCost - minCost) * i / gridLines
-        pic.CurrentX = 50
-        pic.CurrentY = yPos - 80
-        pic.Print Format(labelValue, "#,##0")
-    Next i
-    
-    ' === Draw X-axis Labels ===
-    pic.FontSize = 8
-    For i = 0 To 4
-        xPos = marginLeft + (graphWidth * i / 4)
-        pic.CurrentX = xPos - 150
-        pic.CurrentY = marginTop + graphHeight + 100
-        pic.Print Format(maxIter * i / 4, "#,##0")
-    Next i
-    
-    ' === Draw Axis Titles ===
-    pic.FontSize = 9
-    pic.FontBold = True
-    pic.CurrentX = 30
-    pic.CurrentY = marginTop + graphHeight / 2 - 200
-    pic.Print "Cost"
-    pic.CurrentX = 20
-    pic.CurrentY = marginTop + graphHeight / 2
-    pic.Print "(Baht/m)"
-    pic.CurrentX = marginLeft + graphWidth / 2 - 300
-    pic.CurrentY = marginTop + graphHeight + 300
-    pic.Print "Evaluation"
-    
-    ' === Draw HCA Line (Blue) ===
-    pic.ForeColor = vbBlue
-    pic.DrawWidth = 2
-    firstPoint = True
-    
-    For i = 1 To HCA_Iter
-        If HCA_History(i) > 0 And HCA_History(i) < 999000 Then
-            xPos = marginLeft + (i * xScale)
-            yPos = marginTop + graphHeight - ((HCA_History(i) - minCost) * yScale)
-            If yPos < marginTop Then yPos = marginTop
-            If yPos > marginTop + graphHeight Then yPos = marginTop + graphHeight
-            
-            If firstPoint Then
-                firstPoint = False
-            Else
-                pic.Line (lastX, lastY)-(xPos, yPos)
-            End If
-            lastX = xPos
-            lastY = yPos
-        End If
-    Next i
-    
-    ' แก้เป็น:
-pic.ForeColor = vbGreen  ' Dark Green
-    pic.DrawWidth = 2
-    firstPoint = True
-    
-    For i = 1 To BA_Iter
-        If BA_History(i) > 0 And BA_History(i) < 999000 Then
-            xPos = marginLeft + (i * xScale)
-            yPos = marginTop + graphHeight - ((BA_History(i) - minCost) * yScale)
-            If yPos < marginTop Then yPos = marginTop
-            If yPos > marginTop + graphHeight Then yPos = marginTop + graphHeight
-            
-            If firstPoint Then
-                firstPoint = False
-            Else
-                pic.Line (lastX, lastY)-(xPos, yPos)
-            End If
-            lastX = xPos
-            lastY = yPos
-        End If
-    Next i
-    
-    ' Initial reference is distinct from the feasible best-so-far curves.
-    pic.ForeColor = vbBlue
-    Call DrawInitialCostReference(pic, HCA_History, hcaStoredInitialCost, marginLeft + xScale, xScale, minCost, marginTop + graphHeight, yScale, marginLeft + 200, marginTop + 100, "HCA")
-    pic.ForeColor = vbGreen
-    Call DrawInitialCostReference(pic, BA_History, baStoredInitialCost, marginLeft + xScale, xScale, minCost, marginTop + graphHeight, yScale, marginLeft + 200, marginTop + 320, "BA")
-
-    ' === Draw Legend Box ===
-    legendX = marginLeft + graphWidth - 1200
-    legendY = marginTop + 100
-    
-    pic.FillStyle = 0
-    pic.FillColor = &HFAFAFA
-    pic.ForeColor = &HC0C0C0
-    pic.DrawWidth = 1
-    pic.Line (legendX, legendY)-(legendX + 1100, legendY + 500), , B
-    
-    ' HCA Legend
-    pic.ForeColor = vbBlue
-    pic.DrawWidth = 3
-    pic.Line (legendX + 50, legendY + 150)-(legendX + 250, legendY + 150)
-    pic.ForeColor = vbBlack
-    pic.FontSize = 9
-    pic.FontBold = True
-    pic.CurrentX = legendX + 300
-    pic.CurrentY = legendY + 100
-    pic.Print "HCA"
-    
-    ' BA Legend
-    pic.ForeColor = vbGreen
-    pic.DrawWidth = 3
-    pic.Line (legendX + 50, legendY + 350)-(legendX + 250, legendY + 350)
-    pic.ForeColor = vbBlack
-    pic.CurrentX = legendX + 300
-    pic.CurrentY = legendY + 300
-    pic.Print "BA"
-    
-    ' === Draw Title ===
-    pic.ForeColor = vbBlack
-    pic.FontSize = 12
-    pic.FontBold = True
-    pic.CurrentX = marginLeft + graphWidth / 2 - 1000
-    pic.CurrentY = 80
-    pic.Print "Cost Comparison: HCA vs BA"
-    
-    ' Reset
-    pic.FontBold = False
-    pic.FillStyle = 1
-    pic.DrawWidth = 1
-    
+    Call DrawComparisonGraph(pic, HCA_History, HCA_BestIter, BA_History, BA_BestIter)
 End Sub
 
 

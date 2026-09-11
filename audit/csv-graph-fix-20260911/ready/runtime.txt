@@ -1,0 +1,16 @@
+PASS graph uses recorded feasible history only; no synthetic initial bridge
+PASS rejected initial stays unavailable as a feasible best
+PASS recorded values and indices unchanged
+PASS rejected initial remains unavailable; no baseline inserted
+PASS Passed and Rejected never replace the recorded feasible best
+PASS last real improvement retains its No. after price rounding
+PASS a genuinely feasible initial is plotted at No.0
+PASS all rejected including unavailable quantity is NO_SOLUTION
+PASS missing No.0 is not silently renumbered
+PASS template BA initial and No.32 final match source
+PASS template HCA initial and No.326 final match source
+PASS BA current CSV rejected No.0 stays rejected
+PASS current BA starts at No.44; final No.102
+PASS HCA current CSV rejected No.0 stays rejected
+PASS current HCA starts at No.124; final No.327
+CHECKS=15; FAILURES=0; OPTIMIZER_RUNS=0
